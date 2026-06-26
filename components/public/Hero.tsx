@@ -12,11 +12,21 @@ interface HeroProps {
 }
 
 export default function Hero({ title, subtitle, ctaText, ctaLink, heroImageUrl, stats, siteSlug }: HeroProps) {
-  const defaultStats = stats ?? {
-    'Students Enrolled': '50,000+',
-    'Top Rankers': '1,200+',
-    'Years of Excellence': '15+',
-  }
+  const normalizedStats: { label: string; value: string }[] = (() => {
+    const src: any = stats ?? { 'Students Enrolled': '50,000+', 'Top Rankers': '1,200+', 'Years of Excellence': '15+' }
+    if (Array.isArray(src)) {
+      return src.map((s: any) =>
+        s && typeof s === 'object'
+          ? { label: String(s.label ?? ''), value: String(s.value ?? '') }
+          : { label: '', value: String(s) }
+      )
+    }
+    return Object.entries(src as Record<string, any>).map(([key, val]) =>
+      val && typeof val === 'object' && !Array.isArray(val)
+        ? { label: String((val as any).label ?? key), value: String((val as any).value ?? '') }
+        : { label: key, value: String(val ?? '') }
+    )
+  })()
 
   return (
     <section className="bg-[#FDF5F5] pt-12 pb-16 lg:pt-20 lg:pb-24">
@@ -50,7 +60,7 @@ export default function Hero({ title, subtitle, ctaText, ctaLink, heroImageUrl, 
 
             {/* Stats */}
             <div className="flex flex-wrap gap-8 mt-10">
-              {Object.entries(defaultStats).map(([label, value]) => (
+              {normalizedStats.map(({ label, value }) => (
                 <div key={label}>
                   <p className="text-2xl font-bold text-[#7E0D0D]">{value}</p>
                   <p className="text-sm text-[#1B2A44] opacity-70">{label}</p>

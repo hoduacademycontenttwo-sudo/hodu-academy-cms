@@ -114,6 +114,7 @@ export default async function HomePage() {
     supabase.from('cms_notices').select('*').eq('site_id', HODU_SITE_ID).eq('is_active', true).limit(4),
   ])
 
+<<<<<<< HEAD
   const statsRaw = home?.stats_json
     ? (typeof home.stats_json === 'string' ? JSON.parse(home.stats_json) : home.stats_json)
     : null
@@ -124,6 +125,32 @@ export default async function HomePage() {
         { value: '98%',   label: 'Pass Rate' },
         { value: '500+',  label: 'Scholarships' },
       ]
+=======
+  const stats: { label: string; value: string }[] = (() => {
+    const defaults = [
+      { value: '15K+', label: 'Students' },
+      { value: '98%',  label: 'Pass Rate' },
+      { value: '500+', label: 'Scholarships' },
+    ]
+    if (!home?.stats_json) return defaults
+    const raw: any = typeof home.stats_json === 'string' ? JSON.parse(home.stats_json) : home.stats_json
+    if (Array.isArray(raw)) {
+      return raw.map((s: any) =>
+        s && typeof s === 'object'
+          ? { label: String(s.label ?? ''), value: String(s.value ?? '') }
+          : { label: '', value: String(s) }
+      )
+    }
+    if (raw && typeof raw === 'object') {
+      return Object.entries(raw as Record<string, any>).map(([key, val]) =>
+        val && typeof val === 'object' && !Array.isArray(val)
+          ? { label: String((val as any).label ?? key), value: String((val as any).value ?? '') }
+          : { label: key, value: String(val ?? '') }
+      )
+    }
+    return defaults
+  })()
+>>>>>>> 3d60b55a4d1b3146b31ccbdf5553f9f232e5f5fa
 
   return (
     <div className="space-y-0 animate-fade-in">

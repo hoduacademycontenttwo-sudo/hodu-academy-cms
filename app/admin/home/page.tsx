@@ -16,11 +16,31 @@ export default function HomeContentPage() {
 
   useEffect(() => {
     supabase.from('cms_home_sections').select('*').eq('site_id', SITE_ID).single()
-      .then(({ data }) => setForm(data ?? {
-        site_id: SITE_ID, hero_title: '', hero_subtitle: '', hero_image_url: '',
-        cta_text: 'Book Free Demo Class', cta_link: '/demo/contact',
-        stats_json: { 'Students Enrolled': '50,000+', 'Top Rankers': '1,200+', 'Years of Excellence': '15+' }
-      }))
+      .then(({ data }) => {
+        const defaults = {
+          site_id: SITE_ID, hero_title: '', hero_subtitle: '', hero_image_url: '',
+          cta_text: 'Book Free Demo Class', cta_link: '/demo/contact',
+          stats_json: { 'Students Enrolled': '50,000+', 'Top Rankers': '1,200+', 'Years of Excellence': '15+' }
+        }
+        const row = data ?? defaults
+        // Normalize stats_json to Record<string, string> regardless of how it was stored
+        let statsJson = row.stats_json
+        if (Array.isArray(statsJson)) {
+          const obj: Record<string, string> = {}
+          for (const item of statsJson) {
+            if (item && typeof item === 'object') obj[String(item.label ?? '')] = String(item.value ?? '')
+            else if (typeof item === 'string') obj[item] = ''
+          }
+          statsJson = obj
+        } else if (statsJson && typeof statsJson === 'object') {
+          const obj: Record<string, string> = {}
+          for (const [k, v] of Object.entries(statsJson)) {
+            obj[k] = v && typeof v === 'object' ? String((v as any).value ?? '') : String(v ?? '')
+          }
+          statsJson = obj
+        }
+        setForm({ ...row, stats_json: statsJson ?? defaults.stats_json })
+      })
   }, [])
 
   function set(k: string, v: any) { setForm((f: any) => ({ ...f, [k]: v })) }
