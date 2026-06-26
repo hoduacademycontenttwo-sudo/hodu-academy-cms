@@ -1,4 +1,4 @@
-# Hodu Academy CMS
+# Hodu Academy CMS YUVRAJ
 
 A full-stack coaching institute website with a built-in Content Management System (CMS) — built with **Next.js 15**, **Supabase**, and **Tailwind CSS v4**.
 
