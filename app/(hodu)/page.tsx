@@ -114,13 +114,16 @@ export default async function HomePage() {
     supabase.from('cms_notices').select('*').eq('site_id', HODU_SITE_ID).eq('is_active', true).limit(4),
   ])
 
-  const stats: { label: string; value: string }[] = home?.stats_json
-    ? (typeof home.stats_json === 'string' ? JSON.parse(home.stats_json) : home.stats_json)
-    : [
-        { value: '15K+',  label: 'Students' },
-        { value: '98%',   label: 'Pass Rate' },
-        { value: '500+',  label: 'Scholarships' },
-      ]
+  const stats: { label: string; value: string }[] = (() => {
+    if (!home?.stats_json) return [
+      { value: '15K+', label: 'Students' },
+      { value: '98%',  label: 'Pass Rate' },
+      { value: '500+', label: 'Scholarships' },
+    ]
+    const raw = typeof home.stats_json === 'string' ? JSON.parse(home.stats_json) : home.stats_json
+    if (Array.isArray(raw)) return raw
+    return Object.entries(raw).map(([label, value]) => ({ label, value: value as string }))
+  })()
 
   return (
     <div className="space-y-0 animate-fade-in">
