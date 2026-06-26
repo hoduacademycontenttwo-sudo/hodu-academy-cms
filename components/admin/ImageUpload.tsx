@@ -20,8 +20,8 @@ export default function ImageUpload({ value, onChange, folder = 'general', label
     if (!file) return
 
     // Client-side size check
-    if (file.size > 5 * 1024 * 1024) {
-      setError('File too large. Max size: 5MB')
+    if (file.size > 10 * 1024 * 1024) {
+      setError('File too large. Max size: 10MB')
       return
     }
 
@@ -83,7 +83,7 @@ export default function ImageUpload({ value, onChange, folder = 'general', label
           : <><Upload size={16} /> {value ? 'Change Image' : 'Upload Image'}</>
         }
       </button>
-      <p className="text-xs text-[#C9C8CB]">JPG, PNG, WebP · Max 5MB · Stored on Supabase</p>
+      <p className="text-xs text-[#C9C8CB]">JPG, PNG, WebP · Max 10MB · Stored on Supabase</p>
 
       {/* Manual URL fallback */}
       <div>

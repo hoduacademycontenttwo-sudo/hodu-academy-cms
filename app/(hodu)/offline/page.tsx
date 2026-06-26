@@ -1,6 +1,7 @@
 import { HODU } from '@/lib/hodu'
 import Link from 'next/link'
 import { Phone } from 'lucide-react'
+import HeroCarousel from '@/components/hodu/HeroCarousel'
 
 export const metadata = {
   title: 'Offline Coaching — Hodu Academy',
@@ -87,28 +88,7 @@ const galleryItems = [
 export default function OfflinePage() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-[#1B2A44] to-[#0f1e33] text-white py-20">
-        <div className="max-w-5xl mx-auto px-4 text-center">
-          <span className="text-xs font-bold uppercase tracking-widest bg-[#7E0D0D]/80 px-3 py-1 rounded-full">Offline Coaching Centre · Jaipur</span>
-          <h1 className="text-4xl lg:text-5xl font-black mt-6 mb-4 leading-tight">
-            Where Excellence Meets <span className="text-[#F3DCDC]">Personal Attention</span>
-          </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto mb-8">
-            Experience classroom learning at its best — expert faculty, structured curriculum, and a nurturing environment designed for every student to thrive.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/contact"
-              className="bg-[#7E0D0D] hover:bg-[#922222] text-white font-bold px-8 py-3.5 rounded-2xl transition-colors">
-              Book a Free Demo Class
-            </Link>
-            <a href={`tel:${HODU.phone}`}
-              className="border-2 border-white/40 hover:border-white text-white font-bold px-8 py-3.5 rounded-2xl transition-colors flex items-center gap-2">
-              <Phone size={16} /> {HODU.phone}
-            </a>
-          </div>
-        </div>
-      </section>
+      <HeroCarousel />
 
       {/* Why Choose Hodu */}
       <section className="py-16 bg-white">

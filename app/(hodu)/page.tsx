@@ -114,8 +114,11 @@ export default async function HomePage() {
     supabase.from('cms_notices').select('*').eq('site_id', HODU_SITE_ID).eq('is_active', true).limit(4),
   ])
 
-  const stats: { label: string; value: string }[] = home?.stats_json
+  const statsRaw = home?.stats_json
     ? (typeof home.stats_json === 'string' ? JSON.parse(home.stats_json) : home.stats_json)
+    : null
+  const stats: { label: string; value: string }[] = Array.isArray(statsRaw)
+    ? statsRaw
     : [
         { value: '15K+',  label: 'Students' },
         { value: '98%',   label: 'Pass Rate' },
