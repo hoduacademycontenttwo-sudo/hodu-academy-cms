@@ -141,53 +141,59 @@ export default function HeroCarousel() {
                   <Phone size={16} /> {HODU.phone}
                 </a>
               </div>
+
+              {/* Mobile video button */}
+              <button
+                onClick={() => setVideoOpen(true)}
+                className="lg:hidden flex items-center gap-3 mt-2 group"
+              >
+                <div className="w-11 h-11 rounded-full bg-white/15 border-2 border-white/60 flex items-center justify-center group-hover:bg-brand-maroon group-hover:border-brand-maroon transition-all duration-300 shrink-0">
+                  <Play className="h-4 w-4 text-white fill-white ml-0.5" />
+                </div>
+                <span className="text-white/80 text-sm font-medium">Watch Our Centre</span>
+              </button>
             </div>
 
             {/* Right — video box */}
-            <div className="hidden lg:flex items-center justify-center">
+            <div className="hidden lg:flex items-center justify-end">
               <div className="relative">
-                {/* Glow ring */}
-                <div className="absolute -inset-1 rounded-3xl bg-gradient-to-br from-brand-maroon/60 via-white/10 to-brand-maroon/30 blur-lg opacity-70 group-hover:opacity-100 transition-opacity" />
+                {/* Outer glow */}
+                <div className="absolute -inset-2 rounded-[2rem] bg-gradient-to-br from-brand-maroon/50 via-white/5 to-brand-maroon/20 blur-2xl opacity-60" />
 
                 <button
                   onClick={() => setVideoOpen(true)}
-                  className="group relative w-[420px] h-[260px] rounded-3xl overflow-hidden shadow-2xl border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-[1.03]"
+                  className="group relative w-[500px] h-[310px] rounded-[1.75rem] overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.6)] border border-white/15 hover:border-white/35 transition-all duration-500 hover:scale-[1.025]"
                 >
                   {/* Video thumbnail */}
                   <video
                     src="/event-video.mp4"
-                    className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700"
+                    className="w-full h-full object-cover scale-[1.06] group-hover:scale-100 transition-transform duration-700"
                     muted playsInline preload="metadata"
                   />
 
-                  {/* Layered overlays */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
+                  {/* Overlays */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
 
-                  {/* Animated ring behind play button */}
+                  {/* Center play button */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="absolute w-28 h-28 rounded-full border-2 border-white/20 animate-ping opacity-30" />
-                    <div className="absolute w-24 h-24 rounded-full border border-white/30" />
-                    <div className="w-20 h-20 bg-white/10 backdrop-blur-md border-2 border-white/70 rounded-full flex items-center justify-center group-hover:bg-brand-maroon group-hover:border-brand-maroon group-hover:scale-110 transition-all duration-300 shadow-2xl">
-                      <Play className="h-8 w-8 text-white fill-white ml-1.5 drop-shadow" />
+                    <div className="absolute w-32 h-32 rounded-full border border-white/15 animate-ping opacity-20" />
+                    <div className="absolute w-28 h-28 rounded-full border border-white/25" />
+                    <div className="w-[72px] h-[72px] bg-white/15 backdrop-blur-md border-2 border-white/60 rounded-full flex items-center justify-center group-hover:bg-brand-maroon group-hover:border-brand-maroon group-hover:scale-110 transition-all duration-300 shadow-2xl">
+                      <Play className="h-7 w-7 text-white fill-white ml-1 drop-shadow" />
                     </div>
                   </div>
 
-                  {/* Bottom label bar */}
-                  <div className="absolute bottom-0 left-0 right-0 px-5 py-4 flex items-center justify-between">
+                  {/* Bottom bar */}
+                  <div className="absolute bottom-0 left-0 right-0 px-6 py-5 flex items-end justify-between">
                     <div>
-                      <p className="text-white font-bold text-sm">Watch Our Centre</p>
-                      <p className="text-white/60 text-xs mt-0.5">Hodu Academy, Jaipur</p>
+                      <p className="text-white font-black text-base tracking-tight">Watch Our Centre</p>
+                      <p className="text-white/55 text-sm mt-0.5 font-medium">Hodu Academy, Jaipur</p>
                     </div>
-                    <div className="flex items-center gap-1.5 bg-brand-maroon/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                      <span className="text-white text-[11px] font-bold uppercase tracking-wider">Play</span>
+                    <div className="flex items-center gap-2 bg-brand-maroon backdrop-blur-sm px-4 py-2 rounded-full shadow-lg">
+                      <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                      <span className="text-white text-xs font-bold uppercase tracking-widest">Play</span>
                     </div>
-                  </div>
-
-                  {/* Top-right duration badge */}
-                  <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm text-white text-[11px] font-semibold px-2.5 py-1 rounded-lg border border-white/10">
-                    ▶ Event
                   </div>
                 </button>
               </div>
