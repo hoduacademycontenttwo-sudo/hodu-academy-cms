@@ -115,14 +115,28 @@ export default async function HomePage() {
   ])
 
   const stats: { label: string; value: string }[] = (() => {
-    if (!home?.stats_json) return [
+    const defaults = [
       { value: '15K+', label: 'Students' },
       { value: '98%',  label: 'Pass Rate' },
       { value: '500+', label: 'Scholarships' },
     ]
-    const raw = typeof home.stats_json === 'string' ? JSON.parse(home.stats_json) : home.stats_json
-    if (Array.isArray(raw)) return raw
-    return Object.entries(raw).map(([label, value]) => ({ label, value: value as string }))
+    if (!home?.stats_json) return defaults
+    const raw: any = typeof home.stats_json === 'string' ? JSON.parse(home.stats_json) : home.stats_json
+    if (Array.isArray(raw)) {
+      return raw.map((s: any) =>
+        s && typeof s === 'object'
+          ? { label: String(s.label ?? ''), value: String(s.value ?? '') }
+          : { label: '', value: String(s) }
+      )
+    }
+    if (raw && typeof raw === 'object') {
+      return Object.entries(raw as Record<string, any>).map(([key, val]) =>
+        val && typeof val === 'object' && !Array.isArray(val)
+          ? { label: String((val as any).label ?? key), value: String((val as any).value ?? '') }
+          : { label: key, value: String(val ?? '') }
+      )
+    }
+    return defaults
   })()
 
   return (
