@@ -32,9 +32,9 @@ const navLinks = [
 
 function Dropdown({ label, items }: { label: string; items: { label: string; href: string; icon?: string }[] }) {
   const [open, setOpen] = useState(false)
-  const timer = useRef<NodeJS.Timeout | null>(null)
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  function enter() { clearTimeout(timer.current); setOpen(true) }
+  function enter() { clearTimeout(timer.current ?? undefined); setOpen(true) }
   function leave() { timer.current = setTimeout(() => setOpen(false), 120) }
 
   return (
