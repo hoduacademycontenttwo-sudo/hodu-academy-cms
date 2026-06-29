@@ -22,11 +22,17 @@ export default async function ResourcesPage({ params, searchParams }: { params: 
   const { data: site } = await supabase.from('cms_sites').select('*').eq('slug', siteSlug).single()
   if (!site) return notFound()
 
-  let q = supabase.from('cms_resources').select('*').eq('site_id', site.id).order('created_at', { ascending: false })
-  if (sp.type) q = q.eq('type', sp.type)
-  const { data: resources } = await q
+  // Fetch all types first (unfiltered), then apply filter for the grid
+  const [{ data: allForTypes }, { data: resources }] = await Promise.all([
+    supabase.from('cms_resources').select('type').eq('site_id', site.id),
+    (() => {
+      let q = supabase.from('cms_resources').select('*').eq('site_id', site.id).order('created_at', { ascending: false })
+      if (sp.type) q = q.eq('type', sp.type)
+      return q
+    })(),
+  ])
 
-  const types = Array.from(new Set((resources ?? []).map((r: any) => r.type)))
+  const types = Array.from(new Set((allForTypes ?? []).map((r: any) => r.type)))
 
   return (
     <>
