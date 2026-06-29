@@ -29,41 +29,41 @@ export default function Hero({ title, subtitle, ctaText, ctaLink, heroImageUrl, 
   })()
 
   return (
-    <section className="bg-[#FDF5F5] pt-12 pb-16 lg:pt-20 lg:pb-24">
+    <section className="bg-[#FDF5F5] pt-10 pb-12 lg:pt-20 lg:pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Text */}
           <div>
-            <span className="inline-block bg-[#F3DCDC] text-[#7E0D0D] text-xs font-bold px-3 py-1 rounded-full mb-4 tracking-wider uppercase">
+            <span className="inline-block bg-[#F3DCDC] text-[#7E0D0D] text-xs font-bold px-3 py-1 rounded-full mb-3 tracking-wider uppercase">
               India's Leading Coaching Institute
             </span>
-            <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-[#111111] leading-tight mb-5">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#111111] leading-tight mb-4">
               {title}
             </h1>
-            <p className="text-lg text-[#1B2A44] opacity-80 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg text-[#1B2A44] opacity-80 mb-6 leading-relaxed line-clamp-3 lg:line-clamp-none">
               {subtitle}
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
                 href={ctaLink}
-                className="bg-[#7E0D0D] hover:bg-[#922222] text-white font-semibold px-7 py-3.5 rounded-xl transition-colors shadow-md flex items-center gap-2"
+                className="bg-[#7E0D0D] hover:bg-[#922222] text-white font-semibold px-6 py-3 rounded-xl transition-colors shadow-md flex items-center gap-2 text-sm sm:text-base"
               >
-                {ctaText} <ArrowRight size={18} />
+                {ctaText} <ArrowRight size={16} />
               </Link>
               <Link
                 href={`/${siteSlug}/courses`}
-                className="border-2 border-[#1B2A44] text-[#1B2A44] hover:bg-[#1B2A44] hover:text-white font-semibold px-7 py-3.5 rounded-xl transition-colors"
+                className="border-2 border-[#1B2A44] text-[#1B2A44] hover:bg-[#1B2A44] hover:text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm sm:text-base"
               >
                 Explore Courses
               </Link>
             </div>
 
-            {/* Stats */}
-            <div className="flex flex-wrap gap-8 mt-10">
+            {/* Stats - horizontal scroll on small screens */}
+            <div className="flex gap-6 mt-8 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible">
               {normalizedStats.map(({ label, value }) => (
-                <div key={label}>
-                  <p className="text-2xl font-bold text-[#7E0D0D]">{value}</p>
-                  <p className="text-sm text-[#1B2A44] opacity-70">{label}</p>
+                <div key={label} className="shrink-0">
+                  <p className="text-xl sm:text-2xl font-bold text-[#7E0D0D]">{value}</p>
+                  <p className="text-xs sm:text-sm text-[#1B2A44] opacity-70 whitespace-nowrap">{label}</p>
                 </div>
               ))}
             </div>
@@ -75,23 +75,23 @@ export default function Hero({ title, subtitle, ctaText, ctaLink, heroImageUrl, 
               <img
                 src={heroImageUrl}
                 alt="Students"
-                className="w-full h-[420px] object-cover rounded-2xl shadow-xl"
+                className="w-full h-52 sm:h-80 lg:h-[420px] object-cover rounded-2xl shadow-xl"
               />
             ) : (
-              <div className="w-full h-[420px] bg-gradient-to-br from-[#F3DCDC] to-[#FDF5F5] rounded-2xl shadow-xl flex flex-col items-center justify-center gap-6">
-                <div className="grid grid-cols-3 gap-4">
+              <div className="w-full h-52 sm:h-72 lg:h-[420px] bg-gradient-to-br from-[#F3DCDC] to-[#FDF5F5] rounded-2xl shadow-xl flex flex-col items-center justify-center gap-4 sm:gap-6">
+                <div className="grid grid-cols-3 gap-3 sm:gap-4">
                   {[
                     { icon: Users, label: 'Expert Faculty', color: '#7E0D0D' },
                     { icon: Award, label: 'Top Results', color: '#922222' },
                     { icon: BookOpen, label: 'Study Material', color: '#1B2A44' },
                   ].map(({ icon: Icon, label, color }) => (
-                    <div key={label} className="bg-white rounded-2xl p-5 shadow-sm text-center">
-                      <Icon size={28} color={color} className="mx-auto mb-2" />
-                      <p className="text-xs font-semibold text-[#1B2A44]">{label}</p>
+                    <div key={label} className="bg-white rounded-2xl p-3 sm:p-5 shadow-sm text-center">
+                      <Icon size={22} color={color} className="mx-auto mb-1.5 sm:mb-2" />
+                      <p className="text-[10px] sm:text-xs font-semibold text-[#1B2A44]">{label}</p>
                     </div>
                   ))}
                 </div>
-                <p className="text-[#C9C8CB] text-sm">Upload hero image from admin panel</p>
+                <p className="text-[#C9C8CB] text-xs sm:text-sm">Upload hero image from admin panel</p>
               </div>
             )}
           </div>

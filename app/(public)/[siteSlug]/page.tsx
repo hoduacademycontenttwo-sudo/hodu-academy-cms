@@ -119,20 +119,20 @@ export default async function PublicHomePage({ params }: { params: Promise<{ sit
       {results.length > 0 && <ResultsSection results={results} />}
 
       {/* Why Choose Us */}
-      <section className="py-16 bg-[#FDF5F5]">
+      <section className="py-12 lg:py-16 bg-[#FDF5F5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <span className="text-[#7E0D0D] text-xs font-bold uppercase tracking-widest">Why Us</span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#1B2A44] mt-2">Why Choose {site.name}?</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1B2A44] mt-2">Why Choose {site.name}?</h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
             {whyChooseUs.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="bg-white border border-[#F3DCDC] rounded-2xl p-6 shadow-sm">
-                <div className="w-11 h-11 bg-[#FDF5F5] rounded-xl flex items-center justify-center mb-4">
-                  <Icon size={22} className="text-[#7E0D0D]" />
+              <div key={title} className="bg-white border border-[#F3DCDC] rounded-2xl p-4 sm:p-6 shadow-sm">
+                <div className="w-9 h-9 sm:w-11 sm:h-11 bg-[#FDF5F5] rounded-xl flex items-center justify-center mb-3">
+                  <Icon size={18} className="text-[#7E0D0D]" />
                 </div>
-                <h3 className="font-bold text-[#1B2A44] mb-2">{title}</h3>
-                <p className="text-sm text-[#1B2A44] opacity-70">{desc}</p>
+                <h3 className="font-bold text-[#1B2A44] text-sm sm:text-base mb-1">{title}</h3>
+                <p className="text-xs sm:text-sm text-[#1B2A44] opacity-70 line-clamp-2">{desc}</p>
               </div>
             ))}
           </div>
@@ -155,7 +155,7 @@ export default async function PublicHomePage({ params }: { params: Promise<{ sit
                       <span key={i} className="text-[#7E0D0D] text-sm">★</span>
                     ))}
                   </div>
-                  <p className="text-sm text-[#1B2A44] opacity-80 mb-4 leading-relaxed">"{t.message}"</p>
+                  <p className="text-sm text-[#1B2A44] opacity-80 mb-4 leading-relaxed line-clamp-4">"{t.message}"</p>
                   <div className="flex items-center gap-3">
                     {t.photo_url ? (
                       <img src={t.photo_url} alt={t.name} className="w-10 h-10 rounded-full object-cover" />
