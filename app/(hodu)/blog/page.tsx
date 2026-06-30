@@ -100,9 +100,16 @@ const categoryColors: Record<string, string> = {
 
 const categories = ['All', 'JEE', 'NEET', 'IGCSE', 'IB', 'CBSE', 'Olympiad']
 
-export default function BlogPage() {
-  const featured = posts[0]
-  const rest = posts.slice(1)
+export default async function BlogPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+  const sp = await searchParams
+  const selected = sp.category ?? 'All'
+
+  const filteredPosts = selected === 'All'
+    ? posts
+    : posts.filter(p => p.category === selected)
+
+  const featured = filteredPosts[0] ?? posts[0]
+  const rest = filteredPosts.slice(selected === 'All' ? 1 : 0)
 
   return (
     <>
@@ -117,56 +124,68 @@ export default function BlogPage() {
 
       <section className="py-12 bg-white">
         <div className="max-w-6xl mx-auto px-4">
-          {/* Category filter */}
+          {/* Category filter — now working links */}
           <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 mb-10">
             {categories.map(cat => (
-              <span key={cat}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition-colors border
-                  ${cat === 'All' ? 'bg-[#7E0D0D] text-white border-[#7E0D0D]' : 'bg-white text-gray-600 border-gray-200 hover:border-[#7E0D0D] hover:text-[#7E0D0D]'}`}>
+              <Link
+                key={cat}
+                href={cat === 'All' ? '/blog' : `/blog?category=${cat}`}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors border
+                  ${cat === selected
+                    ? 'bg-[#7E0D0D] text-white border-[#7E0D0D]'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-[#7E0D0D] hover:text-[#7E0D0D]'
+                  }`}
+              >
                 {cat}
-              </span>
+              </Link>
             ))}
           </div>
 
-          {/* Featured post */}
-          <div className="bg-gradient-to-br from-[#1B2A44] to-[#0f1e33] text-white rounded-3xl p-8 lg:p-10 mb-10">
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="bg-[#7E0D0D] text-white text-xs font-bold px-3 py-1 rounded-full">Featured</span>
-                <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${categoryColors[featured.category]}`}>{featured.category}</span>
-                <span className="text-xs text-gray-400">{featured.date} · {featured.readTime}</span>
+          {/* Featured post — shown only on "All" view */}
+          {selected === 'All' && (
+            <div className="bg-gradient-to-br from-[#1B2A44] to-[#0f1e33] text-white rounded-3xl p-8 lg:p-10 mb-10">
+              <div className="max-w-3xl">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="bg-[#7E0D0D] text-white text-xs font-bold px-3 py-1 rounded-full">Featured</span>
+                  <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${categoryColors[featured.category]}`}>{featured.category}</span>
+                  <span className="text-xs text-gray-400">{featured.date} · {featured.readTime}</span>
+                </div>
+                <h2 className="text-2xl lg:text-3xl font-black mb-3 leading-tight">{featured.title}</h2>
+                <p className="text-gray-300 text-sm leading-relaxed mb-6">{featured.excerpt}</p>
+                <Link href={`/blog/${featured.slug}`}
+                  className="inline-flex items-center gap-1 bg-white text-[#1B2A44] font-bold px-6 py-2.5 rounded-xl text-sm hover:bg-gray-100 transition-colors">
+                  Read Article <ChevronRight size={14} />
+                </Link>
               </div>
-              <h2 className="text-2xl lg:text-3xl font-black mb-3 leading-tight">{featured.title}</h2>
-              <p className="text-gray-300 text-sm leading-relaxed mb-6">{featured.excerpt}</p>
-              <Link href={`/blog/${featured.slug}`}
-                className="inline-flex items-center gap-1 bg-white text-[#1B2A44] font-bold px-6 py-2.5 rounded-xl text-sm hover:bg-gray-100 transition-colors">
-                Read Article <ChevronRight size={14} />
-              </Link>
             </div>
-          </div>
+          )}
 
-          {/* Rest of posts grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {rest.map(post => (
-              <Link key={post.slug} href={`/blog/${post.slug}`}
-                className="group block bg-[#FDF5F5] border border-[#F3DCDC] rounded-2xl p-5 hover:border-[#7E0D0D]/40 hover:shadow-sm transition-all">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${categoryColors[post.category] ?? 'bg-gray-100 text-gray-600'}`}>
-                    {post.category}
-                  </span>
-                  <span className="text-xs text-gray-400">{post.readTime}</span>
-                </div>
-                <h3 className="font-bold text-[#1B2A44] text-sm leading-snug mb-2 group-hover:text-[#7E0D0D] transition-colors line-clamp-2">
-                  {post.title}
-                </h3>
-                <p className="text-xs text-gray-500 line-clamp-2 mb-4">{post.excerpt}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-400">{post.date}</span>
-                  <span className="text-xs font-bold text-[#7E0D0D]">Read more →</span>
-                </div>
-              </Link>
-            ))}
-          </div>
+          {/* Posts grid */}
+          {rest.length === 0 ? (
+            <p className="text-center text-gray-400 py-16">No posts in this category yet.</p>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {rest.map(post => (
+                <Link key={post.slug} href={`/blog/${post.slug}`}
+                  className="group block bg-[#FDF5F5] border border-[#F3DCDC] rounded-2xl p-5 hover:border-[#7E0D0D]/40 hover:shadow-sm transition-all">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${categoryColors[post.category] ?? 'bg-gray-100 text-gray-600'}`}>
+                      {post.category}
+                    </span>
+                    <span className="text-xs text-gray-400">{post.readTime}</span>
+                  </div>
+                  <h3 className="font-bold text-[#1B2A44] text-sm leading-snug mb-2 group-hover:text-[#7E0D0D] transition-colors line-clamp-2">
+                    {post.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 line-clamp-2 mb-4">{post.excerpt}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-400">{post.date}</span>
+                    <span className="text-xs font-bold text-[#7E0D0D]">Read more →</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </>

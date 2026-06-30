@@ -120,9 +120,13 @@ export default async function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {faculty.map(f => (
               <div key={f.id} className="bg-brand-white border border-brand-border p-5 rounded-xl hover:shadow-md transition-all">
-                <div className="h-24 bg-brand-bg rounded-xl flex items-center justify-center font-black text-3xl text-brand-maroon mb-4 border border-brand-border">
-                  {f.name.split(' ').map((w: string) => w[0]).slice(0, 2).join('')}
-                </div>
+                {f.photo_url ? (
+                  <img src={f.photo_url} alt={f.name} className="w-full h-44 object-cover rounded-xl mb-4 border border-brand-border" />
+                ) : (
+                  <div className="h-24 bg-brand-bg rounded-xl flex items-center justify-center font-black text-3xl text-brand-maroon mb-4 border border-brand-border">
+                    {f.name.split(' ').map((w: string) => w[0]).slice(0, 2).join('')}
+                  </div>
+                )}
                 <h3 className="font-extrabold text-brand-navy text-sm">{f.name}</h3>
                 <p className="text-[10px] text-brand-maroon font-bold uppercase tracking-wider mt-0.5">{f.subject} · {f.experience}</p>
                 <p className="text-xs text-brand-navy/70 font-light leading-relaxed mt-3 line-clamp-4">{f.bio}</p>

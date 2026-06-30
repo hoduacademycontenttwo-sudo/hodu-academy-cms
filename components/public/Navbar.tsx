@@ -126,10 +126,19 @@ export default function Navbar({ siteSlug, siteName, logoUrl, phone }: NavbarPro
               ))}
             </div>
           ))}
+          {phone && (
+            <a
+              href={`tel:${phone}`}
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-center gap-2 mt-4 border border-[#F3DCDC] text-[#1B2A44] py-3 rounded-lg text-sm font-medium"
+            >
+              <Phone size={15} /> {phone}
+            </a>
+          )}
           <Link
             href={`${base}/contact`}
             onClick={() => setMobileOpen(false)}
-            className="block mt-4 bg-[#7E0D0D] text-white text-center font-semibold py-3 rounded-lg"
+            className="block mt-2 bg-[#7E0D0D] text-white text-center font-semibold py-3 rounded-lg"
           >
             Book Free Demo
           </Link>
