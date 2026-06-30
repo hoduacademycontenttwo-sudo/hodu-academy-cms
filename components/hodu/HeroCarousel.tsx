@@ -166,7 +166,7 @@ export default function HeroCarousel() {
                 >
                   {/* Video thumbnail */}
                   <video
-                    src="/event-video.mp4"
+                    src="https://bgaidfuzvcrjbxmpfvym.supabase.co/storage/v1/object/public/cms-videos/event-video.mp4"
                     className="w-full h-full object-cover scale-[1.06] group-hover:scale-100 transition-transform duration-700"
                     muted playsInline preload="metadata"
                   />
@@ -242,7 +242,7 @@ export default function HeroCarousel() {
               <X size={18} />
             </button>
             <video
-              src="/event-video.mp4"
+              src="https://bgaidfuzvcrjbxmpfvym.supabase.co/storage/v1/object/public/cms-videos/event-video.mp4"
               className="w-full rounded-2xl"
               controls
               autoPlay
