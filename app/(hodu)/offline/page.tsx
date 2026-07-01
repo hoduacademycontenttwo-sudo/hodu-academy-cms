@@ -66,12 +66,12 @@ const academics = [
 ]
 
 const holistic = [
-  { icon: '🎨', title: 'Arts & Crafts',       desc: 'Painting, sketching, and craft workshops that nurture creativity and fine motor skills.' },
-  { icon: '🎤', title: 'Public Speaking',      desc: 'Debate clubs, MUN, and elocution sessions to build confidence and communication.' },
-  { icon: '♟️',  title: 'Chess & Strategy',    desc: 'Chess coaching sessions that sharpen analytical thinking and patience.' },
-  { icon: '🧘', title: 'Yoga & Mindfulness',  desc: 'Weekly yoga and mindfulness sessions to manage exam stress and improve focus.' },
-  { icon: '🤝', title: 'Community Service',   desc: 'Organised volunteering drives instilling social responsibility and empathy.' },
-  { icon: '🎭', title: 'Performing Arts',      desc: 'Drama, dance, and music activities for emotional expression and team spirit.' },
+  { icon: '🎨', title: 'Arts & Crafts',       desc: 'Painting, sketching, and craft workshops that nurture creativity and fine motor skills.', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&h=400&fit=crop&auto=format' },
+  { icon: '🎤', title: 'Public Speaking',      desc: 'Debate clubs, MUN, and elocution sessions to build confidence and communication.', image: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&h=400&fit=crop&auto=format' },
+  { icon: '♟️',  title: 'Chess & Strategy',    desc: 'Chess coaching sessions that sharpen analytical thinking and patience.', image: 'https://images.unsplash.com/photo-1528819622765-d6bcf132f793?w=600&h=400&fit=crop&auto=format' },
+  { icon: '🧘', title: 'Yoga & Mindfulness',  desc: 'Weekly yoga and mindfulness sessions to manage exam stress and improve focus.', image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop&auto=format' },
+  { icon: '🤝', title: 'Community Service',   desc: 'Organised volunteering drives instilling social responsibility and empathy.', image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&h=400&fit=crop&auto=format' },
+  { icon: '🎭', title: 'Performing Arts',      desc: 'Drama, dance, and music activities for emotional expression and team spirit.', image: 'https://images.unsplash.com/photo-1503095396549-807759245b35?w=600&h=400&fit=crop&auto=format' },
 ]
 
 const faculty = [
