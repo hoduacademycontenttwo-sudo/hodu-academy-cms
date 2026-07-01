@@ -191,20 +191,41 @@ export default function OfflinePage() {
       {/* Academics */}
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-black text-[#1B2A44] mb-2">Academics</h2>
+          <div className="text-center mb-10 animate-fade-in">
+            <h2 className="text-3xl font-black text-[#1B2A44] mb-2 transition-transform duration-300 hover:scale-[1.02] inline-block">
+              Academics
+            </h2>
             <p className="text-gray-500">A rigorous academic framework built for consistent results.</p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {academics.map((item, i) => (
-              <div key={item.title} className="flex gap-4 p-5 bg-[#FDF5F5] border border-[#F3DCDC] rounded-2xl">
-                <div className="w-9 h-9 bg-[#7E0D0D] text-white rounded-xl flex items-center justify-center font-black text-sm shrink-0">
-                  {i + 1}
+              <div
+                key={item.title}
+                className="group relative rounded-2xl overflow-hidden border border-[#F3DCDC] bg-[#FDF5F5] shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300"
+              >
+                {/* Image */}
+                <div className="relative h-32 overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                  <div className="absolute bottom-3 left-4 w-9 h-9 bg-[#7E0D0D] text-white rounded-xl flex items-center justify-center font-black text-sm shadow-lg">
+                    {i + 1}
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-bold text-[#1B2A44] text-sm mb-1">{item.title}</h3>
+
+                {/* Text */}
+                <div className="p-5">
+                  <h3 className="font-bold text-[#1B2A44] text-sm mb-1 group-hover:text-[#7E0D0D] transition-colors duration-300">
+                    {item.title}
+                  </h3>
                   <p className="text-xs text-gray-600">{item.desc}</p>
                 </div>
+
+                {/* Bottom accent bar */}
+                <div className="absolute bottom-0 left-0 h-1 w-0 bg-[#7E0D0D] group-hover:w-full transition-all duration-500" />
               </div>
             ))}
           </div>
