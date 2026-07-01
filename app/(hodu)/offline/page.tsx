@@ -275,19 +275,30 @@ export default function OfflinePage() {
       {/* Faculty */}
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-black text-[#1B2A44] mb-2">Meet Our Faculty</h2>
+          <div className="text-center mb-10 animate-fade-in">
+            <h2 className="text-3xl font-black text-[#1B2A44] mb-2 transition-transform duration-300 hover:scale-[1.02] inline-block">
+              Meet Our Faculty
+            </h2>
             <p className="text-gray-500">Passionate educators from India's top institutions.</p>
           </div>
           <div className="grid sm:grid-cols-3 gap-6">
             {faculty.map(f => (
-              <div key={f.name} className="bg-[#FDF5F5] border border-[#F3DCDC] rounded-2xl p-6 text-center">
-                <div className="w-20 h-20 bg-[#7E0D0D] text-white rounded-full mx-auto mb-4 flex items-center justify-center font-black text-xl">
-                  {f.initials}
+              <div
+                key={f.name}
+                className="group relative bg-[#FDF5F5] border border-[#F3DCDC] rounded-2xl p-6 text-center overflow-hidden hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300"
+              >
+                <div className="relative w-20 h-20 mx-auto mb-4">
+                  <div className="absolute -inset-1.5 rounded-full bg-[#7E0D0D]/20 scale-0 group-hover:scale-100 transition-transform duration-300" />
+                  <div className="relative w-20 h-20 bg-[#7E0D0D] text-white rounded-full flex items-center justify-center font-black text-xl shadow-md group-hover:scale-110 transition-transform duration-300">
+                    {f.initials}
+                  </div>
                 </div>
-                <h3 className="font-bold text-[#1B2A44]">{f.name}</h3>
+                <h3 className="font-bold text-[#1B2A44] group-hover:text-[#7E0D0D] transition-colors duration-300">{f.name}</h3>
                 <p className="text-xs text-[#7E0D0D] font-medium mt-1">{f.subject}</p>
                 <p className="text-xs text-gray-500 mt-0.5">{f.college} · {f.exp}</p>
+
+                {/* Bottom accent bar */}
+                <div className="absolute bottom-0 left-0 h-1 w-0 bg-[#7E0D0D] group-hover:w-full transition-all duration-500" />
               </div>
             ))}
           </div>
