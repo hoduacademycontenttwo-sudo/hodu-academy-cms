@@ -235,16 +235,37 @@ export default function OfflinePage() {
       {/* Holistic Development */}
       <section className="py-16 bg-gradient-to-br from-[#1B2A44] to-[#0f1e33] text-white">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-black mb-2">Holistic Development</h2>
+          <div className="text-center mb-10 animate-fade-in">
+            <h2 className="text-3xl font-black mb-2 transition-transform duration-300 hover:scale-[1.02] inline-block">
+              Holistic Development
+            </h2>
             <p className="text-gray-400 max-w-xl mx-auto">Beyond academics — we build well-rounded individuals ready for the world.</p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {holistic.map(item => (
-              <div key={item.title} className="bg-white/10 backdrop-blur border border-white/10 rounded-2xl p-5 hover:bg-white/15 transition-colors">
-                <span className="text-3xl">{item.icon}</span>
-                <h3 className="font-bold mt-3 mb-1 text-sm">{item.title}</h3>
-                <p className="text-xs text-gray-400">{item.desc}</p>
+              <div
+                key={item.title}
+                className="group relative rounded-2xl overflow-hidden bg-white/10 backdrop-blur border border-white/10 hover:border-white/25 hover:bg-white/15 hover:-translate-y-1.5 hover:shadow-2xl transition-all duration-300"
+              >
+                {/* Image */}
+                <div className="relative h-32 overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f1e33] via-[#0f1e33]/30 to-transparent" />
+                  <span className="absolute bottom-3 left-4 text-3xl drop-shadow-lg">{item.icon}</span>
+                </div>
+
+                {/* Text */}
+                <div className="p-5">
+                  <h3 className="font-bold mb-1 text-sm group-hover:text-[#F3DCDC] transition-colors duration-300">{item.title}</h3>
+                  <p className="text-xs text-gray-400">{item.desc}</p>
+                </div>
+
+                {/* Bottom accent bar */}
+                <div className="absolute bottom-0 left-0 h-1 w-0 bg-[#F3DCDC] group-hover:w-full transition-all duration-500" />
               </div>
             ))}
           </div>
