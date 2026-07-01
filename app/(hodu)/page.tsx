@@ -434,11 +434,15 @@ export default async function HomePage() {
             <h2 className="text-3xl font-extrabold">Top Achievers 2025</h2>
           </div>
           <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
-            {toppers.map(t => (
+            {achievers.map(t => (
               <div key={t.name} className="bg-white/5 border border-white/10 rounded-2xl p-3 text-center hover:bg-white/10 transition-all">
-                <div className="h-12 w-12 rounded-full bg-brand-maroon flex items-center justify-center font-extrabold text-white text-sm mx-auto mb-2">
-                  {t.initials}
-                </div>
+                {'photo_url' in t && t.photo_url ? (
+                  <img src={t.photo_url} alt={t.name} className="h-12 w-12 rounded-full object-cover mx-auto mb-2" />
+                ) : (
+                  <div className="h-12 w-12 rounded-full bg-brand-maroon flex items-center justify-center font-extrabold text-white text-sm mx-auto mb-2">
+                    {t.initials}
+                  </div>
+                )}
                 <p className="text-base font-extrabold text-yellow-400">{t.pct}</p>
                 <p className="text-[11px] font-bold text-white mt-0.5 leading-tight">{t.name}</p>
                 <p className="text-[10px] text-white/40 mt-0.5">{t.stream}</p>
