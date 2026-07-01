@@ -90,7 +90,25 @@ const galleryItems = [
   { label: 'PTM Hall',        bg: 'bg-pink-100' },
 ]
 
-export default function OfflinePage() {
+export default async function OfflinePage() {
+  const supabase = await createClient()
+  const { data: dbFaculty } = await supabase
+    .from('cms_faculty')
+    .select('*')
+    .eq('site_id', HODU_SITE_ID)
+    .order('sort_order')
+
+  const faculty = dbFaculty && dbFaculty.length > 0
+    ? dbFaculty.map(f => ({
+        initials: f.name.split(' ').map((w: string) => w[0]).slice(0, 2).join('').toUpperCase(),
+        name: f.name,
+        subject: f.subject,
+        exp: f.experience,
+        college: '',
+        photo_url: f.photo_url,
+      }))
+    : fallbackFaculty
+
   return (
     <>
       <HeroCarousel />
