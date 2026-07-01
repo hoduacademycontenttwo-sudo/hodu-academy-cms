@@ -75,10 +75,10 @@ const holistic = [
   { icon: '🎭', title: 'Performing Arts',      desc: 'Drama, dance, and music activities for emotional expression and team spirit.', image: 'https://images.unsplash.com/photo-1503095396549-807759245b35?w=600&h=400&fit=crop&auto=format' },
 ]
 
-const faculty = [
-  { initials: 'VP', name: 'Mr. VP Singh',         subject: 'Physics & Maths',    exp: '25+ yrs', college: 'MNIT Jaipur' },
-  { initials: 'RJ', name: 'Mr. Rohit Jain',       subject: 'Chemistry',          exp: '15+ yrs', college: 'MNIT Jaipur' },
-  { initials: 'AA', name: 'Mr. Abhishek Agarwal', subject: 'Computer Science',   exp: '8+ yrs',  college: 'IIIT Hyderabad' },
+const fallbackFaculty = [
+  { initials: 'VP', name: 'Mr. VP Singh',         subject: 'Physics & Maths',    exp: '25+ yrs', college: 'MNIT Jaipur', photo_url: null },
+  { initials: 'RJ', name: 'Mr. Rohit Jain',       subject: 'Chemistry',          exp: '15+ yrs', college: 'MNIT Jaipur', photo_url: null },
+  { initials: 'AA', name: 'Mr. Abhishek Agarwal', subject: 'Computer Science',   exp: '8+ yrs',  college: 'IIIT Hyderabad', photo_url: null },
 ]
 
 const galleryItems = [
