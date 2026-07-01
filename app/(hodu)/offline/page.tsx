@@ -1,7 +1,8 @@
-import { HODU } from '@/lib/hodu'
+import { HODU, HODU_SITE_ID } from '@/lib/hodu'
 import Link from 'next/link'
 import { Phone } from 'lucide-react'
 import HeroCarousel from '@/components/hodu/HeroCarousel'
+import { createClient } from '@/lib/supabase/server'
 
 export const metadata = {
   title: 'Offline Coaching — Hodu Academy',
