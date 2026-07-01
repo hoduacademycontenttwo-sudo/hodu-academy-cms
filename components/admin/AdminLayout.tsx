@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import {
   LayoutDashboard, BookOpen, Users, Trophy, Image, MessageSquare,
-  Bell, FileText, Phone, Settings, LogOut, Menu, X, ChevronRight, Home
+  Bell, FileText, Phone, Settings, LogOut, Menu, X, ChevronRight, Home, Newspaper
 } from 'lucide-react'
 
 const navItems = [
@@ -18,6 +18,7 @@ const navItems = [
   { label: 'Gallery',      href: '/admin/gallery',      icon: Image },
   { label: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
   { label: 'Notices',      href: '/admin/notices',      icon: Bell },
+  { label: 'Blog',         href: '/admin/blog',         icon: Newspaper },
   { label: 'Resources',    href: '/admin/resources',    icon: FileText },
   { label: 'Leads',        href: '/admin/leads',        icon: Phone },
   { label: 'Settings',     href: '/admin/settings',     icon: Settings },

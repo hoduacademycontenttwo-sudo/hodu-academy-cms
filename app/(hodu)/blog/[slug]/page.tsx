@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Clock, Calendar, ChevronRight } from 'lucide-react'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
+import { createClient } from '@/lib/supabase/server'
+import { HODU_SITE_ID } from '@/lib/hodu'
 import type { Metadata } from 'next'
 
 const posts: Record<string, {
@@ -238,19 +240,57 @@ const categoryColors: Record<string, string> = {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const post = posts[slug]
+  const supabase = await createClient()
+  const { data: dbPost } = await supabase.from('cms_blogs').select('title, excerpt').eq('site_id', HODU_SITE_ID).eq('slug', slug).eq('published', true).single()
+  const post = dbPost ?? posts[slug]
   if (!post) return { title: 'Blog — Hodu Academy' }
   return { title: `${post.title} — Hodu Academy`, description: post.excerpt }
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const post = posts[slug]
-  if (!post) return notFound()
+  const supabase = await createClient()
 
-  const relatedPosts = post.related
-    .map(s => posts[s] ? { slug: s, ...posts[s] } : null)
-    .filter(Boolean) as Array<{ slug: string } & typeof posts[string]>
+  const { data: dbPost } = await supabase
+    .from('cms_blogs')
+    .select('*')
+    .eq('site_id', HODU_SITE_ID)
+    .eq('slug', slug)
+    .eq('published', true)
+    .single()
+
+  const hardcodedPost = posts[slug]
+
+  if (!dbPost && !hardcodedPost) return notFound()
+
+  const post = dbPost
+    ? {
+        title: dbPost.title,
+        date: new Date(dbPost.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+        category: dbPost.category,
+        readTime: dbPost.read_time,
+        author: dbPost.author,
+        excerpt: dbPost.excerpt,
+        htmlContent: dbPost.content as string,
+      }
+    : { ...hardcodedPost, htmlContent: null }
+
+  let relatedPosts: Array<{ slug: string; title: string; category: string; readTime: string }> = []
+
+  if (dbPost) {
+    const { data: related } = await supabase
+      .from('cms_blogs')
+      .select('slug, title, category, read_time')
+      .eq('site_id', HODU_SITE_ID)
+      .eq('published', true)
+      .neq('id', dbPost.id)
+      .limit(3)
+    relatedPosts = (related ?? []).map(r => ({ slug: r.slug, title: r.title, category: r.category, readTime: r.read_time }))
+  } else if (hardcodedPost) {
+    relatedPosts = hardcodedPost.related
+      .map(s => posts[s] ? { slug: s, title: posts[s].title, category: posts[s].category, readTime: posts[s].readTime } : null)
+      .filter(Boolean) as Array<{ slug: string; title: string; category: string; readTime: string }>
+  }
 
   return (
     <div className="animate-fade-in">
@@ -291,14 +331,21 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {/* Article content */}
           <article className="lg:col-span-2 bg-white border border-brand-border rounded-2xl p-6 sm:p-8 shadow-sm">
-            <div className="prose prose-sm max-w-none text-brand-navy/80 leading-relaxed space-y-4">
-              {post.content.map((block, i) => {
-                if (block.startsWith('## ')) {
-                  return <h2 key={i} className="text-xl font-extrabold text-brand-navy mt-8 mb-3 border-b border-brand-border pb-2">{block.slice(3)}</h2>
-                }
-                return <p key={i} className="text-sm leading-relaxed font-light">{block}</p>
-              })}
-            </div>
+            {post.htmlContent ? (
+              <div
+                className="prose prose-sm max-w-none text-brand-navy/80 leading-relaxed prose-headings:text-brand-navy prose-headings:font-extrabold prose-a:text-brand-maroon"
+                dangerouslySetInnerHTML={{ __html: post.htmlContent }}
+              />
+            ) : (
+              <div className="prose prose-sm max-w-none text-brand-navy/80 leading-relaxed space-y-4">
+                {(post as typeof hardcodedPost).content.map((block, i) => {
+                  if (block.startsWith('## ')) {
+                    return <h2 key={i} className="text-xl font-extrabold text-brand-navy mt-8 mb-3 border-b border-brand-border pb-2">{block.slice(3)}</h2>
+                  }
+                  return <p key={i} className="text-sm leading-relaxed font-light">{block}</p>
+                })}
+              </div>
+            )}
 
             {/* CTA block at end of article */}
             <div className="mt-10 bg-brand-bg border border-brand-border rounded-2xl p-6 text-center space-y-3">

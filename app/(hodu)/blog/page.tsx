@@ -1,12 +1,14 @@
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
+import { createClient } from '@/lib/supabase/server'
+import { HODU_SITE_ID } from '@/lib/hodu'
 
 export const metadata = {
   title: 'Blog — Hodu Academy',
   description: 'Latest news, tips and updates on IGCSE, IB, JEE, NEET, CBSE and Olympiad preparation from Hodu Academy.',
 }
 
-const posts = [
+const fallbackPosts = [
   {
     slug: 'jee-main-registration-2026',
     date: '25 Oct 2025',
@@ -103,6 +105,25 @@ const categories = ['All', 'JEE', 'NEET', 'IGCSE', 'IB', 'CBSE', 'Olympiad']
 export default async function BlogPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
   const sp = await searchParams
   const selected = sp.category ?? 'All'
+
+  const supabase = await createClient()
+  const { data: dbPosts } = await supabase
+    .from('cms_blogs')
+    .select('*')
+    .eq('site_id', HODU_SITE_ID)
+    .eq('published', true)
+    .order('created_at', { ascending: false })
+
+  const posts = dbPosts && dbPosts.length > 0
+    ? dbPosts.map(p => ({
+        slug: p.slug,
+        date: new Date(p.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+        category: p.category,
+        title: p.title,
+        excerpt: p.excerpt,
+        readTime: p.read_time,
+      }))
+    : fallbackPosts
 
   const filteredPosts = selected === 'All'
     ? posts
