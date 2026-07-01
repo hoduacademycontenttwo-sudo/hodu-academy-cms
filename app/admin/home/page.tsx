@@ -17,49 +17,53 @@ export default function HomeContentPage() {
   useEffect(() => {
     supabase.from('cms_home_sections').select('*').eq('site_id', SITE_ID).single()
       .then(({ data }) => {
+        const defaultStats = [
+          { label: 'Students Enrolled', value: '50,000+' },
+          { label: 'Top Rankers', value: '1,200+' },
+          { label: 'Years of Excellence', value: '15+' },
+        ]
         const defaults = {
           site_id: SITE_ID, hero_title: '', hero_subtitle: '', hero_image_url: '',
           cta_text: 'Book Free Demo Class', cta_link: '/demo/contact',
-          stats_json: { 'Students Enrolled': '50,000+', 'Top Rankers': '1,200+', 'Years of Excellence': '15+' }
+          stats_json: defaultStats,
         }
         const row = data ?? defaults
-        // Normalize stats_json to Record<string, string> regardless of how it was stored
+        // Normalize stats_json to an array of {label, value} regardless of how it was stored
         let statsJson = row.stats_json
         if (Array.isArray(statsJson)) {
-          const obj: Record<string, string> = {}
-          for (const item of statsJson) {
-            if (item && typeof item === 'object') obj[String(item.label ?? '')] = String(item.value ?? '')
-            else if (typeof item === 'string') obj[item] = ''
-          }
-          statsJson = obj
+          statsJson = statsJson.map((item: any) =>
+            item && typeof item === 'object'
+              ? { label: String(item.label ?? ''), value: String(item.value ?? '') }
+              : { label: '', value: String(item ?? '') }
+          )
         } else if (statsJson && typeof statsJson === 'object') {
-          const obj: Record<string, string> = {}
-          for (const [k, v] of Object.entries(statsJson)) {
-            obj[k] = v && typeof v === 'object' ? String((v as any).value ?? '') : String(v ?? '')
-          }
-          statsJson = obj
+          statsJson = Object.entries(statsJson).map(([k, v]) => ({
+            label: k,
+            value: v && typeof v === 'object' ? String((v as any).value ?? '') : String(v ?? ''),
+          }))
+        } else {
+          statsJson = defaultStats
         }
-        setForm({ ...row, stats_json: statsJson ?? defaults.stats_json })
+        setForm({ ...row, stats_json: statsJson })
       })
   }, [])
 
   function set(k: string, v: any) { setForm((f: any) => ({ ...f, [k]: v })) }
 
-  function setStatKey(oldKey: string, newKey: string, val: string) {
-    const stats = { ...(form.stats_json ?? {}) }
-    if (oldKey !== newKey) { delete stats[oldKey] }
-    stats[newKey] = val
+  function setStat(index: number, field: 'label' | 'value', val: string) {
+    const stats = [...(form.stats_json ?? [])]
+    stats[index] = { ...stats[index], [field]: val }
     set('stats_json', stats)
   }
 
   function addStat() {
-    const stats = { ...(form.stats_json ?? {}), 'New Stat': '0' }
+    const stats = [...(form.stats_json ?? []), { label: 'New Stat', value: '0' }]
     set('stats_json', stats)
   }
 
-  function removeStat(key: string) {
-    const stats = { ...(form.stats_json ?? {}) }
-    delete stats[key]
+  function removeStat(index: number) {
+    const stats = [...(form.stats_json ?? [])]
+    stats.splice(index, 1)
     set('stats_json', stats)
   }
 
@@ -119,25 +123,25 @@ export default function HomeContentPage() {
             <h3 className="font-semibold text-[#1B2A44]">Stats</h3>
             <button onClick={addStat} className="text-xs text-[#7E0D0D] hover:underline font-medium">+ Add Stat</button>
           </div>
-          {Object.entries(form.stats_json ?? {}).map(([key, value]) => (
-            <div key={key} className="flex gap-3 items-start">
+          {(form.stats_json ?? []).map((stat: { label: string; value: string }, index: number) => (
+            <div key={index} className="flex gap-3 items-start">
               <div className="flex-1">
                 <label className="block text-xs text-[#C9C8CB] mb-1">Label</label>
                 <input
-                  value={key}
-                  onChange={(e) => setStatKey(key, e.target.value, value as string)}
+                  value={stat.label}
+                  onChange={(e) => setStat(index, 'label', e.target.value)}
                   className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]"
                 />
               </div>
               <div className="flex-1">
                 <label className="block text-xs text-[#C9C8CB] mb-1">Value</label>
                 <input
-                  value={value as string}
-                  onChange={(e) => setStatKey(key, key, e.target.value)}
+                  value={stat.value}
+                  onChange={(e) => setStat(index, 'value', e.target.value)}
                   className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]"
                 />
               </div>
-              <button onClick={() => removeStat(key)} className="text-red-400 hover:text-red-600 mt-6 text-xs">✕</button>
+              <button onClick={() => removeStat(index)} className="text-red-400 hover:text-red-600 mt-6 text-xs">✕</button>
             </div>
           ))}
         </div>

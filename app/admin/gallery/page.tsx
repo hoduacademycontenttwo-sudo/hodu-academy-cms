@@ -9,11 +9,12 @@ import { Plus, Trash2, Pencil } from 'lucide-react'
 
 const SITE_ID = 'a1b2c3d4-1111-1111-1111-000000000002'
 const EMPTY = { image_url: '', caption: '', category: 'Campus', sort_order: 0 }
-const CATS = ['Carousel', 'Campus', 'Classroom', 'Events', 'Results', 'Faculty', 'Other']
+const CATS = ['Home Carousel', 'Carousel', 'Campus', 'Classroom', 'Events', 'Results', 'Faculty', 'Other']
+const CAROUSEL_CATS = ['Carousel', 'Home Carousel']
 
 // Carousel slides store text as JSON in caption field
 function parseCaption(category: string, caption: string) {
-  if (category !== 'Carousel') return null
+  if (!CAROUSEL_CATS.includes(category)) return null
   try { return JSON.parse(caption) } catch { return { heading: caption, highlight: '', subtitle: '', headingSize: 'large', headingWeight: 'black' } }
 }
 
@@ -75,7 +76,7 @@ export default function GalleryPage() {
   async function save() {
     if (!form.image_url) return alert('Please add an image')
     setSaving(true)
-    const caption = form.category === 'Carousel' ? encodeCaption(carouselText) : form.caption
+    const caption = CAROUSEL_CATS.includes(form.category) ? encodeCaption(carouselText) : form.caption
     const payload = { ...form, caption, site_id: SITE_ID }
     if (modal === 'edit') await supabase.from('cms_gallery').update(payload).eq('id', form.id)
     else await supabase.from('cms_gallery').insert(payload)
@@ -87,7 +88,7 @@ export default function GalleryPage() {
     await supabase.from('cms_gallery').delete().eq('id', id); load()
   }
 
-  const isCarousel = form.category === 'Carousel'
+  const isCarousel = CAROUSEL_CATS.includes(form.category)
 
   return (
     <AdminLayout>
@@ -106,9 +107,9 @@ export default function GalleryPage() {
           <div key={img.id} className="relative group bg-white border border-[#F3DCDC] rounded-2xl overflow-hidden">
             <img src={img.image_url} alt={img.caption ?? ''} className="w-full h-40 object-cover" />
             <div className="p-3">
-              <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full mb-1 inline-block ${img.category === 'Carousel' ? 'bg-brand-maroon/10 text-brand-maroon' : 'bg-[#FDF5F5] text-[#C9C8CB]'}`}>{img.category}</span>
+              <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full mb-1 inline-block ${CAROUSEL_CATS.includes(img.category) ? 'bg-brand-maroon/10 text-brand-maroon' : 'bg-[#FDF5F5] text-[#C9C8CB]'}`}>{img.category}</span>
               <p className="text-xs font-medium text-[#1B2A44] truncate">
-                {img.category === 'Carousel'
+                {CAROUSEL_CATS.includes(img.category)
                   ? (() => { try { return JSON.parse(img.caption)?.heading || 'Carousel Slide' } catch { return img.caption || 'Carousel Slide' } })()
                   : (img.caption || 'No caption')}
               </p>

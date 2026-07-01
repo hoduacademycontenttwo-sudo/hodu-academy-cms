@@ -1,8 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID, HODU } from '@/lib/hodu'
 import Link from 'next/link'
-import { Award, ArrowRight, Play, CheckCircle2, Sparkles, Calendar, ArrowUpRight, ChevronDown, Trophy, Phone } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, ChevronDown, Trophy, Phone } from 'lucide-react'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
+import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
 
 export const metadata = {
   title: 'Hodu Academy — IGCSE · IB · CBSE · JEE · NEET Coaching Jaipur',
@@ -166,108 +167,11 @@ export default async function HomePage() {
       )}
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-brand-white pt-10 pb-16 md:py-20 border-b border-brand-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-10 items-center">
-
-            {/* Left */}
-            <div className="lg:col-span-6 space-y-5 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 bg-brand-bg border border-brand-border px-3 py-1.5 rounded-full text-brand-maroon text-xs font-semibold">
-                <Sparkles className="h-3.5 w-3.5 animate-pulse" />
-                {home?.hero_subtitle ?? 'Admissions open — Session 2026–27'}
-              </div>
-
-              <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-brand-navy leading-[1.1]">
-                {home?.hero_title ?? <>Expert Coaching for<br />IGCSE · IB · CBSE<br />JEE · NEET</>}
-              </h1>
-
-              <p className="text-base text-brand-navy/70 font-light max-w-lg mx-auto lg:mx-0">
-                Top faculty · Live & recorded classes · Test series · Personal mentoring — all in one place.
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
-                <Link href="/enroll"
-                  className="w-full sm:w-auto bg-brand-maroon hover:bg-brand-accent text-white font-bold px-7 py-3.5 rounded-xl shadow transition-all flex items-center justify-center gap-2 text-sm">
-                  {home?.cta_text ?? 'Explore Courses'}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link href="/contact"
-                  className="w-full sm:w-auto bg-brand-bg hover:bg-brand-border/40 text-brand-navy border border-brand-border font-semibold px-7 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 text-sm">
-                  Free Callback
-                  <Calendar className="h-4 w-4" />
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4 pt-6 border-t border-brand-border max-w-sm mx-auto lg:mx-0">
-                {stats.slice(0, 3).map(s => (
-                  <div key={s.label}>
-                    <h3 className="text-2xl font-black text-brand-maroon">{s.value}</h3>
-                    <p className="text-[11px] text-brand-navy/60 font-semibold uppercase tracking-wider">{s.label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right — live class widget */}
-            <div className="lg:col-span-6">
-              <div className="relative border border-brand-border bg-white rounded-2xl p-5 shadow-xl space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-brand-border">
-                  <div className="flex items-center gap-2">
-                    <span className="flex h-2.5 w-2.5 relative">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-maroon opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-maroon" />
-                    </span>
-                    <span className="text-xs font-bold text-brand-navy uppercase tracking-widest">Hodu Live Hub</span>
-                  </div>
-                  <span className="text-xs bg-brand-bg text-brand-maroon font-bold px-2.5 py-1 rounded border border-brand-border">2026 Batch</span>
-                </div>
-
-                {/* Live class card with image */}
-                <div className="rounded-xl overflow-hidden border border-brand-border">
-                  <div className="h-28 relative bg-gradient-to-br from-brand-maroon to-brand-accent">
-                    <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=600&h=200&fit=crop&auto=format"
-                      alt="Live class" className="w-full h-full object-cover opacity-40" />
-                    <div className="absolute inset-0 p-3 flex flex-col justify-between">
-                      <span className="bg-red-600 text-white text-[10px] uppercase font-black px-2 py-0.5 rounded tracking-widest animate-pulse self-start">● Live Now</span>
-                      <div>
-                        <h4 className="font-bold text-sm text-white">IGCSE Physics — Waves & Optics</h4>
-                        <p className="text-xs text-white/70">Mr. VP Singh · 10:00 AM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <Link href="/lms"
-                    className="flex items-center justify-center gap-1.5 w-full bg-brand-maroon hover:bg-brand-accent text-white py-2 text-xs font-bold uppercase transition-all">
-                    <Play className="h-3 w-3 fill-current" /> Join Class
-                  </Link>
-                </div>
-
-                <div className="border border-brand-border rounded-xl p-3 space-y-2">
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="font-bold text-brand-navy">Weekly Test Performance</span>
-                    <span className="text-brand-accent font-bold font-mono">92/100</span>
-                  </div>
-                  <div className="w-full bg-brand-bg rounded-full h-2 overflow-hidden">
-                    <div className="bg-brand-accent h-full rounded-full" style={{ width: '92%' }} />
-                  </div>
-                  <div className="flex justify-between text-[10px] text-brand-navy/50 font-mono">
-                    <span>Rank #14 in India</span>
-                    <span>CBSE Math · Class 10</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between text-xs text-brand-navy/70 pt-1">
-                  {['900+ Videos', '100+ Live Mocks', 'Doubt Solving'].map(l => (
-                    <div key={l} className="flex items-center gap-1">
-                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                      <span>{l}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeHeroCarousel
+        ctaText={home?.cta_text ?? 'Explore Courses'}
+        ctaLink="/enroll"
+        stats={stats}
+      />
 
       {/* Course Categories — image cards */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
