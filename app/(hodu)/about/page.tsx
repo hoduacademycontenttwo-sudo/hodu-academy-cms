@@ -121,7 +121,7 @@ export default async function AboutPage() {
             {faculty.map(f => (
               <div key={f.id} className="bg-brand-white border border-brand-border p-5 rounded-xl hover:shadow-md transition-all">
                 {f.photo_url ? (
-                  <img src={f.photo_url} alt={f.name} className="w-full h-44 object-cover rounded-xl mb-4 border border-brand-border" />
+                  <img src={f.photo_url} alt={f.name} className="w-full h-44 object-cover object-top rounded-xl mb-4 border border-brand-border" />
                 ) : (
                   <div className="h-24 bg-brand-bg rounded-xl flex items-center justify-center font-black text-3xl text-brand-maroon mb-4 border border-brand-border">
                     {f.name.split(' ').map((w: string) => w[0]).slice(0, 2).join('')}
