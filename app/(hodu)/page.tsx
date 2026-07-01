@@ -108,11 +108,22 @@ const blogs = [
 export default async function HomePage() {
   const supabase = await createClient()
 
-  const [{ data: home }, { data: courses }, { data: notices }] = await Promise.all([
+  const [{ data: home }, { data: courses }, { data: notices }, { data: results }] = await Promise.all([
     supabase.from('cms_home_sections').select('*').eq('site_id', HODU_SITE_ID).single(),
     supabase.from('cms_courses').select('*').eq('site_id', HODU_SITE_ID).eq('is_featured', true).limit(3),
     supabase.from('cms_notices').select('*').eq('site_id', HODU_SITE_ID).eq('is_active', true).limit(4),
+    supabase.from('cms_results').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
   ])
+
+  const achievers = results && results.length > 0
+    ? results.map(r => ({
+        initials: r.student_name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase(),
+        name: r.student_name,
+        pct: r.rank_or_marks,
+        stream: `${r.exam} ${r.year}`,
+        photo_url: r.photo_url,
+      }))
+    : toppers
 
   const stats: { label: string; value: string }[] = (() => {
     const defaults = [
