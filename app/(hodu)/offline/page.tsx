@@ -308,13 +308,21 @@ export default async function OfflinePage() {
               >
                 <div className="relative w-20 h-20 mx-auto mb-4">
                   <div className="absolute -inset-1.5 rounded-full bg-[#7E0D0D]/20 scale-0 group-hover:scale-100 transition-transform duration-300" />
-                  <div className="relative w-20 h-20 bg-[#7E0D0D] text-white rounded-full flex items-center justify-center font-black text-xl shadow-md group-hover:scale-110 transition-transform duration-300">
-                    {f.initials}
-                  </div>
+                  {f.photo_url ? (
+                    <img
+                      src={f.photo_url}
+                      alt={f.name}
+                      className="relative w-20 h-20 rounded-full object-cover object-top shadow-md group-hover:scale-110 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="relative w-20 h-20 bg-[#7E0D0D] text-white rounded-full flex items-center justify-center font-black text-xl shadow-md group-hover:scale-110 transition-transform duration-300">
+                      {f.initials}
+                    </div>
+                  )}
                 </div>
                 <h3 className="font-bold text-[#1B2A44] group-hover:text-[#7E0D0D] transition-colors duration-300">{f.name}</h3>
                 <p className="text-xs text-[#7E0D0D] font-medium mt-1">{f.subject}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{f.college} · {f.exp}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{f.college ? `${f.college} · ` : ''}{f.exp}</p>
 
                 {/* Bottom accent bar */}
                 <div className="absolute bottom-0 left-0 h-1 w-0 bg-[#7E0D0D] group-hover:w-full transition-all duration-500" />
