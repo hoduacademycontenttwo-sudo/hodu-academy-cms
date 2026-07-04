@@ -174,7 +174,7 @@ export default async function HomePage() {
       />
 
       {/* Course Categories — image cards */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-extrabold text-brand-navy">Choose Your Path</h2>
           <p className="text-sm text-brand-navy/60 mt-1">IGCSE · IB · CBSE · JEE · NEET · Olympiads</p>
@@ -198,7 +198,7 @@ export default async function HomePage() {
       </section>
 
       {/* Why Hodu */}
-      <section className="bg-brand-navy py-16 overflow-hidden">
+      <section className="reveal bg-brand-navy py-16 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
@@ -270,7 +270,7 @@ export default async function HomePage() {
 
       {/* Featured Courses */}
       {courses && courses.length > 0 && (
-        <section className="py-16">
+        <section className="reveal py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end justify-between mb-6">
             <div>
               <span className="text-[11px] font-bold text-brand-accent uppercase tracking-widest">POPULAR</span>
@@ -328,7 +328,7 @@ export default async function HomePage() {
       )}
 
       {/* Toppers */}
-      <section className="py-14 bg-brand-navy text-white">
+      <section className="reveal py-14 bg-brand-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <div className="flex items-center justify-center gap-2 mb-1">
@@ -362,7 +362,7 @@ export default async function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-brand-bg border-y border-brand-border py-14">
+      <section className="reveal bg-brand-bg border-y border-brand-border py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <span className="text-[11px] font-bold text-brand-accent uppercase tracking-widest">STUDENT VOICES</span>
@@ -389,7 +389,7 @@ export default async function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-14 bg-white border-b border-brand-border">
+      <section className="reveal py-14 bg-white border-b border-brand-border">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-extrabold text-brand-navy">Frequently Asked Questions</h2>
@@ -415,7 +415,7 @@ export default async function HomePage() {
       </section>
 
       {/* Enquiry CTA */}
-      <section className="py-14 bg-brand-bg border-b border-brand-border">
+      <section className="reveal py-14 bg-brand-bg border-b border-brand-border">
         <div className="max-w-5xl mx-auto px-4 grid lg:grid-cols-2 gap-10 items-start">
           <div className="space-y-4">
             <h2 className="text-3xl font-extrabold text-brand-navy">Book a Free Consultation</h2>
@@ -440,7 +440,7 @@ export default async function HomePage() {
       </section>
 
       {/* Blog */}
-      <section className="py-14">
+      <section className="reveal py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between mb-7">
           <h2 className="text-3xl font-extrabold text-brand-navy">Latest Blog</h2>
           <Link href="/blog" className="text-xs font-bold text-brand-maroon border border-brand-maroon/20 hover:bg-brand-maroon hover:text-white px-4 py-2 rounded-lg transition-all shrink-0">

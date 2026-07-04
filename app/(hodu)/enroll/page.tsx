@@ -64,7 +64,7 @@ export default function EnrollPage() {
     <div className="animate-fade-in">
 
       {/* Hero */}
-      <section className="bg-brand-navy text-white py-14">
+      <section className="reveal bg-brand-navy text-white py-14">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
             Admissions Open 2025–26
@@ -77,7 +77,7 @@ export default function EnrollPage() {
       </section>
 
       {/* Benefits bar */}
-      <section className="bg-white border-b border-brand-border py-8">
+      <section className="reveal bg-white border-b border-brand-border py-8">
         <div className="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6">
           {benefits.map(({ icon: Icon, title, desc }) => (
             <div key={title} className="flex flex-col items-center text-center gap-2">
@@ -92,7 +92,7 @@ export default function EnrollPage() {
       </section>
 
       {/* Form + contact */}
-      <section className="bg-brand-bg py-14">
+      <section className="reveal bg-brand-bg py-14">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 grid md:grid-cols-3 gap-10">
 
           {/* Form */}

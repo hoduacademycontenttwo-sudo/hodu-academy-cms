@@ -89,13 +89,13 @@ export default function HoduNavbar() {
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-7">
-            <Link href="/" className="text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">Home</Link>
+            <Link href="/" className="nav-link text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">Home</Link>
             <Dropdown label="Courses" items={courses} />
             <Dropdown label="Study Materials" items={studyMaterials} />
-            <Link href="/offline" className="text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">Offline</Link>
-            <Link href="/about" className="text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">About</Link>
-            <Link href="/blog" className="text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">Blog</Link>
-            <Link href="/contact" className="text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">Contact</Link>
+            <Link href="/offline" className="nav-link text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">Offline</Link>
+            <Link href="/about" className="nav-link text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">About</Link>
+            <Link href="/blog" className="nav-link text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">Blog</Link>
+            <Link href="/contact" className="nav-link text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">Contact</Link>
           </div>
 
           {/* CTAs */}

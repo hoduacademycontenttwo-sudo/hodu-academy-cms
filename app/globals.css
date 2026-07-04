@@ -34,10 +34,27 @@
   to   { transform: translateX(-100%); }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--color-brand-bg);
   color: var(--color-brand-navy);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography rhythm */
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* Brand selection + focus */
+::selection { background: #7E0D0D; color: #fff; }
+:focus-visible {
+  outline: 2px solid #7E0D0D;
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -47,3 +64,55 @@ body {
 
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Scroll-driven section reveal — progressive enhancement.
+   Content is fully visible by default; browsers with animation-timeline
+   get a gentle fade-up as sections enter the viewport. */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: reveal-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 32%;
+  }
+}
+
+@keyframes reveal-up {
+  from { opacity: 0.001; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Nav link underline — draws in from the left on hover */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: #7E0D0D;
+  border-radius: 1px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-link:hover::after { transform: scaleX(1); }
+
+/* Pressed feedback for primary actions */
+a[class*="bg-brand-maroon"]:active,
+button[class*="bg-brand-maroon"]:active,
+a[class*="bg-[#7E0D0D]"]:active,
+button[class*="bg-[#7E0D0D]"]:active {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

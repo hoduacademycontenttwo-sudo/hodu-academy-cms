@@ -114,7 +114,7 @@ export default async function OfflinePage() {
       <HeroCarousel />
 
       {/* Why Choose Hodu */}
-      <section className="py-16 bg-white">
+      <section className="reveal py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-10 animate-fade-in">
             <h2 className="text-3xl font-black text-[#1B2A44] mb-2 transition-transform duration-300 hover:scale-[1.02] inline-block">
@@ -156,7 +156,7 @@ export default async function OfflinePage() {
       </section>
 
       {/* Courses We Offer */}
-      <section className="py-16 bg-[#FDF5F5]">
+      <section className="reveal py-16 bg-[#FDF5F5]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-10 animate-fade-in">
             <h2 className="text-3xl font-black text-[#1B2A44] mb-2 transition-transform duration-300 hover:scale-[1.02] inline-block">
@@ -208,7 +208,7 @@ export default async function OfflinePage() {
       </section>
 
       {/* Academics */}
-      <section className="py-16 bg-white">
+      <section className="reveal py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-10 animate-fade-in">
             <h2 className="text-3xl font-black text-[#1B2A44] mb-2 transition-transform duration-300 hover:scale-[1.02] inline-block">
@@ -252,7 +252,7 @@ export default async function OfflinePage() {
       </section>
 
       {/* Holistic Development */}
-      <section className="py-16 bg-gradient-to-br from-[#1B2A44] to-[#0f1e33] text-white">
+      <section className="reveal py-16 bg-gradient-to-br from-[#1B2A44] to-[#0f1e33] text-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-10 animate-fade-in">
             <h2 className="text-3xl font-black mb-2 transition-transform duration-300 hover:scale-[1.02] inline-block">
@@ -292,7 +292,7 @@ export default async function OfflinePage() {
       </section>
 
       {/* Faculty */}
-      <section className="py-16 bg-white">
+      <section className="reveal py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-10 animate-fade-in">
             <h2 className="text-3xl font-black text-[#1B2A44] mb-2 transition-transform duration-300 hover:scale-[1.02] inline-block">
@@ -337,7 +337,7 @@ export default async function OfflinePage() {
       </section>
 
       {/* Gallery placeholder */}
-      <section className="py-16 bg-[#FDF5F5]">
+      <section className="reveal py-16 bg-[#FDF5F5]">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-10">
             <h2 className="text-3xl font-black text-[#1B2A44] mb-2">Our Campus</h2>
@@ -354,7 +354,7 @@ export default async function OfflinePage() {
       </section>
 
       {/* Join Our Team CTA */}
-      <section className="py-14 bg-[#1B2A44] text-white">
+      <section className="reveal py-14 bg-[#1B2A44] text-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-2xl font-black mb-2">Join Our Team</h2>
           <p className="text-gray-300 mb-6 max-w-xl mx-auto">
@@ -368,7 +368,7 @@ export default async function OfflinePage() {
       </section>
 
       {/* Admissions CTA */}
-      <section className="py-14 bg-[#7E0D0D] text-white text-center">
+      <section className="reveal py-14 bg-[#7E0D0D] text-white text-center">
         <h2 className="text-2xl font-black mb-2">Admissions Open for 2025–26</h2>
         <p className="text-pink-200 mb-6">Limited seats available. Secure your child's spot today.</p>
         <div className="flex flex-wrap justify-center gap-4">

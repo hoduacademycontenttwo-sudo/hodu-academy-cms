@@ -135,7 +135,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#FDF5F5] to-white py-16">
+      <section className="reveal bg-gradient-to-br from-[#FDF5F5] to-white py-16">
         <div className="max-w-5xl mx-auto px-4 text-center">
           <span className="text-xs font-bold uppercase tracking-widest text-[#7E0D0D] bg-[#FDF5F5] border border-[#F3DCDC] px-3 py-1 rounded-full">Hodu Blog</span>
           <h1 className="text-4xl font-black text-[#1B2A44] mt-4 mb-3">Insights, Tips & Exam Updates</h1>
@@ -143,7 +143,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
         </div>
       </section>
 
-      <section className="py-12 bg-white">
+      <section className="reveal py-12 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           {/* Category filter — now working links */}
           <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 mb-10">

@@ -115,7 +115,7 @@ export default function HoduFooter() {
                 { label: 'IN', href: HODU.socials.linkedin },
               ].map(s => (
                 <a key={s.label} href={s.href} target="_blank" rel="noreferrer"
-                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-brand-maroon flex items-center justify-center text-[10px] font-bold transition-colors">
+                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-brand-maroon hover:-translate-y-0.5 flex items-center justify-center text-[10px] font-bold transition-all duration-200">
                   {s.label}
                 </a>
               ))}

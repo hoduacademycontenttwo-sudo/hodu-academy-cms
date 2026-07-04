@@ -39,7 +39,7 @@ export default async function AboutPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16 animate-fade-in text-brand-navy">
 
       {/* Header */}
-      <section className="text-center max-w-3xl mx-auto space-y-4">
+      <section className="reveal text-center max-w-3xl mx-auto space-y-4">
         <span className="text-xs bg-brand-bg text-brand-maroon px-3 py-1 rounded font-bold uppercase tracking-wider inline-block border border-brand-border">
           Established in Jaipur, India
         </span>
@@ -50,7 +50,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Mission / Vision */}
-      <section className="grid md:grid-cols-2 gap-8">
+      <section className="reveal grid md:grid-cols-2 gap-8">
         <div className="bg-brand-white border border-brand-border rounded-2xl p-8 shadow-sm">
           <h2 className="text-xl font-extrabold text-brand-maroon mb-3">Our Mission</h2>
           <p className="text-sm text-brand-navy/70 leading-relaxed font-light">
@@ -66,7 +66,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Pillars */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section className="reveal grid grid-cols-1 md:grid-cols-3 gap-8">
         {pillars.map(p => (
           <div key={p.title} className="bg-brand-white border border-brand-border p-6 rounded-2xl shadow-sm text-center space-y-4">
             <div className="h-12 w-12 bg-brand-bg rounded-full flex items-center justify-center text-brand-maroon mx-auto text-xl border border-brand-border">
@@ -79,7 +79,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Founders */}
-      <section className="space-y-8">
+      <section className="reveal space-y-8">
         <div>
           <h2 className="text-2xl font-extrabold pb-2 border-b border-brand-border inline-block">Our Founders</h2>
           <p className="text-xs text-brand-navy/60 font-light mt-2">The visionaries behind Hodu Academy's academic excellence.</p>
@@ -112,7 +112,7 @@ export default async function AboutPage() {
 
       {/* Faculty (from DB) */}
       {faculty && faculty.length > 0 && (
-        <section className="space-y-8">
+        <section className="reveal space-y-8">
           <div>
             <h2 className="text-2xl font-extrabold pb-2 border-b border-brand-border inline-block">Our Elite Faculty</h2>
             <p className="text-xs text-brand-navy/60 font-light mt-2">Learn directly from qualified board coordinators and teachers with decades of classroom experience.</p>
@@ -137,7 +137,7 @@ export default async function AboutPage() {
       )}
 
       {/* Timeline */}
-      <section className="bg-brand-bg border-y border-brand-border py-12 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
+      <section className="reveal bg-brand-bg border-y border-brand-border py-12 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="text-center mb-4">
             <h2 className="text-2xl font-extrabold text-brand-navy">Milestones of Academic Trust</h2>
@@ -157,7 +157,7 @@ export default async function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="text-center pb-8">
+      <section className="reveal text-center pb-8">
         <h2 className="text-2xl font-extrabold text-brand-navy mb-3">For Any Enquiry Call Us</h2>
         <a href={`tel:${HODU.phone}`}
           className="inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-accent text-white font-bold px-8 py-3 rounded-xl text-lg transition-colors mt-2">

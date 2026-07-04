@@ -14,7 +14,7 @@ export default function LmsPage() {
     <div className="animate-fade-in">
 
       {/* Hero */}
-      <section className="bg-brand-navy text-white py-16">
+      <section className="reveal bg-brand-navy text-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <div className="w-14 h-14 bg-brand-maroon rounded-2xl flex items-center justify-center mx-auto mb-5">
             <BookOpen className="h-7 w-7 text-white" />
@@ -41,7 +41,7 @@ export default function LmsPage() {
       </section>
 
       {/* Features */}
-      <section className="bg-brand-bg py-14">
+      <section className="reveal bg-brand-bg py-14">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <h2 className="text-2xl font-extrabold text-brand-navy text-center mb-10">Everything in Your Portal</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -59,7 +59,7 @@ export default function LmsPage() {
       </section>
 
       {/* Login help */}
-      <section className="bg-white border-t border-brand-border py-12">
+      <section className="reveal bg-white border-t border-brand-border py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-xl font-extrabold text-brand-navy mb-2">Need Help Logging In?</h2>
           <p className="text-brand-navy/60 text-sm mb-6">
