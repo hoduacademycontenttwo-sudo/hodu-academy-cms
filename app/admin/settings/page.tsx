@@ -101,13 +101,61 @@ export default function SettingsPage() {
         <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4">
           <h3 className="font-semibold text-[#1B2A44]">SEO</h3>
           <div>
-            <label className="block text-xs font-medium text-[#1B2A44] mb-1">Meta Title</label>
-            <input value={form.meta_title ?? ''} onChange={(e) => set('meta_title', e.target.value)} className="w-full border border-[#F3DCDC] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#7E0D0D]" />
+            <label className="block text-xs font-medium text-[#1B2A44] mb-1">Meta Title <span className="text-[#C9C8CB] font-normal">({(form.meta_title ?? '').length}/60)</span></label>
+            <input value={form.meta_title ?? ''} onChange={(e) => set('meta_title', e.target.value)} maxLength={70} className="w-full border border-[#F3DCDC] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#7E0D0D]" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#1B2A44] mb-1">Meta Description</label>
-            <textarea value={form.meta_description ?? ''} onChange={(e) => set('meta_description', e.target.value)} rows={3} className="w-full border border-[#F3DCDC] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#7E0D0D] resize-none" />
+            <label className="block text-xs font-medium text-[#1B2A44] mb-1">Meta Description <span className="text-[#C9C8CB] font-normal">({(form.meta_description ?? '').length}/160)</span></label>
+            <textarea value={form.meta_description ?? ''} onChange={(e) => set('meta_description', e.target.value)} maxLength={180} rows={3} className="w-full border border-[#F3DCDC] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#7E0D0D] resize-none" />
           </div>
+          {/* Google preview */}
+          <div className="border border-[#F3DCDC] rounded-xl p-4 bg-[#FDF5F5]">
+            <p className="text-[10px] text-[#C9C8CB] uppercase tracking-wider mb-2">Google Preview</p>
+            <p className="text-[#1a0dab] text-base leading-snug">{form.meta_title || form.name || 'Page title'}</p>
+            <p className="text-green-700 text-xs mt-0.5">hoduacademy.com</p>
+            <p className="text-gray-600 text-xs mt-1 line-clamp-2">{form.meta_description || 'Meta description appears here…'}</p>
+          </div>
+        </div>
+
+        {/* Social links */}
+        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4">
+          <h3 className="font-semibold text-[#1B2A44]">Social Links</h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-medium text-[#1B2A44] mb-1">Facebook</label>
+              <input value={form.facebook ?? ''} onChange={(e) => set('facebook', e.target.value)} placeholder="https://facebook.com/…" className="w-full border border-[#F3DCDC] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#7E0D0D]" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-[#1B2A44] mb-1">Instagram</label>
+              <input value={form.instagram ?? ''} onChange={(e) => set('instagram', e.target.value)} placeholder="https://instagram.com/…" className="w-full border border-[#F3DCDC] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#7E0D0D]" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-[#1B2A44] mb-1">YouTube</label>
+              <input value={form.youtube ?? ''} onChange={(e) => set('youtube', e.target.value)} placeholder="https://youtube.com/@…" className="w-full border border-[#F3DCDC] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#7E0D0D]" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-[#1B2A44] mb-1">LinkedIn</label>
+              <input value={form.linkedin ?? ''} onChange={(e) => set('linkedin', e.target.value)} placeholder="https://linkedin.com/company/…" className="w-full border border-[#F3DCDC] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#7E0D0D]" />
+            </div>
+          </div>
+        </div>
+
+        {/* Announcement bar */}
+        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold text-[#1B2A44]">Announcement Bar</h3>
+            <label className="flex items-center gap-2 text-sm text-[#1B2A44] cursor-pointer">
+              <input type="checkbox" checked={form.announcement_active ?? false} onChange={(e) => set('announcement_active', e.target.checked)} className="accent-[#7E0D0D]" />
+              Active
+            </label>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-[#1B2A44] mb-1">Announcement Text</label>
+            <input value={form.announcement ?? ''} onChange={(e) => set('announcement', e.target.value)} placeholder="e.g. Admissions open for 2026–27 — limited seats!" className="w-full border border-[#F3DCDC] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#7E0D0D]" />
+          </div>
+          {form.announcement_active && form.announcement && (
+            <div className="bg-[#1B2A44] text-white text-xs py-2 px-4 rounded-lg text-center">{form.announcement}</div>
+          )}
         </div>
       </div>
     </AdminLayout>
