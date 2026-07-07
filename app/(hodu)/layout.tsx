@@ -90,7 +90,7 @@ export default async function HoduLayout({ children }: { children: React.ReactNo
       `}</style>
       <HoduNavbar siteName={siteName} logoUrl={logoUrl} />
       <main>{children}</main>
-      <HoduFooter siteName={siteName} logoUrl={logoUrl} site={site} />
+      <HoduFooter siteName={siteName} logoUrl={logoUrl} site={site} academicOfferings={academicOfferings ?? undefined} />
     </>
   )
 }
