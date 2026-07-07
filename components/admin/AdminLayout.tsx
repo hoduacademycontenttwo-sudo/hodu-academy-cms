@@ -27,6 +27,7 @@ const navGroups: { title: string; items: { label: string; href: string; icon: an
       { label: 'Gallery',      href: '/admin/gallery', icon: Image,    keywords: 'photo carousel image slide' },
       { label: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare, keywords: 'review feedback student voice' },
       { label: 'Notices',      href: '/admin/notices', icon: Bell,     keywords: 'announcement ticker alert' },
+      { label: 'Navigation & Footer', href: '/admin/navigation', icon: ListTree, keywords: 'menu dropdown courses study materials academic offerings links' },
     ],
   },
   {
