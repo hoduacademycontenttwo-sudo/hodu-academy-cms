@@ -75,8 +75,9 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats, heroTitleHtm
       .eq('category', 'Home Carousel')
       .order('sort_order')
       .then(({ data }) => {
-        if (data && data.length > 0) {
-          setSlides(data.map(d => {
+        const withImages = (data ?? []).filter(d => d.image_url)
+        if (withImages.length > 0) {
+          setSlides(withImages.map(d => {
             try {
               const t = JSON.parse(d.caption ?? '{}')
               // New rich-text format takes priority; fall back to legacy plain heading/highlight/color fields
