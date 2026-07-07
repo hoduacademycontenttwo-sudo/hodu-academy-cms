@@ -62,7 +62,12 @@ function Dropdown({ label, items }: { label: string; items: { label: string; hre
   )
 }
 
-export default function HoduNavbar() {
+interface HoduNavbarProps {
+  siteName?: string
+  logoUrl?: string
+}
+
+export default function HoduNavbar({ siteName = HODU.name, logoUrl = '' }: HoduNavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileCourses, setMobileCourses] = useState(false)
   const [mobileMaterials, setMobileMaterials] = useState(false)
