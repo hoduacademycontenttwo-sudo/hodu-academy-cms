@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import {
   LayoutDashboard, BookOpen, Users, Trophy, Image, MessageSquare,
   Bell, FileText, Phone, Settings, LogOut, Menu, X, ChevronRight, Home, Newspaper,
-  Search, ExternalLink,
+  Search, ExternalLink, ListTree,
 } from 'lucide-react'
 
 const navGroups: { title: string; items: { label: string; href: string; icon: any; keywords?: string }[] }[] = [
