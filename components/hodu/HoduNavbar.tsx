@@ -65,6 +65,19 @@ export default function HoduNavbar({ siteName = HODU.name, logoUrl = '' }: HoduN
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileCourses, setMobileCourses] = useState(false)
   const [mobileMaterials, setMobileMaterials] = useState(false)
+  const [courses, setCourses] = useState(fallbackCourses)
+  const [studyMaterials, setStudyMaterials] = useState(fallbackStudyMaterials)
+
+  useEffect(() => {
+    const supabase = createClient()
+    Promise.all([
+      supabase.from('cms_nav_links').select('label, href, icon').eq('site_id', HODU_SITE_ID).eq('group_name', 'courses').order('sort_order'),
+      supabase.from('cms_nav_links').select('label, href, icon').eq('site_id', HODU_SITE_ID).eq('group_name', 'study_materials').order('sort_order'),
+    ]).then(([coursesRes, materialsRes]) => {
+      if (coursesRes.data && coursesRes.data.length > 0) setCourses(coursesRes.data as any)
+      if (materialsRes.data && materialsRes.data.length > 0) setStudyMaterials(materialsRes.data as any)
+    })
+  }, [])
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-brand-white border-b border-brand-border shadow-sm">
