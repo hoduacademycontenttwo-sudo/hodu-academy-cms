@@ -69,7 +69,7 @@ export default function HeroCarousel() {
       .from('cms_gallery')
       .select('image_url, caption, sort_order')
       .eq('site_id', HODU_SITE_ID)
-      .eq('category', 'Offline Carousel')
+      .eq('category', 'Carousel')
       .order('sort_order')
       .then(({ data }) => {
         if (data && data.length > 0) {
