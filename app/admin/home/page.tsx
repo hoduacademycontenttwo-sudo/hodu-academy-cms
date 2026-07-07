@@ -121,6 +121,7 @@ export default function HomeContentPage() {
     const caption = JSON.stringify({
       headingHtml: unwrapParagraph(slide.headingHtml ?? ''),
       subtitleHtml: unwrapParagraph(slide.subtitleHtml ?? ''),
+      imageOpacity: slide.imageOpacity ?? 100,
     })
     await supabase.from('cms_gallery').update({ image_url: slide.image_url, caption }).eq('id', slide.id)
   }
@@ -131,10 +132,10 @@ export default function HomeContentPage() {
       site_id: SITE_ID,
       category: 'Home Carousel',
       image_url: '',
-      caption: JSON.stringify({ headingHtml: '', subtitleHtml: '' }),
+      caption: JSON.stringify({ headingHtml: '', subtitleHtml: '', imageOpacity: 100 }),
       sort_order: nextOrder,
     }).select().single()
-    if (data) setSlides(prev => [...prev, { ...data, headingHtml: '', subtitleHtml: '' }])
+    if (data) setSlides(prev => [...prev, { ...data, headingHtml: '', subtitleHtml: '', imageOpacity: 100 }])
   }
 
   async function deleteSlide(id: string) {
