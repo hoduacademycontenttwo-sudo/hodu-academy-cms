@@ -85,11 +85,11 @@ export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site, a
               <span className="text-xl font-bold tracking-tight text-white">{siteName}</span>
             </div>
             <p className="text-xs text-white/70 leading-relaxed font-light">
-              Structured coaching, expert teachers, personalised support and rigorous evaluation — empowering students to excel in IGCSE, IB, CBSE, JEE, NEET and Olympiads.
+              {description}
             </p>
-            <Link href="/contact"
+            <Link href={ctaLink}
               className="mt-2 text-xs bg-brand-maroon hover:bg-brand-accent text-white px-4 py-2 font-bold rounded shadow transition-all block w-full text-center">
-              Request Free Callback
+              {ctaText}
             </Link>
           </div>
 
@@ -97,13 +97,7 @@ export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site, a
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-brand-border">Academic Offerings</h4>
             <ul className="space-y-2 text-xs text-white/80">
-              {[
-                { label: 'IGCSE & O Level Coaching', href: '/courses' },
-                { label: 'IB (MYP & DP) Program', href: '/courses' },
-                { label: 'CBSE Class 9–12', href: '/courses' },
-                { label: 'JEE / NEET Preparation', href: '/courses' },
-                { label: 'Olympiad Training', href: '/courses' },
-              ].map(l => (
+              {offerings.map(l => (
                 <li key={l.label}>
                   <Link href={l.href} className="hover:text-brand-border hover:underline transition-colors">{l.label}</Link>
                 </li>
