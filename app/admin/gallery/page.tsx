@@ -9,8 +9,8 @@ import { Plus, Trash2, Pencil } from 'lucide-react'
 
 const SITE_ID = 'a1b2c3d4-1111-1111-1111-000000000002'
 const EMPTY = { image_url: '', caption: '', category: 'Campus', sort_order: 0 }
-const CATS = ['Home Carousel', 'Carousel', 'Campus', 'Classroom', 'Events', 'Results', 'Faculty', 'Other']
-const CAROUSEL_CATS = ['Carousel', 'Home Carousel']
+const CATS = ['Home Carousel', 'Offline Carousel', 'Campus', 'Classroom', 'Events', 'Results', 'Faculty', 'Other']
+const CAROUSEL_CATS = ['Offline Carousel', 'Home Carousel']
 
 // Carousel slides store text as JSON in caption field
 function parseCaption(category: string, caption: string) {
