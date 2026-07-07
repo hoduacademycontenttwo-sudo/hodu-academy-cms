@@ -116,9 +116,9 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats }: HomeHeroCa
       ))}
 
       {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 md:py-24">
-        <div key={current} className="max-w-2xl bg-white rounded-3xl p-5 sm:p-8 shadow-2xl animate-fade-in">
-          <div className="inline-flex items-center gap-2 bg-brand-bg border border-brand-border px-3 py-1.5 rounded-full text-brand-maroon text-xs font-semibold mb-4 sm:mb-5">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-0 lg:h-full lg:flex lg:items-stretch">
+        <div key={current} className="max-w-2xl bg-white rounded-3xl p-5 sm:p-8 shadow-2xl animate-fade-in lg:max-w-xl lg:rounded-none lg:shadow-none lg:bg-gradient-to-r lg:from-white lg:from-[65%] lg:to-transparent lg:flex lg:flex-col lg:justify-center lg:py-16 lg:pl-0 lg:pr-16 xl:pr-24">
+          <div className="inline-flex items-center gap-2 bg-brand-bg border border-brand-border px-3 py-1.5 rounded-full text-brand-maroon text-xs font-semibold mb-4 sm:mb-5 self-start">
             <Sparkles className="h-3.5 w-3.5 animate-pulse shrink-0" />
             Learn from Syllabus-Focused content and stay fully exam ready.
           </div>
