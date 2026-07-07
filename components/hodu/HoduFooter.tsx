@@ -2,16 +2,28 @@ import Link from 'next/link'
 import { Mail, Phone, MapPin, Award, CheckCircle2 } from 'lucide-react'
 import { HODU } from '@/lib/hodu'
 
+const fallbackOfferings = [
+  { label: 'IGCSE & O Level Coaching', href: '/courses' },
+  { label: 'IB (MYP & DP) Program', href: '/courses' },
+  { label: 'CBSE Class 9–12', href: '/courses' },
+  { label: 'JEE / NEET Preparation', href: '/courses' },
+  { label: 'Olympiad Training', href: '/courses' },
+]
+
+const fallbackDescription = "Structured coaching, expert teachers, personalised support and rigorous evaluation — empowering students to excel in IGCSE, IB, CBSE, JEE, NEET and Olympiads."
+
 interface HoduFooterProps {
   siteName?: string
   logoUrl?: string
   site?: {
     phone?: string; whatsapp?: string; email?: string; address?: string;
     facebook?: string; instagram?: string; youtube?: string; linkedin?: string;
+    footer_description?: string; footer_cta_text?: string; footer_cta_link?: string;
   } | null
+  academicOfferings?: { label: string; href: string }[]
 }
 
-export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site }: HoduFooterProps) {
+export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site, academicOfferings }: HoduFooterProps) {
   const phone = site?.phone || HODU.phone
   const email = site?.email || HODU.email
   const address = site?.address || HODU.address
@@ -21,6 +33,10 @@ export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site }:
     facebook: site?.facebook || HODU.socials.facebook,
     linkedin: site?.linkedin || HODU.socials.linkedin,
   }
+  const description = site?.footer_description || fallbackDescription
+  const ctaText = site?.footer_cta_text || 'Request Free Callback'
+  const ctaLink = site?.footer_cta_link || '/contact'
+  const offerings = academicOfferings && academicOfferings.length > 0 ? academicOfferings : fallbackOfferings
 
   return (
     <footer className="bg-brand-navy text-brand-white border-t border-brand-maroon/20">
