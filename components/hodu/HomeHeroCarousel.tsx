@@ -107,7 +107,7 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats }: HomeHeroCa
   const s = slides[current]
 
   return (
-    <section className="relative aspect-[9/5] lg:aspect-video max-h-[900px] min-h-fit border-b border-brand-border">
+    <section className="relative min-h-[560px] md:min-h-[620px] overflow-hidden border-b border-brand-border">
       {/* Slides */}
       {slides.map((sl, i) => (
         <div key={i} className={`absolute inset-0 transition-opacity duration-700 ${i === current ? 'opacity-100' : 'opacity-0'}`}>
