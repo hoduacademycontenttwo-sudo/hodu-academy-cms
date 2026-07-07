@@ -69,7 +69,7 @@ export default function HomeContentPage() {
     setSlides((data ?? []).map(row => {
       let text: any = {}
       try { text = JSON.parse(row.caption ?? '{}') } catch {}
-      return { ...row, headingHtml: text.headingHtml ?? '', subtitleHtml: text.subtitleHtml ?? '' }
+      return { ...row, headingHtml: text.headingHtml ?? '', subtitleHtml: text.subtitleHtml ?? '', imageOpacity: text.imageOpacity ?? 100 }
     }))
     setSlidesLoading(false)
   }
