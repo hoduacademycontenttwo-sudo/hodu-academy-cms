@@ -105,7 +105,7 @@ export default function HeroCarousel() {
 
   return (
     <>
-      <section className="relative h-[92vh] min-h-[560px] max-h-[780px] overflow-hidden">
+      <section className="relative aspect-[9/5] lg:aspect-video max-h-[900px] overflow-hidden">
         {/* Slides */}
         {slides.map((sl, i) => (
           <div key={i} className={`absolute inset-0 transition-opacity duration-700 ${i === current ? 'opacity-100' : 'opacity-0'}`}>
