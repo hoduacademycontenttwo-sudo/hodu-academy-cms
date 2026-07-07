@@ -119,23 +119,23 @@ export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site }:
             <div className="space-y-2.5 text-xs text-white/80 font-light">
               <div className="flex items-start space-x-2">
                 <MapPin className="h-4 w-4 text-brand-border shrink-0 mt-0.5" />
-                <span>{HODU.address}</span>
+                <span>{address}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4 text-brand-border shrink-0" />
-                <a href={`tel:${HODU.phone}`} className="hover:text-white">{HODU.phone}</a>
+                <a href={`tel:${phone}`} className="hover:text-white">{phone}</a>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4 text-brand-border shrink-0" />
-                <a href={`mailto:${HODU.email}`} className="hover:text-white truncate">{HODU.email}</a>
+                <a href={`mailto:${email}`} className="hover:text-white truncate">{email}</a>
               </div>
             </div>
             <div className="flex gap-2 pt-1">
               {[
-                { label: 'YT', href: HODU.socials.youtube },
-                { label: 'IG', href: HODU.socials.instagram },
-                { label: 'FB', href: HODU.socials.facebook },
-                { label: 'IN', href: HODU.socials.linkedin },
+                { label: 'YT', href: socials.youtube },
+                { label: 'IG', href: socials.instagram },
+                { label: 'FB', href: socials.facebook },
+                { label: 'IN', href: socials.linkedin },
               ].map(s => (
                 <a key={s.label} href={s.href} target="_blank" rel="noreferrer"
                   className="w-8 h-8 rounded-lg bg-white/10 hover:bg-brand-maroon hover:-translate-y-0.5 flex items-center justify-center text-[10px] font-bold transition-all duration-200">
