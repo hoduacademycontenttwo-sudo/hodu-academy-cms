@@ -26,6 +26,8 @@ const subSizeClass: Record<string, string> = {
   xlarge: 'text-xl',
 }
 
+const HEADING_COLOR = '#1B2A44', HIGHLIGHT_COLOR = '#7E0D0D', SUBTITLE_COLOR = '#475569'
+
 const fallbackSlides = [
   {
     image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&h=800&fit=crop&auto=format',
@@ -33,6 +35,7 @@ const fallbackSlides = [
     highlight: 'Ace Your Exam In Place',
     subtitle: 'Top faculty · Live & recorded classes · Test series · Personal mentoring — all in one place.',
     headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light',
+    headingColor: HEADING_COLOR, highlightColor: HIGHLIGHT_COLOR, subtitleColor: SUBTITLE_COLOR,
   },
   {
     image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1600&h=800&fit=crop&auto=format',
@@ -40,6 +43,7 @@ const fallbackSlides = [
     highlight: 'IGCSE · IB · CBSE',
     subtitle: 'Specialised coaching across international and national boards with proven results year after year.',
     headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light',
+    headingColor: HEADING_COLOR, highlightColor: HIGHLIGHT_COLOR, subtitleColor: SUBTITLE_COLOR,
   },
   {
     image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1600&h=800&fit=crop&auto=format',
@@ -47,6 +51,7 @@ const fallbackSlides = [
     highlight: 'Entrance Exams',
     subtitle: 'JEE, NEET and Olympiad preparation with structured plans and daily practice problems.',
     headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light',
+    headingColor: HEADING_COLOR, highlightColor: HIGHLIGHT_COLOR, subtitleColor: SUBTITLE_COLOR,
   },
 ]
 
@@ -74,9 +79,9 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats }: HomeHeroCa
           setSlides(data.map(d => {
             try {
               const t = JSON.parse(d.caption ?? '{}')
-              return { image: d.image_url, heading: t.heading ?? '', highlight: t.highlight ?? '', subtitle: t.subtitle ?? '', headingSize: t.headingSize ?? 'large', headingWeight: t.headingWeight ?? 'black', subtitleSize: t.subtitleSize ?? 'medium', subtitleWeight: t.subtitleWeight ?? 'light' }
+              return { image: d.image_url, heading: t.heading ?? '', highlight: t.highlight ?? '', subtitle: t.subtitle ?? '', headingSize: t.headingSize ?? 'large', headingWeight: t.headingWeight ?? 'black', subtitleSize: t.subtitleSize ?? 'medium', subtitleWeight: t.subtitleWeight ?? 'light', headingColor: t.headingColor ?? HEADING_COLOR, highlightColor: t.highlightColor ?? HIGHLIGHT_COLOR, subtitleColor: t.subtitleColor ?? SUBTITLE_COLOR }
             } catch {
-              return { image: d.image_url, heading: d.caption ?? '', highlight: '', subtitle: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light' }
+              return { image: d.image_url, heading: d.caption ?? '', highlight: '', subtitle: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light', headingColor: HEADING_COLOR, highlightColor: HIGHLIGHT_COLOR, subtitleColor: SUBTITLE_COLOR }
             }
           }))
           setCurrent(0)
@@ -110,23 +115,20 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats }: HomeHeroCa
         </div>
       ))}
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/30" />
-
       {/* Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div key={current} className="max-w-2xl animate-fade-in">
-          <div className="inline-flex items-center gap-2 bg-brand-bg border border-brand-border px-3 py-1.5 rounded-full text-brand-maroon text-xs font-semibold mb-5">
+          <div className="inline-flex items-center gap-2 bg-brand-bg border border-brand-border px-3 py-1.5 rounded-full text-brand-maroon text-xs font-semibold mb-5 shadow-sm">
             <Sparkles className="h-3.5 w-3.5 animate-pulse" />
             Learn from Syllabus-Focused content and stay fully exam ready.
           </div>
 
-          <h1 className={`text-brand-navy leading-[1.1] tracking-tight mb-5 ${sizeClass[s.headingSize] ?? sizeClass.large} ${weightClass[s.headingWeight] ?? weightClass.black}`}>
-            {s.heading}{s.highlight && <> <span className="text-brand-maroon">{s.highlight}</span></>}
+          <h1 className={`leading-[1.1] tracking-tight mb-5 ${sizeClass[s.headingSize] ?? sizeClass.large} ${weightClass[s.headingWeight] ?? weightClass.black}`} style={{ color: s.headingColor }}>
+            {s.heading}{s.highlight && <> <span style={{ color: s.highlightColor }}>{s.highlight}</span></>}
           </h1>
 
           {s.subtitle && (
-            <p className={`text-brand-navy/70 max-w-lg mb-8 leading-relaxed ${subSizeClass[s.subtitleSize] ?? subSizeClass.medium} ${weightClass[s.subtitleWeight] ?? weightClass.light}`}>
+            <p className={`max-w-lg mb-8 leading-relaxed ${subSizeClass[s.subtitleSize] ?? subSizeClass.medium} ${weightClass[s.subtitleWeight] ?? weightClass.light}`} style={{ color: s.subtitleColor }}>
               {s.subtitle}
             </p>
           )}

@@ -48,6 +48,7 @@ export default function GalleryPage() {
     heading: '', highlight: '', subtitle: '',
     headingSize: 'large', headingWeight: 'black',
     subtitleSize: 'small', subtitleWeight: 'light',
+    headingColor: '#1B2A44', highlightColor: '#7E0D0D', subtitleColor: '#475569',
   })
 
   async function load() {
@@ -60,12 +61,12 @@ export default function GalleryPage() {
     if (img) {
       setForm({ ...img })
       const parsed = parseCaption(img.category, img.caption ?? '')
-      if (parsed) setCarouselText({ heading: parsed.heading ?? '', highlight: parsed.highlight ?? '', subtitle: parsed.subtitle ?? '', headingSize: parsed.headingSize ?? 'large', headingWeight: parsed.headingWeight ?? 'black', subtitleSize: parsed.subtitleSize ?? 'small', subtitleWeight: parsed.subtitleWeight ?? 'light' })
-      else setCarouselText({ heading: img.caption ?? '', highlight: '', subtitle: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'small', subtitleWeight: 'light' })
+      if (parsed) setCarouselText({ heading: parsed.heading ?? '', highlight: parsed.highlight ?? '', subtitle: parsed.subtitle ?? '', headingSize: parsed.headingSize ?? 'large', headingWeight: parsed.headingWeight ?? 'black', subtitleSize: parsed.subtitleSize ?? 'small', subtitleWeight: parsed.subtitleWeight ?? 'light', headingColor: parsed.headingColor ?? '#1B2A44', highlightColor: parsed.highlightColor ?? '#7E0D0D', subtitleColor: parsed.subtitleColor ?? '#475569' })
+      else setCarouselText({ heading: img.caption ?? '', highlight: '', subtitle: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'small', subtitleWeight: 'light', headingColor: '#1B2A44', highlightColor: '#7E0D0D', subtitleColor: '#475569' })
       setModal('edit')
     } else {
       setForm(EMPTY)
-      setCarouselText({ heading: '', highlight: '', subtitle: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'small', subtitleWeight: 'light' })
+      setCarouselText({ heading: '', highlight: '', subtitle: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'small', subtitleWeight: 'light', headingColor: '#1B2A44', highlightColor: '#7E0D0D', subtitleColor: '#475569' })
       setModal('add')
     }
   }
@@ -145,7 +146,7 @@ export default function GalleryPage() {
                   <input value={carouselText.heading} onChange={e => setCT('heading', e.target.value)}
                     placeholder="e.g. Where Excellence Meets"
                     className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]" />
-                  <div className="grid grid-cols-2 gap-2 mt-2">
+                  <div className="grid grid-cols-3 gap-2 mt-2">
                     <div>
                       <label className="block text-[10px] text-[#C9C8CB] mb-1">Font Size</label>
                       <select value={carouselText.headingSize} onChange={e => setCT('headingSize', e.target.value)} className="w-full border border-[#F3DCDC] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-[#7E0D0D]">
@@ -158,14 +159,28 @@ export default function GalleryPage() {
                         {WEIGHT_OPTS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                       </select>
                     </div>
+                    <div>
+                      <label className="block text-[10px] text-[#C9C8CB] mb-1">Text Color</label>
+                      <div className="flex items-center gap-1 border border-[#F3DCDC] rounded-lg px-1.5 py-1">
+                        <input type="color" value={carouselText.headingColor} onChange={e => setCT('headingColor', e.target.value)} className="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
+                        <input value={carouselText.headingColor} onChange={e => setCT('headingColor', e.target.value)} className="w-full text-[11px] focus:outline-none uppercase" />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-[#1B2A44] mb-1">Highlighted Text <span className="text-[#C9C8CB] font-normal">(shown in pink/accent color)</span></label>
+                  <label className="block text-xs font-medium text-[#1B2A44] mb-1">Highlighted Text <span className="text-[#C9C8CB] font-normal">(accent-coloured portion)</span></label>
                   <input value={carouselText.highlight} onChange={e => setCT('highlight', e.target.value)}
                     placeholder="e.g. Personal Attention"
                     className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]" />
+                  <div className="mt-2 max-w-[50%]">
+                    <label className="block text-[10px] text-[#C9C8CB] mb-1">Highlight Color</label>
+                    <div className="flex items-center gap-1 border border-[#F3DCDC] rounded-lg px-1.5 py-1">
+                      <input type="color" value={carouselText.highlightColor} onChange={e => setCT('highlightColor', e.target.value)} className="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
+                      <input value={carouselText.highlightColor} onChange={e => setCT('highlightColor', e.target.value)} className="w-full text-[11px] focus:outline-none uppercase" />
+                    </div>
+                  </div>
                 </div>
 
                 <div>
@@ -174,7 +189,7 @@ export default function GalleryPage() {
                     placeholder="e.g. Experience classroom learning at its best..."
                     rows={2}
                     className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#7E0D0D] resize-none" />
-                  <div className="grid grid-cols-2 gap-2 mt-2">
+                  <div className="grid grid-cols-3 gap-2 mt-2">
                     <div>
                       <label className="block text-[10px] text-[#C9C8CB] mb-1">Font Size</label>
                       <select value={carouselText.subtitleSize} onChange={e => setCT('subtitleSize', e.target.value)} className="w-full border border-[#F3DCDC] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:border-[#7E0D0D]">
@@ -187,29 +202,38 @@ export default function GalleryPage() {
                         {WEIGHT_OPTS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                       </select>
                     </div>
+                    <div>
+                      <label className="block text-[10px] text-[#C9C8CB] mb-1">Text Color</label>
+                      <div className="flex items-center gap-1 border border-[#F3DCDC] rounded-lg px-1.5 py-1">
+                        <input type="color" value={carouselText.subtitleColor} onChange={e => setCT('subtitleColor', e.target.value)} className="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
+                        <input value={carouselText.subtitleColor} onChange={e => setCT('subtitleColor', e.target.value)} className="w-full text-[11px] focus:outline-none uppercase" />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* Live preview */}
-                <div className="bg-[#1B2A44] rounded-xl p-4 mt-2">
-                  <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">Preview</p>
-                  <p className={`text-white leading-tight ${
-                    carouselText.headingSize === 'small' ? 'text-base' :
-                    carouselText.headingSize === 'medium' ? 'text-xl' :
-                    carouselText.headingSize === 'large' ? 'text-2xl' : 'text-3xl'
-                  } font-${carouselText.headingWeight}`}>
-                    {carouselText.heading || 'Main Heading'}{' '}
-                    <span className="text-[#F3DCDC]">{carouselText.highlight}</span>
-                  </p>
-                  {carouselText.subtitle && (
-                    <p className={`text-white/70 mt-2 ${
-                      carouselText.subtitleSize === 'small' ? 'text-xs' :
-                      carouselText.subtitleSize === 'medium' ? 'text-sm' :
-                      carouselText.subtitleSize === 'large' ? 'text-base' : 'text-lg'
-                    } font-${carouselText.subtitleWeight}`}>
-                      {carouselText.subtitle}
+                <div className="rounded-xl p-4 mt-2 bg-white border border-[#F3DCDC] bg-[url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=200&fit=crop&auto=format')] bg-cover bg-center">
+                  <div className="bg-white/70 backdrop-blur-[1px] rounded-lg p-3 -m-1">
+                    <p className="text-[10px] text-[#1B2A44]/40 uppercase tracking-wider mb-2">Preview</p>
+                    <p className={`leading-tight ${
+                      carouselText.headingSize === 'small' ? 'text-base' :
+                      carouselText.headingSize === 'medium' ? 'text-xl' :
+                      carouselText.headingSize === 'large' ? 'text-2xl' : 'text-3xl'
+                    } font-${carouselText.headingWeight}`} style={{ color: carouselText.headingColor }}>
+                      {carouselText.heading || 'Main Heading'}{' '}
+                      <span style={{ color: carouselText.highlightColor }}>{carouselText.highlight}</span>
                     </p>
-                  )}
+                    {carouselText.subtitle && (
+                      <p className={`mt-2 ${
+                        carouselText.subtitleSize === 'small' ? 'text-xs' :
+                        carouselText.subtitleSize === 'medium' ? 'text-sm' :
+                        carouselText.subtitleSize === 'large' ? 'text-base' : 'text-lg'
+                      } font-${carouselText.subtitleWeight}`} style={{ color: carouselText.subtitleColor }}>
+                        {carouselText.subtitle}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             ) : (
