@@ -171,6 +171,9 @@ export default async function HomePage() {
         ctaText={home?.cta_text ?? 'Explore Courses'}
         ctaLink="/enroll"
         stats={stats}
+        heroTitleHtml={home?.hero_title || undefined}
+        heroSubtitleHtml={home?.hero_subtitle || undefined}
+        heroImage={home?.hero_image_url || undefined}
       />
 
       {/* Course Categories — image cards */}
