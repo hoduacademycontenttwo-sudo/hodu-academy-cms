@@ -26,43 +26,43 @@ const subSizeClass: Record<string, string> = {
   xlarge: 'text-xl',
 }
 
-const HEADING_COLOR = '#1B2A44', HIGHLIGHT_COLOR = '#7E0D0D', SUBTITLE_COLOR = '#475569'
+const HEADING_COLOR = '#1B2A44'
 
-const fallbackSlides = [
-  {
-    image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&h=800&fit=crop&auto=format',
-    heading: 'Everything You Need To',
-    highlight: 'Ace Your Exam In Place',
-    subtitle: 'Top faculty · Live & recorded classes · Test series · Personal mentoring — all in one place.',
-    headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light',
-    headingColor: HEADING_COLOR, highlightColor: HIGHLIGHT_COLOR, subtitleColor: SUBTITLE_COLOR,
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1600&h=800&fit=crop&auto=format',
-    heading: 'Expert Coaching For',
-    highlight: 'IGCSE · IB · CBSE',
-    subtitle: 'Specialised coaching across international and national boards with proven results year after year.',
-    headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light',
-    headingColor: HEADING_COLOR, highlightColor: HIGHLIGHT_COLOR, subtitleColor: SUBTITLE_COLOR,
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1600&h=800&fit=crop&auto=format',
-    heading: "Crack India's Toughest",
-    highlight: 'Entrance Exams',
-    subtitle: 'JEE, NEET and Olympiad preparation with structured plans and daily practice problems.',
-    headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light',
-    headingColor: HEADING_COLOR, highlightColor: HIGHLIGHT_COLOR, subtitleColor: SUBTITLE_COLOR,
-  },
-]
+function escapeHtml(s: string) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
+// Legacy slides (plain heading/highlight/color fields) get converted to HTML on the fly
+function toHtml(text: string, color?: string) {
+  if (!text) return ''
+  return color ? `<span style="color:${color}">${escapeHtml(text)}</span>` : escapeHtml(text)
+}
+
+const defaultFallbackSlide = {
+  image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&h=800&fit=crop&auto=format',
+  headingHtml: `${toHtml('Everything You Need To ')}<span style="color:#7E0D0D">Ace Your Exam In Place</span>`,
+  subtitleHtml: toHtml('Top faculty · Live & recorded classes · Test series · Personal mentoring — all in one place.', '#475569'),
+  headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light',
+}
 
 interface HomeHeroCarouselProps {
   ctaText: string
   ctaLink: string
   stats: { label: string; value: string }[]
+  heroTitleHtml?: string
+  heroSubtitleHtml?: string
+  heroImage?: string
 }
 
-export default function HomeHeroCarousel({ ctaText, ctaLink, stats }: HomeHeroCarouselProps) {
-  const [slides, setSlides] = useState(fallbackSlides)
+export default function HomeHeroCarousel({ ctaText, ctaLink, stats, heroTitleHtml, heroSubtitleHtml, heroImage }: HomeHeroCarouselProps) {
+  const dbFallbackSlide = {
+    image: heroImage || defaultFallbackSlide.image,
+    headingHtml: heroTitleHtml || defaultFallbackSlide.headingHtml,
+    subtitleHtml: heroSubtitleHtml || defaultFallbackSlide.subtitleHtml,
+    headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light',
+  }
+
+  const [slides, setSlides] = useState([dbFallbackSlide])
   const [current, setCurrent] = useState(0)
   const [animating, setAnimating] = useState(false)
 
@@ -79,9 +79,12 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats }: HomeHeroCa
           setSlides(data.map(d => {
             try {
               const t = JSON.parse(d.caption ?? '{}')
-              return { image: d.image_url, heading: t.heading ?? '', highlight: t.highlight ?? '', subtitle: t.subtitle ?? '', headingSize: t.headingSize ?? 'large', headingWeight: t.headingWeight ?? 'black', subtitleSize: t.subtitleSize ?? 'medium', subtitleWeight: t.subtitleWeight ?? 'light', headingColor: t.headingColor ?? HEADING_COLOR, highlightColor: t.highlightColor ?? HIGHLIGHT_COLOR, subtitleColor: t.subtitleColor ?? SUBTITLE_COLOR }
+              // New rich-text format takes priority; fall back to legacy plain heading/highlight/color fields
+              const headingHtml = t.headingHtml ?? (t.heading ? `${toHtml(t.heading + ' ', t.headingColor ?? HEADING_COLOR)}${t.highlight ? toHtml(t.highlight, t.highlightColor ?? '#7E0D0D') : ''}` : '')
+              const subtitleHtml = t.subtitleHtml ?? toHtml(t.subtitle ?? '', t.subtitleColor ?? '#475569')
+              return { image: d.image_url, headingHtml, subtitleHtml, headingSize: t.headingSize ?? 'large', headingWeight: t.headingWeight ?? 'black', subtitleSize: t.subtitleSize ?? 'medium', subtitleWeight: t.subtitleWeight ?? 'light' }
             } catch {
-              return { image: d.image_url, heading: d.caption ?? '', highlight: '', subtitle: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light', headingColor: HEADING_COLOR, highlightColor: HIGHLIGHT_COLOR, subtitleColor: SUBTITLE_COLOR }
+              return { image: d.image_url, headingHtml: toHtml(d.caption ?? ''), subtitleHtml: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light' }
             }
           }))
           setCurrent(0)
