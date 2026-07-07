@@ -79,12 +79,16 @@ export default function HoduNavbar({ siteName = HODU.name, logoUrl = '' }: HoduN
 
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group shrink-0">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-maroon text-white font-extrabold text-xl shadow-md">
-              H
-            </div>
+            {logoUrl ? (
+              <img src={logoUrl} alt={siteName} className="h-9 w-9 rounded-lg object-cover shadow-md shrink-0" />
+            ) : (
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-maroon text-white font-extrabold text-xl shadow-md shrink-0">
+                {siteName.charAt(0).toUpperCase()}
+              </div>
+            )}
             <div className="flex flex-col leading-none">
               <span className="text-lg font-extrabold tracking-tight text-brand-navy group-hover:text-brand-maroon transition-colors">
-                Hodu Academy
+                {siteName}
               </span>
               <span className="text-[9px] font-semibold tracking-widest text-brand-accent uppercase">
                 EXCELLENCE PRESCRIBED
