@@ -2,7 +2,26 @@ import Link from 'next/link'
 import { Mail, Phone, MapPin, Award, CheckCircle2 } from 'lucide-react'
 import { HODU } from '@/lib/hodu'
 
-export default function HoduFooter() {
+interface HoduFooterProps {
+  siteName?: string
+  logoUrl?: string
+  site?: {
+    phone?: string; whatsapp?: string; email?: string; address?: string;
+    facebook?: string; instagram?: string; youtube?: string; linkedin?: string;
+  } | null
+}
+
+export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site }: HoduFooterProps) {
+  const phone = site?.phone || HODU.phone
+  const email = site?.email || HODU.email
+  const address = site?.address || HODU.address
+  const socials = {
+    youtube: site?.youtube || HODU.socials.youtube,
+    instagram: site?.instagram || HODU.socials.instagram,
+    facebook: site?.facebook || HODU.socials.facebook,
+    linkedin: site?.linkedin || HODU.socials.linkedin,
+  }
+
   return (
     <footer className="bg-brand-navy text-brand-white border-t border-brand-maroon/20">
 
