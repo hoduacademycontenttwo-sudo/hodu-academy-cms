@@ -61,7 +61,10 @@ function clampForReadability(hex: string, maxLight = 0.32) {
 
 export default async function HoduLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
-  const { data: site } = await supabase.from('cms_sites').select('*').eq('id', HODU_SITE_ID).single()
+  const [{ data: site }, { data: academicOfferings }] = await Promise.all([
+    supabase.from('cms_sites').select('*').eq('id', HODU_SITE_ID).single(),
+    supabase.from('cms_nav_links').select('label, href').eq('site_id', HODU_SITE_ID).eq('group_name', 'courses').order('sort_order'),
+  ])
 
   const primaryRaw = site?.primary_color || '#7E0D0D'
   const secondaryRaw = site?.secondary_color || '#1B2A44'
