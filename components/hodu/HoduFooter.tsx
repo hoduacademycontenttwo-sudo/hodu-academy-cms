@@ -61,8 +61,12 @@ export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site }:
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-white text-brand-maroon font-bold text-xl">H</div>
-              <span className="text-xl font-bold tracking-tight text-white">Hodu Academy</span>
+              {logoUrl ? (
+                <img src={logoUrl} alt={siteName} className="h-9 w-9 rounded-lg object-cover shrink-0" />
+              ) : (
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-white text-brand-maroon font-bold text-xl shrink-0">{siteName.charAt(0).toUpperCase()}</div>
+              )}
+              <span className="text-xl font-bold tracking-tight text-white">{siteName}</span>
             </div>
             <p className="text-xs text-white/70 leading-relaxed font-light">
               Structured coaching, expert teachers, personalised support and rigorous evaluation — empowering students to excel in IGCSE, IB, CBSE, JEE, NEET and Olympiads.
