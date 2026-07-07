@@ -38,7 +38,7 @@ export default function InlineRichTextEditor({ value, onChange, placeholder, mul
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
-      Document, Paragraph, Text, Bold, Italic, History, TextStyle, Color,
+      Document, Paragraph, Text, Bold, Italic, TextStyle, Color,
     ],
     content: value || '<p></p>',
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
