@@ -126,14 +126,16 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats, heroTitleHtm
             Learn from Syllabus-Focused content and stay fully exam ready.
           </div>
 
-          <h1 className={`leading-[1.1] tracking-tight mb-5 ${sizeClass[s.headingSize] ?? sizeClass.large} ${weightClass[s.headingWeight] ?? weightClass.black}`} style={{ color: s.headingColor }}>
-            {s.heading}{s.highlight && <> <span style={{ color: s.highlightColor }}>{s.highlight}</span></>}
-          </h1>
+          <h1
+            className={`leading-[1.1] tracking-tight mb-5 text-brand-navy ${sizeClass[s.headingSize] ?? sizeClass.large} ${weightClass[s.headingWeight] ?? weightClass.black}`}
+            dangerouslySetInnerHTML={{ __html: s.headingHtml }}
+          />
 
-          {s.subtitle && (
-            <p className={`max-w-lg mb-8 leading-relaxed ${subSizeClass[s.subtitleSize] ?? subSizeClass.medium} ${weightClass[s.subtitleWeight] ?? weightClass.light}`} style={{ color: s.subtitleColor }}>
-              {s.subtitle}
-            </p>
+          {s.subtitleHtml && (
+            <p
+              className={`max-w-lg mb-8 leading-relaxed ${subSizeClass[s.subtitleSize] ?? subSizeClass.medium} ${weightClass[s.subtitleWeight] ?? weightClass.light}`}
+              dangerouslySetInnerHTML={{ __html: s.subtitleHtml }}
+            />
           )}
 
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 mb-8">
