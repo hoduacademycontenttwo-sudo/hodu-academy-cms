@@ -116,7 +116,7 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats, heroTitleHtm
       {/* Slides */}
       {slides.map((sl, i) => (
         <div key={i} className={`absolute inset-0 transition-opacity duration-700 ${i === current ? 'opacity-100' : 'opacity-0'}`}>
-          <img src={sl.image} alt="" className="w-full h-full object-cover object-center" />
+          <img src={sl.image} alt="" className="w-full h-full object-cover object-center" style={{ opacity: (sl.imageOpacity ?? 100) / 100 }} />
         </div>
       ))}
 
