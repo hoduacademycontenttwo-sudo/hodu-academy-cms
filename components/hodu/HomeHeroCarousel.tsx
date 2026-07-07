@@ -60,6 +60,7 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats, heroTitleHtm
     headingHtml: heroTitleHtml || defaultFallbackSlide.headingHtml,
     subtitleHtml: heroSubtitleHtml || defaultFallbackSlide.subtitleHtml,
     headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light',
+    imageOpacity: 100,
   }
 
   const [slides, setSlides] = useState([dbFallbackSlide])
