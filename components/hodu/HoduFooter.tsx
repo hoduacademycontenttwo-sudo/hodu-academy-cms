@@ -148,7 +148,7 @@ export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site }:
 
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-white/60 space-y-4 md:space-y-0">
-          <span>© {new Date().getFullYear()} Hodu Academy. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} {siteName}. All rights reserved.</span>
           <div className="flex space-x-6">
             <Link href="/about" className="hover:text-white hover:underline">About Us</Link>
             <Link href="/contact" className="hover:text-white hover:underline">Privacy Policy</Link>
