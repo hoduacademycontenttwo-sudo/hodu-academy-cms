@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { Menu, X, ShieldAlert, ChevronDown } from 'lucide-react'
-import { HODU } from '@/lib/hodu'
+import { HODU, HODU_SITE_ID } from '@/lib/hodu'
+import { createClient } from '@/lib/supabase/client'
 
-const courses = [
+const fallbackCourses = [
   { label: 'IGCSE & Cambridge', href: '/courses?category=IGCSE', icon: '🌐' },
   { label: 'IB Programme',       href: '/courses?category=IB',   icon: '🎓' },
   { label: 'CBSE (Class 9–12)',  href: '/courses?category=CBSE', icon: '📚' },
@@ -14,20 +15,13 @@ const courses = [
   { label: 'Online Courses',     href: '/courses', icon: '📡' },
 ]
 
-const studyMaterials = [
+const fallbackStudyMaterials = [
   { label: 'JEE Main',          href: '/study-materials/jee-main' },
   { label: 'JEE Advanced',      href: '/study-materials/jee-advanced' },
   { label: 'NEET',              href: '/study-materials/neet' },
   { label: 'NCERT Solutions',   href: '/study-materials/ncert-solutions' },
   { label: 'CBSE',              href: '/study-materials/cbse' },
   { label: 'Olympiad',          href: '/study-materials/olympiad' },
-]
-
-const navLinks = [
-  { label: 'Home',      href: '/' },
-  { label: 'Offline',   href: '/offline' },
-  { label: 'About Us',  href: '/about' },
-  { label: 'Contact',   href: '/contact' },
 ]
 
 function Dropdown({ label, items }: { label: string; items: { label: string; href: string; icon?: string }[] }) {
