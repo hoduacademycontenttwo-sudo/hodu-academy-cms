@@ -217,6 +217,21 @@ export default function HomeContentPage() {
                   <ImageUpload value={slide.image_url ?? ''} onChange={url => updateSlideLocal(slide.id, { image_url: url })} folder="home-carousel" label="Slide Image" />
 
                   <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-xs font-medium text-[#1B2A44]">Image Opacity</label>
+                      <span className="text-xs text-[#C9C8CB] tabular-nums">{slide.imageOpacity ?? 100}%</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={10}
+                      max={100}
+                      value={slide.imageOpacity ?? 100}
+                      onChange={e => updateSlideLocal(slide.id, { imageOpacity: Number(e.target.value) })}
+                      className="w-full accent-[#7E0D0D] cursor-pointer"
+                    />
+                  </div>
+
+                  <div>
                     <label className="block text-xs font-medium text-[#1B2A44] mb-1">Heading</label>
                     <InlineRichTextEditor value={slide.headingHtml} onChange={v => updateSlideLocal(slide.id, { headingHtml: v })} placeholder="e.g. Everything You Need To Ace Your Exam" />
                   </div>
