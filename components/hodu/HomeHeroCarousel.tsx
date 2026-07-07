@@ -116,24 +116,24 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats }: HomeHeroCa
       ))}
 
       {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-0 lg:h-full lg:flex lg:items-stretch">
-        <div key={current} className="max-w-2xl bg-white rounded-3xl p-5 sm:p-8 shadow-2xl animate-fade-in lg:max-w-xl lg:rounded-none lg:shadow-none lg:bg-gradient-to-r lg:from-white lg:from-[65%] lg:to-transparent lg:flex lg:flex-col lg:justify-center lg:py-16 lg:pl-0 lg:pr-16 xl:pr-24">
-          <div className="inline-flex items-center gap-2 bg-brand-bg border border-brand-border px-3 py-1.5 rounded-full text-brand-maroon text-xs font-semibold mb-4 sm:mb-5 self-start">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        <div key={current} className="max-w-2xl animate-fade-in">
+          <div className="inline-flex items-center gap-2 bg-brand-bg border border-brand-border px-3 py-1.5 rounded-full text-brand-maroon text-xs font-semibold mb-5">
             <Sparkles className="h-3.5 w-3.5 animate-pulse shrink-0" />
             Learn from Syllabus-Focused content and stay fully exam ready.
           </div>
 
-          <h1 className={`leading-[1.1] tracking-tight mb-4 sm:mb-5 ${sizeClass[s.headingSize] ?? sizeClass.large} ${weightClass[s.headingWeight] ?? weightClass.black}`} style={{ color: s.headingColor }}>
+          <h1 className={`leading-[1.1] tracking-tight mb-5 ${sizeClass[s.headingSize] ?? sizeClass.large} ${weightClass[s.headingWeight] ?? weightClass.black}`} style={{ color: s.headingColor }}>
             {s.heading}{s.highlight && <> <span style={{ color: s.highlightColor }}>{s.highlight}</span></>}
           </h1>
 
           {s.subtitle && (
-            <p className={`max-w-lg mb-6 sm:mb-8 leading-relaxed ${subSizeClass[s.subtitleSize] ?? subSizeClass.medium} ${weightClass[s.subtitleWeight] ?? weightClass.light}`} style={{ color: s.subtitleColor }}>
+            <p className={`max-w-lg mb-8 leading-relaxed ${subSizeClass[s.subtitleSize] ?? subSizeClass.medium} ${weightClass[s.subtitleWeight] ?? weightClass.light}`} style={{ color: s.subtitleColor }}>
               {s.subtitle}
             </p>
           )}
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-start gap-3 mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 mb-8">
             <Link href={ctaLink}
               className="w-full sm:w-auto bg-brand-maroon hover:bg-brand-accent text-white font-bold px-7 py-3.5 rounded-xl shadow transition-all flex items-center justify-center gap-2 text-sm">
               {ctaText}
@@ -147,7 +147,7 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats }: HomeHeroCa
           </div>
 
           {stats.length > 0 && (
-            <div className="grid grid-cols-3 gap-4 pt-5 sm:pt-6 border-t border-brand-border max-w-sm">
+            <div className="grid grid-cols-3 gap-4 pt-6 border-t border-brand-border max-w-sm">
               {stats.slice(0, 3).map(st => (
                 <div key={st.label}>
                   <h3 className="text-2xl font-black text-brand-maroon">{st.value}</h3>
@@ -157,31 +157,20 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats }: HomeHeroCa
             </div>
           )}
         </div>
-
-        {/* Dots — inline on mobile, sits below the card */}
-        {slides.length > 1 && (
-          <div className="flex sm:hidden justify-center gap-2.5 mt-5">
-            {slides.map((_, i) => (
-              <button key={i} onClick={() => go(i)} aria-label={`Go to slide ${i + 1}`}
-                className={`rounded-full transition-all duration-300 ${i === current ? 'w-8 h-2.5 bg-brand-maroon' : 'w-2.5 h-2.5 bg-brand-navy/20 hover:bg-brand-navy/40'}`}
-              />
-            ))}
-          </div>
-        )}
       </div>
 
-      {/* Arrow controls — desktop/tablet only, mobile relies on dots + swipe */}
+      {/* Arrow controls */}
       {slides.length > 1 && (
         <>
-          <button onClick={prev} aria-label="Previous slide" className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white border border-brand-border rounded-full items-center justify-center text-brand-navy transition-all backdrop-blur-sm z-10 shadow-sm">
+          <button onClick={prev} aria-label="Previous slide" className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white border border-brand-border rounded-full flex items-center justify-center text-brand-navy transition-all backdrop-blur-sm z-10 shadow-sm">
             <ChevronLeft size={18} />
           </button>
-          <button onClick={next} aria-label="Next slide" className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white border border-brand-border rounded-full items-center justify-center text-brand-navy transition-all backdrop-blur-sm z-10 shadow-sm">
+          <button onClick={next} aria-label="Next slide" className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white border border-brand-border rounded-full flex items-center justify-center text-brand-navy transition-all backdrop-blur-sm z-10 shadow-sm">
             <ChevronRight size={18} />
           </button>
 
-          {/* Dots — desktop/tablet absolute position */}
-          <div className="hidden sm:flex absolute bottom-6 left-1/2 -translate-x-1/2 gap-2.5">
+          {/* Dots */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2.5">
             {slides.map((_, i) => (
               <button key={i} onClick={() => go(i)} aria-label={`Go to slide ${i + 1}`}
                 className={`rounded-full transition-all duration-300 ${i === current ? 'w-8 h-2.5 bg-brand-maroon' : 'w-2.5 h-2.5 bg-brand-navy/20 hover:bg-brand-navy/40'}`}
