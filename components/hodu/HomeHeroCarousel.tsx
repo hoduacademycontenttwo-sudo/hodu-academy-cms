@@ -83,9 +83,9 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats, heroTitleHtm
               // New rich-text format takes priority; fall back to legacy plain heading/highlight/color fields
               const headingHtml = t.headingHtml ?? (t.heading ? `${toHtml(t.heading + ' ', t.headingColor ?? HEADING_COLOR)}${t.highlight ? toHtml(t.highlight, t.highlightColor ?? '#7E0D0D') : ''}` : '')
               const subtitleHtml = t.subtitleHtml ?? toHtml(t.subtitle ?? '', t.subtitleColor ?? '#475569')
-              return { image: d.image_url, headingHtml, subtitleHtml, headingSize: t.headingSize ?? 'large', headingWeight: t.headingWeight ?? 'black', subtitleSize: t.subtitleSize ?? 'medium', subtitleWeight: t.subtitleWeight ?? 'light' }
+              return { image: d.image_url, headingHtml, subtitleHtml, headingSize: t.headingSize ?? 'large', headingWeight: t.headingWeight ?? 'black', subtitleSize: t.subtitleSize ?? 'medium', subtitleWeight: t.subtitleWeight ?? 'light', imageOpacity: t.imageOpacity ?? 100 }
             } catch {
-              return { image: d.image_url, headingHtml: toHtml(d.caption ?? ''), subtitleHtml: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light' }
+              return { image: d.image_url, headingHtml: toHtml(d.caption ?? ''), subtitleHtml: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light', imageOpacity: 100 }
             }
           }))
           setCurrent(0)
