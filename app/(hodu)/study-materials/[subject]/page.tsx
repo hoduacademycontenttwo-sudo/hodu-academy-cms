@@ -76,9 +76,37 @@ const subjectData: Record<string, {
   },
 }
 
+async function resolveSubject(subject: string) {
+  if (subjectData[subject]) return subjectData[subject]
+
+  // Not a hardcoded subject — check if admin added it to the Study Materials menu
+  // and build a generic page for it so new items never 404.
+  const supabase = await createClient()
+  const { data: navLink } = await supabase
+    .from('cms_nav_links')
+    .select('label')
+    .eq('site_id', HODU_SITE_ID)
+    .eq('group_name', 'study_materials')
+    .eq('href', `/study-materials/${subject}`)
+    .single()
+
+  if (!navLink) return null
+
+  return {
+    label: navLink.label, icon: '📘', color: 'text-brand-maroon',
+    gradient: 'from-brand-navy to-brand-navy/80',
+    dbCategory: navLink.label.toLowerCase(),
+    tagline: `Study resources and preparation guidance for ${navLink.label}`,
+    overview: `Everything you need to prepare for ${navLink.label} — resources are added regularly, and our team can guide you on the best preparation strategy.`,
+    syllabus: [] as string[],
+    tips: [] as string[],
+    relatedCourse: navLink.label,
+  }
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ subject: string }> }): Promise<Metadata> {
   const { subject } = await params
-  const data = subjectData[subject]
+  const data = await resolveSubject(subject)
   if (!data) return { title: 'Study Materials — Hodu Academy' }
   return { title: `${data.label} Study Materials — Hodu Academy`, description: data.tagline }
 }
@@ -97,10 +125,24 @@ function typeBadge(type: string) {
 
 export default async function SubjectPage({ params }: { params: Promise<{ subject: string }> }) {
   const { subject } = await params
-  const data = subjectData[subject]
+  const data = await resolveSubject(subject)
   if (!data) return notFound()
 
   const supabase = await createClient()
+  const { data: navSubjects } = await supabase
+    .from('cms_nav_links')
+    .select('label, href')
+    .eq('site_id', HODU_SITE_ID)
+    .eq('group_name', 'study_materials')
+    .order('sort_order')
+
+  const otherSubjects = [
+    ...Object.entries(subjectData).map(([slug, v]) => ({ slug, label: v.label, icon: v.icon })),
+    ...(navSubjects ?? [])
+      .filter(n => !subjectData[n.href.split('/').pop() ?? ''])
+      .map(n => ({ slug: n.href.split('/').pop() ?? '', label: n.label, icon: '📘' })),
+  ].filter(s => s.slug !== subject)
+
   const { data: dbResources } = await supabase
     .from('cms_resources')
     .select('*')
@@ -154,6 +196,7 @@ export default async function SubjectPage({ params }: { params: Promise<{ subjec
             </div>
 
             {/* Syllabus */}
+            {data.syllabus.length > 0 && (
             <div className="bg-white border border-brand-border rounded-2xl p-6 shadow-sm">
               <h2 className="text-xl font-extrabold text-brand-navy mb-4">Syllabus Covered</h2>
               <div className="space-y-3">
@@ -165,6 +208,7 @@ export default async function SubjectPage({ params }: { params: Promise<{ subjec
                 ))}
               </div>
             </div>
+            )}
 
             {/* Resources — from DB */}
             <div className="bg-white border border-brand-border rounded-2xl p-6 shadow-sm">
@@ -224,6 +268,7 @@ export default async function SubjectPage({ params }: { params: Promise<{ subjec
             </div>
 
             {/* Tips */}
+            {data.tips.length > 0 && (
             <div className="bg-brand-navy text-white rounded-2xl p-6">
               <h2 className="text-xl font-extrabold mb-4">Expert Study Tips</h2>
               <div className="space-y-3">
@@ -237,6 +282,7 @@ export default async function SubjectPage({ params }: { params: Promise<{ subjec
                 ))}
               </div>
             </div>
+            )}
           </div>
 
           {/* Sidebar */}
@@ -259,10 +305,10 @@ export default async function SubjectPage({ params }: { params: Promise<{ subjec
             <div className="bg-white border border-brand-border rounded-2xl p-5">
               <p className="font-extrabold text-brand-navy text-xs uppercase tracking-wider mb-3">Other Subjects</p>
               <div className="space-y-1.5">
-                {Object.entries(subjectData).filter(([k]) => k !== subject).map(([k, v]) => (
-                  <Link key={k} href={`/study-materials/${k}`}
+                {otherSubjects.map(s => (
+                  <Link key={s.slug} href={`/study-materials/${s.slug}`}
                     className="flex items-center gap-2 p-2 rounded-lg hover:bg-brand-bg transition-colors text-sm text-brand-navy hover:text-brand-maroon font-medium">
-                    <span>{v.icon}</span> {v.label}
+                    <span>{s.icon}</span> {s.label}
                   </Link>
                 ))}
               </div>
