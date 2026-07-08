@@ -9,7 +9,7 @@ import { Plus, Pencil, Trash2, FileText, ExternalLink, Upload, Loader, X } from 
 const SITE_ID = 'a1b2c3d4-1111-1111-1111-000000000002'
 const EMPTY = { title: '', slug: '', type: 'Blog', category: '', file_url: '', content: '' }
 const TYPES = ['Blog', 'PYQ', 'Sample Paper', 'Notes', 'Syllabus', 'Answer Key', 'Mock Test']
-const CATEGORIES = ['NEET', 'JEE Main', 'JEE Advanced', 'CBSE', 'NCERT', 'Olympiad', 'IGCSE', 'IB', 'General']
+const DEFAULT_CATEGORIES = ['NEET', 'JEE Main', 'JEE Advanced', 'CBSE', 'NCERT', 'Olympiad', 'IGCSE', 'IB', 'General']
 
 export default function ResourcesPage() {
   const supabase = createClient()
@@ -20,13 +20,30 @@ export default function ResourcesPage() {
   const [filter, setFilter]     = useState('All')
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState('')
+  const [categories, setCategories] = useState(DEFAULT_CATEGORIES)
   const fileRef = useRef<HTMLInputElement>(null)
 
   async function load() {
     const { data } = await supabase.from('cms_resources').select('*').eq('site_id', SITE_ID).order('created_at', { ascending: false })
     setItems(data ?? [])
   }
-  useEffect(() => { load() }, [])
+
+  async function loadCategories() {
+    const { data } = await supabase
+      .from('cms_nav_links')
+      .select('label')
+      .eq('site_id', SITE_ID)
+      .in('group_name', ['study_materials', 'courses'])
+      .order('sort_order')
+    const dynamicLabels = (data ?? []).map(d => d.label)
+    const merged = [...DEFAULT_CATEGORIES]
+    for (const label of dynamicLabels) {
+      if (!merged.some(c => c.toLowerCase() === label.toLowerCase())) merged.push(label)
+    }
+    setCategories(merged)
+  }
+
+  useEffect(() => { load(); loadCategories() }, [])
 
   function open(r?: any) { setForm(r ? { ...r } : EMPTY); setModal(r ? 'edit' : 'add'); setUploadError('') }
   function set(k: string, v: any) { setForm((f: any) => ({ ...f, [k]: v })) }
