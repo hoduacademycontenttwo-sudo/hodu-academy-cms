@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Calendar, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react'
-import { HODU_SITE_ID } from '@/lib/hodu'
-import { createClient } from '@/lib/supabase/client'
+import { CarouselSlide, defaultFallbackSlide } from '@/lib/homeCarousel'
 
 const sizeClass: Record<string, string> = {
   small: 'text-2xl sm:text-3xl',
@@ -26,25 +25,6 @@ const subSizeClass: Record<string, string> = {
   xlarge: 'text-xl',
 }
 
-const HEADING_COLOR = '#1B2A44'
-
-function escapeHtml(s: string) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-}
-
-// Legacy slides (plain heading/highlight/color fields) get converted to HTML on the fly
-function toHtml(text: string, color?: string) {
-  if (!text) return ''
-  return color ? `<span style="color:${color}">${escapeHtml(text)}</span>` : escapeHtml(text)
-}
-
-const defaultFallbackSlide = {
-  image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&h=800&fit=crop&auto=format',
-  headingHtml: `${toHtml('Everything You Need To ')}<span style="color:#7E0D0D">Ace Your Exam In Place</span>`,
-  subtitleHtml: toHtml('Top faculty · Live & recorded classes · Test series · Personal mentoring — all in one place.', '#475569'),
-  headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light',
-}
-
 interface HomeHeroCarouselProps {
   ctaText: string
   ctaLink: string
@@ -52,10 +32,11 @@ interface HomeHeroCarouselProps {
   heroTitleHtml?: string
   heroSubtitleHtml?: string
   heroImage?: string
+  initialSlides?: CarouselSlide[]
 }
 
-export default function HomeHeroCarousel({ ctaText, ctaLink, stats, heroTitleHtml, heroSubtitleHtml, heroImage }: HomeHeroCarouselProps) {
-  const dbFallbackSlide = {
+export default function HomeHeroCarousel({ ctaText, ctaLink, stats, heroTitleHtml, heroSubtitleHtml, heroImage, initialSlides }: HomeHeroCarouselProps) {
+  const dbFallbackSlide: CarouselSlide = {
     image: heroImage || defaultFallbackSlide.image,
     headingHtml: heroTitleHtml || defaultFallbackSlide.headingHtml,
     subtitleHtml: heroSubtitleHtml || defaultFallbackSlide.subtitleHtml,
@@ -63,36 +44,10 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats, heroTitleHtm
     imageOpacity: 100,
   }
 
-  const [slides, setSlides] = useState([dbFallbackSlide])
+  // Slides are fetched server-side and passed in as a prop — no client fetch, no flash.
+  const [slides] = useState<CarouselSlide[]>(initialSlides && initialSlides.length > 0 ? initialSlides : [dbFallbackSlide])
   const [current, setCurrent] = useState(0)
   const [animating, setAnimating] = useState(false)
-
-  useEffect(() => {
-    const supabase = createClient()
-    supabase
-      .from('cms_gallery')
-      .select('image_url, caption, sort_order')
-      .eq('site_id', HODU_SITE_ID)
-      .eq('category', 'Home Carousel')
-      .order('sort_order')
-      .then(({ data }) => {
-        const withImages = (data ?? []).filter(d => d.image_url)
-        if (withImages.length > 0) {
-          setSlides(withImages.map(d => {
-            try {
-              const t = JSON.parse(d.caption ?? '{}')
-              // New rich-text format takes priority; fall back to legacy plain heading/highlight/color fields
-              const headingHtml = t.headingHtml ?? (t.heading ? `${toHtml(t.heading + ' ', t.headingColor ?? HEADING_COLOR)}${t.highlight ? toHtml(t.highlight, t.highlightColor ?? '#7E0D0D') : ''}` : '')
-              const subtitleHtml = t.subtitleHtml ?? toHtml(t.subtitle ?? '', t.subtitleColor ?? '#475569')
-              return { image: d.image_url, headingHtml, subtitleHtml, headingSize: t.headingSize ?? 'large', headingWeight: t.headingWeight ?? 'black', subtitleSize: t.subtitleSize ?? 'medium', subtitleWeight: t.subtitleWeight ?? 'light', imageOpacity: t.imageOpacity ?? 100 }
-            } catch {
-              return { image: d.image_url, headingHtml: toHtml(d.caption ?? ''), subtitleHtml: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light', imageOpacity: 100 }
-            }
-          }))
-          setCurrent(0)
-        }
-      })
-  }, [])
 
   const go = useCallback((index: number) => {
     if (animating) return

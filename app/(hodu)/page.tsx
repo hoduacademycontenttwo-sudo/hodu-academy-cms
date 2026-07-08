@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { ArrowRight, ArrowUpRight, ChevronDown, Trophy, Phone } from 'lucide-react'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
+import { parseCarouselRows } from '@/lib/homeCarousel'
 
 export const metadata = {
   title: 'Hodu Academy — IGCSE · IB · CBSE · JEE · NEET Coaching Jaipur',
@@ -109,12 +110,15 @@ const blogs = [
 export default async function HomePage() {
   const supabase = await createClient()
 
-  const [{ data: home }, { data: courses }, { data: notices }, { data: results }] = await Promise.all([
+  const [{ data: home }, { data: courses }, { data: notices }, { data: results }, { data: carouselRows }] = await Promise.all([
     supabase.from('cms_home_sections').select('*').eq('site_id', HODU_SITE_ID).single(),
     supabase.from('cms_courses').select('*').eq('site_id', HODU_SITE_ID).eq('is_featured', true).limit(3),
     supabase.from('cms_notices').select('*').eq('site_id', HODU_SITE_ID).eq('is_active', true).limit(4),
     supabase.from('cms_results').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
+    supabase.from('cms_gallery').select('image_url, caption, sort_order').eq('site_id', HODU_SITE_ID).eq('category', 'Home Carousel').order('sort_order'),
   ])
+
+  const initialSlides = parseCarouselRows(carouselRows ?? [])
 
   const achievers = results && results.length > 0
     ? results.map(r => ({
@@ -174,6 +178,7 @@ export default async function HomePage() {
         heroTitleHtml={home?.hero_title || undefined}
         heroSubtitleHtml={home?.hero_subtitle || undefined}
         heroImage={home?.hero_image_url || undefined}
+        initialSlides={initialSlides}
       />
 
       {/* Course Categories — image cards */}
