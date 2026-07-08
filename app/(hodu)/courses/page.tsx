@@ -72,7 +72,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: Prom
               {category ? `${category} Courses` : 'All Courses'}
             </h1>
             <p className="text-white/70 text-sm font-light">
-              Expert coaching for IGCSE, IB, CBSE, JEE, NEET and Olympiads — designed for top scores and real understanding.
+              {subtitle}
             </p>
           </div>
         </div>
