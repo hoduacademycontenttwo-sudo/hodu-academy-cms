@@ -168,7 +168,7 @@ export default function ResourcesPage() {
                 <label className="block text-xs font-medium text-[#1B2A44] mb-1">Category</label>
                 <select value={form.category} onChange={(e) => set('category', e.target.value)} className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]">
                   <option value="">— Select Category —</option>
-                  {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+                  {categories.map((c) => <option key={c}>{c}</option>)}
                 </select>
               </div>
             </div>
