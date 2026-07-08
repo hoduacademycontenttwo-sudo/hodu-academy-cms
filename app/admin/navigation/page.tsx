@@ -143,7 +143,10 @@ export default function NavigationPage() {
   }
 
   async function saveLink(link: NavLink) {
-    await supabase.from('cms_nav_links').update({ label: link.label, href: link.href, icon: link.icon }).eq('id', link.id)
+    await supabase.from('cms_nav_links').update({
+      label: link.label, href: link.href, icon: link.icon,
+      tagline: link.tagline ?? null, overview: link.overview ?? null,
+    }).eq('id', link.id)
   }
 
   async function deleteLink(group: 'courses' | 'study_materials', id: string) {
