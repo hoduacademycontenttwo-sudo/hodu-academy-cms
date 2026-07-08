@@ -81,7 +81,7 @@ export default async function CoursesPage({ searchParams }: { searchParams: Prom
             className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold transition-colors ${!category ? 'bg-brand-maroon text-white' : 'bg-brand-bg text-brand-navy hover:bg-brand-border/40 border border-brand-border'}`}>
             All Courses
           </Link>
-          {COURSE_CATEGORIES.map(cat => (
+          {categories.map(cat => (
             <Link key={cat} href={`/courses?category=${encodeURIComponent(cat)}`}
               className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold transition-colors whitespace-nowrap ${category === cat ? 'bg-brand-maroon text-white' : 'bg-brand-bg text-brand-navy hover:bg-brand-border/40 border border-brand-border'}`}>
               {cat}
