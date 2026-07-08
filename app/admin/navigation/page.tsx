@@ -13,7 +13,7 @@ type NavLink = {
 }
 
 function LinkListEditor({
-  title, hint, links, onAdd, onUpdate, onDelete, onSave, withIcon, withPageContent,
+  title, hint, links, onAdd, onUpdate, onDelete, onSave, withIcon, withPageContent, withTaglineOnly,
 }: {
   title: string
   hint: string
@@ -24,6 +24,7 @@ function LinkListEditor({
   onSave: (link: NavLink) => void
   withIcon?: boolean
   withPageContent?: boolean
+  withTaglineOnly?: boolean
 }) {
   return (
     <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4">
@@ -84,6 +85,17 @@ function LinkListEditor({
                     placeholder="Overview paragraph shown on this subject's page…"
                     rows={2}
                     className="w-full border border-[#F3DCDC] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#7E0D0D] resize-none"
+                  />
+                </div>
+              )}
+
+              {withTaglineOnly && (
+                <div className="pl-6">
+                  <input
+                    value={link.tagline ?? ''}
+                    onChange={e => onUpdate(link.id, { tagline: e.target.value })}
+                    placeholder="Subheading shown when this category is selected on /courses…"
+                    className="w-full border border-[#F3DCDC] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#7E0D0D]"
                   />
                 </div>
               )}
@@ -195,9 +207,10 @@ export default function NavigationPage() {
 
         <LinkListEditor
           title="Academic Offerings (Courses menu)"
-          hint="Shown in the Navbar 'Courses' dropdown and the Footer 'Academic Offerings' list"
+          hint="Shown in the Navbar 'Courses' dropdown and the Footer 'Academic Offerings' list. Subheading appears on /courses when this category is selected."
           links={courses}
           withIcon
+          withTaglineOnly
           onAdd={() => addLink('courses')}
           onUpdate={(id, patch) => updateLocal('courses', id, patch)}
           onDelete={id => deleteLink('courses', id)}

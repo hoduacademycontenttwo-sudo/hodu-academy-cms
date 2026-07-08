@@ -44,19 +44,27 @@ export default async function CoursesPage({ searchParams }: { searchParams: Prom
 
   const [{ data: courses }, { data: navCourses }, { data: site }] = await Promise.all([
     query,
-    supabase.from('cms_nav_links').select('href').eq('site_id', HODU_SITE_ID).eq('group_name', 'courses').order('sort_order'),
+    supabase.from('cms_nav_links').select('href, tagline').eq('site_id', HODU_SITE_ID).eq('group_name', 'courses').order('sort_order'),
     supabase.from('cms_sites').select('courses_page_subtitle').eq('id', HODU_SITE_ID).single(),
   ])
 
   // Filter pills need real cms_courses category values — pull them from the "?category=" query
   // param of each Academic Offerings link so any menu item admin adds shows up here too.
-  const dynamicCategories = (navCourses ?? [])
-    .map(n => { try { return new URL(n.href, 'http://x').searchParams.get('category') } catch { return null } })
-    .filter((c): c is string => !!c)
+  const navCategoryEntries = (navCourses ?? [])
+    .map(n => {
+      try { return { value: new URL(n.href, 'http://x').searchParams.get('category'), tagline: n.tagline } }
+      catch { return { value: null, tagline: null } }
+    })
+    .filter((c): c is { value: string; tagline: string | null } => !!c.value)
+  const dynamicCategories = navCategoryEntries.map(c => c.value)
   const categories = dynamicCategories.length > 0 ? [...new Set(dynamicCategories)] : [...COURSE_CATEGORIES]
 
-  const subtitle = site?.courses_page_subtitle
+  const defaultSubtitle = site?.courses_page_subtitle
     || 'Expert coaching for IGCSE, IB, CBSE, JEE, NEET and Olympiads — designed for top scores and real understanding.'
+  // A category-specific subheading (set per item in Academic Offerings) takes priority
+  // over the global Courses Page subheading when that category is selected.
+  const categoryTagline = category ? navCategoryEntries.find(c => c.value === category)?.tagline : null
+  const subtitle = categoryTagline || defaultSubtitle
 
   return (
     <div className="animate-fade-in">
