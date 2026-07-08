@@ -7,7 +7,10 @@ import { Save, Plus, Trash2, GripVertical } from 'lucide-react'
 
 const SITE_ID = 'a1b2c3d4-1111-1111-1111-000000000002'
 
-type NavLink = { id: string; label: string; href: string; icon: string | null; sort_order: number }
+type NavLink = {
+  id: string; label: string; href: string; icon: string | null; sort_order: number
+  tagline?: string | null; overview?: string | null
+}
 
 function LinkListEditor({
   title, hint, links, onAdd, onUpdate, onDelete, onSave, withIcon,
