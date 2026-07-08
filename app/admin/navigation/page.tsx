@@ -187,8 +187,9 @@ export default function NavigationPage() {
 
         <LinkListEditor
           title="Study Materials menu"
-          hint="Shown in the Navbar 'Study Materials' dropdown"
+          hint="Shown in the Navbar 'Study Materials' dropdown. Subheading/overview appear on that subject's page."
           links={studyMaterials}
+          withPageContent
           onAdd={() => addLink('study_materials')}
           onUpdate={(id, patch) => updateLocal('study_materials', id, patch)}
           onDelete={id => deleteLink('study_materials', id)}
