@@ -84,7 +84,7 @@ async function resolveSubject(subject: string) {
   const supabase = await createClient()
   const { data: navLink } = await supabase
     .from('cms_nav_links')
-    .select('label')
+    .select('label, tagline, overview')
     .eq('site_id', HODU_SITE_ID)
     .eq('group_name', 'study_materials')
     .eq('href', `/study-materials/${subject}`)
@@ -96,8 +96,8 @@ async function resolveSubject(subject: string) {
     label: navLink.label, icon: '📘', color: 'text-brand-maroon',
     gradient: 'from-brand-navy to-brand-navy/80',
     dbCategory: navLink.label.toLowerCase(),
-    tagline: `Study resources and preparation guidance for ${navLink.label}`,
-    overview: `Everything you need to prepare for ${navLink.label} — resources are added regularly, and our team can guide you on the best preparation strategy.`,
+    tagline: navLink.tagline || `Study resources and preparation guidance for ${navLink.label}`,
+    overview: navLink.overview || `Everything you need to prepare for ${navLink.label} — resources are added regularly, and our team can guide you on the best preparation strategy.`,
     syllabus: [] as string[],
     tips: [] as string[],
     relatedCourse: navLink.label,
