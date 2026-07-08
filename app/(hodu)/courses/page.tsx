@@ -42,9 +42,10 @@ export default async function CoursesPage({ searchParams }: { searchParams: Prom
   let query = supabase.from('cms_courses').select('*').eq('site_id', HODU_SITE_ID).order('sort_order')
   if (category) query = query.eq('category', category)
 
-  const [{ data: courses }, { data: navCourses }] = await Promise.all([
+  const [{ data: courses }, { data: navCourses }, { data: site }] = await Promise.all([
     query,
     supabase.from('cms_nav_links').select('href').eq('site_id', HODU_SITE_ID).eq('group_name', 'courses').order('sort_order'),
+    supabase.from('cms_sites').select('courses_page_subtitle').eq('id', HODU_SITE_ID).single(),
   ])
 
   // Filter pills need real cms_courses category values — pull them from the "?category=" query
@@ -53,6 +54,9 @@ export default async function CoursesPage({ searchParams }: { searchParams: Prom
     .map(n => { try { return new URL(n.href, 'http://x').searchParams.get('category') } catch { return null } })
     .filter((c): c is string => !!c)
   const categories = dynamicCategories.length > 0 ? [...new Set(dynamicCategories)] : [...COURSE_CATEGORIES]
+
+  const subtitle = site?.courses_page_subtitle
+    || 'Expert coaching for IGCSE, IB, CBSE, JEE, NEET and Olympiads — designed for top scores and real understanding.'
 
   return (
     <div className="animate-fade-in">
