@@ -13,7 +13,7 @@ type NavLink = {
 }
 
 function LinkListEditor({
-  title, hint, links, onAdd, onUpdate, onDelete, onSave, withIcon,
+  title, hint, links, onAdd, onUpdate, onDelete, onSave, withIcon, withPageContent,
 }: {
   title: string
   hint: string
@@ -23,6 +23,7 @@ function LinkListEditor({
   onDelete: (id: string) => void
   onSave: (link: NavLink) => void
   withIcon?: boolean
+  withPageContent?: boolean
 }) {
   return (
     <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4">
@@ -39,36 +40,59 @@ function LinkListEditor({
       {links.length === 0 ? (
         <p className="text-xs text-[#C9C8CB] py-4 text-center border border-dashed border-[#F3DCDC] rounded-xl">No items yet.</p>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {links.map(link => (
-            <div key={link.id} className="flex items-center gap-2 border border-[#F3DCDC] rounded-xl p-2.5">
-              <GripVertical size={14} className="text-[#C9C8CB] shrink-0" />
-              {withIcon && (
+            <div key={link.id} className="border border-[#F3DCDC] rounded-xl p-2.5 space-y-2">
+              <div className="flex items-center gap-2">
+                <GripVertical size={14} className="text-[#C9C8CB] shrink-0" />
+                {withIcon && (
+                  <input
+                    value={link.icon ?? ''}
+                    onChange={e => onUpdate(link.id, { icon: e.target.value })}
+                    placeholder="🎓"
+                    className="w-12 border border-[#F3DCDC] rounded-lg px-2 py-1.5 text-sm text-center focus:outline-none focus:border-[#7E0D0D]"
+                  />
+                )}
                 <input
-                  value={link.icon ?? ''}
-                  onChange={e => onUpdate(link.id, { icon: e.target.value })}
-                  placeholder="🎓"
-                  className="w-12 border border-[#F3DCDC] rounded-lg px-2 py-1.5 text-sm text-center focus:outline-none focus:border-[#7E0D0D]"
+                  value={link.label}
+                  onChange={e => onUpdate(link.id, { label: e.target.value })}
+                  placeholder="Label"
+                  className="flex-1 min-w-0 border border-[#F3DCDC] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#7E0D0D]"
                 />
+                <input
+                  value={link.href}
+                  onChange={e => onUpdate(link.id, { href: e.target.value })}
+                  placeholder="/courses?category=..."
+                  className="flex-1 min-w-0 border border-[#F3DCDC] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#7E0D0D]"
+                />
+                <button onClick={() => onDelete(link.id)} className="text-red-400 hover:text-red-600 shrink-0">
+                  <Trash2 size={15} />
+                </button>
+              </div>
+
+              {withPageContent && (
+                <div className="pl-6 space-y-2">
+                  <input
+                    value={link.tagline ?? ''}
+                    onChange={e => onUpdate(link.id, { tagline: e.target.value })}
+                    placeholder="Subheading shown under the title on this subject's page…"
+                    className="w-full border border-[#F3DCDC] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#7E0D0D]"
+                  />
+                  <textarea
+                    value={link.overview ?? ''}
+                    onChange={e => onUpdate(link.id, { overview: e.target.value })}
+                    placeholder="Overview paragraph shown on this subject's page…"
+                    rows={2}
+                    className="w-full border border-[#F3DCDC] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#7E0D0D] resize-none"
+                  />
+                </div>
               )}
-              <input
-                value={link.label}
-                onChange={e => onUpdate(link.id, { label: e.target.value })}
-                placeholder="Label"
-                className="flex-1 min-w-0 border border-[#F3DCDC] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#7E0D0D]"
-              />
-              <input
-                value={link.href}
-                onChange={e => onUpdate(link.id, { href: e.target.value })}
-                placeholder="/courses?category=..."
-                className="flex-1 min-w-0 border border-[#F3DCDC] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#7E0D0D]"
-              />
-              <button onClick={() => onSave(link)} className="text-xs bg-[#7E0D0D] hover:bg-[#922222] text-white px-3 py-1.5 rounded-lg font-semibold shrink-0">
-                Save
-              </button>
-              <button onClick={() => onDelete(link.id)} className="text-red-400 hover:text-red-600 shrink-0">
-                <Trash2 size={15} />
-              </button>
+
+              <div className="pl-6">
+                <button onClick={() => onSave(link)} className="text-xs bg-[#7E0D0D] hover:bg-[#922222] text-white px-3 py-1.5 rounded-lg font-semibold">
+                  Save
+                </button>
+              </div>
             </div>
           ))}
         </div>
