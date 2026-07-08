@@ -42,7 +42,17 @@ export default async function CoursesPage({ searchParams }: { searchParams: Prom
   let query = supabase.from('cms_courses').select('*').eq('site_id', HODU_SITE_ID).order('sort_order')
   if (category) query = query.eq('category', category)
 
-  const { data: courses } = await query
+  const [{ data: courses }, { data: navCourses }] = await Promise.all([
+    query,
+    supabase.from('cms_nav_links').select('href').eq('site_id', HODU_SITE_ID).eq('group_name', 'courses').order('sort_order'),
+  ])
+
+  // Filter pills need real cms_courses category values — pull them from the "?category=" query
+  // param of each Academic Offerings link so any menu item admin adds shows up here too.
+  const dynamicCategories = (navCourses ?? [])
+    .map(n => { try { return new URL(n.href, 'http://x').searchParams.get('category') } catch { return null } })
+    .filter((c): c is string => !!c)
+  const categories = dynamicCategories.length > 0 ? [...new Set(dynamicCategories)] : [...COURSE_CATEGORIES]
 
   return (
     <div className="animate-fade-in">
