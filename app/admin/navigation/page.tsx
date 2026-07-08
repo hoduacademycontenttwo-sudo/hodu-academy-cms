@@ -116,11 +116,11 @@ export default function NavigationPage() {
     const [{ data: courseLinks }, { data: studyLinks }, { data: site }] = await Promise.all([
       supabase.from('cms_nav_links').select('*').eq('site_id', SITE_ID).eq('group_name', 'courses').order('sort_order'),
       supabase.from('cms_nav_links').select('*').eq('site_id', SITE_ID).eq('group_name', 'study_materials').order('sort_order'),
-      supabase.from('cms_sites').select('footer_description, footer_cta_text, footer_cta_link').eq('id', SITE_ID).single(),
+      supabase.from('cms_sites').select('footer_description, footer_cta_text, footer_cta_link, courses_page_subtitle').eq('id', SITE_ID).single(),
     ])
     setCourses(courseLinks ?? [])
     setStudyMaterials(studyLinks ?? [])
-    setSiteForm(site ?? { footer_description: '', footer_cta_text: '', footer_cta_link: '' })
+    setSiteForm(site ?? { footer_description: '', footer_cta_text: '', footer_cta_link: '', courses_page_subtitle: '' })
     setLoading(false)
   }
   useEffect(() => { load() }, [])
