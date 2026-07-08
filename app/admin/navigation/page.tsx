@@ -174,6 +174,25 @@ export default function NavigationPage() {
       </div>
 
       <div className="max-w-2xl space-y-6">
+        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-[#1B2A44]">Courses Page Subheading</h3>
+              <p className="text-xs text-[#C9C8CB] mt-0.5">Shown under the title on the /courses page</p>
+            </div>
+            <button onClick={saveSiteForm} disabled={saving} className="flex items-center gap-2 bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-semibold px-3.5 py-2 rounded-xl disabled:opacity-60 shrink-0">
+              <Save size={13} /> {saving ? 'Saving…' : saved ? 'Saved!' : 'Save'}
+            </button>
+          </div>
+          <textarea
+            value={siteForm.courses_page_subtitle ?? ''}
+            onChange={e => setSiteForm((f: any) => ({ ...f, courses_page_subtitle: e.target.value }))}
+            rows={2}
+            className="w-full border border-[#F3DCDC] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#7E0D0D] resize-none"
+            placeholder="Expert coaching for IGCSE, IB, CBSE, JEE, NEET and Olympiads…"
+          />
+        </div>
+
         <LinkListEditor
           title="Academic Offerings (Courses menu)"
           hint="Shown in the Navbar 'Courses' dropdown and the Footer 'Academic Offerings' list"
