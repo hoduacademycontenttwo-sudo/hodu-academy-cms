@@ -110,15 +110,26 @@ const blogs = [
 export default async function HomePage() {
   const supabase = await createClient()
 
-  const [{ data: home }, { data: courses }, { data: notices }, { data: results }, { data: carouselRows }] = await Promise.all([
+  const [{ data: home }, { data: courses }, { data: notices }, { data: results }, { data: carouselRows }, { data: dbTestimonials }] = await Promise.all([
     supabase.from('cms_home_sections').select('*').eq('site_id', HODU_SITE_ID).single(),
     supabase.from('cms_courses').select('*').eq('site_id', HODU_SITE_ID).eq('is_featured', true).limit(3),
     supabase.from('cms_notices').select('*').eq('site_id', HODU_SITE_ID).eq('is_active', true).limit(4),
     supabase.from('cms_results').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
     supabase.from('cms_gallery').select('image_url, caption, sort_order').eq('site_id', HODU_SITE_ID).eq('category', 'Home Carousel').order('sort_order'),
+    supabase.from('cms_testimonials').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
   ])
 
   const initialSlides = parseCarouselRows(carouselRows ?? [])
+
+  const liveTestimonials = dbTestimonials && dbTestimonials.length > 0
+    ? dbTestimonials.map(t => ({
+        initials: t.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase(),
+        name: t.name,
+        score: t.role,
+        text: t.message,
+        photo_url: t.photo_url,
+      }))
+    : testimonials
 
   const achievers = results && results.length > 0
     ? results.map(r => ({
@@ -377,13 +388,17 @@ export default async function HomePage() {
             <h2 className="text-3xl font-extrabold text-brand-navy mt-1">What Our Students Say</h2>
           </div>
           <div className="grid lg:grid-cols-3 gap-6">
-            {testimonials.map(t => (
+            {liveTestimonials.map(t => (
               <div key={t.name} className="bg-white border border-brand-border p-5 rounded-xl shadow-sm relative">
                 <span className="absolute -top-3 right-5 text-4xl text-brand-maroon/20 font-serif font-black">"</span>
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="h-10 w-10 rounded-full bg-brand-border flex items-center justify-center font-extrabold text-brand-maroon text-sm">
-                    {t.initials}
-                  </div>
+                  {'photo_url' in t && t.photo_url ? (
+                    <img src={t.photo_url} alt={t.name} className="h-10 w-10 rounded-full object-cover object-top" />
+                  ) : (
+                    <div className="h-10 w-10 rounded-full bg-brand-border flex items-center justify-center font-extrabold text-brand-maroon text-sm">
+                      {t.initials}
+                    </div>
+                  )}
                   <div>
                     <h4 className="font-bold text-sm text-brand-navy">{t.name}</h4>
                     <p className="text-[10px] text-brand-navy/50">{t.score}</p>
