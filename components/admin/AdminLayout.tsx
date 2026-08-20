@@ -68,6 +68,11 @@ export default function AdminLayout({ children, siteName }: { children: React.Re
     router.refresh()
   }
 
+  function closeSearch() {
+    setSearchOpen(false)
+    setQuery('')
+  }
+
   // Ctrl+K / Cmd+K opens search
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -75,7 +80,10 @@ export default function AdminLayout({ children, siteName }: { children: React.Re
         e.preventDefault()
         setSearchOpen(true)
       }
-      if (e.key === 'Escape') setSearchOpen(false)
+      if (e.key === 'Escape') {
+        setSearchOpen(false)
+        setQuery('')
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -83,7 +91,6 @@ export default function AdminLayout({ children, siteName }: { children: React.Re
 
   useEffect(() => {
     if (searchOpen) setTimeout(() => searchRef.current?.focus(), 50)
-    else setQuery('')
   }, [searchOpen])
 
   const matches = query.trim()
@@ -186,7 +193,7 @@ export default function AdminLayout({ children, siteName }: { children: React.Re
 
       {/* Global search palette */}
       {searchOpen && (
-        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-24 px-4" onClick={() => setSearchOpen(false)}>
+        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-24 px-4" onClick={closeSearch}>
           <div className="absolute inset-0 bg-black/40" />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 px-4 py-3 border-b border-[#F3DCDC]">
@@ -198,7 +205,7 @@ export default function AdminLayout({ children, siteName }: { children: React.Re
                 onKeyDown={e => {
                   if (e.key === 'Enter' && matches.length > 0) {
                     router.push(matches[0].href)
-                    setSearchOpen(false)
+                    closeSearch()
                   }
                 }}
                 placeholder="Jump to a section…"
@@ -213,7 +220,7 @@ export default function AdminLayout({ children, siteName }: { children: React.Re
                 matches.map(({ label, href, icon: Icon }) => (
                   <button
                     key={href}
-                    onClick={() => { router.push(href); setSearchOpen(false) }}
+                    onClick={() => { router.push(href); closeSearch() }}
                     className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-[#1B2A44] hover:bg-[#FDF5F5] transition-colors"
                   >
                     <Icon size={15} className="text-[#7E0D0D]" />

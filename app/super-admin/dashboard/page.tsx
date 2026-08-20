@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import SuperAdminLayout from '@/components/super-admin/SuperAdminLayout'
-import { Building2, Users, TrendingUp, Clock } from 'lucide-react'
+import { Building2, Users, TrendingUp } from 'lucide-react'
 
 export default async function SuperAdminDashboard() {
   const supabase = await createClient()
@@ -60,7 +61,7 @@ export default async function SuperAdminDashboard() {
         <div className="bg-[#1E293B] border border-slate-700 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-white">Recent Clients</h2>
-            <a href="/super-admin/clients" className="text-sm text-indigo-400 hover:text-indigo-300">View all →</a>
+            <Link href="/super-admin/clients" className="text-sm text-indigo-400 hover:text-indigo-300">View all →</Link>
           </div>
           <table className="w-full text-sm">
             <thead>
