@@ -24,28 +24,56 @@ const fallbackStudyMaterials = [
   { label: 'Olympiad',          href: '/study-materials/olympiad' },
 ]
 
-function Dropdown({ label, items }: { label: string; items: { label: string; href: string; icon?: string }[] }) {
+function Dropdown({ label, href, items }: { label: string; href: string; items: { label: string; href: string; icon?: string }[] }) {
   const [open, setOpen] = useState(false)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   function enter() { clearTimeout(timer.current ?? undefined); setOpen(true) }
-  function leave() { timer.current = setTimeout(() => setOpen(false), 120) }
+  function leave() { timer.current = setTimeout(() => setOpen(false), 150) }
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   return (
-    <div className="relative" onMouseEnter={enter} onMouseLeave={leave}>
-      <button className="flex items-center gap-1 text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors py-2">
-        {label}
-        <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
-      </button>
+    <div ref={dropdownRef} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
+      <div className="flex items-center">
+        <Link
+          href={href}
+          onClick={() => setOpen(false)}
+          className="flex items-center gap-1 text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors py-2"
+        >
+          {label}
+        </Link>
+        <button
+          type="button"
+          onClick={() => setOpen(prev => !prev)}
+          className="p-1 text-brand-navy hover:text-brand-maroon transition-colors"
+          aria-label={`Toggle ${label} menu`}
+        >
+          <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
+        </button>
+      </div>
 
       {open && (
-        <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50">
-          <div className="bg-white border border-brand-border rounded-xl shadow-xl overflow-hidden min-w-[200px] py-1">
+        <div className="absolute top-full left-0 pt-1.5 z-50">
+          <div className="bg-white border border-brand-border rounded-xl shadow-xl overflow-hidden min-w-[210px] py-1.5">
             {items.map(item => (
-              <Link key={item.label} href={item.href}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-brand-navy hover:bg-brand-bg hover:text-brand-maroon transition-colors">
-                {item.icon && <span className="text-base">{item.icon}</span>}
-                <span>{item.label}</span>
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-brand-navy hover:bg-brand-bg hover:text-brand-maroon transition-colors"
+              >
+                {item.icon && <span className="text-base shrink-0">{item.icon}</span>}
+                <span className="font-medium">{item.label}</span>
                 <ChevronDown className="h-3 w-3 ml-auto -rotate-90 text-brand-navy/30" />
               </Link>
             ))}
@@ -106,8 +134,8 @@ export default function HoduNavbar({ siteName = HODU.name, logoUrl = '' }: HoduN
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-7">
             <Link href="/" className="nav-link text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">Home</Link>
-            <Dropdown label="Courses" items={courses} />
-            <Dropdown label="Study Materials" items={studyMaterials} />
+            <Dropdown label="Courses" href="/courses" items={courses} />
+            <Dropdown label="Study Materials" href="/study-materials" items={studyMaterials} />
             <Link href="/offline" className="nav-link text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">Offline</Link>
             <Link href="/about" className="nav-link text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">About</Link>
             <Link href="/blog" className="nav-link text-sm font-medium text-brand-navy hover:text-brand-maroon transition-colors">Blog</Link>
@@ -121,10 +149,10 @@ export default function HoduNavbar({ siteName = HODU.name, logoUrl = '' }: HoduN
               <ShieldAlert className="h-3.5 w-3.5" />
               Admin
             </Link>
-            <a href={`${HODU.lmsUrl}/register`} target="_blank" rel="noreferrer"
-              className="bg-brand-maroon hover:bg-brand-accent text-white px-5 py-2 rounded-lg text-sm font-bold transition-all">
+            <Link href="/enroll"
+              className="bg-brand-maroon hover:bg-brand-accent text-white px-5 py-2 rounded-lg text-sm font-bold transition-all inline-block text-center">
               Enroll Now
-            </a>
+            </Link>
           </div>
 
           {/* Mobile toggle */}
@@ -188,10 +216,10 @@ export default function HoduNavbar({ siteName = HODU.name, logoUrl = '' }: HoduN
             ))}
 
             <div className="pt-3 border-t border-brand-border">
-              <a href={`${HODU.lmsUrl}/register`} target="_blank" rel="noreferrer"
-                className="block w-full bg-brand-maroon text-white font-bold py-3 rounded-lg text-sm text-center">
+              <Link href="/enroll" onClick={() => setMobileOpen(false)}
+                className="block w-full bg-brand-maroon hover:bg-brand-accent text-white font-bold py-3 rounded-lg text-sm text-center transition-colors">
                 Enroll Now
-              </a>
+              </Link>
             </div>
           </div>
         </div>
