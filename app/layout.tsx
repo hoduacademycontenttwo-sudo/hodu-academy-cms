@@ -39,7 +39,7 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${playfair.variable} ${openSans.variable} ${outfit.variable} h-full antialiased font-sans`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-brand-bg text-brand-text selection:bg-brand-maroon selection:text-white">
+      <body className="min-h-full flex flex-col font-sans bg-brand-bg text-brand-text selection:bg-brand-maroon selection:text-white overflow-x-hidden max-w-full w-full">
         {children}
       </body>
     </html>

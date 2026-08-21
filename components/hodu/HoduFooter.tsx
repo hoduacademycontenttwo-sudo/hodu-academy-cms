@@ -39,7 +39,7 @@ export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site, a
   const offerings = academicOfferings && academicOfferings.length > 0 ? academicOfferings : fallbackOfferings
 
   return (
-    <footer className="bg-brand-crimson text-white border-t border-brand-border">
+    <footer className="bg-brand-crimson text-white border-t border-brand-border w-full max-w-full overflow-hidden">
 
       {/* Top Value Propositions */}
       <div className="border-b border-white/15 py-10 bg-brand-wine/30">

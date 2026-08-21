@@ -180,12 +180,12 @@ export default async function HomePage() {
     : toppers
 
   return (
-    <div className="space-y-0 animate-fade-in bg-brand-bg text-brand-text">
+    <div className="space-y-0 animate-fade-in bg-brand-bg text-brand-text w-full max-w-full overflow-x-hidden">
 
       {/* Notice ticker */}
       {notices && notices.length > 0 && (
-        <div className="bg-brand-crimson text-white text-xs py-2 overflow-hidden border-b border-brand-border">
-          <div className="max-w-7xl mx-auto px-4 flex items-center gap-4">
+        <div className="bg-brand-crimson text-white text-xs py-2 overflow-hidden border-b border-brand-border w-full max-w-full">
+          <div className="max-w-7xl mx-auto px-4 flex items-center gap-4 overflow-hidden">
             <span className="bg-white text-brand-maroon px-2.5 py-0.5 rounded text-[11px] font-bold shrink-0 uppercase tracking-widest">
               Notice
             </span>
