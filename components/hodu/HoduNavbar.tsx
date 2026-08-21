@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, ShieldAlert, ChevronDown, ArrowRight } from 'lucide-react'
+import { Menu, X, ShieldAlert, ChevronDown, ArrowRight, Phone, MapPin, Sparkles, GraduationCap } from 'lucide-react'
 import { HODU, HODU_SITE_ID } from '@/lib/hodu'
 import { createClient } from '@/lib/supabase/client'
 
@@ -14,21 +14,21 @@ export interface NavItem {
 }
 
 const fallbackCourses: NavItem[] = [
-  { label: 'IGCSE & Cambridge', href: '/courses?category=IGCSE', icon: '🌐' },
-  { label: 'IB Programme',       href: '/courses?category=IB',   icon: '🎓' },
-  { label: 'CBSE (Class 9–12)',  href: '/courses?category=CBSE', icon: '📚' },
-  { label: 'JEE / NEET',        href: '/courses?category=Competitive+Exams', icon: '🏆' },
-  { label: 'Olympiads',          href: '/courses?category=Olympiads', icon: '🥇' },
-  { label: 'Online Courses',     href: '/courses', icon: '📡' },
+  { label: 'Cambridge IGCSE & A-Levels', href: '/courses?category=IGCSE', icon: '🌐' },
+  { label: 'IB Diploma Programme (MYP & DP)', href: '/courses?category=IB', icon: '🎓' },
+  { label: 'CBSE Board (Class 9–12)', href: '/courses?category=CBSE', icon: '📚' },
+  { label: 'IIT-JEE & NEET-UG Integrated', href: '/courses?category=Competitive+Exams', icon: '🏆' },
+  { label: 'Junior Olympiads & Foundation', href: '/courses?category=Olympiads', icon: '🥇' },
+  { label: 'Live Online 1-on-1 Micro Batches', href: '/courses', icon: '📡' },
 ]
 
 const fallbackStudyMaterials: NavItem[] = [
-  { label: 'JEE Main',          href: '/study-materials/jee-main', icon: '⚛️' },
-  { label: 'JEE Advanced',      href: '/study-materials/jee-advanced', icon: '🔬' },
-  { label: 'NEET',              href: '/study-materials/neet', icon: '🧬' },
-  { label: 'NCERT Solutions',   href: '/study-materials/ncert-solutions', icon: '📚' },
-  { label: 'CBSE',              href: '/study-materials/cbse', icon: '🎯' },
-  { label: 'Olympiad',          href: '/study-materials/olympiad', icon: '🏅' },
+  { label: 'JEE Main Archive & DPPs', href: '/study-materials/jee-main', icon: '⚛️' },
+  { label: 'JEE Advanced Master Problems', href: '/study-materials/jee-advanced', icon: '🔬' },
+  { label: 'NEET Diagnostic Tests & Keys', href: '/study-materials/neet', icon: '🧬' },
+  { label: 'NCERT Line-by-Line Solutions', href: '/study-materials/ncert-solutions', icon: '📚' },
+  { label: 'CBSE Exemplar Question Banks', href: '/study-materials/cbse', icon: '🎯' },
+  { label: 'IMO / NSO Olympiad Workbooks', href: '/study-materials/olympiad', icon: '🏅' },
 ]
 
 interface DropdownProps {
@@ -72,7 +72,6 @@ function Dropdown({ label, href, items, isActive }: DropdownProps) {
     }
   }, [])
 
-  // Close dropdown on route change
   useEffect(() => {
     setOpen(false)
   }, [pathname])
@@ -88,9 +87,9 @@ function Dropdown({ label, href, items, isActive }: DropdownProps) {
         <Link
           href={href}
           onClick={() => setOpen(false)}
-          className={`flex items-center text-sm font-medium transition-colors ${
+          className={`flex items-center text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
             isActive
-              ? 'text-brand-maroon font-bold'
+              ? 'text-brand-maroon font-black'
               : 'text-brand-navy hover:text-brand-maroon'
           }`}
         >
@@ -102,10 +101,10 @@ function Dropdown({ label, href, items, isActive }: DropdownProps) {
             e.stopPropagation()
             setOpen((prev) => !prev)
           }}
-          className={`p-1.5 ml-0.5 rounded-md transition-colors ${
+          className={`p-1 ml-0.5 rounded-md transition-colors ${
             open || isActive
               ? 'text-brand-maroon bg-brand-bg/60'
-              : 'text-brand-navy hover:text-brand-maroon'
+              : 'text-brand-navy/70 hover:text-brand-maroon'
           }`}
           aria-expanded={open}
           aria-label={`Toggle ${label} menu`}
@@ -120,14 +119,17 @@ function Dropdown({ label, href, items, isActive }: DropdownProps) {
 
       {open && (
         <div className="absolute top-full left-0 pt-2 z-50 animate-fade-in">
-          <div className="bg-white border border-brand-border rounded-xl shadow-xl overflow-hidden min-w-[230px] p-1.5">
-            <div className="px-3 py-1.5 mb-1 border-b border-brand-border/60 flex items-center justify-between">
+          <div className="bg-white border border-brand-border rounded-2xl shadow-2xl overflow-hidden min-w-[280px] p-2">
+            <div className="px-3.5 py-2 mb-1.5 border-b border-brand-border/60 flex items-center justify-between bg-brand-bg/50 rounded-xl">
+              <span className="text-[10px] font-black uppercase tracking-widest text-brand-navy/60">
+                {label} Catalog
+              </span>
               <Link
                 href={href}
                 onClick={() => setOpen(false)}
-                className="text-[11px] font-bold uppercase tracking-wider text-brand-maroon hover:underline flex items-center gap-1"
+                className="text-[10px] font-black uppercase tracking-wider text-brand-maroon hover:underline flex items-center gap-1"
               >
-                All {label} <ArrowRight className="h-3 w-3" />
+                All {label} <ArrowRight className="h-2.5 w-2.5" />
               </Link>
             </div>
             {items.map((item) => {
@@ -137,15 +139,14 @@ function Dropdown({ label, href, items, isActive }: DropdownProps) {
                   key={item.label}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs transition-colors ${
                     isItemActive
                       ? 'bg-brand-bg text-brand-maroon font-bold'
                       : 'text-brand-navy hover:bg-brand-bg hover:text-brand-maroon'
                   }`}
                 >
-                  {item.icon && <span className="text-base shrink-0">{item.icon}</span>}
-                  <span className="font-medium text-xs sm:text-sm">{item.label}</span>
-                  <ChevronDown className="h-3 w-3 ml-auto -rotate-90 text-brand-navy/30" />
+                  {item.icon && <span className="text-sm shrink-0">{item.icon}</span>}
+                  <span className="font-semibold text-xs leading-snug">{item.label}</span>
                 </Link>
               )
             })}
@@ -180,7 +181,6 @@ export default function HoduNavbar({
     initialStudyMaterials && initialStudyMaterials.length > 0 ? initialStudyMaterials : fallbackStudyMaterials
   )
 
-  // Client-side fallback sync with graceful error handling
   useEffect(() => {
     let isMounted = true
     try {
@@ -208,23 +208,17 @@ export default function HoduNavbar({
             setStudyMaterials(materialsRes.data as NavItem[])
           }
         })
-        .catch(() => {
-          // Keep initial or fallback items silently on connection issues
-        })
-    } catch {
-      // Ignore client supabase instantiation errors
-    }
+        .catch(() => {})
+    } catch {}
     return () => {
       isMounted = false
     }
   }, [])
 
-  // Auto-close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false)
   }, [pathname])
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = 'hidden'
@@ -239,44 +233,60 @@ export default function HoduNavbar({
   const isCoursesActive = pathname === '/courses' || pathname.startsWith('/courses/') || pathname.startsWith('/courses?')
   const isStudyMaterialsActive = pathname === '/study-materials' || pathname.startsWith('/study-materials/')
 
-  const navLinks = [
-    { label: 'Home', href: '/', isActive: pathname === '/' },
-    { label: 'Offline', href: '/offline', isActive: pathname === '/offline' },
-    { label: 'About', href: '/about', isActive: pathname === '/about' },
-    { label: 'Blog', href: '/blog', isActive: pathname === '/blog' || pathname.startsWith('/blog/') },
-    { label: 'Contact', href: '/contact', isActive: pathname === '/contact' },
-  ]
-
   return (
-    <header className="sticky top-0 z-50 w-full bg-brand-white border-b border-brand-border shadow-sm">
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-brand-border shadow-xs">
+      
+      {/* Top Academic Banner */}
+      <div className="bg-brand-midnight text-white text-[11px] py-1.5 px-4 hidden md:block border-b border-brand-maroon/20">
+        <div className="max-w-7xl mx-auto flex items-center justify-between font-medium">
+          <div className="flex items-center gap-4 text-white/80">
+            <span className="flex items-center gap-1.5 text-brand-gold font-bold">
+              <MapPin className="h-3 w-3" /> Jaipur Campus Hub (C-Scheme & Vaishali)
+            </span>
+            <span className="text-white/30">•</span>
+            <span>Batch 2025–26 Admissions Active</span>
+          </div>
+          <div className="flex items-center gap-4 text-white/90">
+            <a href={`tel:${HODU.phone}`} className="flex items-center gap-1 hover:text-brand-gold transition-colors font-bold">
+              <Phone className="h-3 w-3 text-brand-gold" /> Helpline: {HODU.phone}
+            </a>
+            <span className="text-white/30">•</span>
+            <Link href="/contact" className="hover:text-brand-gold transition-colors">
+              Book Campus Tour
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Header Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
+        <div className="flex justify-between h-18 items-center">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group shrink-0">
+          <Link href="/" className="flex items-center space-x-2.5 group shrink-0">
             {logoUrl ? (
-              <img src={logoUrl} alt={siteName} className="h-9 w-9 rounded-lg object-cover shadow-md shrink-0" />
+              <img src={logoUrl} alt={siteName} className="h-10 w-10 rounded-xl object-cover shadow-sm shrink-0" />
             ) : (
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-maroon text-white font-extrabold text-xl shadow-md shrink-0">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-maroon text-white font-black text-xl shadow-sm shrink-0">
                 {siteName.charAt(0).toUpperCase()}
               </div>
             )}
             <div className="flex flex-col leading-none">
-              <span className="text-lg font-extrabold tracking-tight text-brand-navy group-hover:text-brand-maroon transition-colors">
+              <span className="text-lg sm:text-xl font-extrabold tracking-tight text-brand-navy group-hover:text-brand-maroon transition-colors">
                 {siteName}
               </span>
-              <span className="text-[9px] font-semibold tracking-widest text-brand-accent uppercase">
-                EXCELLENCE PRESCRIBED
+              <span className="text-[9px] font-black tracking-widest text-brand-maroon uppercase mt-0.5">
+                ACADEMIC EXCELLENCE
               </span>
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-7">
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
             <Link
               href="/"
-              className={`nav-link text-sm font-medium transition-colors ${
-                pathname === '/' ? 'text-brand-maroon font-bold' : 'text-brand-navy hover:text-brand-maroon'
+              className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
+                pathname === '/' ? 'text-brand-maroon font-black' : 'text-brand-navy hover:text-brand-maroon'
               }`}
             >
               Home
@@ -285,32 +295,32 @@ export default function HoduNavbar({
             <Dropdown label="Study Materials" href="/study-materials" items={studyMaterials} isActive={isStudyMaterialsActive} />
             <Link
               href="/offline"
-              className={`nav-link text-sm font-medium transition-colors ${
-                pathname === '/offline' ? 'text-brand-maroon font-bold' : 'text-brand-navy hover:text-brand-maroon'
+              className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
+                pathname === '/offline' ? 'text-brand-maroon font-black' : 'text-brand-navy hover:text-brand-maroon'
               }`}
             >
-              Offline
+              Jaipur Campus
             </Link>
             <Link
               href="/about"
-              className={`nav-link text-sm font-medium transition-colors ${
-                pathname === '/about' ? 'text-brand-maroon font-bold' : 'text-brand-navy hover:text-brand-maroon'
+              className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
+                pathname === '/about' ? 'text-brand-maroon font-black' : 'text-brand-navy hover:text-brand-maroon'
               }`}
             >
-              About
+              Faculty
             </Link>
             <Link
               href="/blog"
-              className={`nav-link text-sm font-medium transition-colors ${
-                pathname === '/blog' || pathname.startsWith('/blog/') ? 'text-brand-maroon font-bold' : 'text-brand-navy hover:text-brand-maroon'
+              className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
+                pathname === '/blog' || pathname.startsWith('/blog/') ? 'text-brand-maroon font-black' : 'text-brand-navy hover:text-brand-maroon'
               }`}
             >
               Blog
             </Link>
             <Link
               href="/contact"
-              className={`nav-link text-sm font-medium transition-colors ${
-                pathname === '/contact' ? 'text-brand-maroon font-bold' : 'text-brand-navy hover:text-brand-maroon'
+              className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
+                pathname === '/contact' ? 'text-brand-maroon font-black' : 'text-brand-navy hover:text-brand-maroon'
               }`}
             >
               Contact
@@ -321,16 +331,16 @@ export default function HoduNavbar({
           <div className="hidden sm:flex items-center gap-3">
             <Link
               href="/admin"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-dashed border-brand-border text-xs font-semibold text-brand-navy/70 hover:text-brand-navy hover:bg-brand-bg transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-brand-border text-xs font-semibold text-brand-navy/70 hover:text-brand-navy hover:bg-brand-bg transition-all"
             >
               <ShieldAlert className="h-3.5 w-3.5 text-brand-maroon" />
               Admin
             </Link>
             <Link
               href="/enroll"
-              className="bg-brand-maroon hover:bg-brand-accent text-white px-5 py-2 rounded-lg text-sm font-bold transition-all inline-block text-center shadow-sm"
+              className="bg-brand-maroon hover:bg-brand-crimson text-white px-5 py-2.5 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all inline-block text-center shadow-md hover:shadow-lg"
             >
-              Enroll Now
+              Admissions 2025–26
             </Link>
           </div>
 
@@ -338,13 +348,13 @@ export default function HoduNavbar({
           <div className="flex lg:hidden items-center gap-2">
             <Link
               href="/admin"
-              className="px-2.5 py-1 rounded border text-[11px] font-bold text-brand-navy/80 border-brand-border uppercase hover:bg-brand-bg"
+              className="px-2.5 py-1 rounded-lg border text-[11px] font-bold text-brand-navy/80 border-brand-border uppercase hover:bg-brand-bg"
             >
               Admin
             </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 rounded-lg text-brand-navy hover:bg-brand-bg transition-colors"
+              className="p-2 rounded-xl text-brand-navy hover:bg-brand-bg transition-colors"
               aria-label={mobileOpen ? 'Close Menu' : 'Open Menu'}
             >
               {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -356,28 +366,28 @@ export default function HoduNavbar({
       {/* Mobile drawer */}
       {mobileOpen && (
         <div className="lg:hidden border-t border-brand-border bg-white animate-fade-in max-h-[calc(100vh-4rem)] overflow-y-auto">
-          <div className="px-4 pt-3 pb-6 space-y-1.5">
+          <div className="px-4 pt-3 pb-6 space-y-2">
             <Link
               href="/"
               onClick={() => setMobileOpen(false)}
-              className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                pathname === '/' ? 'bg-brand-bg text-brand-maroon font-bold' : 'text-brand-navy hover:bg-brand-bg'
+              className={`block px-4 py-2.5 rounded-xl text-sm font-bold transition-colors ${
+                pathname === '/' ? 'bg-brand-bg text-brand-maroon' : 'text-brand-navy hover:bg-brand-bg'
               }`}
             >
               Home
             </Link>
 
             {/* Courses accordion */}
-            <div className="border border-brand-border/60 rounded-xl overflow-hidden">
+            <div className="border border-brand-border/80 rounded-2xl overflow-hidden">
               <div className="flex items-center justify-between px-4 py-2.5 bg-brand-bg/40">
                 <Link
                   href="/courses"
                   onClick={() => setMobileOpen(false)}
-                  className={`text-sm font-medium transition-colors ${
-                    isCoursesActive ? 'text-brand-maroon font-bold' : 'text-brand-navy hover:text-brand-maroon'
+                  className={`text-sm font-bold transition-colors ${
+                    isCoursesActive ? 'text-brand-maroon' : 'text-brand-navy hover:text-brand-maroon'
                   }`}
                 >
-                  Courses
+                  Courses & Programs
                 </Link>
                 <button
                   type="button"
@@ -393,7 +403,7 @@ export default function HoduNavbar({
                   <Link
                     href="/courses"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center justify-between py-2 px-3 text-xs font-bold text-brand-maroon bg-brand-bg/60 rounded-lg"
+                    className="flex items-center justify-between py-2 px-3 text-xs font-bold text-brand-maroon bg-brand-bg/60 rounded-xl"
                   >
                     <span>View All Courses</span>
                     <ArrowRight className="h-3 w-3" />
@@ -403,7 +413,7 @@ export default function HoduNavbar({
                       key={c.label}
                       href={c.href}
                       onClick={() => setMobileOpen(false)}
-                      className={`flex items-center gap-2 py-2 px-3 text-sm rounded-lg transition-colors ${
+                      className={`flex items-center gap-2 py-2 px-3 text-xs font-medium rounded-xl transition-colors ${
                         pathname === c.href
                           ? 'bg-brand-bg text-brand-maroon font-bold'
                           : 'text-brand-navy/80 hover:bg-brand-bg hover:text-brand-maroon'
@@ -418,16 +428,16 @@ export default function HoduNavbar({
             </div>
 
             {/* Study Materials accordion */}
-            <div className="border border-brand-border/60 rounded-xl overflow-hidden">
+            <div className="border border-brand-border/80 rounded-2xl overflow-hidden">
               <div className="flex items-center justify-between px-4 py-2.5 bg-brand-bg/40">
                 <Link
                   href="/study-materials"
                   onClick={() => setMobileOpen(false)}
-                  className={`text-sm font-medium transition-colors ${
-                    isStudyMaterialsActive ? 'text-brand-maroon font-bold' : 'text-brand-navy hover:text-brand-maroon'
+                  className={`text-sm font-bold transition-colors ${
+                    isStudyMaterialsActive ? 'text-brand-maroon' : 'text-brand-navy hover:text-brand-maroon'
                   }`}
                 >
-                  Study Materials
+                  Study Materials & DPPs
                 </Link>
                 <button
                   type="button"
@@ -443,9 +453,9 @@ export default function HoduNavbar({
                   <Link
                     href="/study-materials"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center justify-between py-2 px-3 text-xs font-bold text-brand-maroon bg-brand-bg/60 rounded-lg"
+                    className="flex items-center justify-between py-2 px-3 text-xs font-bold text-brand-maroon bg-brand-bg/60 rounded-xl"
                   >
-                    <span>View All Study Materials</span>
+                    <span>View All Materials</span>
                     <ArrowRight className="h-3 w-3" />
                   </Link>
                   {studyMaterials.map((m) => (
@@ -453,7 +463,7 @@ export default function HoduNavbar({
                       key={m.label}
                       href={m.href}
                       onClick={() => setMobileOpen(false)}
-                      className={`flex items-center gap-2 py-2 px-3 text-sm rounded-lg transition-colors ${
+                      className={`flex items-center gap-2 py-2 px-3 text-xs font-medium rounded-xl transition-colors ${
                         pathname === m.href
                           ? 'bg-brand-bg text-brand-maroon font-bold'
                           : 'text-brand-navy/80 hover:bg-brand-bg hover:text-brand-maroon'
@@ -468,10 +478,10 @@ export default function HoduNavbar({
             </div>
 
             {[
-              { label: 'Offline Coaching', href: '/offline' },
-              { label: 'About Us', href: '/about' },
-              { label: 'Blog', href: '/blog' },
-              { label: 'Contact', href: '/contact' },
+              { label: 'Jaipur Offline Campus', href: '/offline' },
+              { label: 'Faculty & Mentors', href: '/about' },
+              { label: 'Academic Blog', href: '/blog' },
+              { label: 'Contact Us', href: '/contact' },
             ].map((item) => {
               const isActive = pathname === item.href
               return (
@@ -479,8 +489,8 @@ export default function HoduNavbar({
                   key={item.label}
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    isActive ? 'bg-brand-bg text-brand-maroon font-bold' : 'text-brand-navy hover:bg-brand-bg'
+                  className={`block px-4 py-2.5 rounded-xl text-sm font-bold transition-colors ${
+                    isActive ? 'bg-brand-bg text-brand-maroon' : 'text-brand-navy hover:bg-brand-bg'
                   }`}
                 >
                   {item.label}
@@ -492,9 +502,9 @@ export default function HoduNavbar({
               <Link
                 href="/enroll"
                 onClick={() => setMobileOpen(false)}
-                className="block w-full bg-brand-maroon hover:bg-brand-accent text-white font-bold py-3 rounded-xl text-sm text-center shadow-md transition-colors"
+                className="block w-full bg-brand-maroon hover:bg-brand-crimson text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider text-center shadow-md transition-colors"
               >
-                Enroll Now
+                Admissions 2025–26
               </Link>
             </div>
           </div>

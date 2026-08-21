@@ -67,84 +67,153 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats, heroTitleHtm
   const s = slides[current]
 
   return (
-    <section className="relative min-h-[560px] md:min-h-[620px] overflow-hidden border-b border-brand-border">
-      {/* Slides */}
+    <section className="relative min-h-[620px] lg:min-h-[680px] overflow-hidden border-b border-brand-border bg-gradient-to-b from-brand-bg via-white to-brand-bg academic-grid-pattern">
+      {/* Background slide ambient image with dark overlay */}
       {slides.map((sl, i) => (
-        <div key={i} className={`absolute inset-0 transition-opacity duration-700 ${i === current ? 'opacity-100' : 'opacity-0'}`}>
-          <img src={sl.image} alt="" className="w-full h-full object-cover object-center" style={{ opacity: (sl.imageOpacity ?? 100) / 100 }} />
+        <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === current ? 'opacity-35' : 'opacity-0'}`}>
+          <img src={sl.image} alt="" className="w-full h-full object-cover object-center filter saturate-75" />
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-bg via-brand-bg/85 to-white/70" />
         </div>
       ))}
 
-      {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 flex items-center">
-        <div key={current} className="max-w-2xl bg-white/85 backdrop-blur-md border border-brand-border/90 rounded-3xl p-6 sm:p-9 shadow-2xl animate-fade-in">
-          {/* Trust badge */}
-          <div className="inline-flex items-center gap-2 bg-brand-bg/90 border border-brand-border px-3.5 py-1.5 rounded-full text-brand-maroon text-xs font-bold mb-4 shadow-sm">
-            <span className="flex items-center gap-1 text-amber-500 font-extrabold">
-              ★ ★ ★ ★ ★
-            </span>
-            <span className="text-brand-navy/80 font-semibold">4.9/5 Rating</span>
-            <span className="text-brand-border text-xs">•</span>
-            <span className="text-brand-accent">15,000+ Students</span>
-          </div>
-
-          <h1
-            className={`leading-[1.12] tracking-tight mb-4 text-brand-navy drop-shadow-sm ${sizeClass[s.headingSize] ?? sizeClass.large} ${weightClass[s.headingWeight] ?? weightClass.black}`}
-            dangerouslySetInnerHTML={{ __html: s.headingHtml }}
-          />
-
-          {s.subtitleHtml && (
-            <p
-              className={`max-w-lg mb-7 text-brand-navy/75 leading-relaxed ${subSizeClass[s.subtitleSize] ?? subSizeClass.medium} ${weightClass[s.subtitleWeight] ?? weightClass.light}`}
-              dangerouslySetInnerHTML={{ __html: s.subtitleHtml }}
-            />
-          )}
-
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 mb-6">
-            <Link href={ctaLink}
-              className="w-full sm:w-auto bg-brand-maroon hover:bg-brand-accent text-white font-extrabold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2 text-sm tracking-wide">
-              {ctaText}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link href="/contact"
-              className="w-full sm:w-auto bg-white/90 hover:bg-brand-bg text-brand-navy border border-brand-border font-bold px-7 py-3.5 rounded-xl shadow-sm hover:shadow transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2 text-sm">
-              Free Callback
-              <Calendar className="h-4 w-4 text-brand-maroon" />
-            </Link>
-          </div>
-
-          {stats.length > 0 && (
-            <div className="grid grid-cols-3 gap-4 pt-5 border-t border-brand-border/80">
-              {stats.slice(0, 3).map(st => (
-                <div key={st.label} className="bg-brand-bg/60 rounded-xl p-2.5 text-center border border-brand-border/50">
-                  <h3 className="text-xl sm:text-2xl font-black text-brand-maroon">{st.value}</h3>
-                  <p className="text-[10px] sm:text-[11px] text-brand-navy/70 font-bold uppercase tracking-wider mt-0.5">{st.label}</p>
-                </div>
-              ))}
+      {/* Hero Container */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          
+          {/* Left: Editorial Content */}
+          <div key={current} className="lg:col-span-7 space-y-6 animate-fade-in">
+            {/* Academic Accreditation Badge */}
+            <div className="inline-flex items-center gap-2.5 bg-white/95 backdrop-blur-md border border-brand-maroon/20 px-4 py-2 rounded-full text-brand-maroon text-xs font-black shadow-xs">
+              <span className="w-2.5 h-2.5 rounded-full bg-brand-maroon animate-pulse shrink-0" />
+              <span className="tracking-wider uppercase text-[11px] text-brand-navy font-black">
+                ESTD. 2018 · JAIPUR MAIN CAMPUS
+              </span>
+              <span className="text-brand-border">|</span>
+              <span className="text-brand-maroon font-bold text-[11px]">IGCSE · IB · CBSE · JEE · NEET</span>
             </div>
-          )}
+
+            {/* Editorial Headline */}
+            <h1 className="font-serif-editorial text-4xl sm:text-5xl lg:text-[3.4rem] font-bold text-brand-navy leading-[1.14] tracking-tight">
+              Where Academic Rigor Shapes <span className="italic font-normal text-brand-maroon underline decoration-brand-maroon/30 underline-offset-8">India's Top Ranks</span>
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-sm sm:text-base text-brand-navy/80 font-light leading-relaxed max-w-xl">
+              Syllabus-focused coaching for International (Cambridge IGCSE & IB) and National Boards (CBSE, JEE, NEET). Small 1:12 batches, continuous diagnostic mock testing, and daily 1-on-1 doubt clearing.
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
+              <Link href={ctaLink || '/courses'}
+                className="bg-brand-maroon hover:bg-brand-crimson text-white font-extrabold px-8 py-4 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2.5 text-sm tracking-wide">
+                <span>Explore Programs 2025–26</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/contact"
+                className="bg-white/90 hover:bg-brand-cream text-brand-navy border border-brand-border font-bold px-7 py-4 rounded-xl shadow-xs hover:shadow transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2 text-sm">
+                <span>Book Diagnostic Test</span>
+                <Calendar className="h-4 w-4 text-brand-maroon" />
+              </Link>
+            </div>
+
+            {/* Trust highlights */}
+            <div className="grid grid-cols-3 gap-3 pt-6 border-t border-brand-border max-w-lg">
+              <div>
+                <span className="text-xl sm:text-2xl font-black text-brand-maroon block">15,000+</span>
+                <span className="text-[11px] text-brand-navy/60 font-semibold uppercase tracking-wider">Students Mentored</span>
+              </div>
+              <div>
+                <span className="text-xl sm:text-2xl font-black text-brand-maroon block">99.4%</span>
+                <span className="text-[11px] text-brand-navy/60 font-semibold uppercase tracking-wider">Top Board Score</span>
+              </div>
+              <div>
+                <span className="text-xl sm:text-2xl font-black text-brand-maroon block">1 : 12</span>
+                <span className="text-[11px] text-brand-navy/60 font-semibold uppercase tracking-wider">Batch Student Ratio</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Live Institutional Matrix Console */}
+          <div className="lg:col-span-5">
+            <div className="bg-white/95 backdrop-blur-xl border border-brand-border rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+              {/* Decorative subtle header tag */}
+              <div className="flex items-center justify-between pb-4 mb-5 border-b border-brand-border">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+                  <span className="text-xs font-black uppercase tracking-widest text-brand-navy">Admissions Console</span>
+                </div>
+                <span className="bg-brand-bg text-brand-maroon font-bold text-[10px] uppercase px-2.5 py-1 rounded-full border border-brand-border">
+                  Session 2025–26
+                </span>
+              </div>
+
+              {/* Batch availability tracker */}
+              <div className="space-y-3 mb-6">
+                <h4 className="text-xs font-bold text-brand-navy/60 uppercase tracking-wider">Current Cohort Availability</h4>
+                
+                <div className="bg-brand-bg/70 border border-brand-border/80 rounded-2xl p-3.5 flex items-center justify-between hover:border-brand-maroon/40 transition-colors">
+                  <div>
+                    <h5 className="font-extrabold text-xs text-brand-navy">Cambridge IGCSE (Class 9 & 10)</h5>
+                    <p className="text-[11px] text-brand-navy/60">Physics, Chem, Bio, Math (0580/0607)</p>
+                  </div>
+                  <span className="bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-extrabold px-2.5 py-1 rounded-full shrink-0">
+                    3 Seats Left
+                  </span>
+                </div>
+
+                <div className="bg-brand-bg/70 border border-brand-border/80 rounded-2xl p-3.5 flex items-center justify-between hover:border-brand-maroon/40 transition-colors">
+                  <div>
+                    <h5 className="font-extrabold text-xs text-brand-navy">IB Diploma Programme (HL & SL)</h5>
+                    <p className="text-[11px] text-brand-navy/60">Math AA/AI, Sciences, Economics, IA Prep</p>
+                  </div>
+                  <span className="bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-extrabold px-2.5 py-1 rounded-full shrink-0">
+                    Admissions Open
+                  </span>
+                </div>
+
+                <div className="bg-brand-bg/70 border border-brand-border/80 rounded-2xl p-3.5 flex items-center justify-between hover:border-brand-maroon/40 transition-colors">
+                  <div>
+                    <h5 className="font-extrabold text-xs text-brand-navy">JEE & NEET 2-Year Integrated</h5>
+                    <p className="text-[11px] text-brand-navy/60">Class 11 & 12 + Intensive Mock Labs</p>
+                  </div>
+                  <span className="bg-red-100 text-red-900 border border-red-300 text-[10px] font-extrabold px-2.5 py-1 rounded-full shrink-0">
+                    Fast Filling
+                  </span>
+                </div>
+              </div>
+
+              {/* Verified Result Spotlight */}
+              <div className="bg-brand-navy text-white rounded-2xl p-4 flex items-center gap-3.5 mb-5 shadow-sm">
+                <div className="w-12 h-12 rounded-xl bg-brand-maroon flex items-center justify-center font-black text-white text-base shrink-0 ring-2 ring-brand-gold/60">
+                  99%
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-brand-gold block">Hall of Fame Spotlight</span>
+                  <p className="text-xs font-extrabold text-white">Devansh Sharma · Jayshree Periwal</p>
+                  <p className="text-[10px] text-white/60">IGCSE 8x A* Marks · Full Course Alum</p>
+                </div>
+              </div>
+
+              {/* Action */}
+              <Link href="/enroll"
+                className="w-full bg-brand-navy hover:bg-brand-maroon text-white font-extrabold py-3.5 rounded-xl text-center block text-xs uppercase tracking-wider transition-colors shadow">
+                Reserve Seat in Target Batch →
+              </Link>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      {/* Arrow controls */}
+      {/* Slider dots for switching background visual */}
       {slides.length > 1 && (
-        <>
-          <button onClick={prev} aria-label="Previous slide" className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white border border-brand-border rounded-full flex items-center justify-center text-brand-navy transition-all backdrop-blur-sm z-10 shadow-sm">
-            <ChevronLeft size={18} />
-          </button>
-          <button onClick={next} aria-label="Next slide" className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white border border-brand-border rounded-full flex items-center justify-center text-brand-navy transition-all backdrop-blur-sm z-10 shadow-sm">
-            <ChevronRight size={18} />
-          </button>
-
-          {/* Dots */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2.5">
-            {slides.map((_, i) => (
-              <button key={i} onClick={() => go(i)} aria-label={`Go to slide ${i + 1}`}
-                className={`rounded-full transition-all duration-300 ${i === current ? 'w-8 h-2.5 bg-brand-maroon' : 'w-2.5 h-2.5 bg-brand-navy/20 hover:bg-brand-navy/40'}`}
-              />
-            ))}
-          </div>
-        </>
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+          {slides.map((_, i) => (
+            <button key={i} onClick={() => go(i)} aria-label={`Go to slide ${i + 1}`}
+              className={`rounded-full transition-all duration-300 ${i === current ? 'w-8 h-2 bg-brand-maroon' : 'w-2 h-2 bg-brand-navy/20 hover:bg-brand-navy/40'}`}
+            />
+          ))}
+        </div>
       )}
     </section>
   )
