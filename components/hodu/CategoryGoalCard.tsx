@@ -57,24 +57,24 @@ export default function CategoryGoalCard({
           </div>
         </div>
 
-        {/* Bottom Title & 3-column Stats Section (Light Theme) */}
-        <div className="pt-3 pb-2 px-2.5 text-center flex-1 flex flex-col justify-between">
+        {/* Bottom Title & 3-column Stats Section (Clean lines, no curved box) */}
+        <div className="pt-3 pb-2.5 px-2 text-center flex-1 flex flex-col justify-between">
           <span className="block text-xs sm:text-sm font-extrabold text-brand-text tracking-tight uppercase line-clamp-1 group-hover:text-brand-maroon transition-colors">
             {label}
           </span>
 
-          <div className="grid grid-cols-3 mt-2.5 p-2 bg-brand-blush/60 rounded-xl border border-brand-border/60 text-center">
+          <div className="grid grid-cols-3 mt-2.5 pt-2 border-t border-brand-border/70 text-center">
             {stats.map((st, i) => (
               <div
                 key={i}
                 className={`px-1 ${
-                  i === 1 ? 'border-x border-brand-border/80' : ''
+                  i === 1 ? 'border-x border-brand-border/70' : ''
                 }`}
               >
                 <span className="block text-[11px] sm:text-xs font-black text-brand-maroon leading-none">
                   {st.big}
                 </span>
-                <span className="block text-[8.5px] sm:text-[9px] text-brand-muted font-semibold mt-1 leading-tight line-clamp-1">
+                <span className="block text-[8.5px] sm:text-[9px] text-brand-muted font-medium mt-1 leading-tight line-clamp-1">
                   {st.label}
                 </span>
               </div>
