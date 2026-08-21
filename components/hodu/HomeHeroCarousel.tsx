@@ -2,20 +2,8 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import Link from 'next/link'
-import {
-  ArrowRight,
-  Calendar,
-  ChevronLeft,
-  ChevronRight,
-  GraduationCap,
-  Building2,
-  Trophy,
-  Award,
-  Sparkles,
-  MapPin,
-  CheckCircle2
-} from 'lucide-react'
-import { CarouselSlide } from '@/lib/homeCarousel'
+import { ArrowRight, Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
+import { CarouselSlide, defaultFallbackSlide } from '@/lib/homeCarousel'
 
 interface HomeHeroCarouselProps {
   ctaText: string
@@ -27,59 +15,21 @@ interface HomeHeroCarouselProps {
   initialSlides?: CarouselSlide[]
 }
 
-interface BannerSlide {
-  tag: string
-  tagIcon: any
-  title: string
-  highlight: string
-  subtitle: string
-  primaryCtaText: string
-  primaryCtaLink: string
-  secondaryCtaText: string
-  secondaryCtaLink: string
-  image: string
-  badgeText: string
-}
-
-const defaultBanners: BannerSlide[] = [
+const hardcodedSlides: { image: string; headline: string; subtitle: string }[] = [
   {
-    tag: 'ADMISSIONS OPEN 2025–26',
-    tagIcon: GraduationCap,
-    title: 'Where Academic Rigor Shapes',
-    highlight: "India's Top Ranks",
-    subtitle: 'Syllabus-focused coaching for Cambridge (IGCSE & A-Levels), IB Diploma, CBSE, IIT-JEE and NEET. Small 1:12 batches, daily doubt clearing, and continuous diagnostic testing.',
-    primaryCtaText: 'Explore Academic Programs',
-    primaryCtaLink: '/courses',
-    secondaryCtaText: 'Book Diagnostic Test',
-    secondaryCtaLink: '/contact',
-    image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&h=850&fit=crop&auto=format',
-    badgeText: 'Cambridge · IB · CBSE · JEE · NEET',
+    image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1800&h=900&fit=crop&auto=format',
+    headline: 'Where Academic Rigor Shapes India\'s Top Ranks',
+    subtitle: 'Cambridge IGCSE · IB Diploma · CBSE · IIT-JEE · NEET — Small 1:12 batches with daily doubt clearing.',
   },
   {
-    tag: 'JAIPUR PHYSICAL CAMPUS',
-    tagIcon: Building2,
-    title: 'Distraction-Free Learning Built for',
-    highlight: 'Deep Focus & Mastery',
-    subtitle: 'Air-conditioned digital amphitheatres, dedicated 1-on-1 faculty doubt cells, 8 AM–8 PM reference library, and GPS-tracked AC transit across Jaipur.',
-    primaryCtaText: 'Tour Jaipur Campus',
-    primaryCtaLink: '/offline',
-    secondaryCtaText: 'Schedule Center Visit',
-    secondaryCtaLink: '/contact',
-    image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1600&h=850&fit=crop&auto=format',
-    badgeText: 'C-Scheme & Vaishali Nagar Center',
+    image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1800&h=900&fit=crop&auto=format',
+    headline: 'Smart Classrooms Built for Deep Focus',
+    subtitle: 'Air-conditioned digital amphitheatres, 1-on-1 faculty doubt desks, and 8 AM–8 PM reference library.',
   },
   {
-    tag: 'PROVEN RESULTS & ACHIEVERS',
-    tagIcon: Trophy,
-    title: 'Celebrating Top Percentiles &',
-    highlight: 'All-India Board Scores',
-    subtitle: 'Over 15,000 students mentored with a 99.4% highest board mark, AIR 142 in JEE Advanced, 8x A* in Cambridge IGCSE, and 44/45 in IB Diploma Programme.',
-    primaryCtaText: 'View Success Stories',
-    primaryCtaLink: '/about',
-    secondaryCtaText: 'Reserve Batch Seat',
-    secondaryCtaLink: '/enroll',
-    image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1600&h=850&fit=crop&auto=format',
-    badgeText: '15,000+ Students Mentored',
+    image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1800&h=900&fit=crop&auto=format',
+    headline: 'Celebrating 15,000+ Students Mentored',
+    subtitle: '99.4% highest board score · AIR 142 JEE Advanced · 8× A* in Cambridge IGCSE · 44/45 IB DP.',
   },
 ]
 
@@ -92,204 +42,145 @@ export default function HomeHeroCarousel({
   heroImage,
   initialSlides,
 }: HomeHeroCarouselProps) {
+  // Build slides array: prefer admin-uploaded carousel slides, then fall back to hardcoded
+  const bannerSlides = (() => {
+    if (initialSlides && initialSlides.length > 0) {
+      return initialSlides.map((s, i) => ({
+        image: s.image || hardcodedSlides[i % hardcodedSlides.length].image,
+        headline: s.headingHtml || hardcodedSlides[i % hardcodedSlides.length].headline,
+        subtitle: s.subtitleHtml || hardcodedSlides[i % hardcodedSlides.length].subtitle,
+        isHtml: !!(s.headingHtml && s.headingHtml.includes('<')),
+      }))
+    }
+    // If admin set a single hero image/title, use that as slide 1
+    if (heroImage || heroTitleHtml) {
+      return [{
+        image: heroImage || hardcodedSlides[0].image,
+        headline: heroTitleHtml || hardcodedSlides[0].headline,
+        subtitle: heroSubtitleHtml || hardcodedSlides[0].subtitle,
+        isHtml: !!(heroTitleHtml && heroTitleHtml.includes('<')),
+      }, ...hardcodedSlides.slice(1).map(s => ({ ...s, isHtml: false }))]
+    }
+    return hardcodedSlides.map(s => ({ ...s, isHtml: false }))
+  })()
+
   const [current, setCurrent] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
+  const [paused, setPaused] = useState(false)
 
-  const slides = defaultBanners
-
-  const next = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % slides.length)
-  }, [slides.length])
-
-  const prev = useCallback(() => {
-    setCurrent((prev) => (prev - 1 + slides.length) % slides.length)
-  }, [slides.length])
+  const next = useCallback(() => setCurrent(c => (c + 1) % bannerSlides.length), [bannerSlides.length])
+  const prev = useCallback(() => setCurrent(c => (c - 1 + bannerSlides.length) % bannerSlides.length), [bannerSlides.length])
 
   useEffect(() => {
-    if (isPaused) return
-    const interval = setInterval(next, 6000)
-    return () => clearInterval(interval)
-  }, [next, isPaused])
+    if (paused || bannerSlides.length <= 1) return
+    const id = setInterval(next, 5500)
+    return () => clearInterval(id)
+  }, [next, paused, bannerSlides.length])
 
-  const currentSlide = slides[current]
-  const TagIcon = currentSlide.tagIcon
+  const slide = bannerSlides[current]
 
   return (
-    <section className="bg-white border-b border-brand-border">
-      
-      {/* Banner Carousel Container */}
-      <div
-        className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
-        <div className="relative rounded-3xl overflow-hidden border-2 border-brand-border bg-brand-maroon text-white shadow-xl min-h-[460px] sm:min-h-[520px] lg:min-h-[560px] flex items-center">
-          
-          {/* Background Photography with High-Legibility Dark Overlay */}
-          <div className="absolute inset-0 z-0 overflow-hidden">
-            <img
-              src={currentSlide.image}
-              alt={currentSlide.title}
-              key={currentSlide.image}
-              className="w-full h-full object-cover object-center opacity-30 scale-105 transition-all duration-1000 ease-out"
+    <section
+      className="relative w-full bg-brand-wine text-white overflow-hidden"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {/* Full-width background image */}
+      <div className="absolute inset-0 z-0">
+        <img
+          key={slide.image}
+          src={slide.image}
+          alt=""
+          className="w-full h-full object-cover object-center opacity-25 transition-opacity duration-700"
+        />
+        {/* Solid dark overlay — NO gradient */}
+        <div className="absolute inset-0 bg-brand-wine/80" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36">
+        <div className="max-w-2xl space-y-5">
+          {/* Headline */}
+          {slide.isHtml ? (
+            <h1
+              className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.15] text-white"
+              dangerouslySetInnerHTML={{ __html: slide.headline }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-maroon via-brand-maroon/90 to-brand-maroon/70 md:via-brand-maroon/85 md:to-transparent" />
-            <div className="absolute inset-0 bg-black/25" />
+          ) : (
+            <h1 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.15] text-white">
+              {slide.headline}
+            </h1>
+          )}
+
+          {/* Subtitle */}
+          {slide.isHtml && slide.subtitle.includes('<') ? (
+            <p
+              className="text-base sm:text-lg text-white/85 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: slide.subtitle }}
+            />
+          ) : (
+            <p className="text-base sm:text-lg text-white/85 leading-relaxed">
+              {slide.subtitle}
+            </p>
+          )}
+
+          {/* CTA Buttons */}
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <Link
+              href={ctaLink || '/courses'}
+              className="bg-white hover:bg-brand-blush text-brand-maroon font-bold px-6 py-3 rounded-lg text-sm transition-all flex items-center gap-2"
+            >
+              {ctaText || 'Explore Programs'}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/contact"
+              className="border-2 border-white/70 hover:border-white text-white font-semibold px-5 py-3 rounded-lg text-sm transition-all flex items-center gap-2"
+            >
+              Book Free Consultation
+              <Calendar className="h-4 w-4" />
+            </Link>
           </div>
+        </div>
 
-          {/* Banner Content Grid */}
-          <div className="relative z-10 w-full px-6 sm:px-10 lg:px-16 py-12 sm:py-16 grid lg:grid-cols-12 gap-8 items-center">
-            
-            {/* Left Content Column */}
-            <div className="lg:col-span-8 space-y-5">
-              
-              {/* Category Tag */}
-              <div className="inline-flex items-center gap-2 bg-white text-brand-maroon px-3.5 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest shadow-xs">
-                <TagIcon className="h-3.5 w-3.5" />
-                <span>{currentSlide.tag}</span>
-              </div>
-
-              {/* Serif Headline */}
-              <h1 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.18] text-white tracking-tight">
-                {currentSlide.title}{' '}
-                <span className="text-white underline decoration-white/40 underline-offset-8">
-                  {currentSlide.highlight}
-                </span>
-              </h1>
-
-              {/* Subtitle */}
-              <p className="text-sm sm:text-base lg:text-lg text-white/90 font-normal leading-relaxed max-w-2xl">
-                {currentSlide.subtitle}
-              </p>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-3">
-                <Link
-                  href={currentSlide.primaryCtaLink}
-                  className="bg-white hover:bg-neutral-100 text-brand-maroon font-bold px-7 py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm"
-                >
-                  <span>{currentSlide.primaryCtaText}</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-                <Link
-                  href={currentSlide.secondaryCtaLink}
-                  className="bg-brand-maroon/80 hover:bg-brand-maroon text-white border-2 border-white/80 hover:border-white font-bold px-6 py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
-                >
-                  <span>{currentSlide.secondaryCtaText}</span>
-                  <Calendar className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-
-              {/* Badge info */}
-              <div className="pt-2 flex items-center gap-2 text-xs text-white/80">
-                <CheckCircle2 className="h-4 w-4 text-white shrink-0" />
-                <span className="font-medium tracking-wide">{currentSlide.badgeText}</span>
-              </div>
-            </div>
-
-            {/* Right Interactive Thumbnail / Campus Tag */}
-            <div className="hidden lg:flex lg:col-span-4 justify-end">
-              <div className="bg-white/10 backdrop-blur-md border border-white/25 rounded-2xl p-5 text-white max-w-xs space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/80">
-                    Hodu Benchmark
-                  </span>
-                  <span className="text-[10px] font-bold bg-white text-brand-maroon px-2 py-0.5 rounded">
-                    0{current + 1} / 0{slides.length}
-                  </span>
-                </div>
-                <p className="font-serif-editorial font-bold text-lg text-white leading-snug">
-                  {currentSlide.badgeText}
-                </p>
-                <p className="text-xs text-white/80 leading-relaxed font-light">
-                  Tailored curriculum delivery with master educators, past 10-year paper archives, and 1:1 doubt support.
-                </p>
-                <div className="pt-2 border-t border-white/20 flex items-center justify-between text-xs font-bold">
-                  <Link href="/courses" className="hover:underline flex items-center gap-1">
-                    Explore All <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-
+        {/* Slide navigation */}
+        {bannerSlides.length > 1 && (
+          <div className="flex items-center gap-3 mt-10">
+            {bannerSlides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrent(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  current === idx ? 'w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
+                }`}
+              />
+            ))}
+            <span className="text-xs text-white/50 font-medium ml-2">
+              {String(current + 1).padStart(2, '0')} / {String(bannerSlides.length).padStart(2, '0')}
+            </span>
           </div>
+        )}
+      </div>
 
-          {/* Left & Right Arrow Navigation */}
+      {/* Prev / Next arrows */}
+      {bannerSlides.length > 1 && (
+        <>
           <button
-            type="button"
             onClick={prev}
-            aria-label="Previous Slide"
-            className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-brand-maroon hover:bg-neutral-100 flex items-center justify-center shadow-lg transition-all"
+            aria-label="Previous slide"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white flex items-center justify-center transition-all"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
           <button
-            type="button"
             onClick={next}
-            aria-label="Next Slide"
-            className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-brand-maroon hover:bg-neutral-100 flex items-center justify-center shadow-lg transition-all"
+            aria-label="Next slide"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white flex items-center justify-center transition-all"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
-
-          {/* Bottom Dot Indicators */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-            {slides.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => setCurrent(idx)}
-                aria-label={`Go to slide ${idx + 1}`}
-                className={`h-2.5 rounded-full transition-all duration-300 ${
-                  current === idx ? 'w-8 bg-white' : 'w-2.5 bg-white/40 hover:bg-white/70'
-                }`}
-              />
-            ))}
-          </div>
-
-        </div>
-      </div>
-
-      {/* Trust & Academic Excellence Statistics Ribbon */}
-      <div className="border-t border-brand-border bg-white py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-            <div className="text-center md:text-left border-r last:border-r-0 border-brand-border pr-4">
-              <span className="text-2xl sm:text-3xl font-bold text-brand-maroon block font-serif-editorial">
-                15,000+
-              </span>
-              <span className="text-xs text-neutral-600 font-semibold uppercase tracking-wider mt-0.5 block">
-                Students Mentored
-              </span>
-            </div>
-            <div className="text-center md:text-left border-r last:border-r-0 border-brand-border pr-4">
-              <span className="text-2xl sm:text-3xl font-bold text-brand-maroon block font-serif-editorial">
-                99.4%
-              </span>
-              <span className="text-xs text-neutral-600 font-semibold uppercase tracking-wider mt-0.5 block">
-                Highest Board Score
-              </span>
-            </div>
-            <div className="text-center md:text-left border-r last:border-r-0 border-brand-border pr-4">
-              <span className="text-2xl sm:text-3xl font-bold text-brand-maroon block font-serif-editorial">
-                1 : 12
-              </span>
-              <span className="text-xs text-neutral-600 font-semibold uppercase tracking-wider mt-0.5 block">
-                Intimate Batch Ratio
-              </span>
-            </div>
-            <div className="text-center md:text-left">
-              <span className="text-2xl sm:text-3xl font-bold text-brand-maroon block font-serif-editorial">
-                100%
-              </span>
-              <span className="text-xs text-neutral-600 font-semibold uppercase tracking-wider mt-0.5 block">
-                Concept Retention
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
+        </>
+      )}
     </section>
   )
 }

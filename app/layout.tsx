@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Plus_Jakarta_Sans, Outfit } from "next/font/google";
+import { Playfair_Display, Open_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -9,7 +9,7 @@ const playfair = Playfair_Display({
   weight: ["500", "600", "700", "800", "900"],
 });
 
-const plusJakarta = Plus_Jakarta_Sans({
+const openSans = Open_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
@@ -37,9 +37,9 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${playfair.variable} ${plusJakarta.variable} ${outfit.variable} h-full antialiased font-sans`}
+      className={`${playfair.variable} ${openSans.variable} ${outfit.variable} h-full antialiased font-sans`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-brand-bg text-brand-navy selection:bg-brand-maroon selection:text-white">
+      <body className="min-h-full flex flex-col font-sans bg-brand-bg text-brand-text selection:bg-brand-maroon selection:text-white">
         {children}
       </body>
     </html>

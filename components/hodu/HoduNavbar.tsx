@@ -299,7 +299,7 @@ export default function HoduNavbar({
     <header className="sticky top-0 z-50 w-full bg-white border-b border-brand-border">
       
       {/* Solid Maroon Top Bar */}
-      <div className="bg-brand-maroon text-white text-[11px] py-2 px-4 hidden md:block">
+      <div className="bg-brand-crimson text-white text-[11px] py-2 px-4 hidden md:block">
         <div className="max-w-7xl mx-auto flex items-center justify-between font-medium">
           <div className="flex items-center gap-4 text-white/90">
             <span className="flex items-center gap-1.5 font-bold text-white">
@@ -325,26 +325,21 @@ export default function HoduNavbar({
         <div className="flex justify-between h-20 items-center">
 
           {/* Logo with clear margin */}
-          <Link href="/" className="flex items-center gap-3 group shrink-0 mr-8 lg:mr-10">
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0 mr-6 lg:mr-8">
             {logoUrl ? (
-              <img src={logoUrl} alt={siteName} className="h-10 w-10 rounded-xl object-cover shrink-0" />
+              <img src={logoUrl} alt={siteName} className="h-9 w-9 rounded-lg object-cover shrink-0" />
             ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-maroon text-white font-black text-xl shrink-0 shadow-xs">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-maroon text-white font-bold text-lg shrink-0">
                 {siteName.charAt(0).toUpperCase()}
               </div>
             )}
-            <div className="flex flex-col leading-tight">
-              <span className="text-lg sm:text-xl font-bold tracking-tight text-brand-maroon">
-                {siteName}
-              </span>
-              <span className="text-[9px] font-black tracking-widest text-neutral-500 uppercase">
-                ACADEMIC EXCELLENCE
-              </span>
-            </div>
+            <span className="text-lg font-bold tracking-tight text-brand-maroon whitespace-nowrap">
+              {siteName}
+            </span>
           </Link>
 
-          {/* Desktop Nav with ample spacing */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 flex-1">
+          {/* Desktop Nav — single-line links, no wrapping */}
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-7 flex-1 whitespace-nowrap">
             <Link
               href="/"
               className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${

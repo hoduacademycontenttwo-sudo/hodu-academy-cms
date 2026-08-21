@@ -185,14 +185,14 @@ export default async function HomePage() {
   })()
 
   return (
-    <div className="space-y-0 animate-fade-in bg-white">
+    <div className="space-y-0 animate-fade-in bg-brand-bg">
 
       {/* Live Notice ticker */}
       {notices && notices.length > 0 && (
-        <div className="bg-brand-maroon text-white text-xs py-2 overflow-hidden border-b border-brand-border">
+        <div className="bg-brand-crimson text-white text-xs py-2 overflow-hidden border-b border-brand-border">
           <div className="max-w-7xl mx-auto px-4 flex items-center gap-4">
-            <span className="bg-white text-brand-maroon px-2.5 py-0.5 rounded text-[11px] font-black shrink-0 uppercase tracking-widest shadow-xs">
-              ADMISSIONS NOTICE
+            <span className="bg-white text-brand-maroon px-2.5 py-0.5 rounded text-[11px] font-bold shrink-0 uppercase tracking-widest">
+              Notice
             </span>
             <div className="overflow-hidden whitespace-nowrap flex-1">
               <span className="inline-block animate-marquee font-medium text-white">
@@ -214,18 +214,17 @@ export default async function HomePage() {
         initialSlides={initialSlides}
       />
 
-      {/* Curriculum Tracks / Academic Pathways */}
       <section className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         <div className="text-center mb-12 sm:mb-16">
-          <span className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 shadow-xs">
+          <span className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-3">
             <GraduationCap className="h-3.5 w-3.5" />
-            ACADEMIC PATHWAYS 2025–26
+            PROGRAMS
           </span>
           <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon tracking-tight">
-            Curated Programs for Every Academic Goal
+            Academic Pathways
           </h2>
-          <p className="text-sm sm:text-base text-neutral-600 mt-2.5 max-w-2xl mx-auto font-normal leading-relaxed">
-            Targeted curriculums engineered with small interactive batches, past-paper dissection, and verified pedagogical frameworks.
+          <p className="text-sm text-brand-muted mt-2 max-w-lg mx-auto leading-relaxed">
+            Small 1:12 batches with targeted curriculums for every academic goal.
           </p>
         </div>
 
@@ -278,14 +277,14 @@ export default async function HomePage() {
       <section className="reveal bg-brand-maroon py-20 text-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-block bg-white text-brand-maroon text-xs font-black uppercase tracking-widest px-4 py-1 rounded-full mb-3 shadow-xs">
-              THE HODU METHODOLOGY
+            <span className="inline-block bg-white text-brand-maroon text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full mb-3">
+              OUR APPROACH
             </span>
             <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-              An Academic Engine Built for Top Percentiles
+              The Hodu Methodology
             </h2>
-            <p className="text-sm sm:text-base text-white/90 mt-3 font-normal leading-relaxed">
-              We replaced generic lecturing with an institutional 4-stage cycle that guarantees measurable concept retention.
+            <p className="text-sm text-white/80 mt-3 leading-relaxed max-w-xl mx-auto">
+              A proven 4-stage cycle built for top percentile results.
             </p>
           </div>
 
@@ -327,19 +326,19 @@ export default async function HomePage() {
       </section>
 
       {/* Jaipur Physical Campus Spotlight */}
-      <section className="reveal py-16 sm:py-20 bg-white border-b border-brand-border">
+      <section className="reveal py-16 sm:py-20 bg-brand-blush border-b border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white border-2 border-brand-border rounded-3xl p-8 sm:p-12 shadow-sm grid lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 space-y-5">
-              <div className="inline-flex items-center gap-2 bg-brand-maroon text-white text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-xs">
+          <div className="bg-white border border-brand-border rounded-2xl p-8 sm:p-12 grid lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-7 space-y-4">
+              <div className="inline-flex items-center gap-2 bg-brand-maroon text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">
                 <Building2 className="h-3.5 w-3.5" />
-                JAIPUR OFFLINE LEARNING CENTER
+                JAIPUR CAMPUS
               </div>
               <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-maroon leading-tight">
-                State-of-the-Art Classroom Infrastructure in Jaipur
+                Smart Classrooms in Jaipur
               </h2>
-              <p className="text-sm text-neutral-600 leading-relaxed font-normal">
-                Experience high-focus, distraction-free learning with acoustically treated smart digital classrooms, dedicated 1-on-1 faculty doubt cells, silent study carrels, and GPS-tracked air-conditioned conveyance across Jaipur.
+              <p className="text-sm text-brand-muted leading-relaxed">
+                Acoustically treated smart classrooms, 1-on-1 doubt desks, silent study carrels, and AC transport across Jaipur.
               </p>
               
               <div className="grid grid-cols-2 gap-3.5 pt-2">
@@ -361,16 +360,16 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              <div className="pt-3 flex flex-wrap gap-3.5">
+              <div className="pt-3 flex flex-wrap gap-3">
                 <Link href="/offline"
-                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-bold px-7 py-3.5 rounded-xl text-xs uppercase tracking-wider transition-colors shadow-sm flex items-center gap-2">
-                  <span>Explore Offline Center & Facilities</span>
+                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-semibold px-6 py-3 rounded-lg text-sm transition-colors flex items-center gap-2">
+                  Explore Campus
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link href="/contact"
-                  className="bg-white hover:bg-neutral-50 text-brand-maroon border-2 border-brand-maroon font-bold px-6 py-3.5 rounded-xl text-xs transition-colors flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-brand-maroon" />
-                  <span>Book Campus Visit</span>
+                  className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-semibold px-5 py-3 rounded-lg text-sm transition-colors flex items-center gap-2">
+                  <MapPin className="h-4 w-4" />
+                  Book Visit
                 </Link>
               </div>
             </div>
@@ -390,16 +389,16 @@ export default async function HomePage() {
 
       {/* Featured Courses */}
       {courses && courses.length > 0 && (
-        <section className="reveal py-16 sm:py-20 bg-white">
+        <section className="reveal py-16 sm:py-20 bg-brand-bg">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end justify-between mb-10">
             <div>
-              <span className="inline-block bg-brand-maroon text-white text-xs font-black uppercase tracking-widest px-3.5 py-1 rounded-full mb-2 shadow-xs">
-                POPULAR PROGRAMS
+              <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3.5 py-1 rounded-full mb-2">
+                FEATURED
               </span>
-              <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-maroon">Featured Cohorts 2025–26</h2>
+              <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-maroon">Popular Programs</h2>
             </div>
-            <Link href="/courses" className="text-xs font-bold text-brand-maroon border-2 border-brand-maroon hover:bg-brand-maroon hover:text-white px-5 py-2.5 rounded-xl transition-all shadow-xs shrink-0 uppercase tracking-wider">
-              View All Courses →
+            <Link href="/courses" className="text-xs font-bold text-brand-maroon border border-brand-maroon hover:bg-brand-maroon hover:text-white px-5 py-2.5 rounded-lg transition-all shrink-0 uppercase tracking-wider">
+              View All →
             </Link>
           </div>
           
@@ -444,18 +443,18 @@ export default async function HomePage() {
       )}
 
       {/* Hall of Fame / Achievers */}
-      <section className="reveal py-16 sm:py-20 bg-brand-maroon text-white relative">
+      <section className="reveal py-16 sm:py-20 bg-brand-crimson text-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 bg-white text-brand-maroon px-4 py-1.5 rounded-full text-xs font-black mb-3 shadow-xs">
-              <Trophy className="h-4 w-4 text-brand-maroon" />
-              PROVEN RESULTS & HALL OF FAME
+            <div className="inline-flex items-center gap-2 bg-white text-brand-maroon px-4 py-1.5 rounded-full text-xs font-bold mb-3">
+              <Trophy className="h-4 w-4" />
+              RESULTS
             </div>
             <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-              Celebrating India's Top Ranks & Scores
+              Hall of Fame
             </h2>
-            <p className="text-sm text-white/90 mt-2 max-w-xl mx-auto font-normal">
-              Real scorecards from dedicated students who trusted Hodu Academy for their board and competitive preparation.
+            <p className="text-sm text-white/80 mt-2 max-w-md mx-auto">
+              Real results from students who trusted Hodu Academy.
             </p>
           </div>
 
@@ -493,16 +492,15 @@ export default async function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="reveal bg-white border-b border-brand-border py-16 sm:py-20">
+      <section className="reveal bg-brand-bg border-b border-brand-border py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block bg-brand-maroon text-white text-xs font-black uppercase tracking-widest px-4 py-1 rounded-full mb-2.5 shadow-xs">
-              PARENT & STUDENT TRUST
+            <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full mb-2">
+              TESTIMONIALS
             </span>
             <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-maroon">
-              Stories of Real Transformations
+              What Parents & Students Say
             </h2>
-            <p className="text-sm text-neutral-600 mt-1 font-normal">Verified endorsements from parents and students across Jaipur and global schools.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
@@ -540,10 +538,10 @@ export default async function HomePage() {
       <section className="reveal py-16 sm:py-20 bg-white border-b border-brand-border">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="inline-block bg-brand-maroon text-white text-xs font-black uppercase tracking-widest px-4 py-1 rounded-full mb-2 shadow-xs">
-              TRANSPARENT ADMISSIONS
+            <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full mb-2">
+              FAQ
             </span>
-            <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-maroon">Frequently Asked Questions</h2>
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-maroon">Frequently Asked</h2>
           </div>
           <div className="space-y-3.5">
             {faqs.map((faq, i) => (
@@ -566,53 +564,53 @@ export default async function HomePage() {
       </section>
 
       {/* Enquiry Consultation CTA */}
-      <section className="reveal py-16 sm:py-20 bg-white border-b border-brand-border">
+      <section className="reveal py-16 sm:py-20 bg-brand-blush border-b border-brand-border">
         <div className="max-w-6xl mx-auto px-4 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-          <div className="space-y-5">
-            <span className="inline-block bg-brand-maroon text-white text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-full shadow-xs">
-              COMPLIMENTARY COUNSELLING
+          <div className="space-y-4">
+            <span className="inline-block bg-brand-maroon text-white text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full">
+              GET IN TOUCH
             </span>
             <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon leading-tight">
-              Book a 1-on-1 Academic Diagnostic Session
+              Book a Free Academic Session
             </h2>
-            <p className="text-sm text-neutral-600 font-normal leading-relaxed">
-              Meet our academic directors to analyze syllabus requirements, assess previous test papers, and get a tailored roadmap for your targeted board or entrance exam.
+            <p className="text-sm text-brand-muted leading-relaxed">
+              Meet our academic directors for a personalized roadmap tailored to your target exam.
             </p>
             <div className="space-y-3 pt-2">
               {[
-                { title: 'Direct Helpline', text: HODU.phone },
-                { title: 'Admissions Desk', text: HODU.email },
-                { title: 'Jaipur Main Campus', text: HODU.address },
+                { title: 'Helpline', text: HODU.phone },
+                { title: 'Email', text: HODU.email },
+                { title: 'Campus', text: HODU.address },
               ].map(item => (
-                <div key={item.title} className="flex items-start gap-3.5 text-sm bg-white p-4 rounded-xl border border-brand-border shadow-xs">
-                  <div className="w-2.5 h-2.5 rounded-full bg-brand-maroon mt-1.5 shrink-0" />
+                <div key={item.title} className="flex items-start gap-3 text-sm bg-white p-4 rounded-xl border border-brand-border">
+                  <div className="w-2 h-2 rounded-full bg-brand-maroon mt-1.5 shrink-0" />
                   <div>
-                    <span className="font-bold text-xs text-neutral-900 block">{item.title}</span>
-                    <span className="font-normal text-neutral-600 text-xs">{item.text}</span>
+                    <span className="font-semibold text-xs text-brand-text block">{item.title}</span>
+                    <span className="text-brand-muted text-xs">{item.text}</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <div className="bg-white border-2 border-brand-border rounded-3xl p-6 sm:p-9 shadow-lg">
-            <h3 className="font-serif-editorial font-bold text-brand-maroon text-xl mb-1">Request Callback & Diagnostic</h3>
-            <p className="text-xs text-neutral-500 mb-6 font-normal">Submit details below and an academic counselor will reach out within 2 hours.</p>
+          <div className="bg-white border border-brand-border rounded-2xl p-6 sm:p-9">
+            <h3 className="font-serif-editorial font-bold text-brand-maroon text-xl mb-1">Request Callback</h3>
+            <p className="text-xs text-brand-muted mb-6">We'll reach out within 2 hours.</p>
             <EnquiryForm />
           </div>
         </div>
       </section>
 
       {/* Blog & Editorial Insights */}
-      <section className="reveal py-16 sm:py-20 bg-white">
+      <section className="reveal py-16 sm:py-20 bg-brand-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end justify-between mb-10">
           <div>
-            <span className="inline-block bg-brand-maroon text-white text-xs font-black uppercase tracking-widest px-3.5 py-1 rounded-full mb-2 shadow-xs">
-              EXAM STRATEGY & GUIDES
+            <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3.5 py-1 rounded-full mb-2">
+              INSIGHTS
             </span>
-            <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-maroon">Latest Academic Insights</h2>
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-maroon">Latest Articles</h2>
           </div>
-          <Link href="/blog" className="text-xs font-bold text-brand-maroon border-2 border-brand-maroon hover:bg-brand-maroon hover:text-white px-5 py-2.5 rounded-xl transition-all shadow-xs shrink-0 uppercase tracking-wider">
-            View All Articles →
+          <Link href="/blog" className="text-xs font-bold text-brand-maroon border border-brand-maroon hover:bg-brand-maroon hover:text-white px-5 py-2.5 rounded-lg transition-all shrink-0 uppercase tracking-wider">
+            View All →
           </Link>
         </div>
         <div className="flex gap-5 overflow-x-auto px-4 sm:px-6 lg:px-8 pb-3 snap-x snap-mandatory scrollbar-hide sm:grid sm:grid-cols-3 sm:overflow-visible max-w-7xl mx-auto">
