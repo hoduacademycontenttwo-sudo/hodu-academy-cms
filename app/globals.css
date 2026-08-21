@@ -166,47 +166,66 @@ button[class*="bg-brand-maroon"]:active {
   transition: box-shadow 0.3s ease;
 }
 
-/* ─── Dual Theme: Dark Mode Overrides ─── */
-/* ─── Dual Theme: Maroon-White Mode Overrides ─── */
+/* ─── Exact Dual Theme Inversion (White-Maroon ⇄ Maroon-White) ─── */
 html.dark {
-  background-color: #3E0D0E;
+  background-color: #651416;
   color: #FFFFFF;
   color-scheme: dark;
 }
 
 html.dark body {
-  background-color: #3E0D0E;
+  background-color: #651416;
   color: #FFFFFF;
 }
 
+/* Top Notification Strip (Inverts Maroon → Pure White with Maroon Text) */
+html.dark .bg-brand-crimson {
+  background-color: #FFFFFF !important;
+  color: #921E1F !important;
+}
+
+html.dark .bg-brand-crimson * {
+  color: #921E1F !important;
+}
+
+/* Navbar Header in Maroon-White Mode */
 html.dark header {
-  background-color: #300A0B !important;
-  border-color: #581315 !important;
+  background-color: #3E0D0E !important;
+  border-color: #7B1B1E !important;
 }
 
-html.dark footer {
-  background-color: #240607 !important;
-  border-color: #400E10 !important;
+html.dark header .nav-link {
+  color: #FFFFFF !important;
 }
 
+html.dark header .nav-link:hover {
+  color: #EED6D6 !important;
+}
+
+html.dark header .text-brand-muted {
+  color: #EED6D6 !important;
+}
+
+/* White Card Surfaces: Invert to Rich Deep Maroon */
 html.dark .bg-white {
-  background-color: #501113 !important;
+  background-color: #4A1012 !important;
   color: #FFFFFF;
 }
 
 html.dark .bg-brand-bg {
-  background-color: #3E0D0E !important;
+  background-color: #651416 !important;
 }
 
 html.dark .bg-brand-blush {
-  background-color: #480F11 !important;
+  background-color: #551315 !important;
 }
 
 html.dark .bg-neutral-50,
 html.dark .bg-neutral-100 {
-  background-color: #450F11 !important;
+  background-color: #3E0D0E !important;
 }
 
+/* Texts and Headings: Invert to Pure White */
 html.dark .text-brand-text,
 html.dark .text-neutral-900,
 html.dark .text-neutral-800,
@@ -221,36 +240,57 @@ html.dark .text-neutral-500 {
 }
 
 html.dark .text-brand-maroon {
-  color: #F8EEEE !important;
-}
-
-html.dark .border-brand-border,
-html.dark .border-neutral-200,
-html.dark .border-neutral-100 {
-  border-color: #651416 !important;
+  color: #FFFFFF !important;
 }
 
 html.dark h1,
 html.dark h2,
 html.dark h3,
-html.dark h4 {
+html.dark h4,
+html.dark h5,
+html.dark h6 {
   color: #FFFFFF !important;
 }
 
-/* Sliding Wave Card in Maroon-White Theme */
-html.dark .wave-slide-card {
-  background-color: #501113 !important;
-  border-color: #6E1A1D !important;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4) !important;
+/* Maroon Buttons & Badges: Invert to Pure White with Maroon Text */
+html.dark .bg-brand-maroon {
+  background-color: #FFFFFF !important;
+  color: #921E1F !important;
+  border-color: #FFFFFF !important;
 }
 
-html.dark .wave-slide-card .bottom-card {
+html.dark .bg-brand-maroon * {
+  color: #921E1F !important;
+}
+
+html.dark .bg-brand-maroon:hover {
+  background-color: #F8EEEE !important;
+  color: #651416 !important;
+}
+
+/* Outlined Buttons & Badges */
+html.dark .border-brand-maroon {
+  border-color: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+html.dark .border-brand-maroon:hover {
+  background-color: #FFFFFF !important;
+  color: #921E1F !important;
+}
+
+html.dark .border-brand-border,
+html.dark .border-neutral-200,
+html.dark .border-neutral-100 {
+  border-color: #7B1B1E !important;
+}
+
+/* Footer in Maroon-White Mode */
+html.dark footer {
   background-color: #2A0809 !important;
+  border-color: #551315 !important;
 }
 
-html.dark .wave-slide-card .bottom-card::before {
-  box-shadow: 0 14px 0 0 #2A0809 !important;
-}
 
 
 /* ─── Animated Maroon Pencil Loader ─── */
