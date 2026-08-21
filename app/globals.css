@@ -173,3 +173,82 @@ button[class*="bg-brand-maroon"]:active {
   z-index: 5;
 }
 
+/* ─── Dual Theme: Dark Mode Overrides ─── */
+html.dark {
+  background-color: #120708;
+  color: #F8EEEE;
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #120708;
+  color: #F8EEEE;
+}
+
+html.dark header {
+  background-color: #1A0A0B !important;
+  border-color: #351416 !important;
+}
+
+html.dark footer {
+  background-color: #0E0405 !important;
+  border-color: #2D0F11 !important;
+}
+
+html.dark .bg-white {
+  background-color: #1E0C0D !important;
+}
+
+html.dark .bg-brand-bg {
+  background-color: #120708 !important;
+}
+
+html.dark .bg-brand-blush {
+  background-color: #260E10 !important;
+}
+
+html.dark .bg-neutral-50,
+html.dark .bg-neutral-100 {
+  background-color: #220D0F !important;
+}
+
+html.dark .text-brand-text,
+html.dark .text-neutral-900,
+html.dark .text-neutral-800,
+html.dark .text-neutral-700 {
+  color: #F8EEEE !important;
+}
+
+html.dark .text-brand-muted,
+html.dark .text-neutral-600,
+html.dark .text-neutral-500 {
+  color: #D1B8B8 !important;
+}
+
+html.dark .border-brand-border,
+html.dark .border-neutral-200,
+html.dark .border-neutral-100 {
+  border-color: #381517 !important;
+}
+
+/* Category Goal Card Notch & Cutout in Dark Theme */
+html.dark .category-goal-card {
+  background-color: #1E0C0D !important;
+  border-color: #40181A !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark .category-cutout-border {
+  background: #1E0C0D !important;
+  box-shadow: -10px -10px 0 0 #1E0C0D !important;
+}
+
+html.dark .category-cutout-border::before {
+  box-shadow: -4px -4px 0 2px #1E0C0D !important;
+}
+
+html.dark .category-top-section::before {
+  box-shadow: -4px -4px 0 2px #1E0C0D !important;
+}
+
+
