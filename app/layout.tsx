@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Open_Sans, Outfit } from "next/font/google";
 import "./globals.css";
+import InitialPageLoader from "@/components/hodu/InitialPageLoader";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -57,6 +58,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col font-sans bg-brand-bg text-brand-text selection:bg-brand-maroon selection:text-white overflow-x-hidden max-w-full w-full transition-colors duration-200">
+        <InitialPageLoader minDuration={2200} />
         {children}
       </body>
     </html>
