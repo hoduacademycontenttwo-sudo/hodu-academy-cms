@@ -167,77 +167,91 @@ button[class*="bg-brand-maroon"]:active {
 }
 
 /* ─── Dual Theme: Dark Mode Overrides ─── */
+/* ─── Dual Theme: Maroon-White Mode Overrides ─── */
 html.dark {
-  background-color: #120708;
-  color: #F8EEEE;
+  background-color: #3E0D0E;
+  color: #FFFFFF;
   color-scheme: dark;
 }
 
 html.dark body {
-  background-color: #120708;
-  color: #F8EEEE;
+  background-color: #3E0D0E;
+  color: #FFFFFF;
 }
 
 html.dark header {
-  background-color: #1A0A0B !important;
-  border-color: #351416 !important;
+  background-color: #300A0B !important;
+  border-color: #581315 !important;
 }
 
 html.dark footer {
-  background-color: #0E0405 !important;
-  border-color: #2D0F11 !important;
+  background-color: #240607 !important;
+  border-color: #400E10 !important;
 }
 
 html.dark .bg-white {
-  background-color: #1E0C0D !important;
+  background-color: #501113 !important;
+  color: #FFFFFF;
 }
 
 html.dark .bg-brand-bg {
-  background-color: #120708 !important;
+  background-color: #3E0D0E !important;
 }
 
 html.dark .bg-brand-blush {
-  background-color: #260E10 !important;
+  background-color: #480F11 !important;
 }
 
 html.dark .bg-neutral-50,
 html.dark .bg-neutral-100 {
-  background-color: #220D0F !important;
+  background-color: #450F11 !important;
 }
 
 html.dark .text-brand-text,
 html.dark .text-neutral-900,
 html.dark .text-neutral-800,
 html.dark .text-neutral-700 {
-  color: #F8EEEE !important;
+  color: #FFFFFF !important;
 }
 
 html.dark .text-brand-muted,
 html.dark .text-neutral-600,
 html.dark .text-neutral-500 {
-  color: #D1B8B8 !important;
+  color: #EED6D6 !important;
+}
+
+html.dark .text-brand-maroon {
+  color: #F8EEEE !important;
 }
 
 html.dark .border-brand-border,
 html.dark .border-neutral-200,
 html.dark .border-neutral-100 {
-  border-color: #381517 !important;
+  border-color: #651416 !important;
 }
 
-/* Sliding Wave Card in Dark Theme */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4 {
+  color: #FFFFFF !important;
+}
+
+/* Sliding Wave Card in Maroon-White Theme */
 html.dark .wave-slide-card {
-  background-color: #1E0C0D !important;
-  border-color: #40181A !important;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5) !important;
+  background-color: #501113 !important;
+  border-color: #6E1A1D !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4) !important;
 }
 
 html.dark .wave-slide-card .bottom-card {
-  background-color: #651416 !important;
+  background-color: #2A0809 !important;
 }
 
 html.dark .wave-slide-card .bottom-card::before {
-  box-shadow: 0 14px 0 0 #651416 !important;
+  box-shadow: 0 14px 0 0 #2A0809 !important;
 }
+
 
 /* ─── Animated Maroon Pencil Loader ─── */
 .pencil {

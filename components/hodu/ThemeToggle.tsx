@@ -49,14 +49,14 @@ export default function ThemeToggle({ className = '' }: { className?: string }) 
     <button
       type="button"
       onClick={toggleTheme}
-      aria-label={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
-      title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
-      className={`relative group inline-flex items-center justify-center p-2 rounded-full border border-brand-border bg-white dark:bg-[#1E0C0D] dark:border-[#3D1B1D] text-brand-text dark:text-brand-rose hover:border-brand-maroon dark:hover:border-brand-maroon hover:text-brand-maroon transition-all shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer ${className}`}
+      aria-label={`Switch to ${theme === 'light' ? 'Maroon Theme' : 'White Theme'}`}
+      title={`Switch to ${theme === 'light' ? 'Maroon-White Theme' : 'White-Maroon Theme'}`}
+      className={`relative group inline-flex items-center justify-center p-2 rounded-full border border-brand-border bg-white dark:bg-[#501113] dark:border-[#7B1B1E] text-brand-maroon dark:text-[#F8EEEE] hover:border-brand-maroon dark:hover:border-white transition-all shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer ${className}`}
     >
       {theme === 'light' ? (
         <Moon className="h-4 w-4 text-brand-maroon transition-transform duration-300 group-hover:rotate-12" />
       ) : (
-        <Sun className="h-4 w-4 text-amber-400 transition-transform duration-300 group-hover:rotate-45" />
+        <Sun className="h-4 w-4 text-amber-300 transition-transform duration-300 group-hover:rotate-45" />
       )}
     </button>
   )

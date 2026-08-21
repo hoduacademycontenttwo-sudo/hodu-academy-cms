@@ -390,8 +390,8 @@ export default function HoduNavbar({
             </Link>
           </nav>
 
-          {/* Desktop CTAs */}
-          <div className="hidden sm:flex items-center gap-3 shrink-0 ml-6">
+          {/* Desktop CTAs (shown only on lg+ screens alongside desktop nav) */}
+          <div className="hidden lg:flex items-center gap-3 shrink-0 ml-6">
             <ThemeToggle />
             <Link
               href="/admin"
