@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { LucideIcon } from 'lucide-react'
+import { ArrowRight, LucideIcon } from 'lucide-react'
 
 export interface CategoryCardProps {
   code: string
@@ -20,69 +20,60 @@ export default function CategoryGoalCard({
   icon: Icon,
   stats,
 }: CategoryCardProps) {
+  const highlightStat = stats?.[0] ? `${stats[0].big} ${stats[0].label}` : badge
+  const secondaryStat = stats?.[1] ? `${stats[1].big} ${stats[1].label}` : ''
+
   return (
-    <Link
-      href={href}
-      className="group block w-full select-none text-left no-underline focus:outline-none"
-    >
-      <div className="category-goal-card w-full rounded-[20px] bg-white p-[5px] overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between border border-brand-border hover:border-brand-maroon">
-        
-        {/* Top Image Zone with the signature curved cut-out header */}
-        <div className="category-top-section relative h-[120px] sm:h-[130px] rounded-[15px] overflow-hidden bg-neutral-100">
-          {/* Course/Curriculum Image */}
-          <img
-            src={img}
-            alt={label}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-          />
+    <div className="wave-slide-card group relative w-full h-[270px] sm:h-[290px] bg-white dark:bg-[#1E0C0D] rounded-[22px] overflow-hidden border border-brand-border dark:border-[#3D1B1D] shadow-xs hover:shadow-xl hover:border-brand-maroon dark:hover:border-brand-maroon transition-all duration-300">
+      
+      {/* Top Card: Course Graphic & Badges (Shrinks on hover) */}
+      <div className="top-card relative w-full h-[62%] group-hover:h-[32%] transition-all duration-350 ease-out overflow-hidden bg-neutral-100 dark:bg-neutral-900">
+        <img
+          src={img}
+          alt={label}
+          className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-500"
+        />
 
-          {/* Curved notch tab background (White on top of photo) */}
-          <div className="absolute top-0 left-0">
-            <div className="category-cutout-border" />
-          </div>
-
-          {/* Notch Icon / Acronym in Brand Maroon */}
-          <div className="absolute top-0 left-0 h-[28px] px-3 flex items-center gap-1.5 z-10">
-            {Icon && <Icon className="h-3.5 w-3.5 text-brand-maroon" />}
-            <span className="text-[11px] font-black tracking-wider text-brand-maroon uppercase font-sans">
-              {code}
-            </span>
-          </div>
-
-          {/* Right grade badge */}
-          <div className="absolute top-2 right-2.5 z-10">
-            <span className="bg-black/60 backdrop-blur-xs text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border border-white/20">
-              {badge}
-            </span>
-          </div>
+        {/* Top Badges */}
+        <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 bg-black/60 backdrop-blur-xs text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/20">
+          {Icon && <Icon className="h-3 w-3 text-brand-rose" />}
+          <span>{code}</span>
         </div>
 
-        {/* Bottom Title & 3-column Stats Section (Clean lines, no curved box) */}
-        <div className="pt-3 pb-2.5 px-2 text-center flex-1 flex flex-col justify-between">
-          <span className="block text-xs sm:text-sm font-extrabold text-brand-text tracking-tight uppercase line-clamp-1 group-hover:text-brand-maroon transition-colors">
-            {label}
+        <div className="absolute top-3 right-3 z-10">
+          <span className="bg-black/60 backdrop-blur-xs text-white text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/20">
+            {badge}
           </span>
+        </div>
+      </div>
 
-          <div className="grid grid-cols-3 mt-2.5 pt-2 border-t border-brand-border/70 text-center">
-            {stats.map((st, i) => (
-              <div
-                key={i}
-                className={`px-1 ${
-                  i === 1 ? 'border-x border-brand-border/70' : ''
-                }`}
-              >
-                <span className="block text-[11px] sm:text-xs font-black text-brand-maroon leading-none">
-                  {st.big}
-                </span>
-                <span className="block text-[8.5px] sm:text-[9px] text-brand-muted font-medium mt-1 leading-tight line-clamp-1">
-                  {st.label}
-                </span>
-              </div>
-            ))}
+      {/* Bottom Card: Brand Maroon Sliding Wave Container (Expands on hover) */}
+      <div className="bottom-card absolute bottom-0 left-0 w-full h-[38%] group-hover:h-[68%] transition-all duration-350 ease-out bg-brand-maroon dark:bg-[#651416] text-white flex flex-col justify-between p-4 sm:p-5 z-20">
+        
+        {/* Card Header & Content */}
+        <div className="card-content flex flex-col items-center justify-center text-center w-full my-auto transition-transform duration-300">
+          <h3 className="card-title font-extrabold text-sm sm:text-base tracking-wide uppercase text-white line-clamp-1">
+            {label}
+          </h3>
+
+          <p className="card-txt text-[11px] sm:text-xs text-brand-rose/90 font-medium mt-1 line-clamp-1">
+            {highlightStat} {secondaryStat ? `• ${secondaryStat}` : ''}
+          </p>
+
+          {/* Read More Button (Revealed on hover with smooth animation) */}
+          <div className="opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-75 mt-3 sm:mt-4 w-full flex justify-center">
+            <Link
+              href={href}
+              className="card-btn inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full text-white border-2 border-white hover:bg-white hover:text-brand-maroon transition-all duration-200 active:scale-95 shadow-xs cursor-pointer"
+            >
+              <span>Read More</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
         </div>
 
       </div>
-    </Link>
+
+    </div>
   )
 }

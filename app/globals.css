@@ -136,41 +136,34 @@ button[class*="bg-brand-maroon"]:active {
   }
 }
 
-/* Category Goal Card Notch & Cutout Styles (Light Theme) */
-.category-goal-card {
-  box-shadow: 0 4px 16px -2px rgba(100, 100, 111, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+/* ─── Sliding Wave Card Styles ─── */
+.wave-slide-card {
+  box-shadow: 0 4px 18px -2px rgba(146, 30, 31, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
 }
-.category-cutout-border {
-  border-bottom-right-radius: 10px;
-  height: 28px;
-  width: 96px;
-  background: #FFFFFF;
-  position: relative;
-  transform: skew(-40deg);
-  box-shadow: -10px -10px 0 0 #FFFFFF;
+
+.wave-slide-card .top-card {
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
 }
-.category-cutout-border::before {
+
+.wave-slide-card .bottom-card {
+  border-top-right-radius: 24px;
+  border-bottom-left-radius: 22px;
+  border-bottom-right-radius: 22px;
+}
+
+.wave-slide-card .bottom-card::before {
   content: "";
   position: absolute;
-  width: 14px;
-  height: 14px;
-  top: 0;
-  right: -14px;
-  background: transparent;
-  border-top-left-radius: 10px;
-  box-shadow: -4px -4px 0 2px #FFFFFF;
-}
-.category-top-section::before {
-  content: "";
-  position: absolute;
-  top: 28px;
+  background-color: transparent;
+  top: -24px;
   left: 0;
-  background: transparent;
-  height: 14px;
-  width: 14px;
-  border-top-left-radius: 14px;
-  box-shadow: -4px -4px 0 2px #FFFFFF;
-  z-index: 5;
+  height: 24px;
+  width: calc(100% - 24px);
+  border-bottom-left-radius: 24px;
+  box-shadow: 0 14px 0 0 #921E1F;
+  pointer-events: none;
+  transition: box-shadow 0.3s ease;
 }
 
 /* ─── Dual Theme: Dark Mode Overrides ─── */
@@ -231,24 +224,20 @@ html.dark .border-neutral-100 {
   border-color: #381517 !important;
 }
 
-/* Category Goal Card Notch & Cutout in Dark Theme */
-html.dark .category-goal-card {
+/* Sliding Wave Card in Dark Theme */
+html.dark .wave-slide-card {
   background-color: #1E0C0D !important;
   border-color: #40181A !important;
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5) !important;
 }
 
-html.dark .category-cutout-border {
-  background: #1E0C0D !important;
-  box-shadow: -10px -10px 0 0 #1E0C0D !important;
+html.dark .wave-slide-card .bottom-card {
+  background-color: #651416 !important;
 }
 
-html.dark .category-cutout-border::before {
-  box-shadow: -4px -4px 0 2px #1E0C0D !important;
+html.dark .wave-slide-card .bottom-card::before {
+  box-shadow: 0 14px 0 0 #651416 !important;
 }
 
-html.dark .category-top-section::before {
-  box-shadow: -4px -4px 0 2px #1E0C0D !important;
-}
 
 
