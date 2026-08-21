@@ -113,6 +113,19 @@ const targetExams = [
     ]
   },
   {
+    code: 'CUET',
+    label: 'CUET (UG) Entrance',
+    icon: GraduationCap,
+    href: '/courses?category=Competitive+Exams',
+    badge: 'Class 12 & Droppers',
+    img: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&h=320&fit=crop&auto=format',
+    stats: [
+      { big: '100%ile', label: 'Domain Prep' },
+      { big: '50+', label: 'Mock CBTs' },
+      { big: 'GT+Lang', label: 'Full Syllabus' },
+    ]
+  },
+  {
     code: 'JAIPUR',
     label: 'Jaipur Offline Center',
     icon: Building2,
