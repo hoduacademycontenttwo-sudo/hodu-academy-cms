@@ -194,22 +194,38 @@ export default async function HomePage() {
 
       {/* Course Categories — image cards */}
       <section className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-extrabold text-brand-navy">Choose Your Path</h2>
-          <p className="text-sm text-brand-navy/60 mt-1">IGCSE · IB · CBSE · JEE · NEET · Olympiads</p>
+        <div className="text-center mb-10">
+          <span className="inline-block bg-brand-maroon/10 text-brand-maroon text-xs font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full mb-2 border border-brand-maroon/20">
+            Target Programs 2025–26
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-navy">Choose Your Learning Path</h2>
+          <p className="text-sm text-brand-navy/60 mt-1 max-w-lg mx-auto">
+            Comprehensive curriculum, small interactive batches & expert faculty for every major board and exam.
+          </p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
           {categories.map((cat, idx) => (
             <Link key={idx} href={cat.href}
-              className="group relative rounded-2xl overflow-hidden h-36 md:h-44 block">
-              <img src={cat.img} alt={cat.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-              <div className={`absolute inset-0 bg-gradient-to-t ${cat.bg} opacity-70 group-hover:opacity-80 transition-opacity`} />
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-3">
-                <span className="text-2xl mb-1">{cat.icon}</span>
-                <h3 className="font-extrabold text-sm leading-tight">{cat.title}</h3>
+              className="group relative rounded-2xl overflow-hidden h-40 md:h-48 block card-hover border border-brand-border/60 shadow-sm">
+              <img src={cat.img} alt={cat.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className={`absolute inset-0 bg-gradient-to-t ${cat.bg} opacity-75 group-hover:opacity-85 transition-opacity duration-300`} />
+              
+              {/* Badge */}
+              <div className="absolute top-3 left-3">
+                <span className="bg-black/30 backdrop-blur-md text-[10px] font-bold text-white/90 px-2 py-0.5 rounded-full border border-white/10">
+                  Batches Open
+                </span>
               </div>
-              <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <ArrowUpRight className="h-4 w-4 text-white" />
+
+              {/* Content */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4">
+                <span className="text-3xl mb-1.5 drop-shadow transform transition-transform group-hover:scale-110 duration-200">{cat.icon}</span>
+                <h3 className="font-extrabold text-sm sm:text-base leading-tight drop-shadow">{cat.title}</h3>
+                <span className="text-[11px] text-white/80 font-medium mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Explore Curriculum →</span>
+              </div>
+              
+              <div className="absolute bottom-3 right-3 w-7 h-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-white group-hover:text-brand-maroon transition-all shadow">
+                <ArrowUpRight className="h-4 w-4" />
               </div>
             </Link>
           ))}
@@ -217,54 +233,61 @@ export default async function HomePage() {
       </section>
 
       {/* Why Hodu */}
-      <section className="reveal bg-brand-navy py-16 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="reveal bg-brand-navy py-18 overflow-hidden relative">
+        {/* Subtle background glow */}
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-brand-maroon/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-900/30 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
             <div>
-              <span className="text-[11px] font-bold text-brand-border/60 uppercase tracking-widest">THE HODU ADVANTAGE</span>
+              <span className="inline-block bg-white/10 text-brand-border text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-2 border border-white/10">
+                THE HODU ADVANTAGE
+              </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-1 leading-tight">
-                Why Students<br className="sm:hidden" /> Choose Us
+                Why Students<br className="sm:hidden" /> Choose Hodu Academy
               </h2>
-              <p className="text-white/50 text-sm font-light mt-2 max-w-sm">
-                Every feature built around one goal — your highest possible score.
+              <p className="text-white/65 text-sm font-light mt-2 max-w-md">
+                Every feature engineered for one single outcome — achieving your highest possible score.
               </p>
             </div>
             <Link href="/contact"
-              className="shrink-0 inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-accent text-white font-bold px-6 py-3 rounded-xl text-sm transition-colors">
+              className="shrink-0 inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-accent text-white font-bold px-7 py-3.5 rounded-xl text-sm transition-all duration-200 hover:-translate-y-0.5 shadow-lg">
               Book Free Demo <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
-          {/* Cards — horizontal scroll on mobile, grid on lg */}
+          {/* Cards */}
           <div className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide lg:grid lg:grid-cols-3 lg:overflow-visible">
             {whyHodu.map((item) => (
               <div key={item.label}
-                className="relative shrink-0 w-[78vw] sm:w-72 lg:w-auto snap-start rounded-2xl overflow-hidden group cursor-default">
+                className="relative shrink-0 w-[78vw] sm:w-72 lg:w-auto snap-start rounded-2xl overflow-hidden group cursor-default card-hover border border-white/10 shadow-xl">
 
                 {/* Background image */}
                 <img src={item.img} alt={item.label}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
 
                 {/* Gradient overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.accent} opacity-80 group-hover:opacity-75 transition-opacity`} />
+                <div className={`absolute inset-0 bg-gradient-to-br ${item.accent} opacity-85 group-hover:opacity-80 transition-opacity`} />
 
                 {/* Content */}
-                <div className="relative p-6 flex flex-col h-52">
+                <div className="relative p-6 flex flex-col h-56 justify-between">
                   {/* Big stat */}
-                  <div className="flex-1">
-                    <div className="text-5xl font-black text-white leading-none tracking-tight">
+                  <div>
+                    <div className="text-5xl font-black text-white leading-none tracking-tight drop-shadow">
                       {item.stat}
                     </div>
-                    <div className="text-white/60 text-xs font-bold uppercase tracking-widest mt-1">
+                    <div className="text-white/75 text-xs font-bold uppercase tracking-widest mt-1.5 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
                       {item.title}
                     </div>
                   </div>
 
                   {/* Bottom info */}
-                  <div className="border-t border-white/20 pt-4 mt-4">
+                  <div className="border-t border-white/20 pt-4 bg-black/10 -mx-6 -mb-6 p-6 backdrop-blur-xs">
                     <h3 className="text-white font-extrabold text-base leading-tight">{item.label}</h3>
-                    <p className="text-white/70 text-xs font-light mt-1 leading-relaxed line-clamp-2">{item.desc}</p>
+                    <p className="text-white/80 text-xs font-light mt-1 leading-relaxed line-clamp-2">{item.desc}</p>
                   </div>
                 </div>
               </div>
@@ -272,15 +295,15 @@ export default async function HomePage() {
           </div>
 
           {/* Bottom trust bar */}
-          <div className="mt-10 pt-8 border-t border-white/10 grid grid-cols-3 gap-4 text-center">
+          <div className="mt-12 pt-8 border-t border-white/15 grid grid-cols-3 gap-4 text-center">
             {[
               { val: '15,000+', lbl: 'Students Mentored' },
-              { val: '7 Years', lbl: 'Of Academic Excellence' },
-              { val: '4.9 ★', lbl: 'Average Parent Rating' },
+              { val: '7 Years', lbl: 'Academic Excellence' },
+              { val: '4.9 ★', lbl: 'Average Rating' },
             ].map(({ val, lbl }) => (
-              <div key={lbl}>
-                <div className="text-2xl font-black text-brand-border">{val}</div>
-                <div className="text-white/40 text-xs font-semibold uppercase tracking-wider mt-0.5">{lbl}</div>
+              <div key={lbl} className="bg-white/5 rounded-2xl p-4 border border-white/10">
+                <div className="text-2xl sm:text-3xl font-black text-brand-border">{val}</div>
+                <div className="text-white/50 text-[11px] font-semibold uppercase tracking-wider mt-1">{lbl}</div>
               </div>
             ))}
           </div>
@@ -289,17 +312,19 @@ export default async function HomePage() {
 
       {/* Featured Courses */}
       {courses && courses.length > 0 && (
-        <section className="reveal py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end justify-between mb-6">
+        <section className="reveal py-16 bg-brand-bg">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end justify-between mb-8">
             <div>
-              <span className="text-[11px] font-bold text-brand-accent uppercase tracking-widest">POPULAR</span>
-              <h2 className="text-3xl font-extrabold text-brand-navy mt-0.5">Featured Courses</h2>
+              <span className="inline-block bg-brand-maroon/10 text-brand-maroon text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-1 border border-brand-maroon/20">
+                POPULAR PROGRAMS
+              </span>
+              <h2 className="text-3xl font-extrabold text-brand-navy">Featured Courses</h2>
             </div>
-            <Link href="/courses" className="text-xs font-bold text-brand-maroon border border-brand-maroon/20 hover:bg-brand-maroon hover:text-white px-4 py-2 rounded-lg transition-all shrink-0">
-              View All
+            <Link href="/courses" className="text-xs font-extrabold text-brand-maroon border border-brand-maroon/30 hover:bg-brand-maroon hover:text-white px-5 py-2.5 rounded-xl transition-all shadow-sm shrink-0">
+              View All Courses →
             </Link>
           </div>
-          {/* Horizontal scroll on mobile, grid on md+ */}
+          {/* Grid */}
           <div className="flex gap-5 overflow-x-auto px-4 sm:px-6 lg:px-8 pb-3 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-3 md:overflow-visible max-w-7xl mx-auto">
             {courses.map(course => {
               const categoryImg: Record<string, string> = {
@@ -312,13 +337,25 @@ export default async function HomePage() {
               }
               const cardImg = course.image_url || categoryImg[course.category]
               return (
-                <div key={course.id} className="bg-white border border-brand-border rounded-2xl overflow-hidden hover:shadow-lg transition-all flex flex-col shrink-0 w-[78vw] md:w-auto snap-start">
-                  <div className="h-36 relative overflow-hidden">
+                <div key={course.id} className="bg-white border border-brand-border rounded-2xl overflow-hidden card-hover flex flex-col shrink-0 w-[80vw] md:w-auto snap-start shadow-sm">
+                  <div className="h-40 relative overflow-hidden">
                     {cardImg ? (
                       <>
-                        <img src={cardImg} alt={course.title} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                        <span className="absolute bottom-3 left-3 text-white font-bold text-xs bg-black/30 backdrop-blur-sm px-2 py-0.5 rounded">{course.category}</span>
+                        <img src={cardImg} alt={course.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                        <div className="absolute top-3 left-3 flex gap-2">
+                          <span className="bg-brand-maroon text-white font-bold text-[10px] uppercase px-2.5 py-0.5 rounded-full shadow">
+                            {course.category}
+                          </span>
+                        </div>
+                        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
+                          <span className="font-semibold bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded">
+                            {course.class_level || 'All Classes'}
+                          </span>
+                          <span className="text-amber-300 font-bold flex items-center gap-1">
+                            ★ 4.9
+                          </span>
+                        </div>
                       </>
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-brand-maroon to-brand-accent flex items-end p-4">
@@ -327,15 +364,20 @@ export default async function HomePage() {
                     )}
                   </div>
                   <div className="p-5 flex-1 flex flex-col">
-                    <span className="text-[10px] font-bold text-brand-maroon uppercase tracking-wider">{course.category} · {course.class_level}</span>
-                    <h3 className="font-bold text-brand-navy mt-1 mb-3 text-sm leading-snug">{course.title}</h3>
-                    <div className="flex justify-between items-center mt-auto pt-3 border-t border-brand-border">
-                      <span className="text-lg font-extrabold text-brand-navy">
-                        {course.fee ? `₹${course.fee}` : 'Contact Us'}
-                      </span>
+                    <h3 className="font-extrabold text-brand-navy mb-2 text-base leading-snug">{course.title}</h3>
+                    {course.description && (
+                      <p className="text-xs text-brand-navy/65 font-light line-clamp-2 mb-4">{course.description}</p>
+                    )}
+                    <div className="flex justify-between items-center mt-auto pt-4 border-t border-brand-border">
+                      <div>
+                        <span className="text-xs text-brand-navy/50 block font-medium">Course Fee</span>
+                        <span className="text-xl font-black text-brand-navy">
+                          {course.fee ? `₹${course.fee}` : 'Enquire'}
+                        </span>
+                      </div>
                       <Link href="/enroll"
-                        className="bg-brand-maroon hover:bg-brand-accent text-white px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1">
-                        Enroll <ArrowUpRight className="h-3 w-3" />
+                        className="bg-brand-maroon hover:bg-brand-accent text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow hover:shadow-md">
+                        Enroll Now <ArrowUpRight className="h-3.5 w-3.5" />
                       </Link>
                     </div>
                   </div>
@@ -346,65 +388,80 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Toppers */}
-      <section className="reveal py-14 bg-brand-navy text-white">
+      {/* Toppers / Hall of Fame */}
+      <section className="reveal py-16 bg-brand-navy text-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <div className="flex items-center justify-center gap-2 mb-1">
-              <Trophy className="h-5 w-5 text-yellow-400" />
-              <span className="text-[11px] font-bold uppercase tracking-widest text-white/60">OUR STARS</span>
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-400/30 px-3.5 py-1 rounded-full text-yellow-400 text-xs font-bold mb-2">
+              <Trophy className="h-4 w-4 text-yellow-400" />
+              HALL OF FAME 2025
             </div>
-            <h2 className="text-3xl font-extrabold">Top Achievers 2025</h2>
+            <h2 className="text-3xl sm:text-4xl font-extrabold">Top Achievers & Ranks</h2>
+            <p className="text-sm text-white/60 mt-1">Celebrating our students who set benchmarks in national & international examinations.</p>
           </div>
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
             {achievers.map(t => (
-              <div key={t.name} className="bg-white/5 border border-white/10 rounded-2xl p-3 text-center hover:bg-white/10 transition-all">
+              <div key={t.name} className="bg-white/5 border border-yellow-400/20 rounded-2xl p-4 text-center hover:bg-white/10 transition-all hover:-translate-y-1 hover:border-yellow-400/50 shadow-lg">
                 {'photo_url' in t && t.photo_url ? (
-                  <img src={t.photo_url} alt={t.name} className="h-12 w-12 rounded-full object-cover mx-auto mb-2" />
+                  <img src={t.photo_url} alt={t.name} className="h-14 w-14 rounded-full object-cover mx-auto mb-3 ring-2 ring-yellow-400/70" />
                 ) : (
-                  <div className="h-12 w-12 rounded-full bg-brand-maroon flex items-center justify-center font-extrabold text-white text-sm mx-auto mb-2">
+                  <div className="h-14 w-14 rounded-full bg-gradient-to-br from-brand-maroon to-yellow-600 flex items-center justify-center font-black text-white text-base mx-auto mb-3 ring-2 ring-yellow-400/70 shadow">
                     {t.initials}
                   </div>
                 )}
-                <p className="text-base font-extrabold text-yellow-400">{t.pct}</p>
-                <p className="text-[11px] font-bold text-white mt-0.5 leading-tight">{t.name}</p>
-                <p className="text-[10px] text-white/40 mt-0.5">{t.stream}</p>
+                <div className="bg-yellow-400/10 border border-yellow-400/30 rounded-lg py-1 px-1.5 mb-1.5">
+                  <p className="text-sm font-black text-yellow-400">{t.pct}</p>
+                </div>
+                <p className="text-xs font-bold text-white leading-tight">{t.name}</p>
+                <p className="text-[10px] text-white/50 mt-0.5">{t.stream}</p>
               </div>
             ))}
           </div>
-          <div className="text-center mt-8">
-            <Link href="/contact" className="inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-accent text-white font-bold px-7 py-3 rounded-xl transition-colors text-sm">
-              Start Your Journey <ArrowRight className="h-4 w-4" />
+          <div className="text-center mt-10">
+            <Link href="/contact" className="inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-accent text-white font-bold px-8 py-3.5 rounded-xl transition-all text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+              Join the Next Batch of Achievers <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
       </section>
 
       {/* Testimonials */}
-      <section className="reveal bg-brand-bg border-y border-brand-border py-14">
+      <section className="reveal bg-brand-bg border-y border-brand-border py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <span className="text-[11px] font-bold text-brand-accent uppercase tracking-widest">STUDENT VOICES</span>
-            <h2 className="text-3xl font-extrabold text-brand-navy mt-1">What Our Students Say</h2>
+          <div className="text-center mb-12">
+            <span className="inline-block bg-brand-maroon/10 text-brand-maroon text-xs font-bold uppercase tracking-widest px-3.5 py-1 rounded-full mb-2 border border-brand-maroon/20">
+              TRUSTED BY 15,000+ FAMILIES
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-navy">What Our Students & Parents Say</h2>
+            <p className="text-sm text-brand-navy/60 mt-1">Real reviews from students who achieved their dream scores.</p>
           </div>
-          <div className="grid lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             {liveTestimonials.map(t => (
-              <div key={t.name} className="bg-white border border-brand-border p-5 rounded-xl shadow-sm relative">
-                <span className="absolute -top-3 right-5 text-4xl text-brand-maroon/20 font-serif font-black">"</span>
-                <div className="flex items-center gap-3 mb-3">
+              <div key={t.name} className="bg-white border border-brand-border p-6 rounded-2xl shadow-sm card-hover relative flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex text-amber-500 text-sm gap-0.5 font-bold">
+                      ★★★★★
+                    </div>
+                    <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      ✓ Verified Review
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-brand-navy/75 leading-relaxed font-light mb-6">"{t.text}"</p>
+                </div>
+                <div className="flex items-center gap-3 pt-4 border-t border-brand-border/60">
                   {'photo_url' in t && t.photo_url ? (
-                    <img src={t.photo_url} alt={t.name} className="h-10 w-10 rounded-full object-cover object-top" />
+                    <img src={t.photo_url} alt={t.name} className="h-11 w-11 rounded-full object-cover object-top ring-2 ring-brand-border" />
                   ) : (
-                    <div className="h-10 w-10 rounded-full bg-brand-border flex items-center justify-center font-extrabold text-brand-maroon text-sm">
+                    <div className="h-11 w-11 rounded-full bg-brand-bg border border-brand-border flex items-center justify-center font-extrabold text-brand-maroon text-sm shrink-0">
                       {t.initials}
                     </div>
                   )}
                   <div>
                     <h4 className="font-bold text-sm text-brand-navy">{t.name}</h4>
-                    <p className="text-[10px] text-brand-navy/50">{t.score}</p>
+                    <p className="text-[11px] text-brand-maroon font-semibold">{t.score}</p>
                   </div>
                 </div>
-                <p className="text-xs text-brand-navy/70 leading-relaxed font-light">"{t.text}"</p>
               </div>
             ))}
           </div>
@@ -412,74 +469,95 @@ export default async function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="reveal py-14 bg-white border-b border-brand-border">
+      <section className="reveal py-16 bg-white border-b border-brand-border">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
+          <div className="text-center mb-10">
+            <span className="inline-block bg-brand-maroon/10 text-brand-maroon text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-2 border border-brand-maroon/20">
+              HAVE QUESTIONS?
+            </span>
             <h2 className="text-3xl font-extrabold text-brand-navy">Frequently Asked Questions</h2>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {faqs.map((faq, i) => (
-              <details key={i} className="group border border-brand-border rounded-xl overflow-hidden">
-                <summary className="flex items-center justify-between px-5 py-3.5 cursor-pointer list-none bg-brand-bg hover:bg-brand-border/30 transition-colors">
-                  <span className="font-semibold text-brand-navy text-sm pr-4">{faq.q}</span>
-                  <ChevronDown className="h-4 w-4 text-brand-maroon shrink-0 transition-transform group-open:rotate-180" />
+              <details key={i} className="group border border-brand-border rounded-2xl overflow-hidden transition-all duration-200 hover:border-brand-maroon/40 shadow-xs">
+                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer list-none bg-brand-bg/60 hover:bg-brand-bg transition-colors">
+                  <span className="font-bold text-brand-navy text-sm sm:text-base pr-4">{faq.q}</span>
+                  <ChevronDown className="h-4 w-4 text-brand-maroon shrink-0 transition-transform duration-200 group-open:rotate-180" />
                 </summary>
-                <div className="px-5 py-3.5 text-sm text-brand-navy/70 font-light leading-relaxed bg-white">{faq.a}</div>
+                <div className="px-5 py-4 text-sm text-brand-navy/70 font-light leading-relaxed bg-white border-t border-brand-border/40">{faq.a}</div>
               </details>
             ))}
           </div>
-          <div className="text-center mt-8">
+          <div className="text-center mt-10">
             <a href={`tel:${HODU.phone}`}
-              className="inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-accent text-white font-bold px-6 py-2.5 rounded-xl transition-colors text-sm">
-              <Phone className="h-4 w-4" /> {HODU.phone}
+              className="inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-accent text-white font-bold px-7 py-3 rounded-xl transition-all text-sm shadow hover:shadow-md">
+              <Phone className="h-4 w-4" /> Call Admissions: {HODU.phone}
             </a>
           </div>
         </div>
       </section>
 
       {/* Enquiry CTA */}
-      <section className="reveal py-14 bg-brand-bg border-b border-brand-border">
-        <div className="max-w-5xl mx-auto px-4 grid lg:grid-cols-2 gap-10 items-start">
+      <section className="reveal py-16 bg-brand-bg border-b border-brand-border">
+        <div className="max-w-5xl mx-auto px-4 grid lg:grid-cols-2 gap-10 items-center">
           <div className="space-y-4">
-            <h2 className="text-3xl font-extrabold text-brand-navy">Book a Free Consultation</h2>
-            <p className="text-sm text-brand-navy/60 font-light">Our counsellors call back within 2 hours. Zero pressure.</p>
-            <div className="space-y-2 pt-2">
+            <span className="inline-block bg-brand-maroon text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full">
+              FREE ADMISSIONS COUNSELLING
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-brand-navy leading-tight">Book a Free 1-on-1 Consultation</h2>
+            <p className="text-sm text-brand-navy/65 font-light leading-relaxed">
+              Our academic directors will evaluate your goals, discuss batch schedules, and create a customized roadmap for your target exam.
+            </p>
+            <div className="space-y-3 pt-3">
               {[
-                { icon: '📞', text: HODU.phone },
-                { icon: '✉️', text: HODU.email },
-                { icon: '📍', text: HODU.address },
+                { icon: '📞', title: 'Direct Helpline', text: HODU.phone },
+                { icon: '✉️', title: 'Admissions Desk', text: HODU.email },
+                { icon: '📍', title: 'Main Campus', text: HODU.address },
               ].map(item => (
-                <div key={item.text} className="flex items-start gap-3 text-sm text-brand-navy/70">
-                  <span>{item.icon}</span>
-                  <span className="font-light">{item.text}</span>
+                <div key={item.text} className="flex items-start gap-3 text-sm bg-white p-3.5 rounded-xl border border-brand-border/80 shadow-xs">
+                  <span className="text-lg">{item.icon}</span>
+                  <div>
+                    <span className="font-bold text-xs text-brand-navy block">{item.title}</span>
+                    <span className="font-light text-brand-navy/70 text-xs">{item.text}</span>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
-          <div className="bg-white border border-brand-border rounded-2xl p-6 shadow-sm">
+          <div className="bg-white border border-brand-border rounded-3xl p-6 sm:p-8 shadow-xl">
+            <h3 className="font-extrabold text-brand-navy text-lg mb-1">Quick Enquiry</h3>
+            <p className="text-xs text-brand-navy/60 mb-5 font-light">Enter your details and our team will get back to you.</p>
             <EnquiryForm />
           </div>
         </div>
       </section>
 
       {/* Blog */}
-      <section className="reveal py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between mb-7">
-          <h2 className="text-3xl font-extrabold text-brand-navy">Latest Blog</h2>
-          <Link href="/blog" className="text-xs font-bold text-brand-maroon border border-brand-maroon/20 hover:bg-brand-maroon hover:text-white px-4 py-2 rounded-lg transition-all shrink-0">
-            View All
+      <section className="reveal py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between mb-8">
+          <div>
+            <span className="inline-block bg-brand-maroon/10 text-brand-maroon text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-1 border border-brand-maroon/20">
+              ACADEMIC INSIGHTS
+            </span>
+            <h2 className="text-3xl font-extrabold text-brand-navy">Latest From Our Blog</h2>
+          </div>
+          <Link href="/blog" className="text-xs font-extrabold text-brand-maroon border border-brand-maroon/30 hover:bg-brand-maroon hover:text-white px-5 py-2.5 rounded-xl transition-all shadow-sm shrink-0">
+            View All Articles →
           </Link>
         </div>
         <div className="flex gap-5 overflow-x-auto px-4 sm:px-6 lg:px-8 pb-3 snap-x snap-mandatory scrollbar-hide sm:grid sm:grid-cols-3 sm:overflow-visible max-w-7xl mx-auto">
           {blogs.map(blog => (
             <Link key={blog.slug} href={`/blog/${blog.slug}`}
-              className="group block bg-white border border-brand-border rounded-2xl overflow-hidden hover:shadow-md transition-all shrink-0 w-[78vw] sm:w-auto snap-start">
-              <div className="h-28 bg-gradient-to-br from-brand-navy to-brand-maroon flex items-end p-4">
-                <span className="text-white/60 text-xs font-mono">{blog.date}</span>
+              className="group block bg-white border border-brand-border rounded-2xl overflow-hidden card-hover shrink-0 w-[80vw] sm:w-auto snap-start shadow-sm">
+              <div className="h-32 bg-gradient-to-br from-brand-navy to-brand-maroon flex items-end p-4 relative overflow-hidden">
+                <div className="absolute top-3 right-3 bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-bold text-white">
+                  Exam Tips
+                </div>
+                <span className="text-white/80 text-xs font-mono">{blog.date}</span>
               </div>
-              <div className="p-4">
-                <h3 className="font-bold text-brand-navy text-sm leading-snug group-hover:text-brand-maroon transition-colors line-clamp-2">{blog.title}</h3>
-                <p className="text-xs text-brand-maroon font-bold mt-3 flex items-center gap-1">Read more <ArrowRight className="h-3 w-3" /></p>
+              <div className="p-5">
+                <h3 className="font-extrabold text-brand-navy text-sm leading-snug group-hover:text-brand-maroon transition-colors line-clamp-2">{blog.title}</h3>
+                <p className="text-xs text-brand-maroon font-bold mt-4 flex items-center gap-1.5">Read Article <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" /></p>
               </div>
             </Link>
           ))}

@@ -87,15 +87,15 @@ export default async function CoursesPage({ searchParams }: { searchParams: Prom
       </section>
 
       {/* Category filter tabs */}
-      <section className="bg-white border-b border-brand-border sticky top-16 z-30 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-2 overflow-x-auto py-3 scrollbar-hide">
+      <section className="bg-white/95 backdrop-blur-md border-b border-brand-border sticky top-16 z-30 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-2.5 overflow-x-auto py-3.5 scrollbar-hide">
           <Link href="/courses"
-            className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold transition-colors ${!category ? 'bg-brand-maroon text-white' : 'bg-brand-bg text-brand-navy hover:bg-brand-border/40 border border-brand-border'}`}>
-            All Courses
+            className={`shrink-0 px-5 py-2 rounded-full text-xs font-bold transition-all shadow-xs ${!category ? 'bg-brand-maroon text-white shadow-md' : 'bg-brand-bg/80 text-brand-navy hover:bg-brand-border/50 border border-brand-border'}`}>
+            All Programs
           </Link>
           {categories.map(cat => (
             <Link key={cat} href={`/courses?category=${encodeURIComponent(cat)}`}
-              className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold transition-colors whitespace-nowrap ${category === cat ? 'bg-brand-maroon text-white' : 'bg-brand-bg text-brand-navy hover:bg-brand-border/40 border border-brand-border'}`}>
+              className={`shrink-0 px-5 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap shadow-xs ${category === cat ? 'bg-brand-maroon text-white shadow-md' : 'bg-brand-bg/80 text-brand-navy hover:bg-brand-border/50 border border-brand-border'}`}>
               {cat}
             </Link>
           ))}
@@ -103,10 +103,10 @@ export default async function CoursesPage({ searchParams }: { searchParams: Prom
       </section>
 
       {/* Course grid */}
-      <section className="py-12 bg-brand-bg">
+      <section className="py-14 bg-brand-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {courses && courses.length > 0 ? (
-            <div className="flex gap-5 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:overflow-visible">
+            <div className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:overflow-visible">
               {courses.map(course => {
                 const features: string[] = Array.isArray(course.features_json) && course.features_json.length > 0
                   ? course.features_json
@@ -116,75 +116,81 @@ export default async function CoursesPage({ searchParams }: { searchParams: Prom
                 const cardImg = course.image_url || categoryImages[course.category]
 
                 return (
-                  <div key={course.id} className="bg-white border border-brand-border rounded-2xl overflow-hidden hover:shadow-lg transition-all flex flex-col shrink-0 w-[78vw] sm:w-auto snap-start">
+                  <div key={course.id} className="bg-white border border-brand-border rounded-3xl overflow-hidden card-hover flex flex-col shrink-0 w-[80vw] sm:w-auto snap-start shadow-sm">
                     {/* Card top image */}
-                    {cardImg ? (
-                      <div className="h-40 relative overflow-hidden">
-                        <img src={cardImg} alt={course.title} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                        <span className="absolute bottom-3 left-3 text-white font-extrabold text-sm leading-tight drop-shadow">{course.title}</span>
-                      </div>
-                    ) : (
-                      <div className="h-40 bg-gradient-to-br from-brand-maroon to-brand-accent flex items-end p-4">
-                        <span className="text-white font-extrabold text-xl leading-tight">{course.title}</span>
-                      </div>
-                    )}
-
-                    <div className="p-5 flex flex-col flex-1">
-                      {/* Category badge */}
-                      <span className={`${badgeClass} text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded self-start mb-3`}>
-                        {course.category}
-                      </span>
-
-                      <h3 className="font-extrabold text-brand-navy text-base leading-snug mb-1">{course.title}</h3>
-                      {course.class_level && (
-                        <p className="text-xs text-brand-navy/60 font-medium mb-3">{course.class_level} · {course.mode}</p>
-                      )}
-                      {course.description && (
-                        <p className="text-xs text-brand-navy/70 font-light line-clamp-2 mb-3">{course.description}</p>
-                      )}
-
-                      {/* Feature bullets */}
-                      <ul className="space-y-1.5 mb-4">
-                        {features.slice(0, 4).map((f: string, i: number) => (
-                          <li key={i} className="flex items-start gap-2 text-xs text-brand-navy/80">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                            <span>{f}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      {/* Batch info */}
-                      {(course.duration || course.phase_start) && (
-                        <div className="flex gap-4 text-[11px] text-brand-navy/60 font-medium mb-4 border-t border-brand-border pt-3">
-                          {course.duration && <span>⏱ {course.duration}</span>}
-                          {course.phase_start && <span>📅 Starts {course.phase_start}</span>}
+                    <div className="h-44 relative overflow-hidden">
+                      {cardImg ? (
+                        <>
+                          <img src={cardImg} alt={course.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                          <div className="absolute top-3 left-3">
+                            <span className={`${badgeClass} text-white text-[10px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full shadow-md`}>
+                              {course.category}
+                            </span>
+                          </div>
+                          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
+                            <span className="font-semibold bg-black/40 backdrop-blur-sm px-2.5 py-0.5 rounded-md">
+                              {course.class_level || 'Comprehensive Batch'}
+                            </span>
+                            <span className="text-amber-300 font-bold bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded-md flex items-center gap-1">
+                              ★ 4.9
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="h-44 bg-gradient-to-br from-brand-maroon to-brand-accent flex items-end p-5">
+                          <span className="text-white font-extrabold text-xl leading-tight">{course.title}</span>
                         </div>
                       )}
+                    </div>
 
-                      <div className="mt-auto space-y-3">
-                        {/* Price */}
-                        <div className="flex items-baseline gap-2">
-                          {fee ? (
-                            <>
-                              <span className="text-2xl font-extrabold text-brand-navy">{fee}</span>
-                              <span className="text-xs text-brand-navy/50 font-light">/ full course</span>
-                            </>
-                          ) : (
-                            <span className="text-sm font-bold text-brand-maroon">Contact us for fee details</span>
-                          )}
+                    <div className="p-6 flex flex-col flex-1 justify-between">
+                      <div>
+                        <h3 className="font-extrabold text-brand-navy text-lg leading-snug mb-1.5">{course.title}</h3>
+                        {course.class_level && (
+                          <p className="text-xs text-brand-maroon font-semibold mb-3">{course.class_level} · {course.mode || 'Classroom + Live Online'}</p>
+                        )}
+                        {course.description && (
+                          <p className="text-xs text-brand-navy/65 font-light line-clamp-2 mb-4 leading-relaxed">{course.description}</p>
+                        )}
+
+                        {/* Feature bullets */}
+                        <ul className="space-y-2 mb-5">
+                          {features.slice(0, 4).map((f: string, i: number) => (
+                            <li key={i} className="flex items-start gap-2.5 text-xs text-brand-navy/80">
+                              <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+                              <span>{f}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="space-y-4 pt-4 border-t border-brand-border/70">
+                        {/* Batch info */}
+                        {(course.duration || course.phase_start) && (
+                          <div className="flex justify-between text-[11px] text-brand-navy/60 font-medium bg-brand-bg/60 p-2 rounded-xl border border-brand-border/40">
+                            {course.duration && <span>⏱ {course.duration}</span>}
+                            {course.phase_start && <span>📅 Starts {course.phase_start}</span>}
+                          </div>
+                        )}
+
+                        {/* Price + Dual CTAs */}
+                        <div className="flex items-baseline justify-between pt-1">
+                          <div>
+                            <span className="text-[10px] text-brand-navy/50 font-bold uppercase tracking-wider block">Tuition Fee</span>
+                            <span className="text-2xl font-black text-brand-navy">{fee ?? 'Enquire'}</span>
+                          </div>
                         </div>
 
-                        {/* Dual CTAs */}
-                        <div className="flex gap-2">
+                        <div className="grid grid-cols-2 gap-2.5">
                           <Link href={`/courses/${course.slug}`}
-                            className="flex-1 border border-brand-border text-brand-navy text-xs font-semibold py-2.5 rounded-xl text-center hover:bg-brand-bg transition-colors">
-                            Know More
+                            className="border border-brand-border hover:border-brand-maroon text-brand-navy hover:text-brand-maroon text-xs font-bold py-2.5 rounded-xl text-center hover:bg-brand-bg transition-all">
+                            Details
                           </Link>
                           <Link href="/enroll"
-                            className="flex-1 bg-brand-maroon hover:bg-brand-accent text-white text-xs font-bold py-2.5 rounded-xl text-center transition-colors flex items-center justify-center gap-1">
+                            className="bg-brand-maroon hover:bg-brand-accent text-white text-xs font-extrabold py-2.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 shadow hover:shadow-md">
                             Enroll Now
-                            <ArrowRight className="h-3 w-3" />
+                            <ArrowRight className="h-3.5 w-3.5" />
                           </Link>
                         </div>
                       </div>

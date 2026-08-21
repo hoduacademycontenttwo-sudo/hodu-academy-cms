@@ -76,44 +76,49 @@ export default function HomeHeroCarousel({ ctaText, ctaLink, stats, heroTitleHtm
       ))}
 
       {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-        <div key={current} className="max-w-2xl animate-fade-in">
-          <div className="inline-flex items-center gap-2 bg-brand-bg border border-brand-border px-3 py-1.5 rounded-full text-brand-maroon text-xs font-semibold mb-5">
-            <Sparkles className="h-3.5 w-3.5 animate-pulse shrink-0" />
-            Learn from Syllabus-Focused content and stay fully exam ready.
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 flex items-center">
+        <div key={current} className="max-w-2xl bg-white/85 backdrop-blur-md border border-brand-border/90 rounded-3xl p-6 sm:p-9 shadow-2xl animate-fade-in">
+          {/* Trust badge */}
+          <div className="inline-flex items-center gap-2 bg-brand-bg/90 border border-brand-border px-3.5 py-1.5 rounded-full text-brand-maroon text-xs font-bold mb-4 shadow-sm">
+            <span className="flex items-center gap-1 text-amber-500 font-extrabold">
+              ★ ★ ★ ★ ★
+            </span>
+            <span className="text-brand-navy/80 font-semibold">4.9/5 Rating</span>
+            <span className="text-brand-border text-xs">•</span>
+            <span className="text-brand-accent">15,000+ Students</span>
           </div>
 
           <h1
-            className={`leading-[1.1] tracking-tight mb-5 text-brand-navy ${sizeClass[s.headingSize] ?? sizeClass.large} ${weightClass[s.headingWeight] ?? weightClass.black}`}
+            className={`leading-[1.12] tracking-tight mb-4 text-brand-navy drop-shadow-sm ${sizeClass[s.headingSize] ?? sizeClass.large} ${weightClass[s.headingWeight] ?? weightClass.black}`}
             dangerouslySetInnerHTML={{ __html: s.headingHtml }}
           />
 
           {s.subtitleHtml && (
             <p
-              className={`max-w-lg mb-8 leading-relaxed ${subSizeClass[s.subtitleSize] ?? subSizeClass.medium} ${weightClass[s.subtitleWeight] ?? weightClass.light}`}
+              className={`max-w-lg mb-7 text-brand-navy/75 leading-relaxed ${subSizeClass[s.subtitleSize] ?? subSizeClass.medium} ${weightClass[s.subtitleWeight] ?? weightClass.light}`}
               dangerouslySetInnerHTML={{ __html: s.subtitleHtml }}
             />
           )}
 
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 mb-8">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 mb-6">
             <Link href={ctaLink}
-              className="w-full sm:w-auto bg-brand-maroon hover:bg-brand-accent text-white font-bold px-7 py-3.5 rounded-xl shadow transition-all flex items-center justify-center gap-2 text-sm">
+              className="w-full sm:w-auto bg-brand-maroon hover:bg-brand-accent text-white font-extrabold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2 text-sm tracking-wide">
               {ctaText}
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link href="/contact"
-              className="w-full sm:w-auto bg-brand-bg hover:bg-brand-border/40 text-brand-navy border border-brand-border font-semibold px-7 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 text-sm">
+              className="w-full sm:w-auto bg-white/90 hover:bg-brand-bg text-brand-navy border border-brand-border font-bold px-7 py-3.5 rounded-xl shadow-sm hover:shadow transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2 text-sm">
               Free Callback
-              <Calendar className="h-4 w-4" />
+              <Calendar className="h-4 w-4 text-brand-maroon" />
             </Link>
           </div>
 
           {stats.length > 0 && (
-            <div className="grid grid-cols-3 gap-4 pt-6 border-t border-brand-border max-w-sm">
+            <div className="grid grid-cols-3 gap-4 pt-5 border-t border-brand-border/80">
               {stats.slice(0, 3).map(st => (
-                <div key={st.label}>
-                  <h3 className="text-2xl font-black text-brand-maroon">{st.value}</h3>
-                  <p className="text-[11px] text-brand-navy/60 font-semibold uppercase tracking-wider">{st.label}</p>
+                <div key={st.label} className="bg-brand-bg/60 rounded-xl p-2.5 text-center border border-brand-border/50">
+                  <h3 className="text-xl sm:text-2xl font-black text-brand-maroon">{st.value}</h3>
+                  <p className="text-[10px] sm:text-[11px] text-brand-navy/70 font-bold uppercase tracking-wider mt-0.5">{st.label}</p>
                 </div>
               ))}
             </div>

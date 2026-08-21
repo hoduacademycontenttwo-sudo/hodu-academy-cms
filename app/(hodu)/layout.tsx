@@ -1,5 +1,6 @@
 import HoduNavbar from '@/components/hodu/HoduNavbar'
 import HoduFooter from '@/components/hodu/HoduFooter'
+import FloatingActions from '@/components/hodu/FloatingActions'
 import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID, HODU } from '@/lib/hodu'
 
@@ -97,6 +98,7 @@ export default async function HoduLayout({ children }: { children: React.ReactNo
       />
       <main>{children}</main>
       <HoduFooter siteName={siteName} logoUrl={logoUrl} site={site} academicOfferings={courseLinks ?? undefined} />
+      <FloatingActions />
     </>
   )
 }
