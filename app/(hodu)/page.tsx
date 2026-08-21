@@ -130,7 +130,7 @@ const targetExams = [
     label: 'Jaipur Offline Center',
     icon: Building2,
     href: '/offline',
-    badge: 'C-Scheme Hub',
+    badge: 'Offline Hub',
     img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=320&fit=crop&auto=format',
     stats: [
       { big: '100%', label: 'AC Transit' },
