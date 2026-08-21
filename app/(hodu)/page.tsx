@@ -90,24 +90,32 @@ const curriculumTracks = [
 
 const whyChooseUs = [
   {
+    num: '01',
     icon: Users,
-    title: '1:12 Small Batches',
-    desc: 'Intimate batches ensure personal attention and active participation in every session.',
+    title: '1:12 Small Interactive Batches',
+    badge: 'Personalized Focus',
+    desc: 'Intimate batches ensure individual faculty attention, continuous micro-assessments, and active student participation in every single session.',
   },
   {
+    num: '02',
     icon: HelpCircle,
     title: 'Daily 1-on-1 Doubt Desks',
-    desc: 'Private doubt sessions daily from 4:00 PM to 7:30 PM with senior subject faculties.',
+    badge: '4:00 – 7:30 PM Daily',
+    desc: 'Dedicated private doubt-clearing sessions daily with senior subject faculties. No pending questions carry over to the next lecture.',
   },
   {
+    num: '03',
     icon: Laptop,
     title: 'Smart Learning & CBT Labs',
-    desc: 'Digital classrooms, test simulations, and chapter-wise analytics delivered to parents.',
+    badge: 'Exam-Ready Testing',
+    desc: 'Modern digital classrooms with Computer-Based Test simulations, past paper decoders, and real-time chapter analytics sent to parents.',
   },
   {
+    num: '04',
     icon: Award,
     title: 'Expert Educator Faculty',
-    desc: 'Seasoned subject masters with 10–25+ years of teaching Cambridge, IB, and JEE/NEET.',
+    badge: '10–25+ Yrs Exp',
+    desc: 'Seasoned subject masters specializing in Cambridge IGCSE, IB DP, CBSE, and JEE/NEET with proven track records of top percentiles.',
   },
 ]
 
@@ -287,56 +295,111 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 4. Why Choose Hodu Academy (4 Clean Benefit Cards) */}
-      <section className="bg-white border-y border-brand-border py-12 sm:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <span className="inline-block bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-              WHY CHOOSE US
-            </span>
-            <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
+      {/* 4. Why Choose Hodu Academy (The Hodu Learning Edge) */}
+      <section className="relative py-16 sm:py-24 bg-gradient-to-b from-white via-brand-blush/20 to-white border-y border-brand-border overflow-hidden">
+        {/* Subtle decorative background glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-brand-maroon/5 blur-[120px] rounded-full pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+            <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full mb-3 shadow-xs">
+              <Sparkles className="h-3.5 w-3.5 text-amber-300" />
+              <span>WHY CHOOSE US</span>
+            </div>
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight">
               The Hodu Learning Edge
             </h2>
-            <p className="text-xs sm:text-sm text-brand-muted mt-1 max-w-lg mx-auto">
-              A student-first ecosystem built for measurable conceptual clarity and top board ranks.
+            <p className="text-xs sm:text-sm text-brand-muted mt-2 leading-relaxed">
+              A student-first academic ecosystem engineered for deep conceptual mastery and top international ranks.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* 4 Feature Cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {whyChooseUs.map((item, idx) => {
               const Icon = item.icon
               return (
                 <div
                   key={idx}
-                  className="bg-brand-bg border border-brand-border rounded-xl p-5 hover:border-brand-maroon transition-all"
+                  className="group relative bg-white border border-brand-border/80 hover:border-brand-maroon/80 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl flex flex-col justify-between overflow-hidden"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-white border border-brand-border text-brand-maroon flex items-center justify-center mb-3.5 shadow-xs">
-                    <Icon className="h-5 w-5" />
+                  {/* Top hover accent bar */}
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-maroon via-brand-crimson to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                  {/* Watermark Index Number */}
+                  <span className="absolute top-4 right-4 font-serif text-3xl font-black text-brand-maroon/10 group-hover:text-brand-maroon/20 transition-colors pointer-events-none select-none">
+                    {item.num}
+                  </span>
+
+                  <div>
+                    {/* Icon container */}
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-maroon to-brand-crimson text-white flex items-center justify-center mb-5 shadow-md shadow-brand-maroon/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                      <Icon className="h-6 w-6" />
+                    </div>
+
+                    {/* Badge chip */}
+                    <span className="inline-block bg-brand-bg text-brand-maroon text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-brand-border mb-2.5">
+                      {item.badge}
+                    </span>
+
+                    {/* Card title */}
+                    <h3 className="font-bold text-base text-brand-text group-hover:text-brand-maroon transition-colors mb-2">
+                      {item.title}
+                    </h3>
+
+                    {/* Card description */}
+                    <p className="text-xs text-brand-muted leading-relaxed">
+                      {item.desc}
+                    </p>
                   </div>
-                  <h3 className="font-bold text-sm text-brand-text mb-1.5">{item.title}</h3>
-                  <p className="text-xs text-brand-muted leading-relaxed">{item.desc}</p>
                 </div>
               )
             })}
           </div>
 
-          {/* Quick numbers row */}
-          <div className="mt-10 pt-8 border-t border-brand-border grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-            <div>
-              <span className="text-2xl sm:text-3xl font-bold text-brand-maroon block">15,000+</span>
-              <span className="text-xs text-brand-muted font-medium mt-0.5 block">Students Mentored</span>
-            </div>
-            <div>
-              <span className="text-2xl sm:text-3xl font-bold text-brand-maroon block">1 : 12</span>
-              <span className="text-xs text-brand-muted font-medium mt-0.5 block">Teacher-Student Ratio</span>
-            </div>
-            <div>
-              <span className="text-2xl sm:text-3xl font-bold text-brand-maroon block">99.4%</span>
-              <span className="text-xs text-brand-muted font-medium mt-0.5 block">Highest Board Score</span>
-            </div>
-            <div>
-              <span className="text-2xl sm:text-3xl font-bold text-brand-maroon block">100%</span>
-              <span className="text-xs text-brand-muted font-medium mt-0.5 block">Past Papers Solved</span>
+          {/* Enhanced Stats Strip (Clean Elevated Card with Soft Dividers) */}
+          <div className="mt-12 sm:mt-16 bg-white border border-brand-border rounded-2xl p-6 sm:p-8 shadow-xs">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 divide-y lg:divide-y-0 lg:divide-x divide-brand-border/70 text-center">
+              <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
+                <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
+                  15,000+
+                </span>
+                <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
+                  Students Mentored
+                </span>
+                <span className="text-[11px] text-brand-muted mt-0.5">Across All Programs</span>
+              </div>
+
+              <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
+                <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
+                  1 : 12
+                </span>
+                <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
+                  Teacher-Student Ratio
+                </span>
+                <span className="text-[11px] text-brand-muted mt-0.5">Strict Batch Cap</span>
+              </div>
+
+              <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
+                <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
+                  99.4%
+                </span>
+                <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
+                  Highest Board Score
+                </span>
+                <span className="text-[11px] text-brand-muted mt-0.5">Top Jaipur Ranks</span>
+              </div>
+
+              <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
+                <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
+                  100%
+                </span>
+                <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
+                  Past Papers Solved
+                </span>
+                <span className="text-[11px] text-brand-muted mt-0.5">15-Year Question Banks</span>
+              </div>
             </div>
           </div>
         </div>
