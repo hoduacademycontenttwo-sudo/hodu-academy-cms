@@ -324,18 +324,23 @@ export default function HoduNavbar({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
 
-          {/* Logo with clear margin */}
+          {/* Logo with clear margin & 'Your Global Classroom' subtitle */}
           <Link href="/" className="flex items-center gap-2.5 group shrink-0 mr-6 lg:mr-8">
             {logoUrl ? (
-              <img src={logoUrl} alt={siteName} className="h-9 w-9 rounded-lg object-cover shrink-0" />
+              <img src={logoUrl} alt={siteName} className="h-10 w-10 rounded-lg object-cover shrink-0" />
             ) : (
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-maroon text-white font-bold text-lg shrink-0">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-maroon text-white font-bold text-lg shrink-0">
                 {siteName.charAt(0).toUpperCase()}
               </div>
             )}
-            <span className="text-lg font-bold tracking-tight text-brand-maroon whitespace-nowrap">
-              {siteName}
-            </span>
+            <div className="flex flex-col leading-none">
+              <span className="text-lg font-bold tracking-tight text-brand-maroon whitespace-nowrap">
+                {siteName}
+              </span>
+              <span className="text-[9px] font-semibold tracking-wider text-brand-muted uppercase whitespace-nowrap mt-0.5">
+                Your Global Classroom
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Nav — single-line links, no wrapping */}
