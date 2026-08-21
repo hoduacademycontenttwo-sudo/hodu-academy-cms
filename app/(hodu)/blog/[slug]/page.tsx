@@ -141,15 +141,6 @@ const posts: Record<string, {
   },
 }
 
-const categoryColors: Record<string, string> = {
-  'JEE': 'bg-red-900 text-white',
-  'NEET': 'bg-emerald-900 text-white',
-  'IGCSE': 'bg-blue-900 text-white',
-  'IB': 'bg-purple-900 text-white',
-  'Olympiad': 'bg-amber-900 text-white',
-  'CBSE': 'bg-teal-900 text-white',
-}
-
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const supabase = await createClient()
@@ -205,82 +196,82 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   return (
-    <div className="space-y-0 animate-fade-in text-brand-navy">
+    <div className="space-y-0 animate-fade-in bg-white">
 
       {/* Breadcrumb */}
       <div className="bg-white border-b border-brand-border px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-brand-navy/60 font-medium">
+        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-neutral-500 font-medium">
           <Link href="/" className="hover:text-brand-maroon transition-colors">Home</Link>
           <span>/</span>
           <Link href="/blog" className="hover:text-brand-maroon transition-colors">Blog</Link>
           <span>/</span>
-          <span className="text-brand-navy font-bold line-clamp-1">{post.title}</span>
+          <span className="text-brand-maroon font-bold line-clamp-1">{post.title}</span>
         </div>
       </div>
 
       {/* Hero */}
-      <section className="bg-brand-navy text-white py-16 sm:py-20 dark-grid-pattern border-b border-brand-border">
+      <section className="bg-brand-maroon text-white py-16 sm:py-20 border-b border-brand-border">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-          <Link href="/blog" className="inline-flex items-center gap-1.5 text-white/70 hover:text-brand-gold text-xs font-bold transition-colors uppercase tracking-wider">
+          <Link href="/blog" className="inline-flex items-center gap-1.5 text-white/80 hover:text-white text-xs font-bold transition-colors uppercase tracking-wider">
             <ArrowLeft className="h-3.5 w-3.5" /> Back to Articles
           </Link>
           <div>
-            <span className={`inline-block text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3 ${categoryColors[post.category] ?? 'bg-white/10 text-white'}`}>
+            <span className="inline-block text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-md mb-3 bg-white text-brand-maroon shadow-xs">
               {post.category}
             </span>
             <h1 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white mb-4">
               {post.title}
             </h1>
-            <p className="text-white/80 text-sm sm:text-base font-light leading-relaxed mb-6 max-w-3xl">
+            <p className="text-white/90 text-sm sm:text-base font-normal leading-relaxed mb-6 max-w-3xl">
               {post.excerpt}
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-6 text-xs text-white/60 pt-2 border-t border-white/15">
-            <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5 text-brand-gold" />{post.date}</span>
-            <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-brand-gold" />{post.readTime}</span>
+          <div className="flex flex-wrap items-center gap-6 text-xs text-white/80 pt-2 border-t border-white/20">
+            <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" />{post.date}</span>
+            <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" />{post.readTime}</span>
             <span>By {post.author}</span>
           </div>
         </div>
       </section>
 
       {/* Body */}
-      <section className="bg-brand-bg py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-3 gap-10">
 
           {/* Article content */}
-          <article className="lg:col-span-2 bg-white border border-brand-border rounded-3xl p-8 sm:p-12 shadow-sm">
+          <article className="lg:col-span-2 bg-white border-2 border-brand-border rounded-3xl p-8 sm:p-12 shadow-xs">
             {post.htmlContent ? (
               <div
-                className="prose prose-sm sm:prose-base max-w-none text-brand-navy/80 leading-relaxed prose-headings:font-serif-editorial prose-headings:text-brand-navy prose-headings:font-bold prose-a:text-brand-maroon"
+                className="prose prose-sm sm:prose-base max-w-none text-neutral-700 leading-relaxed prose-headings:font-serif-editorial prose-headings:text-neutral-900 prose-headings:font-bold prose-a:text-brand-maroon"
                 dangerouslySetInnerHTML={{ __html: post.htmlContent }}
               />
             ) : (
-              <div className="prose prose-sm sm:prose-base max-w-none text-brand-navy/80 leading-relaxed space-y-6">
+              <div className="prose prose-sm sm:prose-base max-w-none text-neutral-700 leading-relaxed space-y-6">
                 {(post as typeof hardcodedPost).content.map((block, i) => {
                   if (block.startsWith('## ')) {
                     return (
-                      <h2 key={i} className="font-serif-editorial text-2xl font-bold text-brand-navy mt-10 mb-4 border-b border-brand-border pb-3">
+                      <h2 key={i} className="font-serif-editorial text-2xl font-bold text-neutral-900 mt-10 mb-4 border-b border-brand-border pb-3">
                         {block.slice(3)}
                       </h2>
                     )
                   }
-                  return <p key={i} className="text-sm sm:text-base leading-relaxed font-light text-brand-navy/80">{block}</p>
+                  return <p key={i} className="text-sm sm:text-base leading-relaxed font-normal text-neutral-700">{block}</p>
                 })}
               </div>
             )}
 
             {/* CTA block at end of article */}
-            <div className="mt-12 bg-brand-bg border border-brand-border rounded-3xl p-8 text-center space-y-4">
-              <span className="text-[10px] font-black uppercase tracking-widest text-brand-maroon bg-brand-maroon/10 px-3 py-1 rounded-full inline-block border border-brand-maroon/20">
+            <div className="mt-12 bg-neutral-50 border-2 border-brand-border rounded-2xl p-8 text-center space-y-4">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-maroon bg-white px-3 py-1 rounded-md inline-block border border-brand-border">
                 TAILORED ROADMAP
               </span>
-              <h3 className="font-serif-editorial text-2xl font-bold text-brand-navy">Ready to Elevate Your Exam Preparation?</h3>
-              <p className="text-xs sm:text-sm text-brand-navy/70 font-light max-w-md mx-auto">
+              <h3 className="font-serif-editorial text-2xl font-bold text-neutral-900">Ready to Elevate Your Exam Preparation?</h3>
+              <p className="text-xs sm:text-sm text-neutral-600 font-normal max-w-md mx-auto">
                 Speak directly with our academic heads to design a month-by-month study and testing plan.
               </p>
               <div className="pt-2">
                 <Link href="/contact"
-                  className="inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-crimson text-white font-extrabold px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-md">
+                  className="inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-crimson text-white font-bold px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-xs">
                   <span>Book Free Consultation</span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -290,25 +281,25 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {/* Sidebar */}
           <aside className="space-y-6">
-            <div className="bg-white border border-brand-border rounded-3xl p-6 sm:p-7 shadow-xl sticky top-24">
-              <span className="text-[10px] font-black uppercase tracking-widest text-brand-maroon bg-brand-maroon/10 px-2.5 py-0.5 rounded-full inline-block mb-2">
+            <div className="bg-white border-2 border-brand-border rounded-2xl p-6 sm:p-7 shadow-md sticky top-28">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-maroon bg-neutral-100 px-2.5 py-0.5 rounded-md inline-block mb-2 border border-brand-border">
                 ACADEMIC ADVISORY
               </span>
-              <h3 className="font-serif-editorial font-bold text-brand-navy text-lg mb-1">Schedule Diagnostic</h3>
-              <p className="text-xs text-brand-navy/60 mb-5 font-light">Get a personalized syllabus evaluation.</p>
+              <h3 className="font-serif-editorial font-bold text-neutral-900 text-lg mb-1">Schedule Diagnostic</h3>
+              <p className="text-xs text-neutral-500 mb-5 font-normal">Get a personalized syllabus evaluation.</p>
               <EnquiryForm />
             </div>
 
             {relatedPosts.length > 0 && (
-              <div className="bg-white border border-brand-border rounded-3xl p-6 shadow-sm">
-                <h3 className="font-serif-editorial font-bold text-brand-navy text-base mb-4">Related Insights</h3>
+              <div className="bg-white border-2 border-brand-border rounded-2xl p-6 shadow-xs">
+                <h3 className="font-serif-editorial font-bold text-neutral-900 text-base mb-4">Related Insights</h3>
                 <div className="space-y-3">
                   {relatedPosts.map(r => (
                     <Link key={r.slug} href={`/blog/${r.slug}`}
-                      className="block p-3.5 rounded-2xl border border-brand-border hover:border-brand-maroon hover:bg-brand-bg transition-all group">
-                      <span className={`text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${categoryColors[r.category] ?? 'bg-brand-navy text-white'}`}>{r.category}</span>
-                      <p className="text-xs font-bold text-brand-navy group-hover:text-brand-maroon transition-colors mt-2 line-clamp-2 leading-snug">{r.title}</p>
-                      <p className="text-[10px] text-brand-navy/50 font-mono mt-1">{r.readTime}</p>
+                      className="block p-3.5 rounded-xl border border-brand-border hover:border-brand-maroon transition-all group">
+                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-brand-maroon text-white">{r.category}</span>
+                      <p className="text-xs font-bold text-neutral-900 group-hover:text-brand-maroon transition-colors mt-2 line-clamp-2 leading-snug">{r.title}</p>
+                      <p className="text-[10px] text-neutral-500 font-mono mt-1">{r.readTime}</p>
                     </Link>
                   ))}
                 </div>

@@ -19,10 +19,10 @@ const categories = [
 const modes = ['Classroom (Jaipur)', 'Online Live', 'Hybrid (Both)', 'Distance Learning']
 
 const benefits = [
-  { icon: Users, title: 'Small Batch Size', desc: 'Max 15–20 students per batch for personal attention' },
+  { icon: Users, title: 'Small Batch Size', desc: 'Max 12–15 students per batch for personal attention' },
   { icon: Clock, title: 'Flexible Timings', desc: 'Morning, afternoon & evening batches available' },
   { icon: BookOpen, title: 'Study Material', desc: 'Chapter notes, DPPs, mock tests — all included' },
-  { icon: Award, title: 'Proven Results', desc: '98% board pass rate, 600+ toppers produced' },
+  { icon: Award, title: 'Proven Results', desc: '99.4% top board score, 600+ toppers produced' },
 ]
 
 export default function EnrollPage() {
@@ -61,192 +61,192 @@ export default function EnrollPage() {
   }
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in bg-white">
 
       {/* Hero */}
-      <section className="reveal bg-brand-navy text-white py-14">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">
+      <section className="reveal bg-brand-maroon text-white py-16 sm:py-20 border-b border-brand-border">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-3">
+          <span className="inline-block bg-white text-brand-maroon text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-xs">
             Admissions Open 2025–26
           </span>
-          <h1 className="text-3xl sm:text-4xl font-extrabold mb-3">Enroll at Hodu Academy</h1>
-          <p className="text-white/70 max-w-xl mx-auto font-light">
+          <h1 className="font-serif-editorial text-4xl sm:text-5xl font-bold text-white">Enroll at Hodu Academy</h1>
+          <p className="text-white/90 max-w-xl mx-auto font-normal leading-relaxed text-sm sm:text-base">
             Fill the form below and our counsellor will contact you within 24 hours to confirm your seat and batch details.
           </p>
         </div>
       </section>
 
       {/* Benefits bar */}
-      <section className="reveal bg-white border-b border-brand-border py-10">
+      <section className="reveal bg-white border-b border-brand-border py-12">
         <div className="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6">
           {benefits.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="flex flex-col items-center text-center gap-2 p-3 rounded-2xl card-hover bg-brand-bg/40 border border-brand-border/40">
-              <div className="w-12 h-12 bg-brand-bg rounded-2xl flex items-center justify-center shadow-xs border border-brand-border/80">
-                <Icon className="h-6 w-6 text-brand-maroon" />
+            <div key={title} className="flex flex-col items-center text-center gap-2 p-4 rounded-2xl border-2 border-brand-border bg-white shadow-xs">
+              <div className="w-12 h-12 bg-brand-maroon text-white rounded-xl flex items-center justify-center shadow-xs">
+                <Icon className="h-6 w-6" />
               </div>
-              <p className="font-extrabold text-brand-navy text-sm">{title}</p>
-              <p className="text-xs text-brand-navy/60 font-light leading-relaxed">{desc}</p>
+              <p className="font-serif-editorial font-bold text-neutral-900 text-base">{title}</p>
+              <p className="text-xs text-neutral-600 font-normal leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Form + contact */}
-      <section className="reveal bg-brand-bg py-16">
+      <section className="reveal bg-white py-16 sm:py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 grid md:grid-cols-3 gap-10">
 
           {/* Form */}
           <div className="md:col-span-2">
             {done ? (
-              <div className="bg-white border border-brand-border rounded-3xl p-10 text-center shadow-lg animate-fade-in">
-                <CheckCircle className="h-16 w-16 text-emerald-500 mx-auto mb-4 animate-bounce" />
-                <h2 className="text-2xl font-extrabold text-brand-navy mb-2">Enrollment Request Received!</h2>
-                <p className="text-brand-navy/70 text-sm mb-7 max-w-md mx-auto">
-                  Our admissions counsellor will call you within 24 hours to confirm your batch timings, syllabus details, and reserved seat.
+              <div className="bg-white border-2 border-brand-maroon rounded-3xl p-10 text-center space-y-4 shadow-sm">
+                <CheckCircle className="h-16 w-16 text-brand-maroon mx-auto animate-bounce" />
+                <h3 className="font-serif-editorial text-2xl font-bold text-neutral-900">Application Submitted!</h3>
+                <p className="text-neutral-600 text-xs sm:text-sm max-w-md mx-auto font-normal leading-relaxed">
+                  Thank you for applying to Hodu Academy. An admissions counsellor will contact you within 2 business hours.
                 </p>
-                <Link href="/courses"
-                  className="inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-accent text-white font-extrabold px-8 py-3.5 rounded-xl text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
-                  Browse More Programs <ArrowRight className="h-4 w-4" />
-                </Link>
+                <div className="pt-4">
+                  <Link href="/" className="inline-block bg-brand-maroon text-white font-bold px-8 py-3 rounded-xl text-xs uppercase tracking-wider">
+                    Back to Home
+                  </Link>
+                </div>
               </div>
             ) : (
-              <form onSubmit={submit} className="bg-white border border-brand-border rounded-3xl p-6 sm:p-9 shadow-xl space-y-6">
-                <div>
-                  <span className="text-[10px] font-extrabold text-brand-maroon uppercase tracking-widest bg-brand-maroon/10 px-2.5 py-0.5 rounded-full">
-                    ADMISSIONS 2025–26
-                  </span>
-                  <h2 className="text-2xl font-black text-brand-navy mt-1">Direct Admission & Enquiry</h2>
-                  <p className="text-xs text-brand-navy/60 mt-0.5">Complete this form to reserve your seat in the upcoming batch.</p>
+              <form onSubmit={submit} className="bg-white border-2 border-brand-border rounded-3xl p-7 sm:p-9 space-y-5 shadow-xs">
+                <h2 className="font-serif-editorial text-xl font-bold text-neutral-900">Student Admission Details</h2>
+
+                {err && (
+                  <div className="bg-red-50 text-brand-maroon border border-red-200 text-xs px-4 py-3 rounded-xl font-semibold">
+                    ⚠️ {err}
+                  </div>
+                )}
+
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-neutral-800 block">Student's Full Name *</label>
+                    <input
+                      required
+                      type="text"
+                      placeholder="e.g. Aryan Sharma"
+                      value={form.name}
+                      onChange={e => set('name', e.target.value)}
+                      className="w-full bg-white border-2 border-brand-border rounded-xl px-4 py-2.5 text-xs outline-none focus:border-brand-maroon transition-colors"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-neutral-800 block">Phone / WhatsApp Number *</label>
+                    <input
+                      required
+                      type="tel"
+                      placeholder="e.g. 9876543210"
+                      value={form.phone}
+                      onChange={e => set('phone', e.target.value.replace(/\D/g, ''))}
+                      maxLength={10}
+                      className="w-full bg-white border-2 border-brand-border rounded-xl px-4 py-2.5 text-xs outline-none focus:border-brand-maroon transition-colors"
+                    />
+                  </div>
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-brand-navy">Full Name *</label>
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-neutral-800 block">City / Location</label>
                     <input
-                      required value={form.name} onChange={e => set('name', e.target.value)}
-                      placeholder="Student / Parent name"
-                      className="w-full bg-brand-bg/60 border border-brand-border rounded-xl px-4 py-2.5 text-sm text-brand-navy focus:outline-none focus:border-brand-maroon focus:ring-2 focus:ring-brand-maroon/10 transition-all"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-brand-navy">Mobile Number *</label>
-                    <input
-                      required value={form.phone} onChange={e => set('phone', e.target.value)}
-                      placeholder="+91 98765 43210" type="tel"
-                      className="w-full bg-brand-bg/60 border border-brand-border rounded-xl px-4 py-2.5 text-sm text-brand-navy focus:outline-none focus:border-brand-maroon focus:ring-2 focus:ring-brand-maroon/10 transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-brand-navy">City / Location</label>
-                    <input
-                      value={form.city} onChange={e => set('city', e.target.value)}
+                      type="text"
                       placeholder="e.g. Jaipur"
-                      className="w-full bg-brand-bg/60 border border-brand-border rounded-xl px-4 py-2.5 text-sm text-brand-navy focus:outline-none focus:border-brand-maroon focus:ring-2 focus:ring-brand-maroon/10 transition-all"
+                      value={form.city}
+                      onChange={e => set('city', e.target.value)}
+                      className="w-full bg-white border-2 border-brand-border rounded-xl px-4 py-2.5 text-xs outline-none focus:border-brand-maroon transition-colors"
                     />
                   </div>
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-brand-navy">Class / Grade</label>
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-neutral-800 block">Current Class / Grade</label>
                     <input
-                      value={form.class_level} onChange={e => set('class_level', e.target.value)}
-                      placeholder="e.g. Class 10 / Class 11"
-                      className="w-full bg-brand-bg/60 border border-brand-border rounded-xl px-4 py-2.5 text-sm text-brand-navy focus:outline-none focus:border-brand-maroon focus:ring-2 focus:ring-brand-maroon/10 transition-all"
+                      type="text"
+                      placeholder="e.g. Class 10 / Grade 11"
+                      value={form.class_level}
+                      onChange={e => set('class_level', e.target.value)}
+                      className="w-full bg-white border-2 border-brand-border rounded-xl px-4 py-2.5 text-xs outline-none focus:border-brand-maroon transition-colors"
                     />
                   </div>
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-brand-navy">Target Course / Exam *</label>
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-neutral-800 block">Target Curriculum / Board</label>
                     <select
-                      value={form.target_exam} onChange={e => set('target_exam', e.target.value)}
-                      className="w-full bg-brand-bg/60 border border-brand-border rounded-xl px-4 py-2.5 text-sm text-brand-navy focus:outline-none focus:border-brand-maroon focus:ring-2 focus:ring-brand-maroon/10 transition-all"
+                      value={form.target_exam}
+                      onChange={e => set('target_exam', e.target.value)}
+                      className="w-full bg-white border-2 border-brand-border rounded-xl px-4 py-2.5 text-xs outline-none focus:border-brand-maroon transition-colors"
                     >
-                      {categories.map(c => <option key={c}>{c}</option>)}
+                      {categories.map(c => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
                     </select>
                   </div>
-                  <div className="space-y-1.5">
-                    <label className="block text-xs font-bold text-brand-navy">Preferred Mode *</label>
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-neutral-800 block">Learning Preference</label>
                     <select
-                      value={form.mode} onChange={e => set('mode', e.target.value)}
-                      className="w-full bg-brand-bg/60 border border-brand-border rounded-xl px-4 py-2.5 text-sm text-brand-navy focus:outline-none focus:border-brand-maroon focus:ring-2 focus:ring-brand-maroon/10 transition-all"
+                      value={form.mode}
+                      onChange={e => set('mode', e.target.value)}
+                      className="w-full bg-white border-2 border-brand-border rounded-xl px-4 py-2.5 text-xs outline-none focus:border-brand-maroon transition-colors"
                     >
-                      {modes.map(m => <option key={m}>{m}</option>)}
+                      {modes.map(m => (
+                        <option key={m} value={m}>{m}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-brand-navy">Anything else we should know? (Optional)</label>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-neutral-800 block">Any specific goals or doubts? (Optional)</label>
                   <textarea
-                    value={form.message} onChange={e => set('message', e.target.value)}
-                    placeholder="e.g. preferred batch timing, target score, student background..."
                     rows={3}
-                    className="w-full bg-brand-bg/60 border border-brand-border rounded-xl px-4 py-2.5 text-sm text-brand-navy focus:outline-none focus:border-brand-maroon focus:ring-2 focus:ring-brand-maroon/10 resize-none transition-all"
+                    placeholder="Tell us about target exams, weak subjects, or scheduling preferences..."
+                    value={form.message}
+                    onChange={e => set('message', e.target.value)}
+                    className="w-full bg-white border-2 border-brand-border rounded-xl px-4 py-2.5 text-xs outline-none focus:border-brand-maroon resize-none transition-colors"
                   />
                 </div>
 
-                {err && <p className="text-red-600 text-xs bg-red-50 border border-red-200 rounded-xl px-4 py-2.5 font-medium">{err}</p>}
-
                 <button
-                  type="submit" disabled={loading}
-                  className="w-full bg-brand-maroon hover:bg-brand-accent text-white font-extrabold py-4 rounded-xl transition-all duration-200 hover:-translate-y-0.5 text-sm flex items-center justify-center gap-2 disabled:opacity-60 shadow-lg hover:shadow-xl uppercase tracking-wider"
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-4 rounded-xl text-xs uppercase tracking-wider transition-all shadow-xs flex items-center justify-center gap-2"
                 >
-                  {loading ? <><Loader className="h-4 w-4 animate-spin" /> Submitting…</> : <>Submit Enrollment Request <ArrowRight className="h-4 w-4" /></>}
+                  {loading ? (
+                    <><Loader className="h-4 w-4 animate-spin" /> Submitting Application…</>
+                  ) : (
+                    <>Submit Admission Request <ArrowRight className="h-4 w-4" /></>
+                  )}
                 </button>
-
-                <p className="text-[11px] text-brand-navy/50 text-center font-light">
-                  🔒 We protect your data. No spam, only genuine academic guidance.
-                </p>
               </form>
             )}
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-5">
-            <div className="bg-white border border-brand-border rounded-3xl p-6 shadow-sm">
-              <h3 className="font-black text-brand-navy text-xs uppercase tracking-widest mb-4">Admissions Desk</h3>
-              <div className="space-y-3.5">
-                <a href={`tel:${HODU.phone}`} className="flex items-center gap-3 text-sm text-brand-navy hover:text-brand-maroon transition-colors bg-brand-bg/60 p-3 rounded-xl border border-brand-border/60">
-                  <Phone className="h-4 w-4 text-brand-maroon shrink-0" />
-                  <span className="font-bold">{HODU.phone}</span>
+          <aside className="space-y-6">
+            <div className="bg-white border-2 border-brand-border rounded-2xl p-6 shadow-xs space-y-4">
+              <h3 className="font-serif-editorial font-bold text-base text-neutral-900">Direct Helpline</h3>
+              <div className="space-y-3 text-xs">
+                <a href={`tel:${HODU.phone}`} className="flex items-center gap-2 text-neutral-700 hover:text-brand-maroon font-semibold">
+                  <Phone className="h-4 w-4 text-brand-maroon" /> {HODU.phone}
                 </a>
-                <a href={`mailto:${HODU.email}`} className="flex items-center gap-3 text-sm text-brand-navy hover:text-brand-maroon transition-colors bg-brand-bg/60 p-3 rounded-xl border border-brand-border/60">
-                  <Mail className="h-4 w-4 text-brand-maroon shrink-0" />
-                  <span className="font-medium truncate">{HODU.email}</span>
+                <a href={`mailto:${HODU.email}`} className="flex items-center gap-2 text-neutral-700 hover:text-brand-maroon">
+                  <Mail className="h-4 w-4 text-brand-maroon" /> {HODU.email}
                 </a>
               </div>
             </div>
 
-            <div className="bg-brand-navy text-white rounded-3xl p-6 shadow-md">
-              <h3 className="font-extrabold text-xs uppercase tracking-widest mb-4 text-brand-border">Next Steps</h3>
-              <ol className="space-y-3.5">
-                {[
-                  'Submit your enrollment enquiry',
-                  'Senior academic counsellor calls within 24h',
-                  'Free batch placement evaluation',
-                  'Confirm seat reservation & fee payment',
-                ].map((step, i) => (
-                  <li key={i} className="flex items-start gap-3 text-xs text-white/85">
-                    <span className="w-5 h-5 bg-brand-maroon rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">{i + 1}</span>
-                    <span className="font-light">{step}</span>
-                  </li>
-                ))}
-              </ol>
+            <div className="bg-neutral-50 border-2 border-brand-border rounded-2xl p-6 space-y-2">
+              <p className="font-serif-editorial font-bold text-neutral-900 text-sm">Need a Scholarship?</p>
+              <p className="text-xs text-neutral-600 font-normal leading-relaxed">
+                High-achieving students can apply for up to 50% merit scholarship based on our entrance diagnostic score.
+              </p>
             </div>
+          </aside>
 
-            <div className="bg-white border border-brand-border rounded-3xl p-6 shadow-sm text-center">
-              <p className="text-xs text-brand-navy/60 mb-3 font-medium">Already an enrolled student?</p>
-              <Link href="/lms"
-                className="block w-full bg-brand-bg hover:bg-brand-border/50 border border-brand-border text-brand-navy font-bold py-3 rounded-xl text-center text-xs uppercase tracking-wider transition-all">
-                Student LMS Portal →
-              </Link>
-            </div>
-          </div>
         </div>
       </section>
+
     </div>
   )
 }

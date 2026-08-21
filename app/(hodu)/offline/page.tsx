@@ -1,6 +1,6 @@
 import { HODU, HODU_SITE_ID } from '@/lib/hodu'
 import Link from 'next/link'
-import { Phone, MapPin, CheckCircle2, Clock, Calendar, ShieldCheck, Bus, BookOpen, Users, Award, Sparkles, Building2, ArrowRight } from 'lucide-react'
+import { Phone, MapPin, CheckCircle2, Clock, Calendar, ShieldCheck, Bus, BookOpen, Users, Award, Building2, ArrowRight, Laptop, Smartphone, Target, School } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 
@@ -11,42 +11,42 @@ export const metadata = {
 
 const campusFacilities = [
   {
-    icon: '🏫',
+    icon: School,
     title: 'Smart Digital Classrooms',
     tag: 'Acoustically Treated',
     desc: 'Equipped with 85-inch interactive touchscreens, digital visualizers, and ergonomic seating designed for 3+ hour focus without fatigue.',
     image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700&h=450&fit=crop&auto=format'
   },
   {
-    icon: '🎯',
+    icon: Target,
     title: '1-on-1 Faculty Doubt Desks',
     tag: 'Daily 4:00 PM – 7:30 PM',
     desc: 'Dedicated private consultation booths where subject masters resolve student queries line-by-line, ensuring zero lingering confusion.',
     image: 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=700&h=450&fit=crop&auto=format'
   },
   {
-    icon: '📚',
+    icon: BookOpen,
     title: 'Silent Reference Library',
     tag: '8:00 AM – 9:00 PM Access',
     desc: 'Individual air-conditioned study carrels stocked with 15+ years of Cambridge, IB, CBSE & JEE past exam archives and reference textbooks.',
     image: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=700&h=450&fit=crop&auto=format'
   },
   {
-    icon: '💻',
+    icon: Laptop,
     title: 'Computer-Based Testing (CBT) Lab',
     tag: 'Simulated Exam Terminals',
     desc: 'High-speed desktop terminals configured to replicate real NTA JEE Main, NEET, and Cambridge digital exam environments with instant score analytics.',
     image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=700&h=450&fit=crop&auto=format'
   },
   {
-    icon: '📱',
+    icon: Smartphone,
     title: 'Biometric Attendance & Parent Portal',
     tag: 'Real-Time SMS Updates',
     desc: 'Automated entry/exit timestamps sent directly to parents, coupled with weekly performance and attendance dashboards on the Hodu App.',
     image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=700&h=450&fit=crop&auto=format'
   },
   {
-    icon: '🚌',
+    icon: Bus,
     title: 'GPS-Tracked AC Transport',
     tag: 'Doorstep Pickup & Drop',
     desc: 'Safe, air-conditioned bus and van network with live GPS parent tracking covering all major residential sectors across Jaipur.',
@@ -129,40 +129,38 @@ export default async function OfflinePage() {
     : fallbackFaculty
 
   return (
-    <div className="space-y-0 animate-fade-in">
+    <div className="space-y-0 animate-fade-in bg-white">
       
       {/* Editorial Campus Hero */}
-      <section className="relative min-h-[580px] lg:min-h-[640px] overflow-hidden border-b border-brand-border bg-gradient-to-b from-brand-bg via-white to-brand-bg academic-grid-pattern flex items-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 w-full">
+      <section className="relative overflow-hidden border-b border-brand-border bg-white py-14 sm:py-20 lg:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-md border border-brand-maroon/20 px-4 py-2 rounded-full text-brand-maroon text-xs font-black shadow-xs">
-                <Building2 className="h-3.5 w-3.5 text-brand-maroon" />
-                <span className="uppercase tracking-widest text-[11px] text-brand-navy font-black">
+              <div className="inline-flex items-center gap-2 bg-brand-maroon text-white px-4 py-1.5 rounded-full text-xs font-black shadow-xs">
+                <Building2 className="h-3.5 w-3.5" />
+                <span className="uppercase tracking-widest text-[11px] font-black">
                   JAIPUR OFFLINE LEARNING CAMPUS
                 </span>
-                <span className="text-brand-border">|</span>
-                <span className="text-brand-maroon font-bold text-[11px]">ADMISSIONS 2025–26</span>
               </div>
 
-              <h1 className="font-serif-editorial text-4xl sm:text-5xl lg:text-[3.3rem] font-bold text-brand-navy leading-[1.15] tracking-tight">
-                An Immersive Physical Campus Built for <span className="italic font-normal text-brand-maroon underline decoration-brand-maroon/30 underline-offset-8">Deep Academic Focus</span>
+              <h1 className="font-serif-editorial text-4xl sm:text-5xl lg:text-[3.3rem] font-bold text-brand-maroon leading-[1.15] tracking-tight">
+                An Immersive Physical Campus Built for <span className="underline decoration-brand-maroon/30 underline-offset-8">Deep Academic Focus</span>
               </h1>
 
-              <p className="text-sm sm:text-base text-brand-navy/80 font-light leading-relaxed max-w-xl">
+              <p className="text-sm sm:text-base text-neutral-700 font-normal leading-relaxed max-w-xl">
                 Experience education beyond screens. Our Jaipur campus features air-conditioned smart amphitheatres, dedicated 1-on-1 faculty doubt cells, silent study carrels, and personalized mentoring cohorts capped at 12 students.
               </p>
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
                 <a href="#visit-form"
-                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-extrabold px-8 py-4 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2.5 text-xs uppercase tracking-wider">
+                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-bold px-8 py-4 rounded-xl shadow-xs hover:shadow transition-all flex items-center justify-center gap-2.5 text-xs uppercase tracking-wider">
                   <span>Schedule Campus Walkthrough</span>
                   <ArrowRight className="h-4 w-4" />
                 </a>
                 <a href={`tel:${HODU.phone}`}
-                  className="bg-white/90 hover:bg-brand-cream text-brand-navy border border-brand-border font-bold px-7 py-4 rounded-xl shadow-xs hover:shadow transition-all duration-200 flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+                  className="bg-white hover:bg-neutral-50 text-brand-maroon border-2 border-brand-maroon font-bold px-7 py-4 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
                   <Phone className="h-4 w-4 text-brand-maroon" />
                   <span>{HODU.phone}</span>
                 </a>
@@ -171,34 +169,31 @@ export default async function OfflinePage() {
               {/* Quick Trust Pillars */}
               <div className="grid grid-cols-3 gap-3 pt-6 border-t border-brand-border max-w-lg">
                 <div>
-                  <span className="text-lg sm:text-xl font-black text-brand-maroon block">1 : 12</span>
-                  <span className="text-[10px] text-brand-navy/60 font-semibold uppercase tracking-wider">Cohort Limit</span>
+                  <span className="text-lg sm:text-xl font-black text-brand-maroon block font-display-modern">1 : 12</span>
+                  <span className="text-[10px] text-neutral-600 font-bold uppercase tracking-wider">Cohort Limit</span>
                 </div>
                 <div>
-                  <span className="text-lg sm:text-xl font-black text-brand-maroon block">8 AM – 9 PM</span>
-                  <span className="text-[10px] text-brand-navy/60 font-semibold uppercase tracking-wider">Library & Doubt Desk</span>
+                  <span className="text-lg sm:text-xl font-black text-brand-maroon block font-display-modern">8 AM – 9 PM</span>
+                  <span className="text-[10px] text-neutral-600 font-bold uppercase tracking-wider">Library & Doubt Desk</span>
                 </div>
                 <div>
-                  <span className="text-lg sm:text-xl font-black text-brand-maroon block">100% AC</span>
-                  <span className="text-[10px] text-brand-navy/60 font-semibold uppercase tracking-wider">GPS Transport Hub</span>
+                  <span className="text-lg sm:text-xl font-black text-brand-maroon block font-display-modern">100% AC</span>
+                  <span className="text-[10px] text-neutral-600 font-bold uppercase tracking-wider">GPS Transport</span>
                 </div>
               </div>
             </div>
 
             {/* Right Campus Snapshot */}
             <div className="lg:col-span-5">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-brand-border bg-white p-3">
+              <div className="relative rounded-2xl overflow-hidden shadow-md border-2 border-brand-border bg-white p-2">
                 <img
                   src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&h=600&fit=crop&auto=format"
                   alt="Hodu Academy Jaipur Campus"
-                  className="w-full h-80 sm:h-96 object-cover rounded-2xl"
+                  className="w-full h-80 sm:h-96 object-cover rounded-xl"
                 />
-                <div className="absolute inset-x-7 bottom-7 bg-brand-navy/95 backdrop-blur-md text-white p-4 sm:p-5 rounded-2xl border border-white/20 shadow-xl flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-bold text-brand-gold uppercase tracking-wider block">Jaipur Main Hub</span>
-                    <p className="text-xs sm:text-sm font-black text-white">{HODU.address}</p>
-                  </div>
-                  <span className="w-3 h-3 rounded-full bg-emerald-400 animate-ping shrink-0" />
+                <div className="p-4 bg-white border-t border-brand-border mt-2">
+                  <span className="text-[11px] font-bold text-brand-maroon uppercase tracking-wider block">Jaipur Main Hub</span>
+                  <p className="text-xs font-semibold text-neutral-800">{HODU.address}</p>
                 </div>
               </div>
             </div>
@@ -211,65 +206,66 @@ export default async function OfflinePage() {
       <section className="reveal py-16 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block bg-brand-maroon/10 text-brand-maroon text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 border border-brand-maroon/20">
+            <span className="inline-block bg-brand-maroon text-white text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 shadow-xs">
               CAMPUS INFRASTRUCTURE
             </span>
-            <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy tracking-tight">
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon tracking-tight">
               Designed for Concentration, Collaboration & Mastery
             </h2>
-            <p className="text-sm sm:text-base text-brand-navy/70 mt-2.5 max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-sm sm:text-base text-neutral-600 mt-2.5 max-w-2xl mx-auto font-normal leading-relaxed">
               Every square foot of our Jaipur center is purposefully engineered to eliminate distractions and provide direct access to faculty mentorship.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
-            {campusFacilities.map(item => (
-              <div key={item.title}
-                className="group relative rounded-3xl overflow-hidden border border-brand-border bg-brand-bg/40 shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
-                
-                {/* Photo Top */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/85 via-brand-navy/25 to-transparent" />
-                  <span className="absolute top-4 left-4 bg-brand-navy/90 text-white border border-white/20 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full backdrop-blur-md">
-                    {item.tag}
-                  </span>
-                  <span className="absolute bottom-3 left-4 text-3xl drop-shadow-md">{item.icon}</span>
-                </div>
+            {campusFacilities.map(item => {
+              const IconComp = item.icon
+              return (
+                <div key={item.title}
+                  className="rounded-2xl border-2 border-brand-border bg-white shadow-xs hover:shadow-md hover:border-brand-maroon transition-all duration-300 flex flex-col justify-between overflow-hidden">
+                  
+                  {/* Photo Top */}
+                  <div className="relative h-48 overflow-hidden border-b border-brand-border">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <span className="absolute top-3.5 left-3.5 bg-brand-maroon text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-md shadow-sm">
+                      {item.tag}
+                    </span>
+                  </div>
 
-                {/* Text Content */}
-                <div className="p-6 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className="font-serif-editorial font-bold text-brand-navy text-lg mb-2 group-hover:text-brand-maroon transition-colors duration-200">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs text-brand-navy/75 leading-relaxed font-light">{item.desc}</p>
+                  {/* Text Content */}
+                  <div className="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <IconComp className="h-5 w-5 text-brand-maroon shrink-0" />
+                        <h3 className="font-serif-editorial font-bold text-neutral-900 text-lg">
+                          {item.title}
+                        </h3>
+                      </div>
+                      <p className="text-xs text-neutral-600 leading-relaxed font-normal">{item.desc}</p>
+                    </div>
                   </div>
                 </div>
-
-                {/* Bottom accent bar */}
-                <div className="h-1 w-0 bg-brand-maroon group-hover:w-full transition-all duration-500" />
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
 
       {/* Offline Classroom Programs */}
-      <section className="reveal py-16 sm:py-20 bg-brand-bg border-y border-brand-border">
+      <section className="reveal py-16 sm:py-20 bg-white border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block bg-brand-maroon/10 text-brand-maroon text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 border border-brand-maroon/20">
+            <span className="inline-block bg-brand-maroon text-white text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 shadow-xs">
               OFFLINE CURRICULUM COHORTS
             </span>
-            <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy tracking-tight">
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon tracking-tight">
               Classroom Programs for Academic Excellence
             </h2>
-            <p className="text-sm sm:text-base text-brand-navy/70 mt-2.5 max-w-xl mx-auto font-light">
+            <p className="text-sm sm:text-base text-neutral-600 mt-2.5 max-w-xl mx-auto font-normal">
               Structured study modules, rigorous testing cycles, and individual mentoring for every major board and exam.
             </p>
           </div>
@@ -277,178 +273,131 @@ export default async function OfflinePage() {
           <div className="grid md:grid-cols-2 gap-8">
             {offlinePrograms.map(prog => (
               <div key={prog.title}
-                className="bg-white border border-brand-border rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1">
+                className="bg-white border-2 border-brand-border rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between">
                 
-                <div className="h-48 relative overflow-hidden">
-                  <img src={prog.img} alt={prog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/90 via-brand-navy/30 to-transparent" />
-                  <span className="absolute top-4 left-4 bg-brand-maroon text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow">
+                <div className="h-48 relative overflow-hidden border-b border-brand-border">
+                  <img src={prog.img} alt={prog.title} className="w-full h-full object-cover transition-transform duration-500" />
+                  <span className="absolute top-3.5 left-3.5 bg-brand-maroon text-white text-[10px] font-bold uppercase px-3 py-1 rounded-md shadow-sm">
                     {prog.badge}
                   </span>
-                  <div className="absolute bottom-3 left-4 text-white">
-                    <span className="text-[11px] font-semibold text-brand-gold block">{prog.target}</span>
-                    <h3 className="font-bold text-lg leading-tight text-white">{prog.title}</h3>
-                  </div>
                 </div>
 
                 <div className="p-6 sm:p-7 space-y-4 flex-1 flex flex-col justify-between">
                   <div>
-                    <p className="text-xs text-brand-navy/75 leading-relaxed font-light mb-4">{prog.desc}</p>
+                    <span className="text-xs font-bold text-brand-maroon uppercase tracking-wider block">{prog.target}</span>
+                    <h3 className="font-serif-editorial font-bold text-xl text-neutral-900 mt-1 mb-2">{prog.title}</h3>
+                    <p className="text-xs text-neutral-600 leading-relaxed font-normal mb-4">{prog.desc}</p>
                     
-                    <div className="bg-brand-bg border border-brand-border rounded-2xl p-3 text-xs mb-4">
-                      <span className="font-bold text-brand-navy block">Batch Timing:</span>
+                    <div className="bg-neutral-50 border border-brand-border rounded-xl p-3 text-xs mb-4">
+                      <span className="font-bold text-neutral-900 block">Batch Timing:</span>
                       <span className="text-brand-maroon font-semibold">{prog.schedule}</span>
                     </div>
 
-                    <div className="space-y-1.5 pt-2 border-t border-brand-border/60">
-                      {prog.features.map((f, i) => (
-                        <div key={i} className="flex items-center gap-2 text-xs text-brand-navy/80">
-                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                          <span>{f}</span>
+                    <div className="space-y-2 pt-2 border-t border-brand-border">
+                      {prog.features.map((feat, fIdx) => (
+                        <div key={fIdx} className="flex items-center gap-2 text-xs text-neutral-700">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-brand-maroon shrink-0" />
+                          <span>{feat}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <Link href={prog.link}
-                    className="w-full bg-brand-navy hover:bg-brand-maroon text-white font-extrabold py-3.5 px-4 rounded-xl text-center flex items-center justify-center gap-2 text-xs uppercase tracking-wider transition-colors duration-200 shadow-sm mt-4">
-                    <span>View Syllabus & Reserve Offline Seat</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
+                  <div className="pt-4 border-t border-brand-border">
+                    <Link href={prog.link}
+                      className="w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-3 px-4 rounded-xl text-center flex items-center justify-center gap-2 text-xs transition-colors shadow-xs">
+                      <span>Reserve Seat in Batch</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
                 </div>
+
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Weekly Timetable & Cohort Schedule */}
+      {/* Batch Timetable Matrix */}
       <section className="reveal py-16 sm:py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="inline-block bg-brand-maroon/10 text-brand-maroon text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 border border-brand-maroon/20">
-              SESSION 2025–26 SCHEDULE
+            <span className="inline-block bg-brand-maroon text-white text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 shadow-xs">
+              BATCH SCHEDULE 2025–26
             </span>
-            <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-navy">
-              Flexible Batch Timings Designed for School Balance
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-maroon">
+              Structured Timetables for Daily Consistency
             </h2>
+            <p className="text-xs sm:text-sm text-neutral-600 mt-2 font-normal">Choose between morning, evening, or weekend masterclass slots.</p>
           </div>
 
-          <div className="space-y-4">
-            {timetableSlots.map((slot, i) => (
-              <div key={i} className="bg-brand-bg/60 border border-brand-border rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-brand-maroon/40 transition-colors shadow-xs">
-                <div>
-                  <span className="bg-brand-navy text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded-md inline-block mb-1.5">
-                    {slot.batch}
-                  </span>
-                  <h4 className="font-bold text-brand-navy text-base">{slot.audience}</h4>
-                  <p className="text-xs text-brand-navy/70 mt-1 font-light">{slot.focus}</p>
+          <div className="border-2 border-brand-border rounded-2xl overflow-hidden bg-white shadow-xs">
+            <div className="divide-y divide-brand-border">
+              {timetableSlots.map((slot, i) => (
+                <div key={i} className="p-6 sm:p-7 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-neutral-50 transition-colors">
+                  <div className="space-y-1">
+                    <span className="text-[11px] font-bold text-brand-maroon uppercase tracking-wider block">{slot.audience}</span>
+                    <h3 className="font-serif-editorial font-bold text-lg text-neutral-900">{slot.batch}</h3>
+                    <p className="text-xs text-neutral-600 font-normal">{slot.focus}</p>
+                  </div>
+                  <div className="shrink-0">
+                    <span className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-xs font-bold px-3.5 py-2 rounded-xl">
+                      <Clock className="h-3.5 w-3.5" />
+                      {slot.time}
+                    </span>
+                  </div>
                 </div>
-                <div className="bg-white border border-brand-border rounded-xl px-4 py-2.5 text-center shrink-0 self-start sm:self-auto shadow-xs">
-                  <span className="text-[10px] font-bold text-brand-navy/60 block uppercase">Timings</span>
-                  <span className="text-xs font-black text-brand-maroon">{slot.time}</span>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Senior Faculty In-Residence */}
-      <section className="reveal py-16 sm:py-20 bg-brand-navy text-white relative dark-grid-pattern">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block bg-white/10 text-brand-gold text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-3 border border-white/15">
-              FACULTY IN-RESIDENCE
-            </span>
-            <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
-              Mentored Directly by Subject Masters
-            </h2>
-            <p className="text-sm text-white/70 mt-2 max-w-xl mx-auto font-light">
-              Educators from premier engineering, medical, and international institutions with decades of classroom teaching excellence.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-6 sm:gap-8">
-            {faculty.map(f => (
-              <div
-                key={f.name}
-                className="group relative bg-white/5 border border-white/15 rounded-3xl p-6 sm:p-7 text-center overflow-hidden hover:bg-white/10 hover:border-brand-gold/50 hover:-translate-y-1.5 transition-all duration-300 shadow-xl"
-              >
-                <div className="relative w-24 h-24 mx-auto mb-4">
-                  {f.photo_url ? (
-                    <img
-                      src={f.photo_url}
-                      alt={f.name}
-                      className="relative w-24 h-24 rounded-full object-cover object-top shadow-lg group-hover:scale-105 transition-transform duration-300 ring-2 ring-brand-gold/60"
-                    />
-                  ) : (
-                    <div className="relative w-24 h-24 bg-gradient-to-br from-brand-maroon to-brand-midnight text-brand-gold rounded-full flex items-center justify-center font-black text-2xl shadow-lg ring-2 ring-brand-gold/60 group-hover:scale-105 transition-transform duration-300">
-                      {f.initials}
-                    </div>
-                  )}
-                </div>
-                <h3 className="font-serif-editorial font-bold text-white text-lg group-hover:text-brand-gold transition-colors duration-200">{f.name}</h3>
-                <p className="text-xs text-brand-gold font-semibold mt-1">{f.subject}</p>
-                <p className="text-xs text-white/60 mt-0.5">{f.college ? `${f.college} · ` : ''}{f.exp}</p>
-
-                <div className="mt-5 pt-3 border-t border-white/10 text-[11px] text-white/50">
-                  Daily 1-on-1 Doubt Desk Leader
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-center mt-8 text-xs text-white/60">
-            + 20 more certified subject specialists across Cambridge, IB, CBSE, JEE & NEET.{' '}
-            <Link href="/about" className="text-brand-gold font-bold hover:underline">Meet full academic team →</Link>
-          </p>
-        </div>
-      </section>
-
-      {/* Book a Campus Walkthrough & Diagnostic Test */}
-      <section id="visit-form" className="reveal py-16 sm:py-20 bg-brand-bg border-b border-brand-border">
-        <div className="max-w-6xl mx-auto px-4 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-          <div className="space-y-5">
+      {/* Walkthrough Booking & Consultation */}
+      <section id="visit-form" className="reveal py-16 sm:py-20 bg-white border-t border-brand-border">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          <div className="lg:col-span-6 space-y-6">
             <span className="inline-block bg-brand-maroon text-white text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-full shadow-xs">
-              PHYSICAL CENTER TOUR & DIAGNOSTIC
+              EXPERIENCE THE CAMPUS
             </span>
-            <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-tight">
-              Visit Our Jaipur Campus Today
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-maroon leading-tight">
+              Book a Guided Campus Walkthrough & Demo Class
             </h2>
-            <p className="text-sm text-brand-navy/70 font-light leading-relaxed">
-              Take a guided walkthrough of our smart classrooms, test labs, and library. Meet senior faculty in person to review syllabus materials and past student scorecards.
+            <p className="text-sm text-neutral-600 leading-relaxed font-normal">
+              Visit our Jaipur centre to inspect our smart classrooms, interact directly with senior subject heads, and take a free 45-minute baseline diagnostic evaluation.
             </p>
-            
-            <div className="space-y-3 pt-2">
-              <div className="flex items-start gap-3.5 text-sm bg-white p-4 rounded-2xl border border-brand-border shadow-xs">
+
+            <div className="space-y-3.5 pt-2">
+              <div className="flex items-start gap-3 p-4 rounded-xl border border-brand-border bg-neutral-50">
                 <MapPin className="h-5 w-5 text-brand-maroon shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-xs text-brand-navy block">Campus Location</span>
-                  <span className="font-light text-brand-navy/70 text-xs">{HODU.address}</span>
+                  <span className="font-bold text-xs text-neutral-900 block">Jaipur Main Center</span>
+                  <span className="text-xs text-neutral-600">{HODU.address}</span>
                 </div>
               </div>
-              <div className="flex items-start gap-3.5 text-sm bg-white p-4 rounded-2xl border border-brand-border shadow-xs">
-                <Clock className="h-5 w-5 text-brand-maroon shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold text-xs text-brand-navy block">Visiting Hours</span>
-                  <span className="font-light text-brand-navy/70 text-xs">Monday – Sunday: 9:00 AM to 7:30 PM</span>
-                </div>
-              </div>
-              <div className="flex items-start gap-3.5 text-sm bg-white p-4 rounded-2xl border border-brand-border shadow-xs">
+              <div className="flex items-start gap-3 p-4 rounded-xl border border-brand-border bg-neutral-50">
                 <Phone className="h-5 w-5 text-brand-maroon shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-xs text-brand-navy block">Direct Admissions Desk</span>
-                  <span className="font-light text-brand-navy/70 text-xs">{HODU.phone} · {HODU.email}</span>
+                  <span className="font-bold text-xs text-neutral-900 block">Admissions Desk Direct</span>
+                  <span className="text-xs text-neutral-600">{HODU.phone}</span>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-4 rounded-xl border border-brand-border bg-neutral-50">
+                <Calendar className="h-5 w-5 text-brand-maroon shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold text-xs text-neutral-900 block">Campus Visiting Hours</span>
+                  <span className="text-xs text-neutral-600">Monday to Sunday · 8:00 AM to 8:00 PM</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white border border-brand-border rounded-3xl p-6 sm:p-9 shadow-2xl">
-            <h3 className="font-serif-editorial font-bold text-brand-navy text-xl mb-1">Book Campus Walkthrough</h3>
-            <p className="text-xs text-brand-navy/60 mb-6 font-light">Select your preferences below to reserve your personal faculty slot.</p>
-            <EnquiryForm />
+          <div className="lg:col-span-6">
+            <div className="bg-white border-2 border-brand-border rounded-3xl p-6 sm:p-9 shadow-lg">
+              <h3 className="font-serif-editorial font-bold text-brand-maroon text-xl mb-1">Request Campus Tour Date</h3>
+              <p className="text-xs text-neutral-500 mb-6 font-normal">Enter your details below to schedule your visit with our academic team.</p>
+              <EnquiryForm />
+            </div>
           </div>
         </div>
       </section>

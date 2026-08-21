@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, ShieldAlert, ChevronDown, ArrowRight, Phone, MapPin, Sparkles, GraduationCap } from 'lucide-react'
+import { Menu, X, ShieldAlert, ChevronDown, ArrowRight, Phone, MapPin } from 'lucide-react'
 import { HODU, HODU_SITE_ID } from '@/lib/hodu'
 import { createClient } from '@/lib/supabase/client'
 
@@ -14,21 +14,21 @@ export interface NavItem {
 }
 
 const fallbackCourses: NavItem[] = [
-  { label: 'Cambridge IGCSE & A-Levels', href: '/courses?category=IGCSE', icon: '🌐' },
-  { label: 'IB Diploma Programme (MYP & DP)', href: '/courses?category=IB', icon: '🎓' },
-  { label: 'CBSE Board (Class 9–12)', href: '/courses?category=CBSE', icon: '📚' },
-  { label: 'IIT-JEE & NEET-UG Integrated', href: '/courses?category=Competitive+Exams', icon: '🏆' },
-  { label: 'Junior Olympiads & Foundation', href: '/courses?category=Olympiads', icon: '🥇' },
-  { label: 'Live Online 1-on-1 Micro Batches', href: '/courses', icon: '📡' },
+  { label: 'Cambridge IGCSE & A-Levels', href: '/courses?category=IGCSE' },
+  { label: 'IB Diploma Programme (MYP & DP)', href: '/courses?category=IB' },
+  { label: 'CBSE Board (Class 9–12)', href: '/courses?category=CBSE' },
+  { label: 'IIT-JEE & NEET-UG Integrated', href: '/courses?category=Competitive+Exams' },
+  { label: 'Junior Olympiads & Foundation', href: '/courses?category=Olympiads' },
+  { label: 'Live Online 1-on-1 Micro Batches', href: '/courses' },
 ]
 
 const fallbackStudyMaterials: NavItem[] = [
-  { label: 'JEE Main Archive & DPPs', href: '/study-materials/jee-main', icon: '⚛️' },
-  { label: 'JEE Advanced Master Problems', href: '/study-materials/jee-advanced', icon: '🔬' },
-  { label: 'NEET Diagnostic Tests & Keys', href: '/study-materials/neet', icon: '🧬' },
-  { label: 'NCERT Line-by-Line Solutions', href: '/study-materials/ncert-solutions', icon: '📚' },
-  { label: 'CBSE Exemplar Question Banks', href: '/study-materials/cbse', icon: '🎯' },
-  { label: 'IMO / NSO Olympiad Workbooks', href: '/study-materials/olympiad', icon: '🏅' },
+  { label: 'JEE Main Archive & DPPs', href: '/study-materials/jee-main' },
+  { label: 'JEE Advanced Master Problems', href: '/study-materials/jee-advanced' },
+  { label: 'NEET Diagnostic Tests & Keys', href: '/study-materials/neet' },
+  { label: 'NCERT Line-by-Line Solutions', href: '/study-materials/ncert-solutions' },
+  { label: 'CBSE Exemplar Question Banks', href: '/study-materials/cbse' },
+  { label: 'IMO / NSO Olympiad Workbooks', href: '/study-materials/olympiad' },
 ]
 
 interface DropdownProps {
@@ -83,14 +83,14 @@ function Dropdown({ label, href, items, isActive }: DropdownProps) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="flex items-center">
+      <div className="flex items-center gap-1">
         <Link
           href={href}
           onClick={() => setOpen(false)}
-          className={`flex items-center text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
+          className={`text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
             isActive
               ? 'text-brand-maroon font-black'
-              : 'text-brand-navy hover:text-brand-maroon'
+              : 'text-neutral-800 hover:text-brand-maroon'
           }`}
         >
           {label}
@@ -101,10 +101,10 @@ function Dropdown({ label, href, items, isActive }: DropdownProps) {
             e.stopPropagation()
             setOpen((prev) => !prev)
           }}
-          className={`p-1 ml-0.5 rounded-md transition-colors ${
+          className={`p-1 rounded transition-colors ${
             open || isActive
-              ? 'text-brand-maroon bg-brand-bg/60'
-              : 'text-brand-navy/70 hover:text-brand-maroon'
+              ? 'text-brand-maroon bg-neutral-100'
+              : 'text-neutral-600 hover:text-brand-maroon'
           }`}
           aria-expanded={open}
           aria-label={`Toggle ${label} menu`}
@@ -118,18 +118,18 @@ function Dropdown({ label, href, items, isActive }: DropdownProps) {
       </div>
 
       {open && (
-        <div className="absolute top-full left-0 pt-2 z-50 animate-fade-in">
-          <div className="bg-white border border-brand-border rounded-2xl shadow-2xl overflow-hidden min-w-[280px] p-2">
-            <div className="px-3.5 py-2 mb-1.5 border-b border-brand-border/60 flex items-center justify-between bg-brand-bg/50 rounded-xl">
-              <span className="text-[10px] font-black uppercase tracking-widest text-brand-navy/60">
+        <div className="absolute top-full left-0 pt-1 z-50 animate-fade-in">
+          <div className="bg-white border border-brand-border rounded-xl shadow-xl overflow-hidden min-w-[260px] p-2">
+            <div className="px-3 py-2 mb-1 border-b border-brand-border flex items-center justify-between bg-neutral-50 rounded-lg">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">
                 {label} Catalog
               </span>
               <Link
                 href={href}
                 onClick={() => setOpen(false)}
-                className="text-[10px] font-black uppercase tracking-wider text-brand-maroon hover:underline flex items-center gap-1"
+                className="text-[10px] font-bold uppercase tracking-wider text-brand-maroon hover:underline flex items-center gap-1"
               >
-                All {label} <ArrowRight className="h-2.5 w-2.5" />
+                View All <ArrowRight className="h-2.5 w-2.5" />
               </Link>
             </div>
             {items.map((item) => {
@@ -139,14 +139,13 @@ function Dropdown({ label, href, items, isActive }: DropdownProps) {
                   key={item.label}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
                     isItemActive
-                      ? 'bg-brand-bg text-brand-maroon font-bold'
-                      : 'text-brand-navy hover:bg-brand-bg hover:text-brand-maroon'
+                      ? 'bg-brand-maroon text-white font-bold'
+                      : 'text-neutral-800 hover:bg-neutral-100 hover:text-brand-maroon'
                   }`}
                 >
-                  {item.icon && <span className="text-sm shrink-0">{item.icon}</span>}
-                  <span className="font-semibold text-xs leading-snug">{item.label}</span>
+                  <span>{item.label}</span>
                 </Link>
               )
             })}
@@ -234,24 +233,24 @@ export default function HoduNavbar({
   const isStudyMaterialsActive = pathname === '/study-materials' || pathname.startsWith('/study-materials/')
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b border-brand-border shadow-xs">
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-brand-border">
       
-      {/* Top Academic Banner */}
-      <div className="bg-brand-midnight text-white text-[11px] py-1.5 px-4 hidden md:block border-b border-brand-maroon/20">
+      {/* Solid Maroon Top Bar */}
+      <div className="bg-brand-maroon text-white text-[11px] py-2 px-4 hidden md:block">
         <div className="max-w-7xl mx-auto flex items-center justify-between font-medium">
-          <div className="flex items-center gap-4 text-white/80">
-            <span className="flex items-center gap-1.5 text-brand-gold font-bold">
-              <MapPin className="h-3 w-3" /> Jaipur Campus Hub (C-Scheme & Vaishali)
-            </span>
-            <span className="text-white/30">•</span>
-            <span>Batch 2025–26 Admissions Active</span>
-          </div>
           <div className="flex items-center gap-4 text-white/90">
-            <a href={`tel:${HODU.phone}`} className="flex items-center gap-1 hover:text-brand-gold transition-colors font-bold">
-              <Phone className="h-3 w-3 text-brand-gold" /> Helpline: {HODU.phone}
+            <span className="flex items-center gap-1.5 font-bold text-white">
+              <MapPin className="h-3 w-3" /> Jaipur Campus (C-Scheme & Vaishali)
+            </span>
+            <span className="text-white/40">•</span>
+            <span>Admissions Open 2025–26</span>
+          </div>
+          <div className="flex items-center gap-5 text-white/90">
+            <a href={`tel:${HODU.phone}`} className="flex items-center gap-1.5 hover:underline font-bold text-white">
+              <Phone className="h-3 w-3" /> Helpline: {HODU.phone}
             </a>
-            <span className="text-white/30">•</span>
-            <Link href="/contact" className="hover:text-brand-gold transition-colors">
+            <span className="text-white/40">•</span>
+            <Link href="/contact" className="hover:underline text-white font-medium">
               Book Campus Tour
             </Link>
           </div>
@@ -260,33 +259,33 @@ export default function HoduNavbar({
 
       {/* Main Header Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-18 items-center">
+        <div className="flex justify-between h-20 items-center">
 
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2.5 group shrink-0">
+          {/* Logo with clean margin */}
+          <Link href="/" className="flex items-center gap-3 group shrink-0 mr-8 lg:mr-10">
             {logoUrl ? (
-              <img src={logoUrl} alt={siteName} className="h-10 w-10 rounded-xl object-cover shadow-sm shrink-0" />
+              <img src={logoUrl} alt={siteName} className="h-10 w-10 rounded-lg object-cover shrink-0" />
             ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-maroon text-white font-black text-xl shadow-sm shrink-0">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-maroon text-white font-black text-xl shrink-0">
                 {siteName.charAt(0).toUpperCase()}
               </div>
             )}
-            <div className="flex flex-col leading-none">
-              <span className="text-lg sm:text-xl font-extrabold tracking-tight text-brand-navy group-hover:text-brand-maroon transition-colors">
+            <div className="flex flex-col leading-tight">
+              <span className="text-lg sm:text-xl font-bold tracking-tight text-brand-maroon">
                 {siteName}
               </span>
-              <span className="text-[9px] font-black tracking-widest text-brand-maroon uppercase mt-0.5">
+              <span className="text-[9px] font-black tracking-widest text-neutral-500 uppercase">
                 ACADEMIC EXCELLENCE
               </span>
             </div>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
+          {/* Desktop Nav with ample spacing */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 flex-1">
             <Link
               href="/"
               className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
-                pathname === '/' ? 'text-brand-maroon font-black' : 'text-brand-navy hover:text-brand-maroon'
+                pathname === '/' ? 'text-brand-maroon font-black' : 'text-neutral-800 hover:text-brand-maroon'
               }`}
             >
               Home
@@ -296,7 +295,7 @@ export default function HoduNavbar({
             <Link
               href="/offline"
               className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
-                pathname === '/offline' ? 'text-brand-maroon font-black' : 'text-brand-navy hover:text-brand-maroon'
+                pathname === '/offline' ? 'text-brand-maroon font-black' : 'text-neutral-800 hover:text-brand-maroon'
               }`}
             >
               Jaipur Campus
@@ -304,7 +303,7 @@ export default function HoduNavbar({
             <Link
               href="/about"
               className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
-                pathname === '/about' ? 'text-brand-maroon font-black' : 'text-brand-navy hover:text-brand-maroon'
+                pathname === '/about' ? 'text-brand-maroon font-black' : 'text-neutral-800 hover:text-brand-maroon'
               }`}
             >
               Faculty
@@ -312,7 +311,7 @@ export default function HoduNavbar({
             <Link
               href="/blog"
               className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
-                pathname === '/blog' || pathname.startsWith('/blog/') ? 'text-brand-maroon font-black' : 'text-brand-navy hover:text-brand-maroon'
+                pathname === '/blog' || pathname.startsWith('/blog/') ? 'text-brand-maroon font-black' : 'text-neutral-800 hover:text-brand-maroon'
               }`}
             >
               Blog
@@ -320,7 +319,7 @@ export default function HoduNavbar({
             <Link
               href="/contact"
               className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
-                pathname === '/contact' ? 'text-brand-maroon font-black' : 'text-brand-navy hover:text-brand-maroon'
+                pathname === '/contact' ? 'text-brand-maroon font-black' : 'text-neutral-800 hover:text-brand-maroon'
               }`}
             >
               Contact
@@ -328,17 +327,17 @@ export default function HoduNavbar({
           </nav>
 
           {/* Desktop CTAs */}
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-3 shrink-0 ml-6">
             <Link
               href="/admin"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-brand-border text-xs font-semibold text-brand-navy/70 hover:text-brand-navy hover:bg-brand-bg transition-all"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-brand-border text-xs font-semibold text-neutral-600 hover:text-brand-maroon hover:border-brand-maroon transition-all"
             >
               <ShieldAlert className="h-3.5 w-3.5 text-brand-maroon" />
               Admin
             </Link>
             <Link
               href="/enroll"
-              className="bg-brand-maroon hover:bg-brand-crimson text-white px-5 py-2.5 rounded-xl text-xs font-extrabold uppercase tracking-wider transition-all inline-block text-center shadow-md hover:shadow-lg"
+              className="bg-brand-maroon hover:bg-brand-crimson text-white px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all inline-block text-center shadow-xs"
             >
               Admissions 2025–26
             </Link>
@@ -348,13 +347,13 @@ export default function HoduNavbar({
           <div className="flex lg:hidden items-center gap-2">
             <Link
               href="/admin"
-              className="px-2.5 py-1 rounded-lg border text-[11px] font-bold text-brand-navy/80 border-brand-border uppercase hover:bg-brand-bg"
+              className="px-2.5 py-1 rounded border text-[11px] font-bold text-neutral-700 border-brand-border uppercase"
             >
               Admin
             </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 rounded-xl text-brand-navy hover:bg-brand-bg transition-colors"
+              className="p-2 rounded-lg text-neutral-800 hover:bg-neutral-100 transition-colors"
               aria-label={mobileOpen ? 'Close Menu' : 'Open Menu'}
             >
               {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -370,21 +369,21 @@ export default function HoduNavbar({
             <Link
               href="/"
               onClick={() => setMobileOpen(false)}
-              className={`block px-4 py-2.5 rounded-xl text-sm font-bold transition-colors ${
-                pathname === '/' ? 'bg-brand-bg text-brand-maroon' : 'text-brand-navy hover:bg-brand-bg'
+              className={`block px-4 py-2.5 rounded-lg text-sm font-bold transition-colors ${
+                pathname === '/' ? 'bg-neutral-100 text-brand-maroon' : 'text-neutral-800 hover:bg-neutral-50'
               }`}
             >
               Home
             </Link>
 
             {/* Courses accordion */}
-            <div className="border border-brand-border/80 rounded-2xl overflow-hidden">
-              <div className="flex items-center justify-between px-4 py-2.5 bg-brand-bg/40">
+            <div className="border border-brand-border rounded-xl overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-2.5 bg-neutral-50">
                 <Link
                   href="/courses"
                   onClick={() => setMobileOpen(false)}
                   className={`text-sm font-bold transition-colors ${
-                    isCoursesActive ? 'text-brand-maroon' : 'text-brand-navy hover:text-brand-maroon'
+                    isCoursesActive ? 'text-brand-maroon' : 'text-neutral-800 hover:text-brand-maroon'
                   }`}
                 >
                   Courses & Programs
@@ -392,18 +391,18 @@ export default function HoduNavbar({
                 <button
                   type="button"
                   onClick={() => setMobileCourses(!mobileCourses)}
-                  className="p-1 text-brand-navy hover:text-brand-maroon"
+                  className="p-1 text-neutral-700 hover:text-brand-maroon"
                   aria-label="Toggle courses submenu"
                 >
                   <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${mobileCourses ? 'rotate-180' : ''}`} />
                 </button>
               </div>
               {mobileCourses && (
-                <div className="bg-white px-3 py-2 space-y-1 border-t border-brand-border/60">
+                <div className="bg-white px-3 py-2 space-y-1 border-t border-brand-border">
                   <Link
                     href="/courses"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center justify-between py-2 px-3 text-xs font-bold text-brand-maroon bg-brand-bg/60 rounded-xl"
+                    className="flex items-center justify-between py-2 px-3 text-xs font-bold text-brand-maroon bg-neutral-50 rounded-lg"
                   >
                     <span>View All Courses</span>
                     <ArrowRight className="h-3 w-3" />
@@ -413,13 +412,12 @@ export default function HoduNavbar({
                       key={c.label}
                       href={c.href}
                       onClick={() => setMobileOpen(false)}
-                      className={`flex items-center gap-2 py-2 px-3 text-xs font-medium rounded-xl transition-colors ${
+                      className={`flex items-center gap-2 py-2 px-3 text-xs font-semibold rounded-lg transition-colors ${
                         pathname === c.href
-                          ? 'bg-brand-bg text-brand-maroon font-bold'
-                          : 'text-brand-navy/80 hover:bg-brand-bg hover:text-brand-maroon'
+                          ? 'bg-brand-maroon text-white'
+                          : 'text-neutral-700 hover:bg-neutral-50 hover:text-brand-maroon'
                       }`}
                     >
-                      {c.icon && <span>{c.icon}</span>}
                       <span>{c.label}</span>
                     </Link>
                   ))}
@@ -428,32 +426,32 @@ export default function HoduNavbar({
             </div>
 
             {/* Study Materials accordion */}
-            <div className="border border-brand-border/80 rounded-2xl overflow-hidden">
-              <div className="flex items-center justify-between px-4 py-2.5 bg-brand-bg/40">
+            <div className="border border-brand-border rounded-xl overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-2.5 bg-neutral-50">
                 <Link
                   href="/study-materials"
                   onClick={() => setMobileOpen(false)}
                   className={`text-sm font-bold transition-colors ${
-                    isStudyMaterialsActive ? 'text-brand-maroon' : 'text-brand-navy hover:text-brand-maroon'
+                    isStudyMaterialsActive ? 'text-brand-maroon' : 'text-neutral-800 hover:text-brand-maroon'
                   }`}
                 >
-                  Study Materials & DPPs
+                  Study Materials
                 </Link>
                 <button
                   type="button"
                   onClick={() => setMobileMaterials(!mobileMaterials)}
-                  className="p-1 text-brand-navy hover:text-brand-maroon"
+                  className="p-1 text-neutral-700 hover:text-brand-maroon"
                   aria-label="Toggle study materials submenu"
                 >
                   <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${mobileMaterials ? 'rotate-180' : ''}`} />
                 </button>
               </div>
               {mobileMaterials && (
-                <div className="bg-white px-3 py-2 space-y-1 border-t border-brand-border/60">
+                <div className="bg-white px-3 py-2 space-y-1 border-t border-brand-border">
                   <Link
                     href="/study-materials"
                     onClick={() => setMobileOpen(false)}
-                    className="flex items-center justify-between py-2 px-3 text-xs font-bold text-brand-maroon bg-brand-bg/60 rounded-xl"
+                    className="flex items-center justify-between py-2 px-3 text-xs font-bold text-brand-maroon bg-neutral-50 rounded-lg"
                   >
                     <span>View All Materials</span>
                     <ArrowRight className="h-3 w-3" />
@@ -463,13 +461,12 @@ export default function HoduNavbar({
                       key={m.label}
                       href={m.href}
                       onClick={() => setMobileOpen(false)}
-                      className={`flex items-center gap-2 py-2 px-3 text-xs font-medium rounded-xl transition-colors ${
+                      className={`flex items-center gap-2 py-2 px-3 text-xs font-semibold rounded-lg transition-colors ${
                         pathname === m.href
-                          ? 'bg-brand-bg text-brand-maroon font-bold'
-                          : 'text-brand-navy/80 hover:bg-brand-bg hover:text-brand-maroon'
+                          ? 'bg-brand-maroon text-white'
+                          : 'text-neutral-700 hover:bg-neutral-50 hover:text-brand-maroon'
                       }`}
                     >
-                      {m.icon && <span>{m.icon}</span>}
                       <span>{m.label}</span>
                     </Link>
                   ))}
@@ -489,8 +486,8 @@ export default function HoduNavbar({
                   key={item.label}
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`block px-4 py-2.5 rounded-xl text-sm font-bold transition-colors ${
-                    isActive ? 'bg-brand-bg text-brand-maroon' : 'text-brand-navy hover:bg-brand-bg'
+                  className={`block px-4 py-2.5 rounded-lg text-sm font-bold transition-colors ${
+                    isActive ? 'bg-neutral-100 text-brand-maroon' : 'text-neutral-800 hover:bg-neutral-50'
                   }`}
                 >
                   {item.label}
@@ -502,7 +499,7 @@ export default function HoduNavbar({
               <Link
                 href="/enroll"
                 onClick={() => setMobileOpen(false)}
-                className="block w-full bg-brand-maroon hover:bg-brand-crimson text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider text-center shadow-md transition-colors"
+                className="block w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider text-center transition-colors"
               >
                 Admissions 2025–26
               </Link>
