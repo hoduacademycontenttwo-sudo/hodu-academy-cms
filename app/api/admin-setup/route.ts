@@ -1,59 +1,102 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { HODU_SITE_ID, HODU } from '@/lib/hodu'
 
-// One-time setup route — creates the admin user via GoTrue (not raw SQL)
-// DELETE this route after first use in production
+// One-time setup route — creates the admin users via GoTrue admin API
 export async function GET(req: NextRequest) {
   const secret = req.nextUrl.searchParams.get('secret')
   if (secret !== 'setup-2025') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    return NextResponse.json({ error: 'Forbidden. Invalid or missing secret parameter.' }, { status: 403 })
+  }
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!supabaseUrl || !serviceKey || supabaseUrl.includes('placeholder')) {
+    return NextResponse.json({
+      error: 'Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in environment variables.',
+    }, { status: 500 })
   }
 
   // Use service role to bypass RLS and create user via GoTrue admin API
   const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    supabaseUrl,
+    serviceKey,
     { auth: { autoRefreshToken: false, persistSession: false } }
   )
 
-  // Check if already exists
-  const { data: existing } = await supabase.auth.admin.listUsers()
-  const alreadyExists = existing?.users?.find((u) => u.email === 'admin@acadpro.in')
+  // Ensure Hodu Academy site exists in cms_sites
+  await supabase.from('cms_sites').upsert({
+    id: HODU_SITE_ID,
+    name: HODU.name,
+    slug: 'hodu',
+    plan: 'pro',
+    is_active: true,
+    owner_email: 'admin@hoduacademy.com',
+  }, { onConflict: 'id' })
 
-  let userId: string
+  const emailsToSetup = ['admin@hoduacademy.com', 'admin@acadpro.in', 'superadmin@acadpro.in']
+  const customEmail = req.nextUrl.searchParams.get('email')
+  if (customEmail && !emailsToSetup.includes(customEmail)) {
+    emailsToSetup.push(customEmail)
+  }
 
-  if (alreadyExists) {
-    // Update password
-    const { data, error } = await supabase.auth.admin.updateUserById(alreadyExists.id, {
-      password: 'Admin@1234',
-      email_confirm: true,
-    })
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    userId = alreadyExists.id
-  } else {
-    // Create fresh via GoTrue
-    const { data, error } = await supabase.auth.admin.createUser({
-      email: 'admin@acadpro.in',
-      password: 'Admin@1234',
-      email_confirm: true,
-      user_metadata: { name: 'AcadPro Admin' },
-    })
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    userId = data.user.id
+  const { data: existingList } = await supabase.auth.admin.listUsers()
+  const results = []
 
-    // Link to cms_users
+  for (const email of emailsToSetup) {
+    const existing = existingList?.users?.find((u) => u.email?.toLowerCase() === email.toLowerCase())
+    let userId: string
+
+    if (existing) {
+      const { data, error } = await supabase.auth.admin.updateUserById(existing.id, {
+        password: 'Admin@1234',
+        email_confirm: true,
+      })
+      if (error) {
+        results.push({ email, status: 'error', error: error.message })
+        continue
+      }
+      userId = existing.id
+    } else {
+      const { data, error } = await supabase.auth.admin.createUser({
+        email,
+        password: 'Admin@1234',
+        email_confirm: true,
+        user_metadata: { name: email.includes('super') ? 'Super Admin' : 'Hodu Admin' },
+      })
+      if (error) {
+        results.push({ email, status: 'error', error: error.message })
+        continue
+      }
+      userId = data.user.id
+    }
+
+    // Link in cms_users for Hodu Academy
     await supabase.from('cms_users').upsert({
       auth_id: userId,
-      site_id: 'a1b2c3d4-0000-0000-0000-000000000001',
-      email: 'admin@acadpro.in',
+      site_id: HODU_SITE_ID,
+      email,
       role: 'owner',
-      name: 'AcadPro Admin',
+      name: email.includes('super') ? 'Super Admin' : 'Hodu Admin',
     }, { onConflict: 'auth_id' })
+
+    // Link in cms_super_admins
+    await supabase.from('cms_super_admins').upsert({
+      auth_id: userId,
+      email,
+    }, { onConflict: 'auth_id' })
+
+    results.push({ email, status: 'ready', userId })
   }
 
   return NextResponse.json({
     success: true,
-    message: 'Admin user ready. Login with admin@acadpro.in / Admin@1234',
-    user_id: userId,
+    message: 'Admin accounts configured successfully!',
+    credentials: {
+      email: 'admin@hoduacademy.com',
+      password: 'Admin@1234',
+    },
+    results,
   })
 }
