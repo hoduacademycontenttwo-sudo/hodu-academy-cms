@@ -195,6 +195,7 @@ export default function AdminLayout({ children, siteName }: { children: React.Re
           {children}
         </main>
       </div>
+        
 
       {/* Global search palette */}
       {searchOpen && (

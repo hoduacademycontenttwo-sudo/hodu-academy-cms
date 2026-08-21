@@ -24,6 +24,7 @@ import {
 } from 'lucide-react'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
+import CategoryGoalCard from '@/components/hodu/CategoryGoalCard'
 import { parseCarouselRows } from '@/lib/homeCarousel'
 
 export const metadata = {
@@ -31,15 +32,99 @@ export const metadata = {
   description: 'Jaipur’s premier coaching institute for Cambridge IGCSE, IB Diploma, CBSE Class 9-12, IIT-JEE, and NEET. Small 1:12 interactive batches, daily doubt desks, and top faculty.',
 }
 
-// Quick target categories (like PW's exam tiles)
+// Stylized target categories (Uiverse curved tab card design)
 const targetExams = [
-  { label: 'Cambridge IGCSE', icon: Award, href: '/courses?category=IGCSE', badge: 'Grades 8-10' },
-  { label: 'IB Diploma (DP)', icon: Compass, href: '/courses?category=IB', badge: 'MYP & DP' },
-  { label: 'IIT-JEE (Main+Adv)', icon: Atom, href: '/courses?category=Competitive+Exams', badge: 'Class 11-12' },
-  { label: 'NEET-UG Medical', icon: Dna, href: '/courses?category=Competitive+Exams', badge: 'Class 11-12' },
-  { label: 'CBSE Boards (9-12)', icon: BookOpen, href: '/courses?category=CBSE', badge: 'Science & Comm' },
-  { label: 'Junior Olympiads', icon: Trophy, href: '/courses?category=Olympiads', badge: 'Classes 6-8' },
-  { label: 'Jaipur Offline Center', icon: Building2, href: '/offline', badge: 'C-Scheme Hub' },
+  {
+    code: 'IGCSE',
+    label: 'Cambridge IGCSE',
+    icon: Award,
+    href: '/courses?category=IGCSE',
+    badge: 'Grades 8-10',
+    img: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=320&fit=crop&auto=format',
+    stats: [
+      { big: '8× A*', label: 'Top Grade' },
+      { big: '1:12', label: 'Batch Size' },
+      { big: '15 Yrs', label: 'Past Papers' },
+    ]
+  },
+  {
+    code: 'IB DP',
+    label: 'IB Diploma (DP)',
+    icon: Compass,
+    href: '/courses?category=IB',
+    badge: 'MYP & DP',
+    img: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=320&fit=crop&auto=format',
+    stats: [
+      { big: '44/45', label: 'Top Score' },
+      { big: '100%', label: 'IA Support' },
+      { big: 'HL/SL', label: 'All Subjects' },
+    ]
+  },
+  {
+    code: 'IIT-JEE',
+    label: 'IIT-JEE (Main+Adv)',
+    icon: Atom,
+    href: '/courses?category=Competitive+Exams',
+    badge: 'Class 11-12',
+    img: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600&h=320&fit=crop&auto=format',
+    stats: [
+      { big: 'AIR 142', label: 'Top Rank' },
+      { big: '30+', label: 'Daily DPPs' },
+      { big: 'CBT', label: 'Test Labs' },
+    ]
+  },
+  {
+    code: 'NEET',
+    label: 'NEET-UG Medical',
+    icon: Dna,
+    href: '/courses?category=Competitive+Exams',
+    badge: 'Class 11-12',
+    img: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=320&fit=crop&auto=format',
+    stats: [
+      { big: '710/720', label: 'Top Score' },
+      { big: '1-on-1', label: 'Doubt Desk' },
+      { big: 'NCERT', label: 'Decoded' },
+    ]
+  },
+  {
+    code: 'CBSE',
+    label: 'CBSE Boards (9-12)',
+    icon: BookOpen,
+    href: '/courses?category=CBSE',
+    badge: 'Science & Comm',
+    img: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=320&fit=crop&auto=format',
+    stats: [
+      { big: '99.4%', label: 'Top Score' },
+      { big: '100%', label: 'Exemplar' },
+      { big: 'Boards', label: 'Masterclass' },
+    ]
+  },
+  {
+    code: 'OLY',
+    label: 'Junior Olympiads',
+    icon: Trophy,
+    href: '/courses?category=Olympiads',
+    badge: 'Classes 6-8',
+    img: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&h=320&fit=crop&auto=format',
+    stats: [
+      { big: 'AIR 4', label: 'IMO Rank' },
+      { big: 'STEM', label: 'Aptitude' },
+      { big: 'Speed', label: 'Math Drills' },
+    ]
+  },
+  {
+    code: 'JAIPUR',
+    label: 'Jaipur Offline Center',
+    icon: Building2,
+    href: '/offline',
+    badge: 'C-Scheme Hub',
+    img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=320&fit=crop&auto=format',
+    stats: [
+      { big: '100%', label: 'AC Transit' },
+      { big: '8 AM-9 PM', label: 'Library' },
+      { big: 'Smart', label: 'Classrooms' },
+    ]
+  }
 ]
 
 const curriculumTracks = [
@@ -204,34 +289,38 @@ export default async function HomePage() {
         initialSlides={initialSlides}
       />
 
-      {/* 2. Target Exams / Categories Bar (PW style quick tiles) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        <div className="text-center sm:text-left mb-3">
-          <h2 className="text-xs font-bold text-brand-muted uppercase tracking-wider">
-            Explore Goals & Exam Categories
-          </h2>
+      {/* 2. Target Exams & Goal Categories (Uiverse curved tab card design) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <div className="flex items-center justify-between mb-5">
+          <div>
+            <span className="text-[11px] font-bold text-brand-maroon uppercase tracking-widest block">
+              ACADEMIC PATHWAYS
+            </span>
+            <h2 className="font-serif-editorial text-2xl sm:text-3xl font-bold text-brand-text">
+              Explore Goals & Exam Categories
+            </h2>
+          </div>
+          <Link
+            href="/courses"
+            className="text-xs font-bold text-brand-maroon hover:underline hidden sm:inline-block uppercase tracking-wider"
+          >
+            View All →
+          </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3">
-          {targetExams.map((exam, idx) => {
-            const Icon = exam.icon
-            return (
-              <Link
-                key={idx}
-                href={exam.href}
-                className="group bg-white hover:bg-brand-blush border border-brand-border hover:border-brand-maroon rounded-xl p-3 text-center transition-all flex flex-col items-center justify-center gap-1.5 shadow-xs"
-              >
-                <div className="w-8 h-8 rounded-lg bg-brand-bg group-hover:bg-white text-brand-maroon flex items-center justify-center transition-colors">
-                  <Icon className="h-4 w-4" />
-                </div>
-                <span className="text-xs font-bold text-brand-text group-hover:text-brand-maroon transition-colors line-clamp-1">
-                  {exam.label}
-                </span>
-                <span className="text-[10px] text-brand-muted font-medium">
-                  {exam.badge}
-                </span>
-              </Link>
-            )
-          })}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3.5 sm:gap-4">
+          {targetExams.map((exam, idx) => (
+            <CategoryGoalCard
+              key={idx}
+              code={exam.code}
+              label={exam.label}
+              href={exam.href}
+              badge={exam.badge}
+              img={exam.img}
+              icon={exam.icon}
+              stats={exam.stats}
+            />
+          ))}
         </div>
       </section>
 
