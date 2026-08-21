@@ -1,32 +1,46 @@
 import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID, HODU } from '@/lib/hodu'
 import Link from 'next/link'
-import { GraduationCap } from 'lucide-react'
+import { GraduationCap, Award, Target, Users, BookOpen, CheckCircle2, Phone, MapPin, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react'
 
 export const metadata = {
-  title: 'About Us — Hodu Academy',
-  description: 'Learn about Hodu Academy\'s mission, founders, and top faculty.',
+  title: 'About Us — Hodu Academy | Founders, Pedagogy & Faculty Mentors',
+  description: 'Learn about Hodu Academy\'s heritage, pedagogical philosophy, founders from MNIT & IIIT, and certified international & national board faculty.',
 }
 
 const pillars = [
-  { icon: '🏆', title: 'Concept First, Scores Follow',    text: 'We reject rote memorisation. Our teachers use interactive modules, analogies, and daily practice to foster intuitive conceptual clarity.' },
-  { icon: '🔬', title: 'Clinical Progress Evaluation',    text: 'Every diagnostic mock test computes accurate percentile standings, allowing mentors to suggest daily learning roadmap adjustments dynamically.' },
-  { icon: '🤝', title: 'Cooperative Parent Integration',  text: 'No parent is kept in the dark. We share progress reports and classroom attendance logs via WhatsApp alerts and monthly PTM sessions.' },
+  {
+    icon: Target,
+    title: 'Concept-First Mastery',
+    text: 'We firmly reject rote memorization. Our mentors dissect fundamental principles using real-world analogies, step-by-step mathematical proofs, and active questioning.',
+    tag: 'Cognitive Rigor'
+  },
+  {
+    icon: Award,
+    title: 'Diagnostic Analytics',
+    text: 'Every mock test generates granular topic-by-topic analytics, pinpointing conceptual weaknesses and time-management leaks before board & entrance exams.',
+    tag: 'Data-Driven'
+  },
+  {
+    icon: Users,
+    title: 'Transparent Mentorship',
+    text: 'Weekly attendance and evaluation metrics delivered directly to parents. Regular 1-on-1 parent-teacher strategy conferences to ensure synchronized progress.',
+    tag: 'Parent Partnership'
+  },
 ]
 
 const founders = [
-  { initials: 'VP', name: 'Mr. VP Singh',         title: 'Co-Founder & Academic Director', role: 'Former board examiner with 25+ years of teaching Math and Physics.', college: 'MNIT Jaipur' },
-  { initials: 'RJ', name: 'Mr. Rohit Jain',       title: 'Co-Founder & Chemistry Head',    role: 'Author of bestselling NTSE and Olympiad prep workbooks.', college: 'MNIT Jaipur' },
-  { initials: 'AA', name: 'Mr. Abhishek Agarwal', title: 'Co-Founder & Tech Lead',         role: 'Ex-Palantir, Ex-Qualcomm — building Hodu\'s LMS and EdTech backbone.', college: 'IIIT Hyderabad' },
+  { initials: 'VP', name: 'Mr. VP Singh',         title: 'Co-Founder & Academic Director', role: 'Former senior board examiner with 25+ years of classroom teaching experience across Physics and Mechanics.', college: 'MNIT Jaipur Alum' },
+  { initials: 'RJ', name: 'Mr. Rohit Jain',       title: 'Co-Founder & Chemistry Head',    role: 'Author of widely referenced Olympiad and competitive chemistry prep workbooks with 16+ years of mentoring.', college: 'MNIT Jaipur Alum' },
+  { initials: 'AA', name: 'Mr. Abhishek Agarwal', title: 'Co-Founder & EdTech Lead',        role: 'Ex-Palantir & Qualcomm engineer directing Hodu’s interactive learning platforms and digital assessment labs.', college: 'IIIT Hyderabad Alum' },
 ]
 
 const milestones = [
-  { year: '2019', event: 'Hodu Academy founded in Jaipur with a small batch of 20 IGCSE students.' },
-  { year: '2021', event: 'Launched interactive live-hybrid batches for CBSE and JEE, reaching 1,000+ students.' },
-  { year: '2023', event: 'Integrated full LMS with test series, recorded lectures, and performance dashboards.' },
-  { year: '2025', event: 'Over 10,000 students mentored with 98%+ board pass ratio across IGCSE, IB, and CBSE.' },
+  { year: '2018', title: 'Foundation in Jaipur', event: 'Hodu Academy established with an initial cohort of 20 Cambridge IGCSE & CBSE students.' },
+  { year: '2020', title: 'IB & Olympiad Track', event: 'Expanded into International Baccalaureate (IB DP) and Junior Olympiad talent programs.' },
+  { year: '2022', title: 'Integrated Testing Labs', event: 'Launched state-of-the-art Computer-Based Testing (CBT) lab and daily 1-on-1 doubt desks.' },
+  { year: '2025', title: '15,000+ Students Mentored', event: 'Achieved 99.4% top board score and consistent All-India rankings in JEE & NEET.' },
 ]
-
 
 export default async function AboutPage() {
   const supabase = await createClient()
@@ -37,134 +51,187 @@ export default async function AboutPage() {
     .order('sort_order')
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16 animate-fade-in text-brand-navy">
+    <div className="space-y-0 animate-fade-in text-brand-navy">
 
-      {/* Header */}
-      <section className="reveal text-center max-w-3xl mx-auto space-y-4">
-        <span className="text-xs bg-brand-bg text-brand-maroon px-3 py-1 rounded font-bold uppercase tracking-wider inline-block border border-brand-border">
-          Established in Jaipur, India
-        </span>
-        <h1 className="text-4xl font-extrabold tracking-tight">Nurturing Every Child's Potential</h1>
-        <p className="text-sm text-brand-navy/70 leading-relaxed font-light">
-          At Hodu Academy we believe in nurturing every child's potential by combining strong academic growth with holistic development. Our approach balances rigorous learning with engaging extracurriculars, ensuring children thrive intellectually and emotionally.
-        </p>
-      </section>
-
-      {/* Mission / Vision */}
-      <section className="reveal grid md:grid-cols-2 gap-8">
-        <div className="bg-brand-white border border-brand-border rounded-2xl p-8 shadow-sm">
-          <h2 className="text-xl font-extrabold text-brand-maroon mb-3">Our Mission</h2>
-          <p className="text-sm text-brand-navy/70 leading-relaxed font-light">
-            Hodu Academy is dedicated to unlocking each student's potential by providing top-tier academic instruction, fostering holistic personal growth, and offering enriching extracurricular opportunities. We create a nurturing and innovative environment where critical thinking, creativity, and resilience are cultivated.
+      {/* Hero */}
+      <section className="relative py-16 sm:py-24 bg-gradient-to-b from-brand-bg via-white to-brand-bg academic-grid-pattern border-b border-brand-border">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5">
+          <span className="inline-flex items-center gap-1.5 bg-brand-maroon/10 text-brand-maroon text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full border border-brand-maroon/20">
+            <Sparkles className="h-3.5 w-3.5" />
+            OUR HERITAGE & PEDAGOGICAL PHILOSOPHY
+          </span>
+          <h1 className="font-serif-editorial text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-brand-navy leading-tight">
+            Nurturing Exceptional Minds Through <span className="italic font-normal text-brand-maroon underline decoration-brand-maroon/30 underline-offset-8">Academic Rigor</span>
+          </h1>
+          <p className="text-sm sm:text-base text-brand-navy/75 max-w-3xl mx-auto font-light leading-relaxed">
+            Founded by premier university educators, Hodu Academy bridges rigorous conceptual coaching with intimate 1:12 batches, ensuring students in Jaipur and worldwide achieve their absolute best in school boards, competitive tests, and international diplomas.
           </p>
         </div>
-        <div className="bg-brand-navy text-white rounded-2xl p-8 shadow-sm">
-          <h2 className="text-xl font-extrabold text-brand-bg mb-3">Our Vision</h2>
-          <p className="text-sm text-white/70 leading-relaxed font-light">
-            To be the most trusted educational partner for students worldwide — combining world-class academics with holistic growth opportunities, and empowering every student to reach their highest potential through innovation, passion, and excellence in teaching.
-          </p>
+      </section>
+
+      {/* Mission & Vision */}
+      <section className="reveal max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="bg-white border border-brand-border rounded-3xl p-8 sm:p-10 shadow-sm flex flex-col justify-between">
+            <div className="space-y-4">
+              <span className="text-[10px] font-black uppercase tracking-widest bg-brand-maroon/10 text-brand-maroon px-3 py-1 rounded-full inline-block border border-brand-maroon/20">
+                OUR MISSION
+              </span>
+              <h2 className="font-serif-editorial text-2xl sm:text-3xl font-bold text-brand-navy">
+                Empowering Students to Excel Without Fear
+              </h2>
+              <p className="text-xs sm:text-sm text-brand-navy/75 leading-relaxed font-light">
+                To replace passive rote memorization with deep conceptual clarity, structured past-paper analysis, and continuous 1-on-1 mentorship. We instill critical reasoning, exam resilience, and unwavering academic confidence.
+              </p>
+            </div>
+            <div className="pt-6 mt-6 border-t border-brand-border/60 flex items-center gap-2 text-xs font-bold text-brand-maroon">
+              <CheckCircle2 className="h-4 w-4" />
+              <span>100% Syllabus Mastery Framework</span>
+            </div>
+          </div>
+
+          <div className="bg-brand-navy text-white rounded-3xl p-8 sm:p-10 shadow-xl flex flex-col justify-between dark-grid-pattern relative overflow-hidden">
+            <div className="space-y-4 relative z-10">
+              <span className="text-[10px] font-black uppercase tracking-widest bg-white/15 text-brand-gold px-3 py-1 rounded-full inline-block border border-white/20">
+                OUR VISION
+              </span>
+              <h2 className="font-serif-editorial text-2xl sm:text-3xl font-bold text-white">
+                India’s Benchmark for Academic Mentorship
+              </h2>
+              <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light">
+                To build an institutional learning environment where small cohort sizes, master teachers, and cutting-edge testing diagnostics come together to give every child a clear pathway to top global universities and engineering/medical institutions.
+              </p>
+            </div>
+            <div className="pt-6 mt-6 border-t border-white/15 flex items-center gap-2 text-xs font-bold text-brand-gold relative z-10">
+              <CheckCircle2 className="h-4 w-4" />
+              <span>Accredited Curriculum Excellence</span>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Pillars */}
-      <section className="reveal grid grid-cols-1 md:grid-cols-3 gap-8">
-        {pillars.map(p => (
-          <div key={p.title} className="bg-brand-white border border-brand-border p-6 rounded-2xl shadow-sm text-center space-y-4">
-            <div className="h-12 w-12 bg-brand-bg rounded-full flex items-center justify-center text-brand-maroon mx-auto text-xl border border-brand-border">
-              {p.icon}
-            </div>
-            <h3 className="font-extrabold text-sm uppercase tracking-wider">{p.title}</h3>
-            <p className="text-xs text-brand-navy/70 leading-relaxed font-light">{p.text}</p>
+      <section className="reveal bg-brand-bg border-y border-brand-border py-16 sm:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="text-xs bg-brand-maroon/10 text-brand-maroon px-3.5 py-1 rounded-full font-black uppercase tracking-widest inline-block border border-brand-maroon/20 mb-2.5">
+              THE THREE PILLARS
+            </span>
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-navy">
+              The Foundations of Hodu’s Teaching Model
+            </h2>
           </div>
-        ))}
+
+          <div className="grid md:grid-cols-3 gap-7">
+            {pillars.map(p => {
+              const Icon = p.icon
+              return (
+                <div key={p.title} className="bg-white border border-brand-border p-8 rounded-3xl shadow-xs card-hover flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <div className="w-12 h-12 bg-brand-bg rounded-2xl flex items-center justify-center text-brand-maroon border border-brand-border">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-brand-maroon bg-brand-maroon/10 px-2.5 py-0.5 rounded-full inline-block">
+                      {p.tag}
+                    </span>
+                    <h3 className="font-serif-editorial font-bold text-lg text-brand-navy">{p.title}</h3>
+                    <p className="text-xs text-brand-navy/70 leading-relaxed font-light">{p.text}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
       </section>
 
       {/* Founders */}
-      <section className="reveal space-y-8">
-        <div>
-          <h2 className="text-2xl font-extrabold pb-2 border-b border-brand-border inline-block">Our Founders</h2>
-          <p className="text-xs text-brand-navy/60 font-light mt-2">The visionaries behind Hodu Academy's academic excellence.</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {founders.map(f => (
-            <div key={f.name} className="bg-brand-white border border-brand-border p-5 rounded-xl hover:shadow-md transition-all flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="h-24 bg-brand-bg rounded-xl flex items-center justify-center text-brand-maroon font-black text-4xl shadow-inner select-none border border-brand-border">
-                  {f.initials}
-                </div>
-                <div>
-                  <h3 className="font-extrabold text-brand-navy text-sm">{f.name}</h3>
-                  <p className="text-[10px] text-brand-maroon font-bold uppercase tracking-wider mt-0.5">{f.title}</p>
-                  <p className="text-[10px] text-brand-navy/50 mt-0.5">{f.college}</p>
-                </div>
-                <p className="text-xs text-brand-navy/70 font-light leading-relaxed">{f.role}</p>
-              </div>
-              <div className="mt-4 pt-3 border-t border-brand-border text-[10px] text-brand-navy/50 flex justify-between items-center">
-                <span className="flex items-center space-x-1">
-                  <GraduationCap className="h-4 w-4 text-brand-maroon" />
-                  <span>Co-Founder</span>
-                </span>
-                <span>Verified Expert</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Faculty (from DB) */}
-      {faculty && faculty.length > 0 && (
-        <section className="reveal space-y-8">
-          <div>
-            <h2 className="text-2xl font-extrabold pb-2 border-b border-brand-border inline-block">Our Elite Faculty</h2>
-            <p className="text-xs text-brand-navy/60 font-light mt-2">Learn directly from qualified board coordinators and teachers with decades of classroom experience.</p>
+      <section className="reveal py-16 sm:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="text-xs bg-brand-maroon/10 text-brand-maroon px-3.5 py-1 rounded-full font-black uppercase tracking-widest inline-block border border-brand-maroon/20 mb-2.5">
+              ACADEMIC LEADERSHIP
+            </span>
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-navy">
+              Meet the Academic Directors
+            </h2>
+            <p className="text-xs sm:text-sm text-brand-navy/60 font-light mt-2">
+              Seasoned educators and technologists with over 50 years of collective classroom teaching experience.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {faculty.map(f => (
-              <div key={f.id} className="bg-brand-white border border-brand-border p-5 rounded-xl hover:shadow-md transition-all">
-                {f.photo_url ? (
-                  <img src={f.photo_url} alt={f.name} className="w-full h-44 object-cover object-top rounded-xl mb-4 border border-brand-border" />
-                ) : (
-                  <div className="h-24 bg-brand-bg rounded-xl flex items-center justify-center font-black text-3xl text-brand-maroon mb-4 border border-brand-border">
-                    {f.name.split(' ').map((w: string) => w[0]).slice(0, 2).join('')}
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {founders.map(f => (
+              <div key={f.name} className="bg-white border border-brand-border p-7 rounded-3xl shadow-sm card-hover flex flex-col justify-between">
+                <div className="space-y-5">
+                  <div className="h-28 bg-gradient-to-br from-brand-maroon to-brand-navy rounded-2xl flex items-center justify-center text-brand-gold font-black text-4xl shadow-md border border-white/20 select-none">
+                    {f.initials}
                   </div>
-                )}
-                <h3 className="font-extrabold text-brand-navy text-sm">{f.name}</h3>
-                <p className="text-[10px] text-brand-maroon font-bold uppercase tracking-wider mt-0.5">{f.subject} · {f.experience}</p>
-                <p className="text-xs text-brand-navy/70 font-light leading-relaxed mt-3 line-clamp-4">{f.bio}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Timeline */}
-      <section className="reveal bg-brand-bg border-y border-brand-border py-12 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto space-y-8">
-          <div className="text-center mb-4">
-            <h2 className="text-2xl font-extrabold text-brand-navy">Milestones of Academic Trust</h2>
-            <p className="text-xs text-brand-navy/60 font-light mt-1">Our journey of scaling elite academic mentorship across secondary schools</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center md:text-left">
-            {milestones.map(mil => (
-              <div key={mil.year} className="space-y-2">
-                <span className="text-lg font-black text-brand-maroon bg-white px-3 py-1 rounded inline-block border border-brand-border">
-                  {mil.year}
-                </span>
-                <p className="text-xs text-brand-navy/80 leading-relaxed font-light">{mil.event}</p>
+                  <div>
+                    <h3 className="font-serif-editorial font-bold text-brand-navy text-lg">{f.name}</h3>
+                    <p className="text-xs text-brand-maroon font-black uppercase tracking-wider mt-1">{f.title}</p>
+                    <p className="text-[11px] text-brand-navy/50 font-semibold mt-0.5">{f.college}</p>
+                  </div>
+                  <p className="text-xs text-brand-navy/75 font-light leading-relaxed">{f.role}</p>
+                </div>
+                <div className="mt-6 pt-4 border-t border-brand-border text-[11px] text-brand-navy/60 flex justify-between items-center font-medium">
+                  <span className="flex items-center gap-1.5 text-brand-maroon font-bold">
+                    <GraduationCap className="h-4 w-4" />
+                    <span>Academic Board</span>
+                  </span>
+                  <span>Verified Mentor</span>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="reveal text-center pb-8">
-        <h2 className="text-2xl font-extrabold text-brand-navy mb-3">For Any Enquiry Call Us</h2>
-        <a href={`tel:${HODU.phone}`}
-          className="inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-accent text-white font-bold px-8 py-3 rounded-xl text-lg transition-colors mt-2">
-          📞 {HODU.phone}
-        </a>
+      {/* Milestones */}
+      <section className="reveal bg-brand-navy text-white py-16 sm:py-20 relative dark-grid-pattern">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="text-xs bg-white/10 text-brand-gold px-3.5 py-1 rounded-full font-black uppercase tracking-widest inline-block border border-white/20 mb-2.5">
+              THE JOURNEY
+            </span>
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold tracking-tight">
+              Milestones of Academic Distinction
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {milestones.map(m => (
+              <div key={m.year} className="bg-white/5 border border-white/15 rounded-3xl p-6 hover:bg-white/10 transition-all duration-300">
+                <span className="text-2xl font-black text-brand-gold block mb-2 font-display-modern">
+                  {m.year}
+                </span>
+                <h4 className="font-bold text-white text-sm mb-2">{m.title}</h4>
+                <p className="text-xs text-white/70 leading-relaxed font-light">{m.event}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
+
+      {/* Consultation Banner */}
+      <section className="reveal py-16 bg-brand-bg text-center border-t border-brand-border">
+        <div className="max-w-3xl mx-auto px-4 space-y-4">
+          <h2 className="font-serif-editorial text-3xl font-bold text-brand-navy">Speak with Our Academic Directors</h2>
+          <p className="text-xs sm:text-sm text-brand-navy/70 font-light">
+            Book an obligation-free 30-minute diagnostic session to assess your child’s current syllabus standing and tailored learning roadmap.
+          </p>
+          <div className="pt-2 flex flex-wrap justify-center gap-3.5">
+            <Link href="/contact"
+              className="bg-brand-maroon hover:bg-brand-crimson text-white font-extrabold px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-md">
+              Book Diagnostic Session
+            </Link>
+            <a href={`tel:${HODU.phone}`}
+              className="bg-white hover:bg-brand-cream text-brand-navy border border-brand-border font-bold px-7 py-3.5 rounded-xl text-xs transition-all flex items-center gap-2">
+              <Phone className="h-4 w-4 text-brand-maroon" /> {HODU.phone}
+            </a>
+          </div>
+        </div>
+      </section>
+
     </div>
   )
 }

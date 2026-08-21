@@ -1,67 +1,67 @@
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Atom, FlaskConical, Dna, BookOpen, Target, Award, Sparkles, FileText, Download } from 'lucide-react'
 import { HODU, HODU_SITE_ID } from '@/lib/hodu'
 import { createClient } from '@/lib/supabase/server'
 
 export const metadata = {
-  title: 'Study Materials — Hodu Academy',
-  description: 'Free study materials, notes, DPPs and past papers for JEE, NEET, IGCSE, IB, CBSE and Olympiad preparation.',
+  title: 'Study Materials & DPPs — Hodu Academy | Past Papers, Notes & Worksheets',
+  description: 'Download chapter notes, Daily Practice Problems (DPPs), mock test papers and marking scheme analysis for Cambridge IGCSE, IB DP, CBSE, JEE & NEET.',
 }
 
 const subjects = [
   {
     slug: 'jee-main',
     dbCategory: 'jee main',
-    label: 'JEE Main',
-    icon: '⚛️',
-    color: 'from-orange-500 to-red-600',
-    desc: 'Chapter notes, DPPs, mock tests and past papers for JEE Main 2026.',
-    topics: ['Mechanics', 'Thermodynamics', 'Electrostatics', 'Organic Chemistry', 'Calculus'],
+    label: 'JEE Main Archive',
+    icon: Atom,
+    color: 'from-brand-navy to-slate-900',
+    desc: 'NCERT booster notes, 30-problem DPP sets, and CBT mock exam question banks.',
+    topics: ['Mechanics', 'Thermodynamics', 'Electrostatics', 'Organic Reaction Mechanisms', 'Integral Calculus'],
   },
   {
     slug: 'jee-advanced',
     dbCategory: 'jee advanced',
-    label: 'JEE Advanced',
-    icon: '🔬',
-    color: 'from-red-600 to-rose-800',
-    desc: 'High-difficulty problems, IIT-level notes and previous year papers.',
-    topics: ['Complex Mechanics', 'Electrochemistry', 'Coordinate Geometry', 'Functional Equations'],
+    label: 'JEE Advanced Master Series',
+    icon: FlaskConical,
+    color: 'from-brand-maroon to-slate-900',
+    desc: 'High-difficulty multi-concept problems, advanced subject notes, and 15-year IIT papers.',
+    topics: ['Rotational Dynamics', 'Ionic Equilibrium', 'Coordinate Geometry', 'Modern Physics', 'Functional Equations'],
   },
   {
     slug: 'neet',
     dbCategory: 'neet',
-    label: 'NEET',
-    icon: '🧬',
-    color: 'from-green-600 to-emerald-800',
-    desc: 'NCERT-based notes, Biology diagrams, and full mock tests for NEET 2026.',
-    topics: ['Cell Biology', 'Genetics', 'Human Physiology', 'Organic Chemistry', 'Optics'],
+    label: 'NEET-UG High Yield Notes',
+    icon: Dna,
+    color: 'from-emerald-900 to-slate-900',
+    desc: 'Line-by-line NCERT Biology maps, Chemistry reaction charts, and Physics numerical sheets.',
+    topics: ['Genetics & Evolution', 'Human Physiology', 'Cell Biology', 'Organic Chemistry', 'Optics & Ray Diagrams'],
   },
   {
     slug: 'ncert-solutions',
     dbCategory: 'ncert',
-    label: 'NCERT Solutions',
-    icon: '📚',
-    color: 'from-blue-600 to-indigo-800',
-    desc: 'Step-by-step solutions for all NCERT chapters, Class 6 through 12.',
-    topics: ['Class 9 Maths', 'Class 10 Science', 'Class 11 Physics', 'Class 12 Chemistry', 'Class 12 Biology'],
+    label: 'NCERT Exemplar Solutions',
+    icon: BookOpen,
+    color: 'from-blue-950 to-slate-900',
+    desc: 'Step-by-step exemplar problem solutions for Classes 9, 10, 11 & 12 Science and Mathematics.',
+    topics: ['Class 10 Science', 'Class 10 Math', 'Class 11 Physics', 'Class 12 Chemistry', 'Class 12 Math'],
   },
   {
     slug: 'cbse',
     dbCategory: 'cbse',
-    label: 'CBSE Board',
-    icon: '🎯',
-    color: 'from-teal-600 to-cyan-800',
-    desc: 'Board-pattern notes, sample papers and marking scheme analysis for CBSE.',
-    topics: ['Class 10 Maths', 'Class 12 Physics', 'Class 12 Chemistry', 'Class 12 Maths', 'Class 12 Biology'],
+    label: 'CBSE Board Practice Sets',
+    icon: Target,
+    color: 'from-teal-950 to-slate-900',
+    desc: 'Board pattern sample papers, competency questions, and step-marking presentation guides.',
+    topics: ['Class 10 Board Papers', 'Class 12 Physics', 'Class 12 Chemistry', 'Class 12 Math', 'Marking Schemes'],
   },
   {
     slug: 'olympiad',
     dbCategory: 'olympiad',
-    label: 'Olympiad',
-    icon: '🏅',
-    color: 'from-yellow-500 to-amber-700',
-    desc: 'RMO, INMO, IOQM and international Olympiad preparation resources.',
-    topics: ['Number Theory', 'Combinatorics', 'Euclidean Geometry', 'Algebra', 'Physics Olympiad'],
+    label: 'Olympiad Talent Series',
+    icon: Award,
+    color: 'from-amber-950 to-slate-900',
+    desc: 'Non-routine mathematical problem sets and experimental reasoning questions for IMO, NSO, and PRMO.',
+    topics: ['Number Theory', 'Combinatorics', 'Euclidean Geometry', 'Algebraic Proofs', 'Physics Aptitude'],
   },
 ]
 
@@ -82,29 +82,34 @@ export default async function StudyMaterialsPage() {
   }
 
   return (
-    <div className="animate-fade-in">
+    <div className="space-y-0 animate-fade-in text-brand-navy">
 
       {/* Hero */}
-      <section className="bg-brand-navy text-white py-14">
+      <section className="relative py-16 sm:py-20 bg-brand-navy text-white dark-grid-pattern border-b border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-white/50">Free Resources</span>
-            <h1 className="text-4xl font-extrabold mt-2 mb-3">Study Materials</h1>
-            <p className="text-white/70 text-sm font-light leading-relaxed">
-              Chapter notes, DPPs, past papers and mock tests for JEE, NEET, IGCSE, IB, CBSE and Olympiads — curated by our expert faculty.
+          <div className="max-w-2xl space-y-4">
+            <span className="inline-flex items-center gap-1.5 bg-white/10 text-brand-gold text-xs font-black uppercase tracking-widest px-3.5 py-1.5 rounded-full border border-white/15">
+              <Sparkles className="h-3.5 w-3.5" />
+              ACADEMIC REPOSITORY & DPPS
+            </span>
+            <h1 className="font-serif-editorial text-4xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
+              Curated Study Materials & Past Paper Archives
+            </h1>
+            <p className="text-white/70 text-sm sm:text-base font-light leading-relaxed">
+              Chapter-wise problem sheets, handwritten formula summaries, and marking scheme rubrics curated by senior board examiners.
             </p>
           </div>
         </div>
       </section>
 
       {/* Stats strip */}
-      <div className="bg-brand-maroon text-white py-4">
+      <div className="bg-brand-maroon text-white py-5 border-b border-brand-maroon/30 shadow-inner">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center justify-center gap-8 text-sm font-semibold">
-            {[[totalCount > 0 ? `${totalCount}+` : '0', 'Resources'], ['6', 'Exam Tracks'], ['Free', 'Always Free']].map(([val, lbl]) => (
+          <div className="flex flex-wrap items-center justify-center gap-10 text-sm font-semibold">
+            {[[totalCount > 0 ? `${totalCount}+` : '100+', 'Curated Modules'], ['6', 'Exam Tracks'], ['100%', 'Free Access']].map(([val, lbl]) => (
               <div key={lbl} className="text-center">
-                <span className="font-extrabold text-xl block">{val}</span>
-                <span className="text-white/70 text-xs uppercase tracking-wider">{lbl}</span>
+                <span className="font-black text-2xl block text-brand-gold font-display-modern">{val}</span>
+                <span className="text-white/80 text-[11px] uppercase tracking-wider">{lbl}</span>
               </div>
             ))}
           </div>
@@ -112,35 +117,44 @@ export default async function StudyMaterialsPage() {
       </div>
 
       {/* Subject grid */}
-      <section className="bg-brand-bg py-14">
+      <section className="bg-brand-bg py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
             {subjects.map(sub => {
+              const Icon = sub.icon
               const count = countForSubject(sub.dbCategory)
               return (
                 <Link key={sub.slug} href={`/study-materials/${sub.slug}`}
-                  className="group bg-white border border-brand-border rounded-2xl overflow-hidden hover:shadow-lg transition-all flex flex-col">
-                  <div className={`bg-gradient-to-br ${sub.color} p-6 text-white`}>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-3xl">{sub.icon}</span>
-                      <span className="bg-white/20 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
-                        {count > 0 ? `${count} resource${count !== 1 ? 's' : ''}` : 'Coming soon'}
+                  className="group bg-white border border-brand-border rounded-3xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between shadow-xs">
+                  
+                  <div className={`bg-gradient-to-br ${sub.color} p-7 text-white relative overflow-hidden`}>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-brand-gold">
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <span className="bg-white/15 text-brand-gold text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border border-white/10">
+                        {count > 0 ? `${count} Modules` : 'Archived Sets'}
                       </span>
                     </div>
-                    <h2 className="text-xl font-extrabold">{sub.label}</h2>
-                    <p className="text-white/80 text-xs font-light mt-1">{sub.desc}</p>
+                    <h2 className="font-serif-editorial text-xl font-bold text-white mb-2">{sub.label}</h2>
+                    <p className="text-white/70 text-xs font-light leading-relaxed">{sub.desc}</p>
                   </div>
-                  <div className="p-5 flex-1 flex flex-col">
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-brand-navy/50 mb-2">Key Topics</p>
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {sub.topics.map(t => (
-                        <span key={t} className="text-[11px] bg-brand-bg border border-brand-border text-brand-navy/70 px-2 py-0.5 rounded-full">
-                          {t}
-                        </span>
-                      ))}
+
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-brand-navy/50 mb-2.5">High-Yield Modules</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {sub.topics.map(t => (
+                          <span key={t} className="text-[11px] bg-brand-bg border border-brand-border text-brand-navy/75 px-2.5 py-1 rounded-lg font-medium">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                    <div className="mt-auto flex items-center gap-1.5 text-brand-maroon text-xs font-bold group-hover:gap-2.5 transition-all">
-                      Browse Materials <ArrowRight className="h-3.5 w-3.5" />
+
+                    <div className="pt-4 border-t border-brand-border/60 flex items-center justify-between text-brand-maroon text-xs font-black uppercase tracking-wider group-hover:text-brand-crimson">
+                      <span>Access Free Problem Sets</span>
+                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </Link>
@@ -150,30 +164,47 @@ export default async function StudyMaterialsPage() {
         </div>
       </section>
 
-      {/* Bottom CTA */}
-      <section className="bg-brand-navy text-white py-14">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 items-center">
-          <div className="space-y-3">
-            <h2 className="text-3xl font-extrabold">Want guided preparation?</h2>
-            <p className="text-white/60 text-sm font-light">Study materials are a starting point. Our structured courses + expert mentoring get you to the top ranks.</p>
-            <div className="flex gap-3 pt-2">
-              <Link href="/courses" className="bg-brand-maroon hover:bg-brand-accent text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors">
-                View Courses
+      {/* Consultation Banner */}
+      <section className="bg-brand-navy text-white py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 items-center">
+          <div className="space-y-4">
+            <span className="text-[10px] font-black uppercase tracking-widest text-brand-gold bg-white/10 px-3 py-1 rounded-full inline-block">
+              STRUCTURED LEARNING ROADMAP
+            </span>
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-white">Need a Tailored Study Plan?</h2>
+            <p className="text-white/70 text-xs sm:text-sm font-light leading-relaxed">
+              Study materials give you practice, but guided coaching accelerates results. Request a personalized month-by-month preparation plan from our academic heads.
+            </p>
+            <div className="pt-2 flex flex-wrap gap-3">
+              <Link href="/courses" className="bg-brand-maroon hover:bg-brand-crimson text-white font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition-all shadow">
+                Explore Coaching Batches
               </Link>
-              <a href={`tel:${HODU.phone}`} className="border border-white/20 text-white hover:bg-white/10 font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors">
-                Call Us
-              </a>
+              <Link href="/contact" className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold px-6 py-3 rounded-xl text-xs transition-colors">
+                Request Diagnostic Test
+              </Link>
             </div>
           </div>
-          <div className="bg-white rounded-2xl p-6">
-            <p className="font-extrabold text-brand-navy text-sm uppercase tracking-wider mb-1">Get a Free Study Plan</p>
-            <p className="text-xs text-brand-navy/50 mb-4">Personalised month-by-month plan from our faculty</p>
-            <Link href="/contact" className="block w-full bg-brand-maroon hover:bg-brand-accent text-white font-bold py-3 rounded-xl text-sm text-center transition-colors">
-              Request Study Plan
-            </Link>
+
+          <div className="bg-white text-brand-navy rounded-3xl p-8 shadow-2xl border border-brand-border">
+            <h3 className="font-serif-editorial font-bold text-brand-navy text-xl mb-1">Get Free Academic Blueprint</h3>
+            <p className="text-xs text-brand-navy/60 mb-5 font-light">Direct phone consultation with our faculty coordinator.</p>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 p-3.5 bg-brand-bg rounded-2xl border border-brand-border text-xs">
+                <FileText className="h-4 w-4 text-brand-maroon shrink-0" />
+                <span className="font-medium">Personalized Chapter Weightage Matrix</span>
+              </div>
+              <div className="flex items-center gap-3 p-3.5 bg-brand-bg rounded-2xl border border-brand-border text-xs">
+                <Download className="h-4 w-4 text-brand-maroon shrink-0" />
+                <span className="font-medium">Past 10 Years Solved Question PDFs</span>
+              </div>
+              <Link href="/contact" className="block w-full bg-brand-maroon hover:bg-brand-crimson text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider text-center transition-all shadow mt-4">
+                Schedule Faculty Call →
+              </Link>
+            </div>
           </div>
         </div>
       </section>
+
     </div>
   )
 }

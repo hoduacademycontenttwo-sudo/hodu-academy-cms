@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -17,10 +16,9 @@
   --color-brand-gold-dark: #B38F24;
   --color-brand-white: #FFFFFF;
 
-  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Playfair Display", Georgia, Cambria, serif;
-  --font-display: "Outfit", "Plus Jakarta Sans", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-sans), "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-serif: var(--font-serif), "Playfair Display", Georgia, serif;
+  --font-display: var(--font-display), "Outfit", sans-serif;
 
   --animate-fade-in: fade-in 0.35s ease-out;
   --animate-slide-up: slide-up 0.45s cubic-bezier(0.16, 1, 0.3, 1);
@@ -49,21 +47,22 @@ html {
 body {
   background-color: var(--color-brand-bg);
   color: var(--color-brand-navy);
-  font-family: var(--font-sans);
+  font-family: var(--font-sans), 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-.font-serif-editorial {
-  font-family: var(--font-serif);
+h1, h2, h3, .font-serif-editorial {
+  font-family: var(--font-serif), 'Playfair Display', Georgia, serif;
+  letter-spacing: -0.02em;
 }
 
 .font-display-modern {
-  font-family: var(--font-display);
+  font-family: var(--font-display), 'Outfit', sans-serif;
 }
 
 .academic-grid-pattern {
-  background-image: radial-gradient(rgba(126, 13, 13, 0.09) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(126, 13, 13, 0.08) 1px, transparent 1px);
   background-size: 28px 28px;
 }
 
@@ -92,9 +91,7 @@ p { text-wrap: pretty; }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Scroll-driven section reveal — progressive enhancement.
-   Content is fully visible by default; browsers with animation-timeline
-   get a gentle fade-up as sections enter the viewport. */
+/* Scroll-driven section reveal */
 @supports (animation-timeline: view()) {
   .reveal {
     animation: reveal-up linear both;
@@ -108,7 +105,7 @@ p { text-wrap: pretty; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Nav link underline — draws in from the left on hover */
+/* Nav link underline */
 .nav-link {
   position: relative;
 }
@@ -127,7 +124,7 @@ p { text-wrap: pretty; }
 }
 .nav-link:hover::after { transform: scaleX(1); }
 
-/* Pressed feedback for primary actions */
+/* Pressed feedback */
 a[class*="bg-brand-maroon"]:active,
 button[class*="bg-brand-maroon"]:active,
 a[class*="bg-[#7E0D0D]"]:active,

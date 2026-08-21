@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID, HODU } from '@/lib/hodu'
 import Link from 'next/link'
-import { CheckCircle2, Clock, Calendar, Users, ArrowLeft, Phone, ChevronDown } from 'lucide-react'
+import { CheckCircle2, Clock, Calendar, Users, ArrowLeft, Phone, ChevronDown, GraduationCap, TrendingUp, MessageSquareQuote, ShieldCheck, Sparkles, ArrowRight } from 'lucide-react'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import type { Metadata } from 'next'
 
@@ -17,12 +17,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 const categoryAccents: Record<string, string> = {
-  'IGCSE': 'bg-blue-600',
-  'Cambridge O Level': 'bg-indigo-600',
-  'IB': 'bg-purple-600',
-  'CBSE': 'bg-green-700',
-  'Competitive Exams': 'bg-orange-600',
-  'Olympiads': 'bg-yellow-600',
+  'IGCSE': 'bg-blue-900',
+  'Cambridge O Level': 'bg-indigo-900',
+  'IB': 'bg-purple-900',
+  'CBSE': 'bg-emerald-900',
+  'Competitive Exams': 'bg-brand-maroon',
+  'Olympiads': 'bg-amber-900',
 }
 
 const categoryBgImages: Record<string, string> = {
@@ -35,11 +35,11 @@ const categoryBgImages: Record<string, string> = {
 }
 
 const courseFaqs = [
-  { q: 'When does the batch start?', a: 'We run batches throughout the year. Contact us for the next available start date closest to your schedule.' },
-  { q: 'What is the batch size?', a: 'All classroom batches are capped at 15–20 students to ensure personal attention and direct mentor access.' },
-  { q: 'Are classes recorded?', a: 'Yes. Every live session is recorded and available on the LMS within 2 hours for revision.' },
-  { q: 'Is study material included?', a: 'Yes — chapter notes, DPPs, past papers, and full mock test series are included in the course fee.' },
-  { q: 'What if I miss a class?', a: 'Recorded sessions are available 24/7 on the LMS. You can also attend doubt sessions to cover missed topics.' },
+  { q: 'When does the next cohort start?', a: 'We run small interactive batches throughout the academic session. Contact our admissions team for immediate placement into the upcoming batch schedule.' },
+  { q: 'What is the teacher-student ratio?', a: 'Classroom and live online batches are capped at strictly 12 to 15 students to guarantee personalized doubt-resolution and mentor attention.' },
+  { q: 'Are lectures and study sessions recorded?', a: 'Yes. All live lectures are recorded in high-definition and uploaded to the Hodu LMS portal within 2 hours with lifetime access during your enrolled term.' },
+  { q: 'What study materials and DPPs are provided?', a: 'Comprehensive chapter theory booklets, Daily Practice Problems (DPPs), past 15-year board question banks, and simulated CBT test access are fully included.' },
+  { q: 'How are 1-on-1 doubts handled?', a: 'Students have access to daily physical faculty doubt desks at our Jaipur center (4:00 PM – 7:30 PM) and a 24/7 digital doubt resolution portal.' },
 ]
 
 export default async function CourseDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -66,7 +66,6 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
   const accentClass = categoryAccents[course.category] ?? 'bg-brand-maroon'
   const heroBgImage = course.image_url || categoryBgImages[course.category] || ''
 
-  // related courses (same category, different slug)
   const { data: related } = await supabase
     .from('cms_courses')
     .select('title, slug, category, class_level, fee')
@@ -76,87 +75,88 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
     .limit(3)
 
   return (
-    <div className="animate-fade-in">
+    <div className="space-y-0 animate-fade-in text-brand-navy">
 
       {/* Breadcrumb */}
       <div className="bg-white border-b border-brand-border px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-brand-navy/50">
+        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-brand-navy/60 font-medium">
           <Link href="/" className="hover:text-brand-maroon transition-colors">Home</Link>
           <span>/</span>
           <Link href="/courses" className="hover:text-brand-maroon transition-colors">Courses</Link>
           <span>/</span>
-          <span className="text-brand-navy font-semibold line-clamp-1">{course.title}</span>
+          <span className="text-brand-navy font-bold line-clamp-1">{course.title}</span>
         </div>
       </div>
 
       {/* Hero */}
-      <section className="relative text-white py-14 overflow-hidden">
-        {/* Background image */}
+      <section className="relative text-white py-16 sm:py-20 overflow-hidden bg-brand-navy dark-grid-pattern">
         {heroBgImage && (
           <img
             src={heroBgImage}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover object-center"
+            className="absolute inset-0 w-full h-full object-cover object-center opacity-25"
           />
         )}
-        {/* Dark overlay for text readability — no color tint */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-navy via-brand-navy/90 to-brand-navy/60" />
+        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link href="/courses" className="inline-flex items-center gap-1.5 text-white/60 hover:text-white text-xs font-semibold mb-6 transition-colors">
-            <ArrowLeft className="h-3.5 w-3.5" /> All Courses
+          <Link href="/courses" className="inline-flex items-center gap-1.5 text-white/70 hover:text-brand-gold text-xs font-bold mb-6 transition-colors uppercase tracking-wider">
+            <ArrowLeft className="h-3.5 w-3.5" /> Back to Programs
           </Link>
-          <div className="grid lg:grid-cols-3 gap-8 items-start">
-            <div className="lg:col-span-2 space-y-4">
-              <span className={`inline-block ${accentClass} text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full`}>
+          
+          <div className="grid lg:grid-cols-3 gap-10 items-start">
+            <div className="lg:col-span-2 space-y-5">
+              <span className={`inline-block ${accentClass} text-white text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-full border border-white/20 shadow`}>
                 {course.category}
               </span>
-              <h1 className="text-3xl sm:text-4xl font-extrabold leading-tight">{course.title}</h1>
+              <h1 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white">{course.title}</h1>
               {course.description && (
-                <p className="text-white/80 text-base font-light leading-relaxed max-w-2xl">{course.description}</p>
+                <p className="text-white/80 text-sm sm:text-base font-light leading-relaxed max-w-2xl">{course.description}</p>
               )}
 
               {/* Meta row */}
-              <div className="flex flex-wrap gap-4 pt-2">
+              <div className="flex flex-wrap gap-4 pt-3">
                 {[
-                  { icon: Clock,    label: course.duration ?? '1 Year',       caption: 'Duration' },
-                  { icon: Users,    label: course.mode ?? 'Classroom',        caption: 'Mode' },
-                  { icon: Calendar, label: course.phase_start ?? 'Ongoing',   caption: 'Starts' },
+                  { icon: Clock,    label: course.duration ?? '1 Academic Year', caption: 'Program Duration' },
+                  { icon: Users,    label: course.mode ?? 'Classroom + Hybrid', caption: 'Delivery Mode' },
+                  { icon: Calendar, label: course.phase_start ?? 'Active Enrolment', caption: 'Admissions' },
                 ].map(({ icon: Icon, label, caption }) => (
-                  <div key={caption} className="bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 flex items-center gap-2">
-                    <Icon className="h-4 w-4 text-white/70" />
+                  <div key={caption} className="bg-white/10 border border-white/20 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-xs">
+                    <Icon className="h-5 w-5 text-brand-gold" />
                     <div>
-                      <p className="text-[10px] text-white/50 uppercase tracking-wider">{caption}</p>
-                      <p className="text-sm font-bold">{label}</p>
+                      <p className="text-[10px] text-white/60 uppercase tracking-wider font-semibold">{caption}</p>
+                      <p className="text-xs font-bold text-white">{label}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Price card (shown in hero on desktop) */}
+            {/* Desktop Price & Action Card */}
             <div className="hidden lg:block">
-              <div className="bg-white rounded-2xl p-6 shadow-xl">
+              <div className="bg-white rounded-3xl p-7 shadow-2xl border border-brand-border text-brand-navy">
                 {course.image_url && (
-                  <img src={course.image_url} alt={course.title} className="w-full h-36 object-cover rounded-xl mb-5" />
+                  <img src={course.image_url} alt={course.title} className="w-full h-40 object-cover rounded-2xl mb-5 shadow-sm" />
                 )}
-                <p className="text-xs text-brand-navy/50 uppercase tracking-wider font-semibold">Course Fee</p>
-                <p className="text-3xl font-extrabold text-brand-navy mt-0.5">
-                  {course.fee ? `₹${course.fee}` : 'Contact Us'}
+                <span className="text-[10px] font-black uppercase tracking-widest text-brand-navy/50 block">Session Fee</span>
+                <p className="text-3xl font-black text-brand-navy mt-1 font-display-modern">
+                  {course.fee ? `₹${course.fee}` : 'On Request'}
                 </p>
-                {course.fee && <p className="text-xs text-brand-navy/40 mt-0.5">+ GST as applicable</p>}
-                <div className="space-y-2 mt-5">
+                {course.fee && <p className="text-[10px] text-brand-navy/50 mt-0.5">Includes study material, DPPs & test series</p>}
+                
+                <div className="space-y-3 mt-6">
                   <Link href="/enroll"
-                    className="block w-full bg-brand-maroon hover:bg-brand-accent text-white font-bold py-3 rounded-xl text-center text-sm transition-colors">
-                    Enroll Now
+                    className="block w-full bg-brand-maroon hover:bg-brand-crimson text-white font-extrabold py-3.5 rounded-xl text-center text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg">
+                    Reserve Seat in Cohort
                   </Link>
                   <Link href="/contact"
-                    className="block w-full border border-brand-border text-brand-navy hover:bg-brand-bg font-semibold py-3 rounded-xl text-center text-sm transition-colors">
-                    Book Free Demo
+                    className="block w-full border border-brand-border text-brand-navy hover:bg-brand-bg font-bold py-3.5 rounded-xl text-center text-xs uppercase tracking-wider transition-colors">
+                    Book Diagnostic Test
                   </Link>
                 </div>
-                <div className="mt-4 pt-4 border-t border-brand-border flex items-center gap-2 text-xs text-brand-navy/50">
-                  <Phone className="h-3.5 w-3.5 text-brand-maroon" />
-                  <a href={`tel:${HODU.phone}`} className="hover:text-brand-maroon font-medium">{HODU.phone}</a>
+                <div className="mt-5 pt-4 border-t border-brand-border flex items-center justify-between text-xs text-brand-navy/60">
+                  <span className="font-semibold">Direct Helpline:</span>
+                  <a href={`tel:${HODU.phone}`} className="text-brand-maroon font-bold hover:underline">{HODU.phone}</a>
                 </div>
               </div>
             </div>
@@ -165,22 +165,24 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
       </section>
 
       {/* Body */}
-
-      <section className="bg-brand-bg py-12">
+      <section className="bg-brand-bg py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-3 gap-10">
 
-          {/* Left — main content */}
+          {/* Left: Course details */}
           <div className="lg:col-span-2 space-y-10">
 
             {/* What's included */}
             {course.features_json.length > 0 && (
-              <div className="bg-white border border-brand-border rounded-2xl p-6 shadow-sm">
-                <h2 className="text-xl font-extrabold text-brand-navy mb-5">What's Included</h2>
-                <ul className="grid sm:grid-cols-2 gap-3">
+              <div className="bg-white border border-brand-border rounded-3xl p-8 shadow-xs">
+                <span className="text-[10px] font-black uppercase tracking-widest text-brand-maroon bg-brand-maroon/10 px-3 py-1 rounded-full inline-block mb-3 border border-brand-maroon/20">
+                  CURRICULUM HIGHLIGHTS
+                </span>
+                <h2 className="font-serif-editorial text-2xl font-bold text-brand-navy mb-6">What's Included in This Program</h2>
+                <ul className="grid sm:grid-cols-2 gap-4">
                   {course.features_json.map((f: string, i: number) => (
-                    <li key={i} className="flex items-start gap-3">
+                    <li key={i} className="flex items-start gap-3 bg-brand-bg/50 p-3.5 rounded-2xl border border-brand-border/60">
                       <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <span className="text-sm text-brand-navy/80">{f}</span>
+                      <span className="text-xs font-semibold text-brand-navy/85 leading-snug">{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -188,87 +190,103 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
             )}
 
             {/* Why choose */}
-            <div className="bg-brand-navy text-white rounded-2xl p-6">
-              <h2 className="text-xl font-extrabold mb-5">Why Hodu Academy?</h2>
-              <div className="grid sm:grid-cols-3 gap-4">
+            <div className="bg-brand-navy text-white rounded-3xl p-8 sm:p-10 shadow-xl dark-grid-pattern relative">
+              <span className="text-[10px] font-black uppercase tracking-widest text-brand-gold bg-white/10 px-3 py-1 rounded-full inline-block mb-3 border border-white/15">
+                INSTITUTIONAL ASSURANCE
+              </span>
+              <h2 className="font-serif-editorial text-2xl sm:text-3xl font-bold text-white mb-6">Why Prepare With Hodu Academy?</h2>
+              <div className="grid sm:grid-cols-3 gap-5">
                 {[
-                  { emoji: '👨‍🏫', title: 'Expert Faculty',    desc: 'IIT/NIT qualified, 10+ years experience' },
-                  { emoji: '📊', title: 'Weekly Tests',        desc: 'Percentile-ranked diagnostic mocks' },
-                  { emoji: '💬', title: 'Daily Doubt Clearing', desc: 'Online + in-person every weekday' },
-                ].map(item => (
-                  <div key={item.title} className="bg-white/5 border border-white/10 rounded-xl p-4">
-                    <span className="text-2xl block mb-2">{item.emoji}</span>
-                    <h3 className="font-bold text-sm mb-1">{item.title}</h3>
-                    <p className="text-xs text-white/60 font-light">{item.desc}</p>
-                  </div>
-                ))}
+                  { icon: GraduationCap, title: 'Master Mentors',    desc: 'MNIT/IIIT qualified faculty with 15+ years board experience' },
+                  { icon: TrendingUp,    title: 'Weekly Diagnostic', desc: 'Percentile-benchmarked timed CBT simulation tests' },
+                  { icon: MessageSquareQuote, title: '1-on-1 Doubt Desks', desc: 'Daily dedicated physical & digital doubt clearing' },
+                ].map(item => {
+                  const Icon = item.icon
+                  return (
+                    <div key={item.title} className="bg-white/5 border border-white/15 rounded-2xl p-5 hover:bg-white/10 transition-colors">
+                      <Icon className="h-6 w-6 text-brand-gold mb-3" />
+                      <h3 className="font-bold text-sm text-white mb-1.5">{item.title}</h3>
+                      <p className="text-xs text-white/70 font-light leading-relaxed">{item.desc}</p>
+                    </div>
+                  )
+                })}
               </div>
             </div>
 
             {/* FAQ */}
-            <div className="bg-white border border-brand-border rounded-2xl p-6 shadow-sm">
-              <h2 className="text-xl font-extrabold text-brand-navy mb-5">Frequently Asked Questions</h2>
-              <div className="space-y-2">
+            <div className="bg-white border border-brand-border rounded-3xl p-8 shadow-xs">
+              <span className="text-[10px] font-black uppercase tracking-widest text-brand-maroon bg-brand-maroon/10 px-3 py-1 rounded-full inline-block mb-3 border border-brand-maroon/20">
+                FREQUENTLY ASKED QUESTIONS
+              </span>
+              <h2 className="font-serif-editorial text-2xl font-bold text-brand-navy mb-6">Program & Batch FAQs</h2>
+              <div className="space-y-3">
                 {courseFaqs.map((faq, i) => (
-                  <details key={i} className="group border border-brand-border rounded-xl overflow-hidden">
-                    <summary className="flex items-center justify-between px-4 py-3.5 cursor-pointer list-none bg-brand-bg hover:bg-brand-border/30 transition-colors">
-                      <span className="font-semibold text-brand-navy text-sm pr-4">{faq.q}</span>
-                      <ChevronDown className="h-4 w-4 text-brand-maroon shrink-0 transition-transform group-open:rotate-180" />
+                  <details key={i} className="group border border-brand-border rounded-2xl overflow-hidden transition-all duration-200 hover:border-brand-maroon/40 shadow-xs">
+                    <summary className="flex items-center justify-between px-5 py-4 cursor-pointer list-none bg-brand-bg/60 hover:bg-brand-bg transition-colors">
+                      <span className="font-bold text-brand-navy text-sm pr-4">{faq.q}</span>
+                      <ChevronDown className="h-4 w-4 text-brand-maroon shrink-0 transition-transform duration-200 group-open:rotate-180" />
                     </summary>
-                    <div className="px-4 py-3.5 text-sm text-brand-navy/70 font-light leading-relaxed bg-white">{faq.a}</div>
+                    <div className="px-5 py-4 text-xs sm:text-sm text-brand-navy/75 font-light leading-relaxed bg-white border-t border-brand-border/40">{faq.a}</div>
                   </details>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Right — sticky CTA */}
+          {/* Right sidebar */}
           <div className="space-y-6">
+            
             {/* Mobile price card */}
-            <div className="lg:hidden bg-white border border-brand-border rounded-2xl p-5 shadow-sm">
-              <p className="text-xs text-brand-navy/50 uppercase tracking-wider font-semibold">Course Fee</p>
-              <p className="text-3xl font-extrabold text-brand-navy mt-0.5">
-                {course.fee ? `₹${course.fee}` : 'Contact Us'}
+            <div className="lg:hidden bg-white border border-brand-border rounded-3xl p-6 shadow-sm">
+              <span className="text-[10px] font-black uppercase tracking-widest text-brand-navy/50 block">Session Fee</span>
+              <p className="text-3xl font-black text-brand-navy mt-1 font-display-modern">
+                {course.fee ? `₹${course.fee}` : 'On Request'}
               </p>
-              <div className="flex gap-2 mt-4">
+              <div className="flex gap-2.5 mt-4">
                 <Link href="/enroll"
-                  className="flex-1 bg-brand-maroon hover:bg-brand-accent text-white font-bold py-2.5 rounded-xl text-center text-sm transition-colors">
+                  className="flex-1 bg-brand-maroon hover:bg-brand-crimson text-white font-extrabold py-3 rounded-xl text-center text-xs uppercase tracking-wider transition-colors shadow">
                   Enroll Now
                 </Link>
                 <Link href="/contact"
-                  className="flex-1 border border-brand-border text-brand-navy hover:bg-brand-bg font-semibold py-2.5 rounded-xl text-center text-sm transition-colors">
-                  Free Demo
+                  className="flex-1 border border-brand-border text-brand-navy hover:bg-brand-bg font-bold py-3 rounded-xl text-center text-xs uppercase tracking-wider transition-colors">
+                  Diagnostic Test
                 </Link>
               </div>
             </div>
 
-            {/* Sticky enquiry form */}
-            <div className="bg-white border border-brand-border rounded-2xl p-5 shadow-sm sticky top-20">
-              <h3 className="font-extrabold text-brand-navy text-sm uppercase tracking-wider mb-4">Request a Callback</h3>
+            {/* Sticky Enquiry Form */}
+            <div className="bg-white border border-brand-border rounded-3xl p-6 sm:p-7 shadow-xl sticky top-24">
+              <span className="text-[10px] font-black uppercase tracking-widest text-brand-maroon bg-brand-maroon/10 px-2.5 py-0.5 rounded-full inline-block mb-2">
+                EXPERT COUNSELLING
+              </span>
+              <h3 className="font-serif-editorial font-bold text-brand-navy text-lg mb-1">Request Callback</h3>
+              <p className="text-xs text-brand-navy/60 mb-5 font-light">Get syllabus guidance and batch options.</p>
               <EnquiryForm />
             </div>
 
-            {/* Related courses */}
+            {/* Related Courses */}
             {related && related.length > 0 && (
-              <div className="bg-white border border-brand-border rounded-2xl p-5 shadow-sm">
-                <h3 className="font-extrabold text-brand-navy text-sm uppercase tracking-wider mb-4">Related Courses</h3>
+              <div className="bg-white border border-brand-border rounded-3xl p-6 shadow-sm">
+                <h3 className="font-serif-editorial font-bold text-brand-navy text-base mb-4">Related Programs</h3>
                 <div className="space-y-3">
                   {related.map(r => (
                     <Link key={r.slug} href={`/courses/${r.slug}`}
-                      className="flex items-center justify-between p-3 rounded-xl border border-brand-border hover:bg-brand-bg transition-colors group">
+                      className="flex items-center justify-between p-3.5 rounded-2xl border border-brand-border hover:border-brand-maroon hover:bg-brand-bg transition-all group">
                       <div>
-                        <p className="text-sm font-bold text-brand-navy group-hover:text-brand-maroon transition-colors line-clamp-1">{r.title}</p>
-                        <p className="text-xs text-brand-navy/50">{r.class_level}</p>
+                        <p className="text-xs font-bold text-brand-navy group-hover:text-brand-maroon transition-colors line-clamp-1">{r.title}</p>
+                        <p className="text-[11px] text-brand-navy/50">{r.class_level || r.category}</p>
                       </div>
-                      {r.fee && <span className="text-sm font-extrabold text-brand-navy shrink-0 ml-2">₹{r.fee}</span>}
+                      <ArrowRight className="h-3.5 w-3.5 text-brand-maroon shrink-0 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   ))}
                 </div>
               </div>
             )}
           </div>
+
         </div>
       </section>
+
     </div>
   )
 }

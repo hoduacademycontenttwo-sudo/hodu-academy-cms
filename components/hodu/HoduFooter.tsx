@@ -1,16 +1,16 @@
 import Link from 'next/link'
-import { Mail, Phone, MapPin, Award, CheckCircle2 } from 'lucide-react'
+import { Mail, Phone, MapPin, Award, CheckCircle2, GraduationCap, ShieldCheck, ArrowRight } from 'lucide-react'
 import { HODU } from '@/lib/hodu'
 
 const fallbackOfferings = [
-  { label: 'IGCSE & O Level Coaching', href: '/courses' },
-  { label: 'IB (MYP & DP) Program', href: '/courses' },
-  { label: 'CBSE Class 9–12', href: '/courses' },
-  { label: 'JEE / NEET Preparation', href: '/courses' },
-  { label: 'Olympiad Training', href: '/courses' },
+  { label: 'Cambridge IGCSE & A-Levels', href: '/courses?category=IGCSE' },
+  { label: 'IB Diploma Programme (MYP & DP)', href: '/courses?category=IB' },
+  { label: 'CBSE Board (Classes 9–12)', href: '/courses?category=CBSE' },
+  { label: 'IIT-JEE & NEET-UG Integrated', href: '/courses?category=Competitive+Exams' },
+  { label: 'Junior Olympiads & Foundation', href: '/courses?category=Olympiads' },
 ]
 
-const fallbackDescription = "Structured coaching, expert teachers, personalised support and rigorous evaluation — empowering students to excel in IGCSE, IB, CBSE, JEE, NEET and Olympiads."
+const fallbackDescription = "Jaipur's premier academic institute providing structured coaching, master educators, 1:12 intimate batches, and rigorous evaluation — empowering students to excel in Cambridge, IB, CBSE, JEE & NEET."
 
 interface HoduFooterProps {
   siteName?: string
@@ -34,135 +34,156 @@ export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site, a
     linkedin: site?.linkedin || HODU.socials.linkedin,
   }
   const description = site?.footer_description || fallbackDescription
-  const ctaText = site?.footer_cta_text || 'Request Free Callback'
+  const ctaText = site?.footer_cta_text || 'Book Diagnostic Session'
   const ctaLink = site?.footer_cta_link || '/contact'
   const offerings = academicOfferings && academicOfferings.length > 0 ? academicOfferings : fallbackOfferings
 
   return (
-    <footer className="bg-brand-navy text-brand-white border-t border-brand-maroon/20">
+    <footer className="bg-brand-navy text-white border-t border-brand-maroon/25">
 
-      {/* Top value props */}
-      <div className="border-b border-white/10 py-8 bg-brand-navy/60">
+      {/* Top Value Propositions */}
+      <div className="border-b border-white/10 py-10 bg-brand-midnight/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
-            <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-3 justify-center md:justify-start">
-              <Award className="h-8 w-8 text-brand-bg shrink-0" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-brand-gold shrink-0">
+                <Award className="h-6 w-6" />
+              </div>
               <div>
-                <h4 className="font-bold text-sm text-brand-white">India's Premier Tutoring Standard</h4>
-                <p className="text-xs text-white/60">Curriculum crafted by board planners and Olympiad mentors.</p>
+                <h4 className="font-serif-editorial font-bold text-base text-white">Premier Tutoring Standard</h4>
+                <p className="text-xs text-white/70 font-light mt-1 leading-relaxed">Curriculums curated by certified Cambridge, IB & board examiners.</p>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-3 justify-center md:justify-start">
-              <CheckCircle2 className="h-8 w-8 text-brand-bg shrink-0" />
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-brand-gold shrink-0">
+                <CheckCircle2 className="h-6 w-6" />
+              </div>
               <div>
-                <h4 className="font-bold text-sm text-brand-white">Assured Grade Improvement</h4>
-                <p className="text-xs text-white/60">Comprehensive tests, detailed analytics, and continuous support.</p>
+                <h4 className="font-serif-editorial font-bold text-base text-white">Guaranteed Concept Retention</h4>
+                <p className="text-xs text-white/70 font-light mt-1 leading-relaxed">Continuous 1:12 batches, daily DPP sets, and bi-weekly diagnostic tests.</p>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-3 justify-center md:justify-start">
-              <Phone className="h-8 w-8 text-brand-bg shrink-0 animate-pulse" />
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-brand-gold shrink-0">
+                <Phone className="h-6 w-6" />
+              </div>
               <div>
-                <h4 className="font-bold text-sm text-brand-white">Free Career Consultation</h4>
-                <p className="text-xs text-white/60">Stuck in learning directions? Request mentorship callback.</p>
+                <h4 className="font-serif-editorial font-bold text-base text-white">Free Academic Counselling</h4>
+                <p className="text-xs text-white/70 font-light mt-1 leading-relaxed">Direct 1-on-1 strategy sessions with our academic directors.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+      {/* Main Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10">
 
           {/* Brand */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
+          <div className="lg:col-span-4 space-y-5">
+            <div className="flex items-center space-x-3">
               {logoUrl ? (
-                <img src={logoUrl} alt={siteName} className="h-9 w-9 rounded-lg object-cover shrink-0" />
+                <img src={logoUrl} alt={siteName} className="h-10 w-10 rounded-xl object-cover shrink-0" />
               ) : (
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-white text-brand-maroon font-bold text-xl shrink-0">{siteName.charAt(0).toUpperCase()}</div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-maroon text-white font-black text-xl shrink-0 shadow-md">
+                  {siteName.charAt(0).toUpperCase()}
+                </div>
               )}
-              <span className="text-xl font-bold tracking-tight text-white">{siteName}</span>
+              <div>
+                <span className="text-xl font-bold tracking-tight text-white block">{siteName}</span>
+                <span className="text-[9px] font-black tracking-widest text-brand-gold uppercase">ESTD. 2018 · JAIPUR</span>
+              </div>
             </div>
-            <p className="text-xs text-white/70 leading-relaxed font-light">
+            <p className="text-xs text-white/75 leading-relaxed font-light">
               {description}
             </p>
-            <Link href={ctaLink}
-              className="mt-2 text-xs bg-brand-maroon hover:bg-brand-accent text-white px-4 py-2 font-bold rounded shadow transition-all block w-full text-center">
-              {ctaText}
-            </Link>
+            <div>
+              <Link href={ctaLink}
+                className="inline-flex items-center justify-center gap-2 text-xs bg-brand-maroon hover:bg-brand-crimson text-white px-5 py-3 rounded-xl font-extrabold uppercase tracking-wider shadow-md hover:shadow-lg transition-all w-full sm:w-auto">
+                <span>{ctaText}</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
           </div>
 
           {/* Academic Offerings */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-brand-border">Academic Offerings</h4>
-            <ul className="space-y-2 text-xs text-white/80">
+          <div className="lg:col-span-3 space-y-4">
+            <h4 className="text-xs font-black uppercase tracking-widest text-brand-gold">Curriculum Tracks</h4>
+            <ul className="space-y-2.5 text-xs text-white/80">
               {offerings.map(l => (
                 <li key={l.label}>
-                  <Link href={l.href} className="hover:text-brand-border hover:underline transition-colors">{l.label}</Link>
+                  <Link href={l.href} className="hover:text-brand-gold hover:underline transition-colors block">
+                    {l.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
           {/* Quick Links */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-brand-border">Information Portal</h4>
-            <ul className="space-y-2 text-xs text-white/80">
+          <div className="lg:col-span-2 space-y-4">
+            <h4 className="text-xs font-black uppercase tracking-widest text-brand-gold">Academy Portal</h4>
+            <ul className="space-y-2.5 text-xs text-white/80">
               {[
-                { label: 'Home', href: '/' },
-                { label: 'About Us & Faculty', href: '/about' },
-                { label: 'Offline Coaching', href: '/offline' },
-                { label: 'Blog', href: '/blog' },
-                { label: 'Contact Us', href: '/contact' },
+                { label: 'Home Page', href: '/' },
+                { label: 'Jaipur Offline Center', href: '/offline' },
+                { label: 'Faculty & Directors', href: '/about' },
+                { label: 'Study Materials & DPPs', href: '/study-materials' },
+                { label: 'Academic Blog', href: '/blog' },
+                { label: 'Contact & Diagnostic', href: '/contact' },
               ].map(l => (
                 <li key={l.label}>
-                  <Link href={l.href} className="hover:text-brand-border hover:underline transition-colors">{l.label}</Link>
+                  <Link href={l.href} className="hover:text-brand-gold hover:underline transition-colors block">
+                    {l.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-brand-border">Contact Centre</h4>
-            <div className="space-y-2.5 text-xs text-white/80 font-light">
-              <div className="flex items-start space-x-2">
-                <MapPin className="h-4 w-4 text-brand-border shrink-0 mt-0.5" />
+          {/* Contact Details */}
+          <div className="lg:col-span-3 space-y-4">
+            <h4 className="text-xs font-black uppercase tracking-widest text-brand-gold">Jaipur Campus</h4>
+            <div className="space-y-3 text-xs text-white/80 font-light">
+              <div className="flex items-start space-x-3">
+                <MapPin className="h-4 w-4 text-brand-gold shrink-0 mt-0.5" />
                 <span>{address}</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Phone className="h-4 w-4 text-brand-border shrink-0" />
-                <a href={`tel:${phone}`} className="hover:text-white">{phone}</a>
+              <div className="flex items-center space-x-3">
+                <Phone className="h-4 w-4 text-brand-gold shrink-0" />
+                <a href={`tel:${phone}`} className="hover:text-white font-semibold">{phone}</a>
               </div>
-              <div className="flex items-center space-x-2">
-                <Mail className="h-4 w-4 text-brand-border shrink-0" />
+              <div className="flex items-center space-x-3">
+                <Mail className="h-4 w-4 text-brand-gold shrink-0" />
                 <a href={`mailto:${email}`} className="hover:text-white truncate">{email}</a>
               </div>
             </div>
-            <div className="flex gap-2 pt-1">
+            
+            <div className="flex gap-2 pt-2">
               {[
-                { label: 'YT', href: socials.youtube },
-                { label: 'IG', href: socials.instagram },
-                { label: 'FB', href: socials.facebook },
-                { label: 'IN', href: socials.linkedin },
+                { label: 'YouTube', href: socials.youtube },
+                { label: 'Instagram', href: socials.instagram },
+                { label: 'Facebook', href: socials.facebook },
+                { label: 'LinkedIn', href: socials.linkedin },
               ].map(s => (
                 <a key={s.label} href={s.href} target="_blank" rel="noreferrer"
-                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-brand-maroon hover:-translate-y-0.5 flex items-center justify-center text-[10px] font-bold transition-all duration-200">
+                  className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-brand-maroon hover:text-white text-[10px] font-extrabold uppercase tracking-wider transition-colors border border-white/10">
                   {s.label}
                 </a>
               ))}
             </div>
           </div>
+
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-white/60 space-y-4 md:space-y-0">
-          <span>© {new Date().getFullYear()} {siteName}. All rights reserved.</span>
+        {/* Bottom Bar */}
+        <div className="mt-14 pt-8 border-t border-white/15 flex flex-col md:flex-row justify-between items-center text-xs text-white/60 space-y-4 md:space-y-0">
+          <span>© {new Date().getFullYear()} {siteName}. All rights reserved. Jaipur, Rajasthan, India.</span>
           <div className="flex space-x-6">
-            <Link href="/about" className="hover:text-white hover:underline">About Us</Link>
+            <Link href="/about" className="hover:text-white hover:underline">About</Link>
             <Link href="/contact" className="hover:text-white hover:underline">Privacy Policy</Link>
-            <Link href="/contact" className="hover:text-white hover:underline">Terms of Service</Link>
+            <Link href="/contact" className="hover:text-white hover:underline">Admissions Terms</Link>
           </div>
         </div>
       </div>
