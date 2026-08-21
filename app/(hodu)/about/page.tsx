@@ -27,6 +27,7 @@ const milestones = [
   { year: '2025', event: 'Over 10,000 students mentored with 98%+ board pass ratio across IGCSE, IB, and CBSE.' },
 ]
 
+
 export default async function AboutPage() {
   const supabase = await createClient()
   const { data: faculty } = await supabase

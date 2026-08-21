@@ -93,14 +93,19 @@ export default function AdminLayout({ children, siteName }: { children: React.Re
     if (searchOpen) setTimeout(() => searchRef.current?.focus(), 50)
   }, [searchOpen])
 
+
   const matches = query.trim()
     ? allNavItems.filter(i =>
         i.label.toLowerCase().includes(query.toLowerCase()) ||
         (i.keywords ?? '').toLowerCase().includes(query.toLowerCase()))
     : allNavItems
 
-  const currentLabel = allNavItems.find((n) => n.href === pathname)?.label ?? 'Dashboard'
 
+    const currentLabel = allNavItems.find((n) => n.href === pathname)?.label ?? 'Dashboard'
+
+
+
+    
   return (
     <div className="flex h-screen bg-[#F8F9FA] overflow-hidden">
       {/* Sidebar */}

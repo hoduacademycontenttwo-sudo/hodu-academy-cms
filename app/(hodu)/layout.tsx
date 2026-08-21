@@ -61,9 +61,10 @@ function clampForReadability(hex: string, maxLight = 0.32) {
 
 export default async function HoduLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
-  const [{ data: site }, { data: academicOfferings }] = await Promise.all([
+  const [{ data: site }, { data: courseLinks }, { data: studyLinks }] = await Promise.all([
     supabase.from('cms_sites').select('*').eq('id', HODU_SITE_ID).single(),
-    supabase.from('cms_nav_links').select('label, href').eq('site_id', HODU_SITE_ID).eq('group_name', 'courses').order('sort_order'),
+    supabase.from('cms_nav_links').select('label, href, icon').eq('site_id', HODU_SITE_ID).eq('group_name', 'courses').order('sort_order'),
+    supabase.from('cms_nav_links').select('label, href, icon').eq('site_id', HODU_SITE_ID).eq('group_name', 'study_materials').order('sort_order'),
   ])
 
   const primaryRaw = site?.primary_color || '#7E0D0D'
@@ -88,9 +89,14 @@ export default async function HoduLayout({ children }: { children: React.ReactNo
           --color-brand-navy: ${secondary};
         }
       `}</style>
-      <HoduNavbar siteName={siteName} logoUrl={logoUrl} />
+      <HoduNavbar
+        siteName={siteName}
+        logoUrl={logoUrl}
+        initialCourses={courseLinks ?? undefined}
+        initialStudyMaterials={studyLinks ?? undefined}
+      />
       <main>{children}</main>
-      <HoduFooter siteName={siteName} logoUrl={logoUrl} site={site} academicOfferings={academicOfferings ?? undefined} />
+      <HoduFooter siteName={siteName} logoUrl={logoUrl} site={site} academicOfferings={courseLinks ?? undefined} />
     </>
   )
 }
