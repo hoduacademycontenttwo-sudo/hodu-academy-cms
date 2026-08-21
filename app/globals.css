@@ -136,18 +136,18 @@ button[class*="bg-brand-maroon"]:active {
   }
 }
 
-/* Category Goal Card Notch & Cutout Styles */
+/* Category Goal Card Notch & Cutout Styles (Light Theme) */
 .category-goal-card {
-  box-shadow: rgba(62, 13, 14, 0.25) 0px 8px 24px 0px;
+  box-shadow: 0 4px 16px -2px rgba(100, 100, 111, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
 }
 .category-cutout-border {
   border-bottom-right-radius: 10px;
   height: 28px;
   width: 96px;
-  background: #3E0D0E;
+  background: #FFFFFF;
   position: relative;
   transform: skew(-40deg);
-  box-shadow: -10px -10px 0 0 #3E0D0E;
+  box-shadow: -10px -10px 0 0 #FFFFFF;
 }
 .category-cutout-border::before {
   content: "";
@@ -158,7 +158,7 @@ button[class*="bg-brand-maroon"]:active {
   right: -14px;
   background: transparent;
   border-top-left-radius: 10px;
-  box-shadow: -4px -4px 0 2px #3E0D0E;
+  box-shadow: -4px -4px 0 2px #FFFFFF;
 }
 .category-top-section::before {
   content: "";
@@ -169,7 +169,7 @@ button[class*="bg-brand-maroon"]:active {
   height: 14px;
   width: 14px;
   border-top-left-radius: 14px;
-  box-shadow: -4px -4px 0 2px #3E0D0E;
+  box-shadow: -4px -4px 0 2px #FFFFFF;
   z-index: 5;
 }
 

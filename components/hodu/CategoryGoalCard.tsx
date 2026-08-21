@@ -25,10 +25,10 @@ export default function CategoryGoalCard({
       href={href}
       className="group block w-full select-none text-left no-underline focus:outline-none"
     >
-      <div className="category-goal-card w-full rounded-[20px] bg-[#3E0D0E] p-[5px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.03] flex flex-col justify-between border border-[#651416]/50">
+      <div className="category-goal-card w-full rounded-[20px] bg-white p-[5px] overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between border border-brand-border hover:border-brand-maroon">
         
         {/* Top Image Zone with the signature curved cut-out header */}
-        <div className="category-top-section relative h-[125px] sm:h-[135px] rounded-[15px] overflow-hidden bg-[#651416]">
+        <div className="category-top-section relative h-[120px] sm:h-[130px] rounded-[15px] overflow-hidden bg-neutral-100">
           {/* Course/Curriculum Image */}
           <img
             src={img}
@@ -36,15 +36,15 @@ export default function CategoryGoalCard({
             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
           />
 
-          {/* Curved notch tab background */}
+          {/* Curved notch tab background (White on top of photo) */}
           <div className="absolute top-0 left-0">
             <div className="category-cutout-border" />
           </div>
 
-          {/* Notch Icon / Acronym */}
+          {/* Notch Icon / Acronym in Brand Maroon */}
           <div className="absolute top-0 left-0 h-[28px] px-3 flex items-center gap-1.5 z-10">
-            {Icon && <Icon className="h-3.5 w-3.5 text-white" />}
-            <span className="text-[11px] font-black tracking-wider text-white uppercase font-sans">
+            {Icon && <Icon className="h-3.5 w-3.5 text-brand-maroon" />}
+            <span className="text-[11px] font-black tracking-wider text-brand-maroon uppercase font-sans">
               {code}
             </span>
           </div>
@@ -57,24 +57,24 @@ export default function CategoryGoalCard({
           </div>
         </div>
 
-        {/* Bottom Title & 3-column Stats Section */}
-        <div className="pt-3 pb-2.5 px-2 text-center">
-          <span className="block text-xs sm:text-[13px] font-extrabold text-white tracking-wide uppercase line-clamp-1 group-hover:text-[#EED6D6] transition-colors">
+        {/* Bottom Title & 3-column Stats Section (Light Theme) */}
+        <div className="pt-3 pb-2 px-2.5 text-center flex-1 flex flex-col justify-between">
+          <span className="block text-xs sm:text-sm font-extrabold text-brand-text tracking-tight uppercase line-clamp-1 group-hover:text-brand-maroon transition-colors">
             {label}
           </span>
 
-          <div className="grid grid-cols-3 mt-3 pt-2.5 border-t border-white/15 text-center">
+          <div className="grid grid-cols-3 mt-2.5 p-2 bg-brand-blush/60 rounded-xl border border-brand-border/60 text-center">
             {stats.map((st, i) => (
               <div
                 key={i}
                 className={`px-1 ${
-                  i === 1 ? 'border-x border-white/15' : ''
+                  i === 1 ? 'border-x border-brand-border/80' : ''
                 }`}
               >
-                <span className="block text-[11px] sm:text-xs font-black text-white leading-none">
+                <span className="block text-[11px] sm:text-xs font-black text-brand-maroon leading-none">
                   {st.big}
                 </span>
-                <span className="block text-[8px] sm:text-[9px] text-[#EED6D6]/80 font-medium mt-1 leading-tight line-clamp-1">
+                <span className="block text-[8.5px] sm:text-[9px] text-brand-muted font-semibold mt-1 leading-tight line-clamp-1">
                   {st.label}
                 </span>
               </div>
