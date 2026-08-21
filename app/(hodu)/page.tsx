@@ -24,121 +24,12 @@ import {
 } from 'lucide-react'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
-import CategoryGoalCard from '@/components/hodu/CategoryGoalCard'
 import { parseCarouselRows } from '@/lib/homeCarousel'
 
 export const metadata = {
   title: 'Hodu Academy — Premier Coaching for Cambridge IGCSE, IB, CBSE, JEE & NEET | Jaipur',
   description: 'Jaipur’s premier coaching institute for Cambridge IGCSE, IB Diploma, CBSE Class 9-12, IIT-JEE, and NEET. Small 1:12 interactive batches, daily doubt desks, and top faculty.',
 }
-
-// Stylized target categories (Uiverse curved tab card design)
-const targetExams = [
-  {
-    code: 'IGCSE',
-    label: 'Cambridge IGCSE',
-    icon: Award,
-    href: '/courses?category=IGCSE',
-    badge: 'Grades 8-10',
-    img: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=320&fit=crop&auto=format',
-    stats: [
-      { big: '8× A*', label: 'Top Grade' },
-      { big: '1:12', label: 'Batch Size' },
-      { big: '15 Yrs', label: 'Past Papers' },
-    ]
-  },
-  {
-    code: 'IB DP',
-    label: 'IB Diploma (DP)',
-    icon: Compass,
-    href: '/courses?category=IB',
-    badge: 'MYP & DP',
-    img: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=320&fit=crop&auto=format',
-    stats: [
-      { big: '44/45', label: 'Top Score' },
-      { big: '100%', label: 'IA Support' },
-      { big: 'HL/SL', label: 'All Subjects' },
-    ]
-  },
-  {
-    code: 'IIT-JEE',
-    label: 'IIT-JEE (Main+Adv)',
-    icon: Atom,
-    href: '/courses?category=Competitive+Exams',
-    badge: 'Class 11-12',
-    img: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600&h=320&fit=crop&auto=format',
-    stats: [
-      { big: 'AIR 142', label: 'Top Rank' },
-      { big: '30+', label: 'Daily DPPs' },
-      { big: 'CBT', label: 'Test Labs' },
-    ]
-  },
-  {
-    code: 'NEET',
-    label: 'NEET-UG Medical',
-    icon: Dna,
-    href: '/courses?category=Competitive+Exams',
-    badge: 'Class 11-12',
-    img: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=320&fit=crop&auto=format',
-    stats: [
-      { big: '710/720', label: 'Top Score' },
-      { big: '1-on-1', label: 'Doubt Desk' },
-      { big: 'NCERT', label: 'Decoded' },
-    ]
-  },
-  {
-    code: 'CBSE',
-    label: 'CBSE Boards (9-12)',
-    icon: BookOpen,
-    href: '/courses?category=CBSE',
-    badge: 'Science & Comm',
-    img: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=320&fit=crop&auto=format',
-    stats: [
-      { big: '99.4%', label: 'Top Score' },
-      { big: '100%', label: 'Exemplar' },
-      { big: 'Boards', label: 'Masterclass' },
-    ]
-  },
-  {
-    code: 'OLY',
-    label: 'Junior Olympiads',
-    icon: Trophy,
-    href: '/courses?category=Olympiads',
-    badge: 'Classes 6-8',
-    img: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&h=320&fit=crop&auto=format',
-    stats: [
-      { big: 'AIR 4', label: 'IMO Rank' },
-      { big: 'STEM', label: 'Aptitude' },
-      { big: 'Speed', label: 'Math Drills' },
-    ]
-  },
-  {
-    code: 'CUET',
-    label: 'CUET (UG) Entrance',
-    icon: GraduationCap,
-    href: '/courses?category=Competitive+Exams',
-    badge: 'Class 12 & Droppers',
-    img: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&h=320&fit=crop&auto=format',
-    stats: [
-      { big: '100%ile', label: 'Domain Prep' },
-      { big: '50+', label: 'Mock CBTs' },
-      { big: 'GT+Lang', label: 'Full Syllabus' },
-    ]
-  },
-  {
-    code: 'JAIPUR',
-    label: 'Jaipur Offline Center',
-    icon: Building2,
-    href: '/offline',
-    badge: 'Offline Hub',
-    img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=320&fit=crop&auto=format',
-    stats: [
-      { big: '100%', label: 'AC Transit' },
-      { big: '8 AM-9 PM', label: 'Library' },
-      { big: 'Smart', label: 'Classrooms' },
-    ]
-  }
-]
 
 const curriculumTracks = [
   {
@@ -302,40 +193,6 @@ export default async function HomePage() {
         initialSlides={initialSlides}
       />
 
-      {/* 2. Target Exams & Goal Categories (Uiverse curved tab card design) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
-        <div className="flex items-center justify-between mb-5">
-          <div>
-            <span className="text-[11px] font-bold text-brand-maroon uppercase tracking-widest block">
-              ACADEMIC PATHWAYS
-            </span>
-            <h2 className="font-serif-editorial text-2xl sm:text-3xl font-bold text-brand-text">
-              Explore Goals & Exam Categories
-            </h2>
-          </div>
-          <Link
-            href="/courses"
-            className="text-xs font-bold text-brand-maroon hover:underline hidden sm:inline-block uppercase tracking-wider"
-          >
-            View All →
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-          {targetExams.map((exam, idx) => (
-            <CategoryGoalCard
-              key={idx}
-              code={exam.code}
-              label={exam.label}
-              href={exam.href}
-              badge={exam.badge}
-              img={exam.img}
-              icon={exam.icon}
-              stats={exam.stats}
-            />
-          ))}
-        </div>
-      </section>
 
       {/* 3. Popular Batches / Academic Pathways (PW style clean batch cards) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 border-t border-brand-border">
