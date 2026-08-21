@@ -30,7 +30,7 @@ export default function CategoryGoalCard({
       <div className="category-goal-card w-full rounded-[20px] bg-[#3E0D0E] p-[5px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.03] flex flex-col justify-between border border-[#651416]/50">
         
         {/* Top Image Zone with the signature curved cut-out header */}
-        <div className="top-section relative h-[125px] sm:h-[135px] rounded-[15px] overflow-hidden bg-[#651416]">
+        <div className="category-top-section relative h-[125px] sm:h-[135px] rounded-[15px] overflow-hidden bg-[#651416]">
           {/* Course/Curriculum Image */}
           <img
             src={img}
@@ -39,8 +39,8 @@ export default function CategoryGoalCard({
           />
 
           {/* Curved notch tab background */}
-          <div className="cutout-tab absolute top-0 left-0">
-            <div className="cutout-border" />
+          <div className="absolute top-0 left-0">
+            <div className="category-cutout-border" />
           </div>
 
           {/* Notch Icon / Acronym */}
@@ -60,7 +60,7 @@ export default function CategoryGoalCard({
         </div>
 
         {/* Bottom Title & 3-column Stats Section */}
-        <div className="bottom-section pt-3 pb-2.5 px-2 text-center">
+        <div className="pt-3 pb-2.5 px-2 text-center">
           <span className="block text-xs sm:text-[13px] font-extrabold text-white tracking-wide uppercase line-clamp-1 group-hover:text-[#EED6D6] transition-colors">
             {label}
           </span>
@@ -85,44 +85,6 @@ export default function CategoryGoalCard({
         </div>
 
       </div>
-
-      <style jsx>{`
-        .category-goal-card {
-          box-shadow: rgba(62, 13, 14, 0.25) 0px 8px 24px 0px;
-        }
-        .top-section .cutout-tab .cutout-border {
-          border-bottom-right-radius: 10px;
-          height: 28px;
-          width: 96px;
-          background: #3E0D0E;
-          position: relative;
-          transform: skew(-40deg);
-          box-shadow: -10px -10px 0 0 #3E0D0E;
-        }
-        .top-section .cutout-tab .cutout-border::before {
-          content: "";
-          position: absolute;
-          width: 14px;
-          height: 14px;
-          top: 0;
-          right: -14px;
-          background: transparent;
-          border-top-left-radius: 10px;
-          box-shadow: -4px -4px 0 2px #3E0D0E;
-        }
-        .top-section::before {
-          content: "";
-          position: absolute;
-          top: 28px;
-          left: 0;
-          background: transparent;
-          height: 14px;
-          width: 14px;
-          border-top-left-radius: 14px;
-          box-shadow: -4px -4px 0 2px #3E0D0E;
-          z-index: 5;
-        }
-      `}</style>
     </Link>
   )
 }

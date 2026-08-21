@@ -135,3 +135,41 @@ button[class*="bg-brand-maroon"]:active {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Category Goal Card Notch & Cutout Styles */
+.category-goal-card {
+  box-shadow: rgba(62, 13, 14, 0.25) 0px 8px 24px 0px;
+}
+.category-cutout-border {
+  border-bottom-right-radius: 10px;
+  height: 28px;
+  width: 96px;
+  background: #3E0D0E;
+  position: relative;
+  transform: skew(-40deg);
+  box-shadow: -10px -10px 0 0 #3E0D0E;
+}
+.category-cutout-border::before {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  top: 0;
+  right: -14px;
+  background: transparent;
+  border-top-left-radius: 10px;
+  box-shadow: -4px -4px 0 2px #3E0D0E;
+}
+.category-top-section::before {
+  content: "";
+  position: absolute;
+  top: 28px;
+  left: 0;
+  background: transparent;
+  height: 14px;
+  width: 14px;
+  border-top-left-radius: 14px;
+  box-shadow: -4px -4px 0 2px #3E0D0E;
+  z-index: 5;
+}
+
