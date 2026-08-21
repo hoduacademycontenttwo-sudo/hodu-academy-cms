@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import AdminLayout from '@/components/admin/AdminLayout'
 import ImageUpload from '@/components/admin/ImageUpload'
 import InlineRichTextEditor from '@/components/admin/InlineRichTextEditor'
-import { Save, Plus, Trash2, GripVertical } from 'lucide-react'
+import { Save, Plus, Trash2, GripVertical, ArrowUp, ArrowDown } from 'lucide-react'
 
 const SITE_ID = 'a1b2c3d4-1111-1111-1111-000000000002'
 
@@ -43,7 +43,7 @@ export default function HomeContentPage() {
           statsJson = statsJson.map((item: any) =>
             item && typeof item === 'object'
               ? { label: String(item.label ?? ''), value: String(item.value ?? '') }
-              : { label: '', value: String(item ?? '') }
+              : { label: '', value: String(item) }
           )
         } else if (statsJson && typeof statsJson === 'object') {
           statsJson = Object.entries(statsJson).map(([k, v]) => ({
@@ -144,6 +144,21 @@ export default function HomeContentPage() {
     setSlides(prev => prev.filter(s => s.id !== id))
   }
 
+  async function moveSlide(fromIndex: number, toIndex: number) {
+    if (toIndex < 0 || toIndex >= slides.length) return
+    const updated = [...slides]
+    const [moved] = updated.splice(fromIndex, 1)
+    updated.splice(toIndex, 0, moved)
+    setSlides(updated)
+
+    // Save new sort order in database immediately
+    await Promise.all(
+      updated.map((s, idx) =>
+        supabase.from('cms_gallery').update({ sort_order: idx }).eq('id', s.id)
+      )
+    )
+  }
+
   if (!form) return <AdminLayout><p className="text-[#C9C8CB] text-sm">Loading…</p></AdminLayout>
 
   return (
@@ -190,7 +205,7 @@ export default function HomeContentPage() {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-semibold text-[#1B2A44]">Homepage Banner Slides</h3>
-              <p className="text-xs text-[#C9C8CB] mt-0.5">{slides.length} slide{slides.length === 1 ? '' : 's'} · these replace the Fallback Hero above when at least one exists</p>
+              <p className="text-xs text-[#C9C8CB] mt-0.5">{slides.length} slide{slides.length === 1 ? '' : 's'} · Use Up / Down arrows to re-order</p>
             </div>
             <button onClick={addSlide} className="flex items-center gap-1.5 text-xs text-[#7E0D0D] hover:underline font-medium shrink-0">
               <Plus size={13} /> Add Slide
@@ -204,14 +219,56 @@ export default function HomeContentPage() {
           ) : (
             <div className="space-y-5">
               {slides.map((slide, i) => (
-                <div key={slide.id} className="border border-[#F3DCDC] rounded-xl p-4 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-1.5 text-xs font-bold text-[#C9C8CB] uppercase tracking-wider">
-                      <GripVertical size={13} /> Slide {i + 1}
-                    </span>
-                    <button onClick={() => deleteSlide(slide.id)} className="text-red-400 hover:text-red-600">
-                      <Trash2 size={14} />
-                    </button>
+                <div key={slide.id} className="border border-[#F3DCDC] rounded-xl p-4 space-y-3 bg-white shadow-2xs">
+                  {/* Header bar with Re-arrange controls */}
+                  <div className="flex items-center justify-between bg-neutral-50 p-2.5 rounded-lg border border-neutral-200/80">
+                    <div className="flex items-center gap-2">
+                      <GripVertical size={14} className="text-neutral-400" />
+                      <span className="text-xs font-bold text-[#1B2A44] uppercase tracking-wider">
+                        Slide {i + 1}
+                      </span>
+                      {slides.length > 1 && (
+                        <span className="text-[10px] text-neutral-500 font-medium">
+                          ({i + 1} of {slides.length})
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      {/* Move Up */}
+                      <button
+                        type="button"
+                        onClick={() => moveSlide(i, i - 1)}
+                        disabled={i === 0}
+                        title="Move Slide Up (Earlier)"
+                        className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
+                      >
+                        <ArrowUp size={13} />
+                        <span className="hidden sm:inline">Up</span>
+                      </button>
+
+                      {/* Move Down */}
+                      <button
+                        type="button"
+                        onClick={() => moveSlide(i, i + 1)}
+                        disabled={i === slides.length - 1}
+                        title="Move Slide Down (Later)"
+                        className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
+                      >
+                        <ArrowDown size={13} />
+                        <span className="hidden sm:inline">Down</span>
+                      </button>
+
+                      {/* Delete */}
+                      <button
+                        type="button"
+                        onClick={() => deleteSlide(slide.id)}
+                        title="Delete Slide"
+                        className="p-1.5 rounded-md border border-red-200 bg-white text-red-500 hover:bg-red-600 hover:text-white transition-all ml-1.5"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
                   </div>
 
                   <ImageUpload value={slide.image_url ?? ''} onChange={url => updateSlideLocal(slide.id, { image_url: url })} folder="home-carousel" label="Slide Image" />
@@ -240,8 +297,8 @@ export default function HomeContentPage() {
                     <InlineRichTextEditor value={slide.subtitleHtml} onChange={v => updateSlideLocal(slide.id, { subtitleHtml: v })} placeholder="Short supporting line…" multiline />
                   </div>
 
-                  <button onClick={() => saveSlide(slide)} className="bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-semibold px-4 py-2 rounded-lg">
-                    Save Slide {i + 1}
+                  <button onClick={() => saveSlide(slide)} className="bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">
+                    Save Slide {i + 1} Content
                   </button>
                 </div>
               ))}
@@ -254,27 +311,27 @@ export default function HomeContentPage() {
             <h3 className="font-semibold text-[#1B2A44]">Stats</h3>
             <button onClick={addStat} className="text-xs text-[#7E0D0D] hover:underline font-medium">+ Add Stat</button>
           </div>
-          {(form.stats_json ?? []).map((stat: { label: string; value: string }, index: number) => (
-            <div key={index} className="flex gap-3 items-start">
-              <div className="flex-1">
-                <label className="block text-xs text-[#C9C8CB] mb-1">Label</label>
+          <div className="space-y-3">
+            {(form.stats_json ?? []).map((stat: any, i: number) => (
+              <div key={i} className="flex gap-3 items-center">
                 <input
-                  value={stat.label}
-                  onChange={(e) => setStat(index, 'label', e.target.value)}
-                  className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]"
+                  value={stat.label ?? ''}
+                  onChange={(e) => setStat(i, 'label', e.target.value)}
+                  placeholder="Label (e.g. Students)"
+                  className="flex-1 border border-[#F3DCDC] rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]"
                 />
-              </div>
-              <div className="flex-1">
-                <label className="block text-xs text-[#C9C8CB] mb-1">Value</label>
                 <input
-                  value={stat.value}
-                  onChange={(e) => setStat(index, 'value', e.target.value)}
-                  className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]"
+                  value={stat.value ?? ''}
+                  onChange={(e) => setStat(i, 'value', e.target.value)}
+                  placeholder="Value (e.g. 50,000+)"
+                  className="w-36 border border-[#F3DCDC] rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]"
                 />
+                <button onClick={() => removeStat(i)} className="text-red-400 hover:text-red-600">
+                  <Trash2 size={16} />
+                </button>
               </div>
-              <button onClick={() => removeStat(index)} className="text-red-400 hover:text-red-600 mt-6 text-xs">✕</button>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </AdminLayout>
