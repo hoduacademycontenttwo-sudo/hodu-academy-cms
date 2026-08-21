@@ -217,59 +217,69 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {curriculumTracks.map((track, idx) => (
             <div
               key={idx}
-              className="bg-white border border-brand-border hover:border-brand-maroon rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between"
+              className="group bg-white border border-brand-border hover:border-brand-maroon rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between"
             >
               <div>
-                {/* Banner image with tag */}
-                <div className="relative h-40 overflow-hidden border-b border-brand-border bg-neutral-100">
+                {/* Minimal Banner Image with clean floating badges */}
+                <div className="relative h-48 overflow-hidden bg-neutral-100">
                   <img
                     src={track.img}
                     alt={track.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <span className="absolute top-3 left-3 bg-brand-maroon text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded shadow-sm">
-                    {track.tag}
-                  </span>
-                </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-                {/* Content */}
-                <div className="p-5 space-y-3">
-                  <div>
-                    <span className="text-[11px] font-bold text-brand-maroon block">
+                  {/* Top-Left Floating Badge */}
+                  <div className="absolute top-3.5 left-3.5">
+                    <span className="bg-white/95 backdrop-blur-md text-brand-maroon text-[11px] font-extrabold px-3 py-1 rounded-full border border-brand-border shadow-xs uppercase tracking-wider">
+                      {track.tag}
+                    </span>
+                  </div>
+
+                  {/* Bottom-Left Grade Pill */}
+                  <div className="absolute bottom-3 left-3.5">
+                    <span className="bg-black/60 backdrop-blur-xs text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-md border border-white/20">
                       {track.grades}
                     </span>
-                    <h3 className="font-bold text-base text-brand-text mt-0.5">
-                      {track.title}
-                    </h3>
                   </div>
+                </div>
+
+                {/* Card Body */}
+                <div className="p-6 space-y-3">
+                  <h3 className="font-bold text-lg text-brand-text group-hover:text-brand-maroon transition-colors line-clamp-1">
+                    {track.title}
+                  </h3>
                   <p className="text-xs text-brand-muted leading-relaxed line-clamp-2">
                     {track.desc}
                   </p>
 
-                  {/* Feature checklist */}
-                  <div className="space-y-1.5 pt-2 border-t border-brand-border">
-                    {track.features.map((feat, fIdx) => (
-                      <div key={fIdx} className="flex items-center gap-2 text-[11px] text-brand-text">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-brand-maroon shrink-0" />
+                  {/* Minimal 3-Tag Highlights */}
+                  <div className="flex flex-wrap gap-1.5 pt-3 border-t border-brand-border/60">
+                    {track.features.slice(0, 3).map((feat, fIdx) => (
+                      <span
+                        key={fIdx}
+                        className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-brand-text bg-brand-bg px-2.5 py-1 rounded-lg border border-brand-border/50"
+                      >
+                        <CheckCircle2 className="h-3 w-3 text-brand-maroon shrink-0" />
                         <span>{feat}</span>
-                      </div>
+                      </span>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* Action */}
-              <div className="p-5 pt-0">
+              {/* Minimal Clean Action Link */}
+              <div className="p-6 pt-0">
                 <Link
                   href={track.href}
-                  className="w-full bg-brand-maroon hover:bg-brand-crimson text-white font-semibold py-2.5 px-4 rounded-lg text-center flex items-center justify-center gap-1.5 text-xs transition-colors shadow-xs"
+                  className="w-full bg-brand-bg group-hover:bg-brand-maroon text-brand-maroon group-hover:text-white border border-brand-border group-hover:border-brand-maroon font-bold py-2.5 px-4 rounded-xl text-center flex items-center justify-between text-xs tracking-wider uppercase transition-all duration-200 shadow-2xs"
                 >
-                  <span>Explore Batch Details</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
+                  <span>Explore Program</span>
+                  <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>
