@@ -5,7 +5,8 @@ import { createClient } from '@/lib/supabase/client'
 import AdminLayout from '@/components/admin/AdminLayout'
 import ImageUpload from '@/components/admin/ImageUpload'
 import InlineRichTextEditor from '@/components/admin/InlineRichTextEditor'
-import { Save, Plus, Trash2, GripVertical, ArrowUp, ArrowDown } from 'lucide-react'
+import { Save, Plus, Trash2, GripVertical, ArrowUp, ArrowDown, Video, Image as ImageIcon, ExternalLink, HelpCircle } from 'lucide-react'
+import { parseMediaUrl } from '@/lib/homeCarousel'
 
 const SITE_ID = 'a1b2c3d4-1111-1111-1111-000000000002'
 
@@ -69,7 +70,17 @@ export default function HomeContentPage() {
     setSlides((data ?? []).map(row => {
       let text: any = {}
       try { text = JSON.parse(row.caption ?? '{}') } catch {}
-      return { ...row, headingHtml: text.headingHtml ?? '', subtitleHtml: text.subtitleHtml ?? '', imageOpacity: text.imageOpacity ?? 100 }
+      const mediaInfo = parseMediaUrl(row.image_url ?? '')
+      const mediaType = text.mediaType ?? (mediaInfo.type !== 'image' ? 'video' : 'image')
+      const videoUrl = text.videoUrl ?? (mediaType === 'video' ? row.image_url : '')
+      return {
+        ...row,
+        mediaType,
+        videoUrl,
+        headingHtml: text.headingHtml ?? '',
+        subtitleHtml: text.subtitleHtml ?? '',
+        imageOpacity: text.imageOpacity ?? 100,
+      }
     }))
     setSlidesLoading(false)
   }
@@ -118,12 +129,17 @@ export default function HomeContentPage() {
   }
 
   async function saveSlide(slide: any) {
+    const isVideo = slide.mediaType === 'video'
+    const finalUrl = isVideo ? (slide.videoUrl || slide.image_url) : slide.image_url
     const caption = JSON.stringify({
+      mediaType: slide.mediaType ?? 'image',
+      videoUrl: slide.videoUrl ?? '',
       headingHtml: unwrapParagraph(slide.headingHtml ?? ''),
       subtitleHtml: unwrapParagraph(slide.subtitleHtml ?? ''),
       imageOpacity: slide.imageOpacity ?? 100,
     })
-    await supabase.from('cms_gallery').update({ image_url: slide.image_url, caption }).eq('id', slide.id)
+    await supabase.from('cms_gallery').update({ image_url: finalUrl, caption }).eq('id', slide.id)
+    alert(`Slide saved successfully!`)
   }
 
   async function addSlide() {
@@ -132,10 +148,10 @@ export default function HomeContentPage() {
       site_id: SITE_ID,
       category: 'Home Carousel',
       image_url: '',
-      caption: JSON.stringify({ headingHtml: '', subtitleHtml: '', imageOpacity: 100 }),
+      caption: JSON.stringify({ mediaType: 'image', videoUrl: '', headingHtml: '', subtitleHtml: '', imageOpacity: 100 }),
       sort_order: nextOrder,
     }).select().single()
-    if (data) setSlides(prev => [...prev, { ...data, headingHtml: '', subtitleHtml: '', imageOpacity: 100 }])
+    if (data) setSlides(prev => [...prev, { ...data, mediaType: 'image', videoUrl: '', headingHtml: '', subtitleHtml: '', imageOpacity: 100 }])
   }
 
   async function deleteSlide(id: string) {
@@ -166,7 +182,7 @@ export default function HomeContentPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-lg font-bold text-[#1B2A44]">Home Page Content</h2>
-          <p className="text-xs text-[#C9C8CB]">Edit hero fallback, banner slides and stats</p>
+          <p className="text-xs text-[#C9C8CB]">Edit hero fallback, banner slides (Images / Google Drive Videos) and stats</p>
         </div>
         <button onClick={save} disabled={saving} className="flex items-center gap-2 bg-[#7E0D0D] hover:bg-[#922222] text-white text-sm font-semibold px-4 py-2 rounded-xl disabled:opacity-60">
           <Save size={15} /> {saving ? 'Saving…' : saved ? 'Saved!' : 'Save Changes'}
@@ -205,7 +221,7 @@ export default function HomeContentPage() {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-semibold text-[#1B2A44]">Homepage Banner Slides</h3>
-              <p className="text-xs text-[#C9C8CB] mt-0.5">{slides.length} slide{slides.length === 1 ? '' : 's'} · Use Up / Down arrows to re-order</p>
+              <p className="text-xs text-[#C9C8CB] mt-0.5">{slides.length} slide{slides.length === 1 ? '' : 's'} · Supports Images & Google Drive Videos</p>
             </div>
             <button onClick={addSlide} className="flex items-center gap-1.5 text-xs text-[#7E0D0D] hover:underline font-medium shrink-0">
               <Plus size={13} /> Add Slide
@@ -217,91 +233,183 @@ export default function HomeContentPage() {
           ) : slides.length === 0 ? (
             <p className="text-xs text-[#C9C8CB] py-4 text-center border border-dashed border-[#F3DCDC] rounded-xl">No banner slides yet — the Fallback Hero above is shown on the homepage.</p>
           ) : (
-            <div className="space-y-5">
-              {slides.map((slide, i) => (
-                <div key={slide.id} className="border border-[#F3DCDC] rounded-xl p-4 space-y-3 bg-white shadow-2xs">
-                  {/* Header bar with Re-arrange controls */}
-                  <div className="flex items-center justify-between bg-neutral-50 p-2.5 rounded-lg border border-neutral-200/80">
-                    <div className="flex items-center gap-2">
-                      <GripVertical size={14} className="text-neutral-400" />
-                      <span className="text-xs font-bold text-[#1B2A44] uppercase tracking-wider">
-                        Slide {i + 1}
-                      </span>
-                      {slides.length > 1 && (
-                        <span className="text-[10px] text-neutral-500 font-medium">
-                          ({i + 1} of {slides.length})
+            <div className="space-y-6">
+              {slides.map((slide, i) => {
+                const isVideo = slide.mediaType === 'video'
+                const mediaPreview = parseMediaUrl(slide.videoUrl || slide.image_url || '')
+
+                return (
+                  <div key={slide.id} className="border border-[#F3DCDC] rounded-xl p-4 space-y-4 bg-white shadow-2xs">
+                    {/* Header bar with Re-arrange controls */}
+                    <div className="flex items-center justify-between bg-neutral-50 p-2.5 rounded-lg border border-neutral-200/80">
+                      <div className="flex items-center gap-2">
+                        <GripVertical size={14} className="text-neutral-400" />
+                        <span className="text-xs font-bold text-[#1B2A44] uppercase tracking-wider">
+                          Slide {i + 1}
                         </span>
-                      )}
+                        <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${
+                          isVideo ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-blue-100 text-blue-900 border border-blue-300'
+                        }`}>
+                          {isVideo ? <Video size={11} /> : <ImageIcon size={11} />}
+                          <span>{isVideo ? 'Video / Drive' : 'Image'}</span>
+                        </span>
+                        {slides.length > 1 && (
+                          <span className="text-[10px] text-neutral-500 font-medium hidden sm:inline">
+                            ({i + 1} of {slides.length})
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-1">
+                        {/* Move Up */}
+                        <button
+                          type="button"
+                          onClick={() => moveSlide(i, i - 1)}
+                          disabled={i === 0}
+                          title="Move Slide Up (Earlier)"
+                          className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
+                        >
+                          <ArrowUp size={13} />
+                          <span className="hidden sm:inline">Up</span>
+                        </button>
+
+                        {/* Move Down */}
+                        <button
+                          type="button"
+                          onClick={() => moveSlide(i, i + 1)}
+                          disabled={i === slides.length - 1}
+                          title="Move Slide Down (Later)"
+                          className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
+                        >
+                          <ArrowDown size={13} />
+                          <span className="hidden sm:inline">Down</span>
+                        </button>
+
+                        {/* Delete */}
+                        <button
+                          type="button"
+                          onClick={() => deleteSlide(slide.id)}
+                          title="Delete Slide"
+                          className="p-1.5 rounded-md border border-red-200 bg-white text-red-500 hover:bg-red-600 hover:text-white transition-all ml-1.5"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-1">
-                      {/* Move Up */}
-                      <button
-                        type="button"
-                        onClick={() => moveSlide(i, i - 1)}
-                        disabled={i === 0}
-                        title="Move Slide Up (Earlier)"
-                        className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
-                      >
-                        <ArrowUp size={13} />
-                        <span className="hidden sm:inline">Up</span>
-                      </button>
+                    {/* Media Type Toggle: Image vs Video */}
+                    <div>
+                      <label className="block text-xs font-semibold text-[#1B2A44] mb-1.5">Media Type</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => updateSlideLocal(slide.id, { mediaType: 'image' })}
+                          className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg border text-xs font-bold transition-all ${
+                            !isVideo
+                              ? 'bg-[#7E0D0D] text-white border-[#7E0D0D] shadow-xs'
+                              : 'bg-neutral-50 text-neutral-700 border-neutral-200 hover:bg-neutral-100'
+                          }`}
+                        >
+                          <ImageIcon size={14} />
+                          <span>Image Slide</span>
+                        </button>
 
-                      {/* Move Down */}
-                      <button
-                        type="button"
-                        onClick={() => moveSlide(i, i + 1)}
-                        disabled={i === slides.length - 1}
-                        title="Move Slide Down (Later)"
-                        className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
-                      >
-                        <ArrowDown size={13} />
-                        <span className="hidden sm:inline">Down</span>
-                      </button>
+                        <button
+                          type="button"
+                          onClick={() => updateSlideLocal(slide.id, { mediaType: 'video' })}
+                          className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg border text-xs font-bold transition-all ${
+                            isVideo
+                              ? 'bg-[#7E0D0D] text-white border-[#7E0D0D] shadow-xs'
+                              : 'bg-neutral-50 text-neutral-700 border-neutral-200 hover:bg-neutral-100'
+                          }`}
+                        >
+                          <Video size={14} />
+                          <span>Google Drive / Video Link</span>
+                        </button>
+                      </div>
+                    </div>
 
-                      {/* Delete */}
+                    {/* Conditional Input based on Media Type */}
+                    {isVideo ? (
+                      <div className="space-y-3 bg-neutral-50 border border-neutral-200 rounded-xl p-3.5">
+                        <div>
+                          <label className="block text-xs font-bold text-[#1B2A44] mb-1">
+                            Google Drive / Video Link *
+                          </label>
+                          <input
+                            type="text"
+                            value={slide.videoUrl ?? slide.image_url ?? ''}
+                            onChange={e => updateSlideLocal(slide.id, { videoUrl: e.target.value, image_url: e.target.value })}
+                            placeholder="https://drive.google.com/file/d/.../view?usp=sharing"
+                            className="w-full border border-neutral-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#7E0D0D] bg-white"
+                          />
+                        </div>
+
+                        {/* Drive Guide & Help */}
+                        <div className="flex items-start gap-2 bg-white border border-amber-200 rounded-lg p-2.5 text-[11px] text-amber-900 leading-relaxed">
+                          <HelpCircle size={14} className="text-amber-700 shrink-0 mt-0.5" />
+                          <div>
+                            <span className="font-bold">Google Drive Sharing Instructions:</span>
+                            <ul className="list-disc list-inside mt-0.5 space-y-0.5 text-neutral-700">
+                              <li>Paste your Google Drive video link directly.</li>
+                              <li>Ensure file access is set to: <strong className="text-[#7E0D0D]">"Anyone with the link can view"</strong> on Drive.</li>
+                              <li>YouTube embed links or direct MP4 links are also supported.</li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* Live Video Preview in Admin */}
+                        {(slide.videoUrl || slide.image_url) && (
+                          <div>
+                            <span className="block text-[11px] font-bold text-neutral-700 mb-1">Live Embed Preview:</span>
+                            <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-neutral-300 bg-black">
+                              {mediaPreview.type === 'google_drive' ? (
+                                <iframe
+                                  src={mediaPreview.embedUrl}
+                                  title="Google Drive Preview"
+                                  className="w-full h-full border-0"
+                                  allow="autoplay; encrypted-media; fullscreen"
+                                  allowFullScreen
+                                />
+                              ) : mediaPreview.type === 'youtube' ? (
+                                <iframe
+                                  src={mediaPreview.embedUrl}
+                                  title="YouTube Preview"
+                                  className="w-full h-full border-0"
+                                  allowFullScreen
+                                />
+                              ) : (
+                                <video
+                                  src={slide.videoUrl || slide.image_url}
+                                  controls
+                                  className="w-full h-full object-cover"
+                                />
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <ImageUpload
+                        value={slide.image_url ?? ''}
+                        onChange={url => updateSlideLocal(slide.id, { image_url: url })}
+                        folder="home-carousel"
+                        label="Slide Image"
+                      />
+                    )}
+
+                    <div className="pt-1">
                       <button
-                        type="button"
-                        onClick={() => deleteSlide(slide.id)}
-                        title="Delete Slide"
-                        className="p-1.5 rounded-md border border-red-200 bg-white text-red-500 hover:bg-red-600 hover:text-white transition-all ml-1.5"
+                        onClick={() => saveSlide(slide)}
+                        className="bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5 shadow-xs"
                       >
-                        <Trash2 size={13} />
+                        <Save size={13} />
+                        <span>Save Slide {i + 1}</span>
                       </button>
                     </div>
                   </div>
-
-                  <ImageUpload value={slide.image_url ?? ''} onChange={url => updateSlideLocal(slide.id, { image_url: url })} folder="home-carousel" label="Slide Image" />
-
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="block text-xs font-medium text-[#1B2A44]">Image Opacity</label>
-                      <span className="text-xs text-[#C9C8CB] tabular-nums">{slide.imageOpacity ?? 100}%</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={10}
-                      max={100}
-                      value={slide.imageOpacity ?? 100}
-                      onChange={e => updateSlideLocal(slide.id, { imageOpacity: Number(e.target.value) })}
-                      className="w-full accent-[#7E0D0D] cursor-pointer"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-medium text-[#1B2A44] mb-1">Heading</label>
-                    <InlineRichTextEditor value={slide.headingHtml} onChange={v => updateSlideLocal(slide.id, { headingHtml: v })} placeholder="e.g. Everything You Need To Ace Your Exam" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-[#1B2A44] mb-1">Subtitle</label>
-                    <InlineRichTextEditor value={slide.subtitleHtml} onChange={v => updateSlideLocal(slide.id, { subtitleHtml: v })} placeholder="Short supporting line…" multiline />
-                  </div>
-
-                  <button onClick={() => saveSlide(slide)} className="bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">
-                    Save Slide {i + 1} Content
-                  </button>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>
