@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -39,7 +39,7 @@ export default function ResultsPage() {
     await supabase.from('cms_results').delete().eq('id', id); load()
   }
 
-  const exams = ['NEET', 'JEE Main', 'JEE Advanced', 'Foundation', 'Other']
+  const exams = ['NEET', 'JEE Main', 'JEE Advanced', 'Class 10', 'Class 12', 'Foundation', 'Cambridge IGCSE', 'IB Diploma', 'Other']
 
   return (
     <AdminLayout>

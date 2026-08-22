@@ -28,6 +28,7 @@ import ScrollReveal from '@/components/hodu/ScrollReveal'
 import BatchHoverCard, { CurriculumTrack } from '@/components/hodu/BatchHoverCard'
 import BatchCardsCarousel from '@/components/hodu/BatchCardsCarousel'
 import FeatureCardsCarousel from '@/components/hodu/FeatureCardsCarousel'
+import ResultRankerCard from '@/components/hodu/ResultRankerCard'
 import { parseCarouselRows } from '@/lib/homeCarousel'
 
 export const dynamic = 'force-dynamic'
@@ -308,10 +309,6 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-                <Trophy className="h-3.5 w-3.5" />
-                <span>PROVEN RESULTS</span>
-              </div>
               <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
                 Our Star Performers & Rankers
               </h2>
@@ -321,7 +318,7 @@ export default async function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5">
             {achievers.map((t, idx) => (
               <ScrollReveal
                 key={idx}
@@ -329,29 +326,7 @@ export default async function HomePage() {
                 delay={idx * 60}
                 className="h-full"
               >
-                <div className="bg-white border border-brand-border rounded-xl p-4 text-center hover:border-brand-maroon transition-all flex flex-col justify-between shadow-xs h-full">
-                  <div>
-                    {'photo_url' in t && t.photo_url ? (
-                      <img
-                        src={t.photo_url}
-                        alt={t.name}
-                        className="h-14 w-14 rounded-full object-cover mx-auto mb-2.5 ring-2 ring-brand-border"
-                      />
-                    ) : (
-                      <div className="h-14 w-14 rounded-full bg-brand-blush text-brand-maroon flex items-center justify-center font-bold text-sm mx-auto mb-2.5">
-                        {t.initials}
-                      </div>
-                    )}
-                    <div className="bg-brand-maroon text-white rounded-md py-0.5 px-2 mb-1.5 font-bold text-xs">
-                      {t.pct}
-                    </div>
-                    <h4 className="text-xs font-bold text-brand-text leading-tight">{t.name}</h4>
-                    <p className="text-[10px] text-brand-muted mt-0.5">{t.stream}</p>
-                  </div>
-                  <div className="mt-2.5 pt-2 border-t border-brand-border text-[9px] text-brand-muted">
-                    {t.school}
-                  </div>
-                </div>
+                <ResultRankerCard ranker={t} />
               </ScrollReveal>
             ))}
           </div>
