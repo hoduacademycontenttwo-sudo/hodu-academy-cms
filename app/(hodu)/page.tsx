@@ -29,6 +29,7 @@ import BatchHoverCard, { CurriculumTrack } from '@/components/hodu/BatchHoverCar
 import BatchCardsCarousel from '@/components/hodu/BatchCardsCarousel'
 import FeatureCardsCarousel from '@/components/hodu/FeatureCardsCarousel'
 import ResultRankerCard from '@/components/hodu/ResultRankerCard'
+import ResultsMarqueeCarousel from '@/components/hodu/ResultsMarqueeCarousel'
 import { parseCarouselRows } from '@/lib/homeCarousel'
 
 export const dynamic = 'force-dynamic'
@@ -318,18 +319,9 @@ export default async function HomePage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5">
-            {achievers.map((t, idx) => (
-              <ScrollReveal
-                key={idx}
-                animation="fade-up"
-                delay={idx * 60}
-                className="h-full"
-              >
-                <ResultRankerCard ranker={t} />
-              </ScrollReveal>
-            ))}
-          </div>
+          <ScrollReveal animation="fade-up" delay={80}>
+            <ResultsMarqueeCarousel rankers={achievers} />
+          </ScrollReveal>
         </div>
       </section>
 
