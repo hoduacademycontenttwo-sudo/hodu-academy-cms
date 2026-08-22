@@ -324,15 +324,16 @@ export default async function HomePage() {
             </div>
           </ScrollReveal>
 
-          {/* 4 Feature Cards */}
+          {/* 4 Feature Cards with Alternate Directional Pans */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {whyChooseUs.map((item, idx) => {
               const Icon = item.icon
+              const animDirection = idx < 2 ? 'fade-left' : 'fade-right'
               return (
                 <ScrollReveal
                   key={idx}
-                  animation="fade-up"
-                  delay={idx * 100}
+                  animation={animDirection}
+                  delay={(idx % 2) * 120}
                   className="h-full"
                 >
                   <div className="group relative bg-white border border-brand-border/80 hover:border-brand-maroon/80 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl flex flex-col justify-between overflow-hidden h-full">
@@ -560,14 +561,16 @@ export default async function HomePage() {
           </ScrollReveal>
 
           <div className="grid md:grid-cols-3 gap-5">
-            {liveTestimonials.map((t, idx) => (
-              <ScrollReveal
-                key={idx}
-                animation="fade-up"
-                delay={idx * 100}
-                className="h-full"
-              >
-                <div className="bg-white border border-brand-border rounded-xl p-5 shadow-xs flex flex-col justify-between h-full">
+            {liveTestimonials.map((t, idx) => {
+              const animType = idx === 0 ? 'fade-left' : idx === 1 ? 'zoom-in' : 'fade-right'
+              return (
+                <ScrollReveal
+                  key={idx}
+                  animation={animType}
+                  delay={idx * 100}
+                  className="h-full"
+                >
+                  <div className="bg-white border border-brand-border rounded-xl p-5 shadow-xs flex flex-col justify-between h-full">
                   <div>
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-brand-maroon font-bold text-xs">★★★★★</span>
@@ -598,7 +601,8 @@ export default async function HomePage() {
                   </div>
                 </div>
               </ScrollReveal>
-            ))}
+            )
+          })}
           </div>
         </div>
       </section>
