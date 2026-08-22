@@ -286,44 +286,23 @@ export default async function HomePage() {
 
           {/* 4 Feature Illustration Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7">
-            {learningFeatures.map((item, idx) => {
-              const Icon = item.icon
-              return (
-                <ScrollReveal
-                  key={idx}
-                  animation="fade-up"
-                  delay={idx * 100}
-                  className="h-full"
-                >
-                  <div className="group relative bg-[#FFF9F9] border border-[#F6DFDF] hover:border-brand-maroon/40 rounded-3xl p-5 pt-8 flex flex-col justify-between items-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl overflow-hidden h-full">
-                    {/* Top Circular Maroon Icon Badge */}
-                    <div className="w-14 h-14 rounded-full bg-[#7E0D0D] text-white flex items-center justify-center mb-4 shadow-md group-hover:scale-110 group-hover:bg-[#922222] transition-all duration-300">
-                      <Icon className="h-6 w-6" />
-                    </div>
-
-                    {/* Card Title */}
-                    <h3 className="font-serif-editorial font-bold text-xl text-[#7E0D0D] text-center mb-1 group-hover:text-brand-crimson transition-colors">
-                      {item.title}
-                    </h3>
-
-                    {/* Card Subtitle */}
-                    <p className="text-xs text-[#9B6B6B] text-center font-medium leading-relaxed mb-4 px-2 min-h-[32px] flex items-center justify-center">
-                      {item.subtitle}
-                    </p>
-
-                    {/* Card Illustration Image */}
-                    <div className="w-full mt-auto pt-2 flex items-end justify-center">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        loading="lazy"
-                        className="w-full h-auto max-h-56 object-contain transform group-hover:scale-105 transition-transform duration-500 rounded-b-2xl"
-                      />
-                    </div>
-                  </div>
-                </ScrollReveal>
-              )
-            })}
+            {learningFeatures.map((item, idx) => (
+              <ScrollReveal
+                key={idx}
+                animation="fade-up"
+                delay={idx * 100}
+                className="h-full"
+              >
+                <div className="group relative bg-[#FFF9F9] border border-[#F6DFDF] hover:border-brand-maroon/40 rounded-3xl p-0 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl overflow-hidden h-full flex items-center justify-center">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    className="w-full h-auto object-contain transform group-hover:scale-105 transition-transform duration-500 rounded-3xl"
+                  />
+                </div>
+              </ScrollReveal>
+            ))}
           </div>
         </div>
       </section>
