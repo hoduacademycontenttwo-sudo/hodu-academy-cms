@@ -385,6 +385,35 @@ button[class*="bg-brand-maroon"]:active {
   transform: translateY(0) !important;
 }
 
+/* ─── 3D Book Card Opening Hover Animation ─── */
+.hodu-book-card {
+  perspective: 1800px;
+}
+
+.hodu-book-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.6s;
+}
+
+.hodu-book-cover {
+  transform-origin: 0% 50%;
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.65s;
+  backface-visibility: hidden;
+  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.hodu-book-card:hover .hodu-book-cover,
+.hodu-book-card.touched .hodu-book-cover {
+  transform: rotateY(-82deg);
+  box-shadow: -6px 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.hodu-book-card:hover .hodu-book-inner,
+.hodu-book-card.touched .hodu-book-inner {
+  transform: translateZ(12px);
+  box-shadow: 0 20px 30px -10px rgba(126, 13, 13, 0.2);
+}
+
 
 
 

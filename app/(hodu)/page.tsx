@@ -31,6 +31,7 @@ import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
 import BatchHoverCard, { CurriculumTrack } from '@/components/hodu/BatchHoverCard'
 import BatchCardsCarousel from '@/components/hodu/BatchCardsCarousel'
+import FeatureCardsCarousel from '@/components/hodu/FeatureCardsCarousel'
 import { parseCarouselRows } from '@/lib/homeCarousel'
 
 export const metadata = {
@@ -284,26 +285,10 @@ export default async function HomePage() {
             </div>
           </ScrollReveal>
 
-          {/* 4 Feature Illustration Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7">
-            {learningFeatures.map((item, idx) => (
-              <ScrollReveal
-                key={idx}
-                animation="fade-up"
-                delay={idx * 100}
-                className="h-full"
-              >
-                <div className="group relative bg-[#FFF9F9] border border-[#F6DFDF] hover:border-brand-maroon/40 rounded-3xl p-0 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl overflow-hidden h-full flex items-center justify-center">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    loading="lazy"
-                    className="w-full h-auto object-contain transform group-hover:scale-105 transition-transform duration-500 rounded-3xl"
-                  />
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
+          {/* 4 Feature 3D Book Cards with Horizontal Scroll on Mobile */}
+          <ScrollReveal animation="fade-up" delay={100}>
+            <FeatureCardsCarousel features={learningFeatures} />
+          </ScrollReveal>
         </div>
       </section>
 
