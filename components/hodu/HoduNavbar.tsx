@@ -550,12 +550,11 @@ export default function HoduNavbar({
               )
             })}
 
-            <div className="pt-4 border-t border-brand-border space-y-2.5">
-              <PortalLoginButton className="w-full" />
+            <div className="pt-4 border-t border-brand-border">
               <Link
                 href="/enroll"
                 onClick={() => setMobileOpen(false)}
-                className="block w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider text-center transition-colors shadow-xs"
+                className="block w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider text-center transition-colors shadow-xs"
               >
                 Admissions 2025–26
               </Link>
