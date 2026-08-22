@@ -224,19 +224,12 @@ export default async function HomePage() {
 
 
       {/* 3. Popular Batches / Academic Pathways */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-14 pb-10 sm:pb-16 overflow-hidden">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-10 sm:pb-16 overflow-hidden">
         {/* Subtle decorative background ambient glow */}
         <div className="absolute top-0 right-1/4 w-96 h-48 bg-brand-maroon/5 blur-[90px] rounded-full pointer-events-none -z-10" />
 
-        {/* Elegant Minimal Section Anchor Divider */}
-        <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="h-px flex-1 max-w-[120px] bg-gradient-to-r from-transparent via-brand-border to-brand-maroon/30" />
-          <div className="w-2 h-2 rounded-full bg-brand-maroon/40 ring-4 ring-brand-blush/60" />
-          <div className="h-px flex-1 max-w-[120px] bg-gradient-to-l from-transparent via-brand-border to-brand-maroon/30" />
-        </div>
-
         <ScrollReveal animation="fade-up">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6">
             <div className="space-y-3 max-w-3xl">
               {/* High-Impact Editorial Heading with Accent Gradient */}
               <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-brand-maroon leading-[1.18] tracking-tight">
