@@ -67,7 +67,7 @@ export default function HomeHeroCarousel({
   return (
     <section className="w-full max-w-full overflow-hidden bg-brand-maroon relative animate-hero-reveal">
       <div
-        className="relative w-full min-h-[180px] sm:min-h-[240px] md:min-h-[300px] lg:min-h-[360px] aspect-[16/9] sm:aspect-[21/9] md:aspect-[1920/700] overflow-hidden bg-gradient-to-r from-brand-maroon via-brand-crimson to-brand-wine"
+        className="relative w-full aspect-[1920/700] overflow-hidden bg-gradient-to-r from-brand-maroon via-brand-crimson to-brand-wine select-none"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
