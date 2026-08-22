@@ -524,7 +524,7 @@ button[class*="bg-brand-maroon"]:active {
 
 .hodu-ranker-card:hover .hodu-ranker-img,
 .hodu-ranker-card.touched .hodu-ranker-img {
-  transform: scale(0.68) translateY(-60px);
+  transform: scale(0.55) translateY(-54px);
   opacity: 1;
 }
 
@@ -546,7 +546,7 @@ button[class*="bg-brand-maroon"]:active {
 .hodu-ranker-card.touched .hodu-ranker-content {
   transform: scale(1);
   opacity: 1;
-  bottom: 14px;
+  bottom: 8px;
   pointer-events: auto;
 }
 
