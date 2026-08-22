@@ -205,27 +205,61 @@ export default async function HomePage() {
 
 
       {/* 3. Popular Batches / Academic Pathways */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14 border-t border-brand-border">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 border-t border-brand-border overflow-hidden">
+        {/* Subtle decorative background ambient glow */}
+        <div className="absolute top-0 right-1/4 w-96 h-48 bg-brand-maroon/5 blur-[90px] rounded-full pointer-events-none -z-10" />
+
         <ScrollReveal animation="fade-up">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
-            <div>
-              <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-                <GraduationCap className="h-3.5 w-3.5" />
-                <span>COHORTS 2026–27</span>
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
+            <div className="space-y-3 max-w-3xl">
+              {/* Animated Floating Pill */}
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-blush via-white to-brand-blush text-brand-maroon border border-brand-border px-3.5 py-1.5 rounded-full text-xs font-bold shadow-2xs">
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-maroon opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-maroon"></span>
+                </span>
+                <span className="tracking-wider uppercase text-[11px] font-extrabold">Admissions Open · Cohorts 2026–27</span>
               </div>
-              <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
-                Explore Our Batches
+
+              {/* High-Impact Editorial Heading with Accent Gradient */}
+              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-brand-maroon leading-[1.18] tracking-tight">
+                Explore Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-maroon via-brand-crimson to-brand-wine">Academic Cohorts</span>
               </h2>
-              <p className="text-xs sm:text-sm text-brand-muted mt-1">
-                Select your academic program with structured curriculums and small 1:12 batches.
+
+              {/* Compelling Subtext */}
+              <p className="text-xs sm:text-sm text-brand-muted leading-relaxed max-w-2xl">
+                Choose your learning pathway with rigorous syllabus decoding, personalized doubt desks, and intimate 1:12 batches engineered for top percentiles.
               </p>
+
+              {/* Inline Trust & Guarantee Pills */}
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-text bg-white px-2.5 py-1 rounded-md border border-brand-border/70 shadow-2xs">
+                  <Sparkles className="h-3 w-3 text-amber-500" />
+                  <span>Cambridge & IB Specialists</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-text bg-white px-2.5 py-1 rounded-md border border-brand-border/70 shadow-2xs">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                  <span>1:12 Interactive Micro-Batches</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-text bg-white px-2.5 py-1 rounded-md border border-brand-border/70 shadow-2xs">
+                  <Clock className="h-3 w-3 text-blue-600" />
+                  <span>Daily 1-on-1 Doubt Desks</span>
+                </span>
+              </div>
             </div>
-            <Link
-              href="/courses"
-              className="text-xs font-bold text-brand-maroon border border-brand-maroon hover:bg-brand-maroon hover:text-white px-4 py-2 rounded-lg transition-all self-start sm:self-auto shrink-0 uppercase tracking-wider shadow-2xs"
-            >
-              View All Programs →
-            </Link>
+
+            {/* Premium Interactive CTA Button */}
+            <div className="shrink-0 pt-2 lg:pt-0">
+              <Link
+                href="/courses"
+                className="group inline-flex items-center gap-2.5 bg-gradient-to-r from-brand-maroon to-brand-crimson hover:from-brand-crimson hover:to-brand-wine text-white font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-xl transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
+              >
+                <span>View All 15+ Programs</span>
+                <div className="w-6 h-6 rounded-lg bg-white/15 flex items-center justify-center group-hover:bg-white group-hover:text-brand-maroon text-white transition-all">
+                  <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </Link>
+            </div>
           </div>
         </ScrollReveal>
 
