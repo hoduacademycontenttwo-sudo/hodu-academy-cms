@@ -132,6 +132,9 @@ export default function HomeHeroCarousel({
           )
         })}
 
+        {/* Soft bottom edge blend */}
+        <div className="absolute bottom-0 inset-x-0 h-4 sm:h-8 bg-gradient-to-t from-brand-bg/60 to-transparent pointer-events-none z-10" />
+
         {/* Slide dots indicators */}
         {bannerSlides.length > 1 && (
           <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1 sm:gap-1.5 bg-black/50 backdrop-blur-xs px-2.5 sm:px-3.5 py-1 rounded-full shadow-md">

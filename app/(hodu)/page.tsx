@@ -224,9 +224,16 @@ export default async function HomePage() {
 
 
       {/* 3. Popular Batches / Academic Pathways */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 border-t border-brand-border overflow-hidden">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-14 pb-10 sm:pb-16 overflow-hidden">
         {/* Subtle decorative background ambient glow */}
         <div className="absolute top-0 right-1/4 w-96 h-48 bg-brand-maroon/5 blur-[90px] rounded-full pointer-events-none -z-10" />
+
+        {/* Elegant Minimal Section Anchor Divider */}
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <div className="h-px flex-1 max-w-[120px] bg-gradient-to-r from-transparent via-brand-border to-brand-maroon/30" />
+          <div className="w-2 h-2 rounded-full bg-brand-maroon/40 ring-4 ring-brand-blush/60" />
+          <div className="h-px flex-1 max-w-[120px] bg-gradient-to-l from-transparent via-brand-border to-brand-maroon/30" />
+        </div>
 
         <ScrollReveal animation="fade-up">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
@@ -240,22 +247,6 @@ export default async function HomePage() {
               <p className="text-xs sm:text-sm text-brand-muted leading-relaxed max-w-2xl">
                 Choose your learning pathway with rigorous syllabus decoding, personalized doubt desks, and intimate 1:12 batches engineered for top percentiles.
               </p>
-
-              {/* Inline Trust & Guarantee Pills */}
-              <div className="flex flex-wrap items-center gap-2 pt-1">
-                <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-text bg-white px-2.5 py-1 rounded-md border border-brand-border/70 shadow-2xs">
-                  <Sparkles className="h-3 w-3 text-amber-500" />
-                  <span>Cambridge & IB Specialists</span>
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-text bg-white px-2.5 py-1 rounded-md border border-brand-border/70 shadow-2xs">
-                  <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-                  <span>1:12 Interactive Micro-Batches</span>
-                </span>
-                <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-text bg-white px-2.5 py-1 rounded-md border border-brand-border/70 shadow-2xs">
-                  <Clock className="h-3 w-3 text-blue-600" />
-                  <span>Daily 1-on-1 Doubt Desks</span>
-                </span>
-              </div>
             </div>
 
             {/* Premium Interactive CTA Button */}
