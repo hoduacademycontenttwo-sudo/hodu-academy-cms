@@ -4,6 +4,13 @@ import { createServerClient } from '@supabase/ssr'
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
+  const { pathname } = request.nextUrl
+
+  // Redirect any legacy /super-admin requests to /admin
+  if (pathname.startsWith('/super-admin')) {
+    return NextResponse.redirect(new URL('/admin', request.url))
+  }
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.placeholder'
 
@@ -25,7 +32,6 @@ export async function middleware(request: NextRequest) {
   )
 
   const { data: { user } } = await supabase.auth.getUser()
-  const { pathname } = request.nextUrl
 
   // Protect /admin/* except /admin/login
   if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
@@ -33,14 +39,6 @@ export async function middleware(request: NextRequest) {
   }
   if (pathname === '/admin/login' && user) {
     return NextResponse.redirect(new URL('/admin/dashboard', request.url))
-  }
-
-  // Protect /super-admin/* except /super-admin/login
-  if (pathname.startsWith('/super-admin') && pathname !== '/super-admin/login') {
-    if (!user) return NextResponse.redirect(new URL('/super-admin/login', request.url))
-  }
-  if (pathname === '/super-admin/login' && user) {
-    return NextResponse.redirect(new URL('/super-admin/dashboard', request.url))
   }
 
   return supabaseResponse
