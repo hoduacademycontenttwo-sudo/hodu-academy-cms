@@ -1,10 +1,16 @@
 'use client'
 
 import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import Lenis from 'lenis'
 
 export default function SmoothScroll() {
+  const pathname = usePathname()
+
   useEffect(() => {
+    // Disable smooth scroll in admin portal so native scrolling works 100% reliably
+    if (!pathname || pathname.startsWith('/admin')) return
+
     // Only initialize smooth scroll on desktop / fine pointer devices
     if (typeof window === 'undefined') return
     const isTouch = window.matchMedia('(pointer: coarse)').matches
@@ -32,7 +38,7 @@ export default function SmoothScroll() {
       cancelAnimationFrame(rafId)
       lenis.destroy()
     }
-  }, [])
+  }, [pathname])
 
   return null
 }

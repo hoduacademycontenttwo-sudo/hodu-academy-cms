@@ -127,7 +127,7 @@ export default function AdminLayout({ children, siteName }: { children: React.Re
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-4">
+        <nav data-lenis-prevent className="flex-1 overflow-y-auto px-3 py-4 space-y-4">
           {navGroups.map(group => (
             <div key={group.title}>
               <p className="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-widest text-white/30">{group.title}</p>
@@ -192,7 +192,7 @@ export default function AdminLayout({ children, siteName }: { children: React.Re
           </button>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6">
+        <main data-lenis-prevent className="flex-1 overflow-y-auto p-4 sm:p-6 overscroll-contain">
           {children}
         </main>
       </div>
