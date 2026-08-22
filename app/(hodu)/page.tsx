@@ -229,28 +229,26 @@ export default async function HomePage() {
         <div className="absolute top-0 right-1/4 w-96 h-48 bg-brand-maroon/5 blur-[90px] rounded-full pointer-events-none -z-10" />
 
         <ScrollReveal animation="fade-up">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6">
-            <div className="space-y-3 max-w-3xl">
-              {/* High-Impact Editorial Heading with Accent Gradient */}
-              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-brand-maroon leading-[1.18] tracking-tight">
-                Explore Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-maroon via-brand-crimson to-brand-wine">Academic Cohorts</span>
-              </h2>
+          <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
+            {/* Centered Editorial Heading */}
+            <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-brand-maroon leading-[1.18] tracking-tight">
+              Explore Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-maroon via-brand-crimson to-brand-wine">Programs</span>
+            </h2>
 
-              {/* Compelling Subtext */}
-              <p className="text-xs sm:text-sm text-brand-muted leading-relaxed max-w-2xl">
-                Choose your learning pathway with rigorous syllabus decoding, personalized doubt desks, and intimate 1:12 batches engineered for top percentiles.
-              </p>
-            </div>
+            {/* Centered Subtext */}
+            <p className="text-xs sm:text-sm md:text-base text-brand-muted leading-relaxed max-w-2xl mx-auto">
+              Choose the right program for your goals with expert teaching and personal support.
+            </p>
 
-            {/* Premium Interactive CTA Button */}
-            <div className="shrink-0 pt-2 lg:pt-0">
+            {/* Centered CTA Button */}
+            <div className="pt-2 flex justify-center">
               <Link
                 href="/courses"
-                className="group inline-flex items-center gap-2.5 bg-gradient-to-r from-brand-maroon to-brand-crimson hover:from-brand-crimson hover:to-brand-wine text-white font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-xl transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
+                className="group inline-flex items-center gap-2.5 bg-gradient-to-r from-brand-maroon to-brand-crimson hover:from-brand-crimson hover:to-brand-wine text-white font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
               >
                 <span>View All Programs</span>
-                <div className="w-6 h-6 rounded-lg bg-white/15 flex items-center justify-center group-hover:bg-white group-hover:text-brand-maroon text-white transition-all">
-                  <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-0.5 transition-transform" />
+                <div className="w-5 h-5 rounded-lg bg-white/15 flex items-center justify-center group-hover:bg-white group-hover:text-brand-maroon text-white transition-all">
+                  <ArrowRight className="h-3 w-3 transform group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </Link>
             </div>
