@@ -94,7 +94,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
             )}
           </div>
           <div className="flex flex-wrap items-center gap-6 text-xs text-white/90 pt-4 border-t border-white/20">
-            <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> Admissions Open 2025–26</span>
+            <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> Admissions Open 2026–27</span>
             <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> Morning & Evening Slots</span>
             <span className="flex items-center gap-1.5"><Users className="h-3.5 w-3.5" /> Max 12–15 Students/Batch</span>
           </div>

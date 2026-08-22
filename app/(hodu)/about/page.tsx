@@ -39,7 +39,7 @@ const milestones = [
   { year: '2018', title: 'Foundation in Jaipur', event: 'Hodu Academy established with an initial cohort of 20 Cambridge IGCSE & CBSE students.' },
   { year: '2020', title: 'IB & Olympiad Track', event: 'Expanded into International Baccalaureate (IB DP) and Junior Olympiad talent programs.' },
   { year: '2022', title: 'Integrated Testing Labs', event: 'Launched state-of-the-art Computer-Based Testing (CBT) lab and daily 1-on-1 doubt desks.' },
-  { year: '2025', title: '15,000+ Students Mentored', event: 'Achieved 99.4% top board score and consistent All-India rankings in JEE & NEET.' },
+  { year: '2026', title: '15,000+ Students Mentored', event: 'Achieved 99.4% top board score and consistent All-India rankings in JEE & NEET.' },
 ]
 
 export default async function AboutPage() {

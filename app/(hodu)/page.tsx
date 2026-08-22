@@ -210,7 +210,7 @@ export default async function HomePage() {
             <div>
               <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
                 <GraduationCap className="h-3.5 w-3.5" />
-                <span>COHORTS 2025–26</span>
+                <span>COHORTS 2026–27</span>
               </div>
               <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
                 Explore Our Batches

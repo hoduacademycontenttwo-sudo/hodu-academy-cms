@@ -174,7 +174,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
                   FACULTY EDITORIAL
                 </span>
                 <p className="text-xs text-neutral-600 font-normal leading-relaxed">
-                  Reviewed and verified by the Hodu Academic Board for the 2025–26 examination cycle.
+                  Reviewed and verified by the Hodu Academic Board for the 2026–27 examination cycle.
                 </p>
               </div>
             </div>

@@ -307,7 +307,7 @@ export default function HoduNavbar({
               <MapPin className="h-3 w-3" /> Jaipur Campus (C-Scheme & Vaishali)
             </span>
             <span className="text-white/40">•</span>
-            <span>Admissions Open 2025–26</span>
+            <span>Admissions Open 2026–27</span>
           </div>
           <div className="flex items-center gap-5 text-white/90">
             <a href={`tel:${HODU.phone}`} className="flex items-center gap-1.5 hover:underline font-bold text-white">
@@ -326,7 +326,7 @@ export default function HoduNavbar({
         <div className="flex justify-between h-20 items-center">
 
           {/* Logo with clear margin & 'Your Global Classroom' subtitle */}
-          <Link href="/" className="flex items-center gap-2.5 group shrink-0 mr-6 lg:mr-8">
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0 mr-4 xl:mr-8">
             {logoUrl ? (
               <img src={logoUrl} alt={siteName} className="h-10 w-10 rounded-lg object-cover shrink-0" />
             ) : (
@@ -344,11 +344,11 @@ export default function HoduNavbar({
             </div>
           </Link>
 
-          {/* Desktop Nav — single-line links, no wrapping */}
-          <nav className="hidden lg:flex items-center gap-5 xl:gap-7 flex-1 whitespace-nowrap">
+          {/* Desktop Nav — single-line links, no wrapping on xl+ */}
+          <nav className="hidden xl:flex items-center gap-5 2xl:gap-7 flex-1 whitespace-nowrap">
             <Link
               href="/"
-              className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
+              className={`nav-link text-xs 2xl:text-sm font-bold uppercase tracking-wider transition-colors ${
                 pathname === '/' ? 'text-brand-maroon font-black' : 'text-neutral-800 hover:text-brand-maroon'
               }`}
             >
@@ -358,7 +358,7 @@ export default function HoduNavbar({
             <Dropdown label="Study Materials" href="/study-materials" items={studyMaterials} isActive={isStudyMaterialsActive} />
             <Link
               href="/offline"
-              className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
+              className={`nav-link text-xs 2xl:text-sm font-bold uppercase tracking-wider transition-colors ${
                 pathname === '/offline' ? 'text-brand-maroon font-black' : 'text-neutral-800 hover:text-brand-maroon'
               }`}
             >
@@ -366,7 +366,7 @@ export default function HoduNavbar({
             </Link>
             <Link
               href="/about"
-              className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
+              className={`nav-link text-xs 2xl:text-sm font-bold uppercase tracking-wider transition-colors ${
                 pathname === '/about' ? 'text-brand-maroon font-black' : 'text-neutral-800 hover:text-brand-maroon'
               }`}
             >
@@ -374,7 +374,7 @@ export default function HoduNavbar({
             </Link>
             <Link
               href="/blog"
-              className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
+              className={`nav-link text-xs 2xl:text-sm font-bold uppercase tracking-wider transition-colors ${
                 pathname === '/blog' || pathname.startsWith('/blog/') ? 'text-brand-maroon font-black' : 'text-neutral-800 hover:text-brand-maroon'
               }`}
             >
@@ -382,7 +382,7 @@ export default function HoduNavbar({
             </Link>
             <Link
               href="/contact"
-              className={`nav-link text-xs xl:text-sm font-bold uppercase tracking-wider transition-colors ${
+              className={`nav-link text-xs 2xl:text-sm font-bold uppercase tracking-wider transition-colors ${
                 pathname === '/contact' ? 'text-brand-maroon font-black' : 'text-neutral-800 hover:text-brand-maroon'
               }`}
             >
@@ -390,19 +390,19 @@ export default function HoduNavbar({
             </Link>
           </nav>
 
-          {/* Desktop CTAs (shown only on lg+ screens alongside desktop nav) */}
-          <div className="hidden lg:flex items-center gap-3 shrink-0 ml-6">
+          {/* Desktop CTAs (shown only on xl+ screens) */}
+          <div className="hidden xl:flex items-center gap-3 shrink-0 ml-4">
             <PortalLoginButton />
             <Link
               href="/enroll"
-              className="bg-brand-maroon hover:bg-brand-crimson text-white px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all inline-block text-center shadow-xs"
+              className="bg-brand-maroon hover:bg-brand-crimson text-white px-4 2xl:px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all inline-block text-center shadow-xs whitespace-nowrap"
             >
-              Admissions 2025–26
+              Admissions 2026–27
             </Link>
           </div>
 
-          {/* Mobile toggle */}
-          <div className="flex lg:hidden items-center gap-2">
+          {/* Mobile / Tablet toggle (shown on screens < xl) */}
+          <div className="flex xl:hidden items-center gap-2">
             <PortalLoginButton compact />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -415,9 +415,9 @@ export default function HoduNavbar({
         </div>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile / Tablet drawer */}
       {mobileOpen && (
-        <div className="lg:hidden border-t border-brand-border bg-white animate-fade-in max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <div className="xl:hidden border-t border-brand-border bg-white animate-fade-in max-h-[calc(100vh-4rem)] overflow-y-auto">
           <div className="px-4 pt-3 pb-6 space-y-2">
             <Link
               href="/"
@@ -556,7 +556,7 @@ export default function HoduNavbar({
                 onClick={() => setMobileOpen(false)}
                 className="block w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider text-center transition-colors shadow-xs"
               >
-                Admissions 2025–26
+                Admissions 2026–27
               </Link>
             </div>
           </div>

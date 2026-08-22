@@ -67,7 +67,7 @@ export default function EnrollPage() {
       <section className="reveal bg-brand-maroon text-white py-16 sm:py-20 border-b border-brand-border">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-3">
           <span className="inline-block bg-white text-brand-maroon text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-xs">
-            Admissions Open 2025–26
+            Admissions Open 2026–27
           </span>
           <h1 className="font-serif-editorial text-4xl sm:text-5xl font-bold text-white">Enroll at Hodu Academy</h1>
           <p className="text-white/90 max-w-xl mx-auto font-normal leading-relaxed text-sm sm:text-base">
