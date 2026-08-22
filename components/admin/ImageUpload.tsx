@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, useEffect } from 'react'
-import { Upload, X, Loader, Info } from 'lucide-react'
+import { Upload, X, Loader, Info, Ruler } from 'lucide-react'
 import { normalizeImageUrl } from '@/lib/imageUtils'
 
 interface ImageUploadProps {
@@ -9,14 +9,53 @@ interface ImageUploadProps {
   onChange: (url: string) => void
   folder?: string
   label?: string
+  recommendedDimensions?: string
+  aspectRatio?: string
 }
 
-export default function ImageUpload({ value, onChange, folder = 'general', label = 'Image' }: ImageUploadProps) {
+function getDefaultDimensions(folder: string): string {
+  switch (folder) {
+    case 'hero':
+    case 'home-carousel':
+      return '1920 × 700 px (Aspect Ratio 1920:700 / 21:9 Widescreen)'
+    case 'batches':
+      return '600 × 360 px (Aspect Ratio 16:9 / 3:2 Card Banner)'
+    case 'campus':
+      return '800 × 600 px (Aspect Ratio 4:3 or 16:9)'
+    case 'courses':
+      return '600 × 400 px (Aspect Ratio 3:2 Course Card)'
+    case 'faculty':
+      return '400 × 500 px (Aspect Ratio 4:5 Portrait Photo)'
+    case 'results':
+      return '400 × 400 px (Aspect Ratio 1:1 Square Photo)'
+    case 'testimonials':
+      return '300 × 300 px (Aspect Ratio 1:1 Avatar)'
+    case 'gallery':
+      return '800 × 600 px (Aspect Ratio 4:3 / 16:9)'
+    case 'blog':
+      return '1200 × 630 px (Aspect Ratio 16:9 / Social Cover)'
+    case 'logos':
+      return '400 × 120 px (Horizontal Transparent PNG)'
+    default:
+      return '800 × 600 px (Standard Aspect Ratio)'
+  }
+}
+
+export default function ImageUpload({
+  value,
+  onChange,
+  folder = 'general',
+  label = 'Image',
+  recommendedDimensions,
+  aspectRatio,
+}: ImageUploadProps) {
   const inputRef              = useRef<HTMLInputElement>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError]     = useState('')
   const [imgSrc, setImgSrc]   = useState(normalizeImageUrl(value))
   const [isDrive, setIsDrive] = useState(false)
+
+  const dimensionsText = recommendedDimensions || getDefaultDimensions(folder)
 
   useEffect(() => {
     const normalized = normalizeImageUrl(value)
@@ -65,7 +104,16 @@ export default function ImageUpload({ value, onChange, folder = 'general', label
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-[#1B2A44]">{label}</label>
+      <div className="flex flex-wrap items-center justify-between gap-1.5">
+        <label className="block text-sm font-semibold text-[#1B2A44]">{label}</label>
+        
+        {/* Recommended Dimension Badge */}
+        <span className="inline-flex items-center gap-1 bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-bold px-2 py-0.5 rounded-md shadow-2xs">
+          <Ruler size={11} className="text-amber-700" />
+          <span>Size:</span>
+          <span className="text-[#7E0D0D] font-extrabold">{dimensionsText}</span>
+        </span>
+      </div>
 
       {/* Preview */}
       {value && (
@@ -98,19 +146,24 @@ export default function ImageUpload({ value, onChange, folder = 'general', label
         type="button"
         onClick={() => inputRef.current?.click()}
         disabled={loading}
-        className="flex items-center gap-2 border-2 border-dashed border-[#F3DCDC] rounded-xl px-5 py-3 text-sm text-[#C9C8CB] hover:border-[#7E0D0D] hover:text-[#7E0D0D] transition-colors disabled:opacity-50 w-full justify-center"
+        className="flex items-center gap-2 border-2 border-dashed border-[#F3DCDC] rounded-xl px-5 py-3 text-sm text-[#C9C8CB] hover:border-[#7E0D0D] hover:text-[#7E0D0D] transition-colors disabled:opacity-50 w-full justify-center bg-neutral-50/50 hover:bg-white"
       >
         {loading
           ? <><Loader size={16} className="animate-spin" /> Uploading…</>
           : <><Upload size={16} /> {value ? 'Change Image (Upload from Computer)' : 'Upload Image (Direct from Computer)'}</>
         }
       </button>
-      <p className="text-xs text-[#C9C8CB]">JPG, PNG, WebP · Max 10MB · Stored on Supabase</p>
+
+      {/* Dimension helper text */}
+      <div className="flex flex-wrap items-center justify-between text-[11px] text-neutral-500 px-0.5">
+        <span>📐 <strong>Recommended:</strong> {dimensionsText}</span>
+        <span>JPG, PNG, WebP · Max 10MB</span>
+      </div>
 
       {/* Manual URL / Google Drive link input */}
-      <div>
+      <div className="pt-1">
         <label className="block text-xs text-neutral-600 font-medium mb-1">
-          Or paste Image URL / Google Drive link
+          Or paste direct Image URL / Google Drive link
         </label>
         <input
           type="text"
