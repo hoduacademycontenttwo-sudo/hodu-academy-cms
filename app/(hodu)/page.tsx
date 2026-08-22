@@ -25,7 +25,7 @@ import {
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
-import BatchHoverCard from '@/components/hodu/BatchHoverCard'
+import BatchHoverCard, { CurriculumTrack } from '@/components/hodu/BatchHoverCard'
 import { parseCarouselRows } from '@/lib/homeCarousel'
 
 export const metadata = {
@@ -147,12 +147,13 @@ const faqs = [
 export default async function HomePage() {
   const supabase = await createClient()
 
-  const [{ data: home }, { data: notices }, { data: results }, { data: carouselRows }, { data: dbTestimonials }] = await Promise.all([
+  const [{ data: home }, { data: notices }, { data: results }, { data: carouselRows }, { data: dbTestimonials }, { data: dbBatches }] = await Promise.all([
     supabase.from('cms_home_sections').select('*').eq('site_id', HODU_SITE_ID).single(),
     supabase.from('cms_notices').select('*').eq('site_id', HODU_SITE_ID).eq('is_active', true).limit(4),
     supabase.from('cms_results').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
     supabase.from('cms_gallery').select('image_url, caption, sort_order').eq('site_id', HODU_SITE_ID).eq('category', 'Home Carousel').order('sort_order'),
     supabase.from('cms_testimonials').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
+    supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Homepage Batches').order('sort_order'),
   ])
 
   const initialSlides = parseCarouselRows(carouselRows ?? [])
@@ -177,6 +178,24 @@ export default async function HomePage() {
         photo_url: r.photo_url,
       }))
     : toppers
+
+  const activeBatches: CurriculumTrack[] = dbBatches && dbBatches.length > 0
+    ? dbBatches.map(b => {
+        let parsed: any = {}
+        try { parsed = JSON.parse(b.caption ?? '{}') } catch {}
+        return {
+          tag: parsed.tag || 'ACADEMIC PROGRAM',
+          title: parsed.title || 'Curriculum Track',
+          grades: parsed.grades || 'Classes & Grades',
+          desc: parsed.desc || '',
+          features: Array.isArray(parsed.features)
+            ? parsed.features
+            : (parsed.features ? String(parsed.features).split(',').map((s: string) => s.trim()) : []),
+          href: parsed.href || '/courses',
+          img: b.image_url || 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=320&fit=crop&auto=format',
+        }
+      })
+    : curriculumTracks
 
   return (
     <div className="space-y-0 animate-fade-in bg-brand-bg text-brand-text w-full max-w-full overflow-x-hidden">
@@ -254,7 +273,7 @@ export default async function HomePage() {
                 href="/courses"
                 className="group inline-flex items-center gap-2.5 bg-gradient-to-r from-brand-maroon to-brand-crimson hover:from-brand-crimson hover:to-brand-wine text-white font-bold text-xs uppercase tracking-wider px-5 py-3 rounded-xl transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
               >
-                <span>View All 15+ Programs</span>
+                <span>View All Programs</span>
                 <div className="w-6 h-6 rounded-lg bg-white/15 flex items-center justify-center group-hover:bg-white group-hover:text-brand-maroon text-white transition-all">
                   <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -264,7 +283,7 @@ export default async function HomePage() {
         </ScrollReveal>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {curriculumTracks.map((track, idx) => (
+          {activeBatches.map((track, idx) => (
             <ScrollReveal
               key={idx}
               animation="fade-up"

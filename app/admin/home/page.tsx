@@ -5,10 +5,80 @@ import { createClient } from '@/lib/supabase/client'
 import AdminLayout from '@/components/admin/AdminLayout'
 import ImageUpload from '@/components/admin/ImageUpload'
 import InlineRichTextEditor from '@/components/admin/InlineRichTextEditor'
-import { Save, Plus, Trash2, GripVertical, ArrowUp, ArrowDown, Video, Image as ImageIcon, ExternalLink, HelpCircle } from 'lucide-react'
+import {
+  Save,
+  Plus,
+  Trash2,
+  GripVertical,
+  ArrowUp,
+  ArrowDown,
+  Video,
+  Image as ImageIcon,
+  ExternalLink,
+  HelpCircle,
+  GraduationCap,
+  Layers,
+} from 'lucide-react'
 import { parseMediaUrl } from '@/lib/homeCarousel'
 
 const SITE_ID = 'a1b2c3d4-1111-1111-1111-000000000002'
+
+const defaultBatches = [
+  {
+    tag: 'CAMBRIDGE IGCSE & A-LEVELS',
+    title: 'Cambridge International Program',
+    grades: 'Grades 8 to 12 · IGCSE / AS & A Levels',
+    desc: 'Targeted coaching for Extended Math, Physics, Chemistry, Biology & Economics with 15-year past paper mastery and command-word marking rubrics.',
+    features: ['Past 15 Years Question Bank Decoded', 'Command Word Marking Rubrics', 'Individual Coursework & IA Review', 'Intimate 1:12 Batch Size'],
+    href: '/courses?category=IGCSE',
+    img: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=320&fit=crop&auto=format'
+  },
+  {
+    tag: 'INTERNATIONAL BACCALAUREATE',
+    title: 'IB Diploma (MYP & DP) Batch',
+    grades: 'MYP 4–5 & DP 1–2',
+    desc: 'Deep conceptual training across HL & SL subjects with dedicated Internal Assessment (IA), Extended Essay (EE), and TOK guidance by examiner-mentors.',
+    features: ['Criterion-Referenced Rubrics Mastery', 'Internal Assessment (IA) Mentorship', 'Extended Essay (EE) & TOK Support', 'Regular Past Exam Simulations'],
+    href: '/courses?category=IB',
+    img: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=320&fit=crop&auto=format'
+  },
+  {
+    tag: 'PRE-ENGINEERING & MEDICAL',
+    title: 'IIT-JEE & NEET-UG 2-Year Batch',
+    grades: 'Classes 11, 12 & Dropper Intensive',
+    desc: 'Comprehensive syllabus coverage with Daily Practice Problems (DPPs), error analysis logs, and weekly All-India rank simulation mock exams.',
+    features: ['Daily 30-Question DPPs with Review', 'Computer-Based Test (CBT) Labs', 'Level 1–3 Problem Solving Kits', 'Daily 1-on-1 Faculty Doubt Desk'],
+    href: '/courses?category=Competitive+Exams',
+    img: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600&h=320&fit=crop&auto=format'
+  },
+  {
+    tag: 'NATIONAL CURRICULUM',
+    title: 'CBSE Board Masterclass (9th–12th)',
+    grades: 'Classes 9, 10, 11 & 12 (Science & Commerce)',
+    desc: 'Line-by-line NCERT decoding, exemplar solutions, competency-based questions, and board exam answer presentation workshops for 95%+ targets.',
+    features: ['Line-by-Line NCERT Decoding', 'Competency & Case-Based Question Kits', 'Specialized Board Answer Writing Sessions', 'Monthly Mock Board Series'],
+    href: '/courses?category=CBSE',
+    img: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=320&fit=crop&auto=format'
+  },
+  {
+    tag: 'FOUNDATION & TALENT',
+    title: 'Junior Olympiads & Aptitude Track',
+    grades: 'Classes 6, 7 & 8',
+    desc: 'Early competitive aptitude building, speed math, non-routine problem solving, and science fundamentals for IMO, NSO, and PRMO exams.',
+    features: ['Speed Math & Mental Agility Drills', 'Hands-on Science Demonstrations', 'Olympiad & Talent Search Preparation', 'Strong STEM Foundation'],
+    href: '/courses?category=Olympiads',
+    img: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&h=320&fit=crop&auto=format'
+  },
+  {
+    tag: 'JAIPUR OFFLINE CAMPUS',
+    title: 'Jaipur Physical Classroom Batches',
+    grades: 'All Curriculums · C-Scheme & Vaishali',
+    desc: 'Study at our modern air-conditioned learning center in Jaipur with smart digital boards, silent reference library, and daily 1-on-1 doubt desks.',
+    features: ['Acoustic Smart Classrooms', 'Dedicated 1-on-1 Faculty Doubt Desks', 'Silent Library (8 AM – 9 PM)', 'Doorstep AC GPS Transport'],
+    href: '/offline',
+    img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=320&fit=crop&auto=format'
+  }
+]
 
 // Strip a single wrapping <p>...</p> so heading/subtitle HTML stays inline-friendly
 function unwrapParagraph(html: string) {
@@ -24,6 +94,9 @@ export default function HomeContentPage() {
 
   const [slides, setSlides]   = useState<any[]>([])
   const [slidesLoading, setSlidesLoading] = useState(true)
+
+  const [batches, setBatches] = useState<any[]>([])
+  const [batchesLoading, setBatchesLoading] = useState(true)
 
   useEffect(() => {
     supabase.from('cms_home_sections').select('*').eq('site_id', SITE_ID).single()
@@ -57,6 +130,7 @@ export default function HomeContentPage() {
         setForm({ ...row, stats_json: statsJson })
       })
     loadSlides()
+    loadBatches()
   }, [])
 
   async function loadSlides() {
@@ -83,6 +157,50 @@ export default function HomeContentPage() {
       }
     }))
     setSlidesLoading(false)
+  }
+
+  async function loadBatches() {
+    setBatchesLoading(true)
+    const { data } = await supabase
+      .from('cms_gallery')
+      .select('*')
+      .eq('site_id', SITE_ID)
+      .eq('category', 'Homepage Batches')
+      .order('sort_order')
+
+    if (data && data.length > 0) {
+      setBatches(data.map(row => {
+        let parsed: any = {}
+        try { parsed = JSON.parse(row.caption ?? '{}') } catch {}
+        const featuresList = Array.isArray(parsed.features)
+          ? parsed.features.join('\n')
+          : (parsed.features ?? '')
+        return {
+          id: row.id,
+          image_url: row.image_url ?? '',
+          tag: parsed.tag ?? '',
+          title: parsed.title ?? '',
+          grades: parsed.grades ?? '',
+          desc: parsed.desc ?? '',
+          features: featuresList,
+          href: parsed.href ?? '/courses',
+          sort_order: row.sort_order ?? 0,
+        }
+      }))
+    } else {
+      setBatches(defaultBatches.map((b, i) => ({
+        id: `init-${i}`,
+        image_url: b.img,
+        tag: b.tag,
+        title: b.title,
+        grades: b.grades,
+        desc: b.desc,
+        features: b.features.join('\n'),
+        href: b.href,
+        sort_order: i,
+      })))
+    }
+    setBatchesLoading(false)
   }
 
   function set(k: string, v: any) { setForm((f: any) => ({ ...f, [k]: v })) }
@@ -175,6 +293,120 @@ export default function HomeContentPage() {
     )
   }
 
+  // --- Homepage Batches / Academic Pathways Manager ---
+
+  function updateBatchLocal(id: string, patch: any) {
+    setBatches(prev => prev.map(b => b.id === id ? { ...b, ...patch } : b))
+  }
+
+  async function saveBatch(batch: any) {
+    const featuresArray = String(batch.features || '')
+      .split('\n')
+      .map(s => s.trim())
+      .filter(Boolean)
+
+    const captionJson = JSON.stringify({
+      tag: batch.tag,
+      title: batch.title,
+      grades: batch.grades,
+      desc: batch.desc,
+      features: featuresArray,
+      href: batch.href,
+    })
+
+    if (batch.id && !String(batch.id).startsWith('init-')) {
+      await supabase
+        .from('cms_gallery')
+        .update({
+          image_url: batch.image_url,
+          caption: captionJson,
+          sort_order: batch.sort_order ?? 0,
+        })
+        .eq('id', batch.id)
+    } else {
+      const { data } = await supabase
+        .from('cms_gallery')
+        .insert({
+          site_id: SITE_ID,
+          category: 'Homepage Batches',
+          image_url: batch.image_url,
+          caption: captionJson,
+          sort_order: batch.sort_order ?? 0,
+        })
+        .select()
+        .single()
+      if (data) {
+        setBatches(prev => prev.map(b => b.id === batch.id ? { ...b, id: data.id } : b))
+      }
+    }
+    alert(`Batch card saved successfully!`)
+  }
+
+  async function addBatch() {
+    const nextOrder = batches.length > 0 ? Math.max(...batches.map(b => b.sort_order ?? 0)) + 1 : 0
+    const newCard = {
+      tag: 'NEW PROGRAM',
+      title: 'New Academic Batch',
+      grades: 'Classes 9 to 12',
+      desc: 'Add curriculum highlights and course descriptions here.',
+      features: 'Feature 1\nFeature 2\nFeature 3',
+      href: '/courses',
+      image_url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=320&fit=crop&auto=format',
+      sort_order: nextOrder,
+    }
+
+    const { data } = await supabase
+      .from('cms_gallery')
+      .insert({
+        site_id: SITE_ID,
+        category: 'Homepage Batches',
+        image_url: newCard.image_url,
+        caption: JSON.stringify({
+          tag: newCard.tag,
+          title: newCard.title,
+          grades: newCard.grades,
+          desc: newCard.desc,
+          features: newCard.features.split('\n'),
+          href: newCard.href,
+        }),
+        sort_order: nextOrder,
+      })
+      .select()
+      .single()
+
+    if (data) {
+      setBatches(prev => [...prev, { ...newCard, id: data.id }])
+    } else {
+      setBatches(prev => [...prev, { ...newCard, id: `temp-${Date.now()}` }])
+    }
+  }
+
+  async function deleteBatch(id: string) {
+    if (!confirm('Delete this academic batch card?')) return
+    if (!String(id).startsWith('init-')) {
+      await supabase.from('cms_gallery').delete().eq('id', id)
+    }
+    setBatches(prev => prev.filter(b => b.id !== id))
+  }
+
+  async function moveBatch(fromIndex: number, toIndex: number) {
+    if (toIndex < 0 || toIndex >= batches.length) return
+    const updated = [...batches]
+    const [moved] = updated.splice(fromIndex, 1)
+    updated.splice(toIndex, 0, moved)
+    setBatches(updated)
+
+    // Save order
+    await Promise.all(
+      updated.map((b, idx) => {
+        if (!String(b.id).startsWith('init-')) {
+          return supabase.from('cms_gallery').update({ sort_order: idx }).eq('id', b.id)
+        }
+        return Promise.resolve()
+      })
+    )
+  }
+
   if (!form) return <AdminLayout><p className="text-[#C9C8CB] text-sm">Loading…</p></AdminLayout>
 
   return (
@@ -182,15 +414,27 @@ export default function HomeContentPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-lg font-bold text-[#1B2A44]">Home Page Content</h2>
-          <p className="text-xs text-[#C9C8CB]">Edit hero fallback, banner slides (Images / Google Drive Videos) and stats</p>
+          <p className="text-xs text-[#C9C8CB]">Edit hero fallback, banner slides, academic batches, and stats</p>
         </div>
-        <button onClick={save} disabled={saving} className="flex items-center gap-2 bg-[#7E0D0D] hover:bg-[#922222] text-white text-sm font-semibold px-4 py-2 rounded-xl disabled:opacity-60">
-          <Save size={15} /> {saving ? 'Saving…' : saved ? 'Saved!' : 'Save Changes'}
-        </button>
+        <div className="flex items-center gap-3">
+          <a
+            href="/"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-1.5 border border-[#F3DCDC] bg-white hover:bg-neutral-50 text-[#1B2A44] text-xs font-semibold px-3.5 py-2 rounded-xl transition-all shadow-2xs"
+          >
+            <ExternalLink size={13} />
+            <span>View Website</span>
+          </a>
+          <button onClick={save} disabled={saving} className="flex items-center gap-2 bg-[#7E0D0D] hover:bg-[#922222] text-white text-sm font-semibold px-4 py-2 rounded-xl disabled:opacity-60 shadow-xs">
+            <Save size={15} /> {saving ? 'Saving…' : saved ? 'Saved!' : 'Save Changes'}
+          </button>
+        </div>
       </div>
 
-      <div className="max-w-2xl space-y-6">
-        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4">
+      <div className="max-w-3xl space-y-6">
+        {/* Fallback Hero */}
+        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4 shadow-2xs">
           <div>
             <h3 className="font-semibold text-[#1B2A44]">Fallback Hero</h3>
             <p className="text-xs text-[#C9C8CB] mt-0.5">Shown only when there are no Banner Slides below. Select any text and use the toolbar for bold, italic or color.</p>
@@ -217,7 +461,7 @@ export default function HomeContentPage() {
         </div>
 
         {/* Banner Slides manager */}
-        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4">
+        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4 shadow-2xs">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-semibold text-[#1B2A44]">Homepage Banner Slides</h3>
@@ -261,31 +505,28 @@ export default function HomeContentPage() {
                       </div>
 
                       <div className="flex items-center gap-1">
-                        {/* Move Up */}
                         <button
                           type="button"
                           onClick={() => moveSlide(i, i - 1)}
                           disabled={i === 0}
-                          title="Move Slide Up (Earlier)"
+                          title="Move Slide Up"
                           className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
                         >
                           <ArrowUp size={13} />
                           <span className="hidden sm:inline">Up</span>
                         </button>
 
-                        {/* Move Down */}
                         <button
                           type="button"
                           onClick={() => moveSlide(i, i + 1)}
                           disabled={i === slides.length - 1}
-                          title="Move Slide Down (Later)"
+                          title="Move Slide Down"
                           className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
                         >
                           <ArrowDown size={13} />
                           <span className="hidden sm:inline">Down</span>
                         </button>
 
-                        {/* Delete */}
                         <button
                           type="button"
                           onClick={() => deleteSlide(slide.id)}
@@ -345,7 +586,6 @@ export default function HomeContentPage() {
                           />
                         </div>
 
-                        {/* Drive Guide & Help */}
                         <div className="flex items-start gap-2 bg-white border border-amber-200 rounded-lg p-2.5 text-[11px] text-amber-900 leading-relaxed">
                           <HelpCircle size={14} className="text-amber-700 shrink-0 mt-0.5" />
                           <div>
@@ -358,7 +598,6 @@ export default function HomeContentPage() {
                           </div>
                         </div>
 
-                        {/* Live Video Preview in Admin */}
                         {(slide.videoUrl || slide.image_url) && (
                           <div>
                             <span className="block text-[11px] font-bold text-neutral-700 mb-1">Live Embed Preview:</span>
@@ -414,7 +653,173 @@ export default function HomeContentPage() {
           )}
         </div>
 
-        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4">
+        {/* 🌟 NEW: Explore Our Batches / Academic Pathways Cards Manager */}
+        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
+          <div className="flex items-center justify-between border-b border-[#F3DCDC] pb-3">
+            <div>
+              <div className="flex items-center gap-2">
+                <GraduationCap className="text-[#7E0D0D] h-5 w-5" />
+                <h3 className="font-bold text-[#1B2A44] text-base">Explore Our Batches (Hover Cards)</h3>
+              </div>
+              <p className="text-xs text-[#C9C8CB] mt-0.5">
+                {batches.length} Batch Card{batches.length === 1 ? '' : 's'} · Manage card images, titles, descriptions, feature bullets, and course links
+              </p>
+            </div>
+            <button
+              onClick={addBatch}
+              className="flex items-center gap-1.5 text-xs bg-[#7E0D0D] hover:bg-[#922222] text-white font-semibold px-3 py-1.5 rounded-lg transition-all shrink-0 shadow-xs"
+            >
+              <Plus size={13} /> Add Batch Card
+            </button>
+          </div>
+
+          {batchesLoading ? (
+            <p className="text-xs text-[#C9C8CB]">Loading batch cards…</p>
+          ) : (
+            <div className="space-y-6">
+              {batches.map((batch, i) => (
+                <div key={batch.id || i} className="border border-[#F3DCDC] rounded-xl p-5 space-y-4 bg-white shadow-2xs">
+                  {/* Top Bar with Reorder Controls */}
+                  <div className="flex items-center justify-between bg-neutral-50 p-2.5 rounded-lg border border-neutral-200/80">
+                    <div className="flex items-center gap-2">
+                      <GripVertical size={14} className="text-neutral-400" />
+                      <span className="text-xs font-bold text-[#1B2A44] uppercase tracking-wider">
+                        Batch Card {i + 1}: {batch.title || 'Untitled'}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => moveBatch(i, i - 1)}
+                        disabled={i === 0}
+                        title="Move Up"
+                        className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
+                      >
+                        <ArrowUp size={13} />
+                        <span className="hidden sm:inline">Up</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => moveBatch(i, i + 1)}
+                        disabled={i === batches.length - 1}
+                        title="Move Down"
+                        className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
+                      >
+                        <ArrowDown size={13} />
+                        <span className="hidden sm:inline">Down</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => deleteBatch(batch.id)}
+                        title="Delete Card"
+                        className="p-1.5 rounded-md border border-red-200 bg-white text-red-500 hover:bg-red-600 hover:text-white transition-all ml-1.5"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Card Image */}
+                  <ImageUpload
+                    value={batch.image_url ?? ''}
+                    onChange={url => updateBatchLocal(batch.id, { image_url: url })}
+                    folder="batches"
+                    label="Batch Card Cover Image"
+                  />
+
+                  {/* Tag & Title */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#1B2A44] mb-1">Badge Tag *</label>
+                      <input
+                        type="text"
+                        value={batch.tag ?? ''}
+                        onChange={e => updateBatchLocal(batch.id, { tag: e.target.value })}
+                        placeholder="e.g. CAMBRIDGE IGCSE & A-LEVELS"
+                        className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-[#1B2A44] mb-1">Program Title *</label>
+                      <input
+                        type="text"
+                        value={batch.title ?? ''}
+                        onChange={e => updateBatchLocal(batch.id, { title: e.target.value })}
+                        placeholder="e.g. Cambridge International Program"
+                        className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Grades & Link */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#1B2A44] mb-1">Grades / Target Class *</label>
+                      <input
+                        type="text"
+                        value={batch.grades ?? ''}
+                        onChange={e => updateBatchLocal(batch.id, { grades: e.target.value })}
+                        placeholder="e.g. Grades 8 to 12 · IGCSE / AS & A Levels"
+                        className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-[#1B2A44] mb-1">Explore Program Link *</label>
+                      <input
+                        type="text"
+                        value={batch.href ?? ''}
+                        onChange={e => updateBatchLocal(batch.id, { href: e.target.value })}
+                        placeholder="e.g. /courses?category=IGCSE or /offline"
+                        className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#1B2A44] mb-1">Curriculum Summary Description *</label>
+                    <textarea
+                      rows={2}
+                      value={batch.desc ?? ''}
+                      onChange={e => updateBatchLocal(batch.id, { desc: e.target.value })}
+                      placeholder="Targeted coaching for Extended Math, Physics, Chemistry..."
+                      className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D] resize-none"
+                    />
+                  </div>
+
+                  {/* Features / Bullets */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-xs font-bold text-[#1B2A44]">Feature Bullets (1 per line)</label>
+                      <span className="text-[11px] text-[#C9C8CB]">Shown on hover</span>
+                    </div>
+                    <textarea
+                      rows={3}
+                      value={batch.features ?? ''}
+                      onChange={e => updateBatchLocal(batch.id, { features: e.target.value })}
+                      placeholder="Past 15 Years Question Bank Decoded&#10;Command Word Marking Rubrics&#10;Individual Coursework & IA Review"
+                      className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D] font-mono leading-relaxed"
+                    />
+                  </div>
+
+                  <button
+                    onClick={() => saveBatch(batch)}
+                    className="bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5 shadow-xs"
+                  >
+                    <Save size={13} />
+                    <span>Save Batch Card {i + 1}</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Stats */}
+        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4 shadow-2xs">
           <div className="flex items-center justify-between">
             <h3 className="font-semibold text-[#1B2A44]">Stats</h3>
             <button onClick={addStat} className="text-xs text-[#7E0D0D] hover:underline font-medium">+ Add Stat</button>
