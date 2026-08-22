@@ -385,34 +385,102 @@ button[class*="bg-brand-maroon"]:active {
   transform: translateY(0) !important;
 }
 
-/* ─── 3D Book Card Opening Hover Animation ─── */
-.hodu-book-card {
-  perspective: 1800px;
+/* ─── Hodu Gold Frame & Animated Logo Card ─── */
+.hodu-gold-card {
+  background: radial-gradient(circle at 50% 0%, #3d0a0a 0%, #200404 60%, #120202 100%);
+  position: relative;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  border: 1px solid rgba(189, 159, 103, 0.2);
 }
 
-.hodu-book-inner {
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.6s;
+.hodu-gold-card:hover,
+.hodu-gold-card.touched {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 40px -15px rgba(189, 159, 103, 0.35), 0 0 25px rgba(126, 13, 13, 0.4);
+  border-color: rgba(189, 159, 103, 0.6);
 }
 
-.hodu-book-cover {
-  transform-origin: 0% 50%;
-  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.65s;
-  backface-visibility: hidden;
-  box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.35);
+.hodu-gold-border {
+  position: absolute;
+  inset: 0px;
+  border: 2px solid #bd9f67;
+  opacity: 0;
+  transform: rotate(8deg);
+  border-radius: 0.85rem;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+  z-index: 20;
 }
 
-.hodu-book-card:hover .hodu-book-cover,
-.hodu-book-card.touched .hodu-book-cover {
-  transform: rotateY(-82deg);
-  box-shadow: -6px 8px 24px rgba(0, 0, 0, 0.45);
+.hodu-gold-card:hover .hodu-gold-border,
+.hodu-gold-card.touched .hodu-gold-border {
+  inset: 12px;
+  opacity: 1;
+  transform: rotate(0deg);
+  box-shadow: 0 0 15px rgba(189, 159, 103, 0.3);
 }
 
-.hodu-book-card:hover .hodu-book-inner,
-.hodu-book-card.touched .hodu-book-inner {
-  transform: translateZ(12px);
-  box-shadow: 0 20px 30px -10px rgba(126, 13, 13, 0.2);
+.hodu-bottom-text {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  font-size: 8.5px;
+  text-transform: uppercase;
+  padding: 2px 10px;
+  color: #bd9f67;
+  background: #1a0303;
+  opacity: 0;
+  letter-spacing: 7px;
+  transition: all 0.5s ease-in-out;
+  white-space: nowrap;
+  border-radius: 9999px;
+  border: 1px solid rgba(189, 159, 103, 0.3);
+  z-index: 25;
 }
+
+.hodu-gold-card:hover .hodu-bottom-text,
+.hodu-gold-card.touched .hodu-bottom-text {
+  letter-spacing: 3px;
+  opacity: 1;
+  transform: translateX(-50%);
+}
+
+.hodu-logo-trail {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hodu-gold-card:hover .hodu-logo-trail,
+.hodu-gold-card.touched .hodu-logo-trail {
+  animation: hoduTrail 1s ease-in-out;
+}
+
+@keyframes hoduTrail {
+  0% {
+    background: linear-gradient(90deg, rgba(189, 159, 103, 0) 85%, rgb(189, 159, 103) 100%);
+    opacity: 0;
+  }
+  30% {
+    background: linear-gradient(90deg, rgba(189, 159, 103, 0) 65%, rgb(189, 159, 103) 100%);
+    opacity: 1;
+  }
+  70% {
+    background: linear-gradient(90deg, rgba(189, 159, 103, 0) 65%, rgb(189, 159, 103) 100%);
+    opacity: 1;
+  }
+  95% {
+    background: linear-gradient(90deg, rgba(189, 159, 103, 0) 85%, rgb(189, 159, 103) 100%);
+    opacity: 0;
+  }
+}
+
 
 
 
