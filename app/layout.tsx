@@ -27,6 +27,16 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: "Hodu Academy — Premier Coaching Institute for Cambridge, IB, CBSE, JEE & NEET",
   description: "Jaipur's premier academic coaching institute for Cambridge IGCSE, IB DP, CBSE Class 9-12, IIT-JEE, and NEET.",
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/favicon.png' },
+    ],
+    shortcut: ['/favicon.ico'],
+  },
 };
 
 export default function RootLayout({

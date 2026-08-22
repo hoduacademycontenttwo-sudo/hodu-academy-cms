@@ -26,6 +26,7 @@ import {
 } from 'lucide-react'
 import { HODU, HODU_SITE_ID } from '@/lib/hodu'
 import { createClient } from '@/lib/supabase/client'
+import PortalLoginButton from './PortalLoginButton'
 
 export interface NavItem {
   label: string
@@ -391,6 +392,7 @@ export default function HoduNavbar({
 
           {/* Desktop CTAs (shown only on lg+ screens alongside desktop nav) */}
           <div className="hidden lg:flex items-center gap-3 shrink-0 ml-6">
+            <PortalLoginButton />
             <Link
               href="/enroll"
               className="bg-brand-maroon hover:bg-brand-crimson text-white px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all inline-block text-center shadow-xs"
@@ -401,6 +403,7 @@ export default function HoduNavbar({
 
           {/* Mobile toggle */}
           <div className="flex lg:hidden items-center gap-2">
+            <PortalLoginButton compact />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="p-2 rounded-xl text-neutral-800 hover:bg-neutral-100 transition-colors"
@@ -547,11 +550,12 @@ export default function HoduNavbar({
               )
             })}
 
-            <div className="pt-4 border-t border-brand-border">
+            <div className="pt-4 border-t border-brand-border space-y-2.5">
+              <PortalLoginButton className="w-full" />
               <Link
                 href="/enroll"
                 onClick={() => setMobileOpen(false)}
-                className="block w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider text-center transition-colors"
+                className="block w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider text-center transition-colors shadow-xs"
               >
                 Admissions 2025–26
               </Link>
