@@ -30,6 +30,7 @@ import EnquiryForm from '@/components/hodu/EnquiryForm'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
 import BatchHoverCard, { CurriculumTrack } from '@/components/hodu/BatchHoverCard'
+import BatchCardsCarousel from '@/components/hodu/BatchCardsCarousel'
 import { parseCarouselRows } from '@/lib/homeCarousel'
 
 export const metadata = {
@@ -255,18 +256,9 @@ export default async function HomePage() {
           </div>
         </ScrollReveal>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {activeBatches.map((track, idx) => (
-            <ScrollReveal
-              key={idx}
-              animation="fade-up"
-              delay={idx * 90}
-              className="h-full"
-            >
-              <BatchHoverCard track={track} />
-            </ScrollReveal>
-          ))}
-        </div>
+        <ScrollReveal animation="fade-up" delay={100}>
+          <BatchCardsCarousel tracks={activeBatches} />
+        </ScrollReveal>
       </section>
 
       {/* 4. Everything You Need To Ace Your Exam In One Place */}
