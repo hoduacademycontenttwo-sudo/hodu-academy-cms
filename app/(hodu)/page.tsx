@@ -24,6 +24,7 @@ import {
 } from 'lucide-react'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
+import ScrollReveal from '@/components/hodu/ScrollReveal'
 import { parseCarouselRows } from '@/lib/homeCarousel'
 
 export const metadata = {
@@ -202,95 +203,101 @@ export default async function HomePage() {
       />
 
 
-      {/* 3. Popular Batches / Academic Pathways (PW style clean batch cards) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 border-t border-brand-border">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
-          <div>
-            <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-              <GraduationCap className="h-3.5 w-3.5" />
-              <span>COHORTS 2025–26</span>
+      {/* 3. Popular Batches / Academic Pathways */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14 border-t border-brand-border">
+        <ScrollReveal animation="fade-up">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
+                <GraduationCap className="h-3.5 w-3.5" />
+                <span>COHORTS 2025–26</span>
+              </div>
+              <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
+                Explore Our Batches
+              </h2>
+              <p className="text-xs sm:text-sm text-brand-muted mt-1">
+                Select your academic program with structured curriculums and small 1:12 batches.
+              </p>
             </div>
-            <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
-              Explore Our Batches
-            </h2>
-            <p className="text-xs sm:text-sm text-brand-muted mt-1">
-              Select your academic program with structured curriculums and small 1:12 batches.
-            </p>
+            <Link
+              href="/courses"
+              className="text-xs font-bold text-brand-maroon border border-brand-maroon hover:bg-brand-maroon hover:text-white px-4 py-2 rounded-lg transition-all self-start sm:self-auto shrink-0 uppercase tracking-wider shadow-2xs"
+            >
+              View All Programs →
+            </Link>
           </div>
-          <Link
-            href="/courses"
-            className="text-xs font-bold text-brand-maroon border border-brand-maroon hover:bg-brand-maroon hover:text-white px-4 py-2 rounded-lg transition-all self-start sm:self-auto shrink-0 uppercase tracking-wider"
-          >
-            View All Programs →
-          </Link>
-        </div>
+        </ScrollReveal>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {curriculumTracks.map((track, idx) => (
-            <div
+            <ScrollReveal
               key={idx}
-              className="group bg-white border border-brand-border hover:border-brand-maroon rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between"
+              animation="fade-up"
+              delay={idx * 90}
+              className="h-full"
             >
-              <div>
-                {/* Minimal Banner Image with clean floating badges */}
-                <div className="relative h-48 overflow-hidden bg-neutral-100">
-                  <img
-                    src={track.img}
-                    alt={track.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+              <div className="group bg-white border border-brand-border hover:border-brand-maroon rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between h-full">
+                <div>
+                  {/* Minimal Banner Image with clean floating badges */}
+                  <div className="relative h-48 overflow-hidden bg-neutral-100">
+                    <img
+                      src={track.img}
+                      alt={track.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-                  {/* Top-Left Floating Badge */}
-                  <div className="absolute top-3.5 left-3.5">
-                    <span className="bg-white/95 backdrop-blur-md text-brand-maroon text-[11px] font-extrabold px-3 py-1 rounded-full border border-brand-border shadow-xs uppercase tracking-wider">
-                      {track.tag}
-                    </span>
-                  </div>
-
-                  {/* Bottom-Left Grade Pill */}
-                  <div className="absolute bottom-3 left-3.5">
-                    <span className="bg-black/60 backdrop-blur-xs text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-md border border-white/20">
-                      {track.grades}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Card Body */}
-                <div className="p-6 space-y-3">
-                  <h3 className="font-bold text-lg text-brand-text group-hover:text-brand-maroon transition-colors line-clamp-1">
-                    {track.title}
-                  </h3>
-                  <p className="text-xs text-brand-muted leading-relaxed line-clamp-2">
-                    {track.desc}
-                  </p>
-
-                  {/* Minimal 3-Tag Highlights */}
-                  <div className="flex flex-wrap gap-1.5 pt-3 border-t border-brand-border/60">
-                    {track.features.slice(0, 3).map((feat, fIdx) => (
-                      <span
-                        key={fIdx}
-                        className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-brand-text bg-brand-bg px-2.5 py-1 rounded-lg border border-brand-border/50"
-                      >
-                        <CheckCircle2 className="h-3 w-3 text-brand-maroon shrink-0" />
-                        <span>{feat}</span>
+                    {/* Top-Left Floating Badge */}
+                    <div className="absolute top-3.5 left-3.5">
+                      <span className="bg-white/95 backdrop-blur-md text-brand-maroon text-[11px] font-extrabold px-3 py-1 rounded-full border border-brand-border shadow-xs uppercase tracking-wider">
+                        {track.tag}
                       </span>
-                    ))}
+                    </div>
+
+                    {/* Bottom-Left Grade Pill */}
+                    <div className="absolute bottom-3 left-3.5">
+                      <span className="bg-black/60 backdrop-blur-xs text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-md border border-white/20">
+                        {track.grades}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Card Body */}
+                  <div className="p-6 space-y-3">
+                    <h3 className="font-bold text-lg text-brand-text group-hover:text-brand-maroon transition-colors line-clamp-1">
+                      {track.title}
+                    </h3>
+                    <p className="text-xs text-brand-muted leading-relaxed line-clamp-2">
+                      {track.desc}
+                    </p>
+
+                    {/* Minimal 3-Tag Highlights */}
+                    <div className="flex flex-wrap gap-1.5 pt-3 border-t border-brand-border/60">
+                      {track.features.slice(0, 3).map((feat, fIdx) => (
+                        <span
+                          key={fIdx}
+                          className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-brand-text bg-brand-bg px-2.5 py-1 rounded-lg border border-brand-border/50"
+                        >
+                          <CheckCircle2 className="h-3 w-3 text-brand-maroon shrink-0" />
+                          <span>{feat}</span>
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Minimal Clean Action Link */}
-              <div className="p-6 pt-0">
-                <Link
-                  href={track.href}
-                  className="w-full bg-brand-bg group-hover:bg-brand-maroon text-brand-maroon group-hover:text-white border border-brand-border group-hover:border-brand-maroon font-bold py-2.5 px-4 rounded-xl text-center flex items-center justify-between text-xs tracking-wider uppercase transition-all duration-200 shadow-2xs"
-                >
-                  <span>Explore Program</span>
-                  <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
-                </Link>
+                {/* Minimal Clean Action Link */}
+                <div className="p-6 pt-0">
+                  <Link
+                    href={track.href}
+                    className="w-full bg-brand-bg group-hover:bg-brand-maroon text-brand-maroon group-hover:text-white border border-brand-border group-hover:border-brand-maroon font-bold py-2.5 px-4 rounded-xl text-center flex items-center justify-between text-xs tracking-wider uppercase transition-all duration-200 shadow-2xs"
+                  >
+                    <span>Explore Program</span>
+                    <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </section>
@@ -302,163 +309,177 @@ export default async function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
-          <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full mb-3 shadow-xs">
-              <Sparkles className="h-3.5 w-3.5 text-amber-300" />
-              <span>WHY CHOOSE US</span>
+          <ScrollReveal animation="fade-up">
+            <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+              <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full mb-3 shadow-xs">
+                <Sparkles className="h-3.5 w-3.5 text-amber-300" />
+                <span>WHY CHOOSE US</span>
+              </div>
+              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight">
+                The Hodu Learning Edge
+              </h2>
+              <p className="text-xs sm:text-sm text-brand-muted mt-2 leading-relaxed">
+                A student-first academic ecosystem engineered for deep conceptual mastery and top international ranks.
+              </p>
             </div>
-            <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight">
-              The Hodu Learning Edge
-            </h2>
-            <p className="text-xs sm:text-sm text-brand-muted mt-2 leading-relaxed">
-              A student-first academic ecosystem engineered for deep conceptual mastery and top international ranks.
-            </p>
-          </div>
+          </ScrollReveal>
 
           {/* 4 Feature Cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {whyChooseUs.map((item, idx) => {
               const Icon = item.icon
               return (
-                <div
+                <ScrollReveal
                   key={idx}
-                  className="group relative bg-white border border-brand-border/80 hover:border-brand-maroon/80 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl flex flex-col justify-between overflow-hidden"
+                  animation="fade-up"
+                  delay={idx * 100}
+                  className="h-full"
                 >
-                  {/* Top hover accent bar */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-maroon via-brand-crimson to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="group relative bg-white border border-brand-border/80 hover:border-brand-maroon/80 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl flex flex-col justify-between overflow-hidden h-full">
+                    {/* Top hover accent bar */}
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-maroon via-brand-crimson to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                  {/* Watermark Index Number */}
-                  <span className="absolute top-4 right-4 font-serif text-3xl font-black text-brand-maroon/10 group-hover:text-brand-maroon/20 transition-colors pointer-events-none select-none">
-                    {item.num}
-                  </span>
-
-                  <div>
-                    {/* Icon container */}
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-maroon to-brand-crimson text-white flex items-center justify-center mb-5 shadow-md shadow-brand-maroon/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                      <Icon className="h-6 w-6" />
-                    </div>
-
-                    {/* Badge chip */}
-                    <span className="inline-block bg-brand-bg text-brand-maroon text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-brand-border mb-2.5">
-                      {item.badge}
+                    {/* Watermark Index Number */}
+                    <span className="absolute top-4 right-4 font-serif text-3xl font-black text-brand-maroon/10 group-hover:text-brand-maroon/20 transition-colors pointer-events-none select-none">
+                      {item.num}
                     </span>
 
-                    {/* Card title */}
-                    <h3 className="font-bold text-base text-brand-text group-hover:text-brand-maroon transition-colors mb-2">
-                      {item.title}
-                    </h3>
+                    <div>
+                      {/* Icon container */}
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-maroon to-brand-crimson text-white flex items-center justify-center mb-5 shadow-md shadow-brand-maroon/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                        <Icon className="h-6 w-6" />
+                      </div>
 
-                    {/* Card description */}
-                    <p className="text-xs text-brand-muted leading-relaxed">
-                      {item.desc}
-                    </p>
+                      {/* Badge chip */}
+                      <span className="inline-block bg-brand-bg text-brand-maroon text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-brand-border mb-2.5">
+                        {item.badge}
+                      </span>
+
+                      {/* Card title */}
+                      <h3 className="font-bold text-base text-brand-text group-hover:text-brand-maroon transition-colors mb-2">
+                        {item.title}
+                      </h3>
+
+                      {/* Card description */}
+                      <p className="text-xs text-brand-muted leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </ScrollReveal>
               )
             })}
           </div>
 
-          {/* Enhanced Stats Strip (Clean Elevated Card with Soft Dividers) */}
-          <div className="mt-12 sm:mt-16 bg-white border border-brand-border rounded-2xl p-6 sm:p-8 shadow-xs">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 divide-y lg:divide-y-0 lg:divide-x divide-brand-border/70 text-center">
-              <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
-                <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
-                  15,000+
-                </span>
-                <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
-                  Students Mentored
-                </span>
-                <span className="text-[11px] text-brand-muted mt-0.5">Across All Programs</span>
-              </div>
+          {/* Enhanced Stats Strip */}
+          <ScrollReveal animation="zoom-in" delay={150}>
+            <div className="mt-12 sm:mt-16 bg-white border border-brand-border rounded-2xl p-6 sm:p-8 shadow-xs">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 divide-y lg:divide-y-0 lg:divide-x divide-brand-border/70 text-center">
+                <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
+                  <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
+                    15,000+
+                  </span>
+                  <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
+                    Students Mentored
+                  </span>
+                  <span className="text-[11px] text-brand-muted mt-0.5">Across All Programs</span>
+                </div>
 
-              <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
-                <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
-                  1 : 12
-                </span>
-                <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
-                  Teacher-Student Ratio
-                </span>
-                <span className="text-[11px] text-brand-muted mt-0.5">Strict Batch Cap</span>
-              </div>
+                <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
+                  <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
+                    1 : 12
+                  </span>
+                  <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
+                    Teacher-Student Ratio
+                  </span>
+                  <span className="text-[11px] text-brand-muted mt-0.5">Strict Batch Cap</span>
+                </div>
 
-              <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
-                <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
-                  99.4%
-                </span>
-                <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
-                  Highest Board Score
-                </span>
-                <span className="text-[11px] text-brand-muted mt-0.5">Top Jaipur Ranks</span>
-              </div>
+                <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
+                  <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
+                    99.4%
+                  </span>
+                  <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
+                    Highest Board Score
+                  </span>
+                  <span className="text-[11px] text-brand-muted mt-0.5">Top Jaipur Ranks</span>
+                </div>
 
-              <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
-                <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
-                  100%
-                </span>
-                <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
-                  Past Papers Solved
-                </span>
-                <span className="text-[11px] text-brand-muted mt-0.5">15-Year Question Banks</span>
+                <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
+                  <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
+                    100%
+                  </span>
+                  <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
+                    Past Papers Solved
+                  </span>
+                  <span className="text-[11px] text-brand-muted mt-0.5">15-Year Question Banks</span>
+                </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* 5. Hall of Fame / Results (PW style clean ranker cards) */}
+      {/* 5. Hall of Fame / Results */}
       <section className="py-12 sm:py-16 bg-brand-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-              <Trophy className="h-3.5 w-3.5" />
-              <span>PROVEN RESULTS</span>
+          <ScrollReveal animation="fade-up">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
+                <Trophy className="h-3.5 w-3.5" />
+                <span>PROVEN RESULTS</span>
+              </div>
+              <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
+                Our Star Performers & Rankers
+              </h2>
+              <p className="text-xs sm:text-sm text-brand-muted mt-1 max-w-md mx-auto">
+                Real results from dedicated students who prepared with Hodu Academy.
+              </p>
             </div>
-            <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
-              Our Star Performers & Rankers
-            </h2>
-            <p className="text-xs sm:text-sm text-brand-muted mt-1 max-w-md mx-auto">
-              Real results from dedicated students who prepared with Hodu Academy.
-            </p>
-          </div>
+          </ScrollReveal>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
             {achievers.map((t, idx) => (
-              <div
+              <ScrollReveal
                 key={idx}
-                className="bg-white border border-brand-border rounded-xl p-4 text-center hover:border-brand-maroon transition-all flex flex-col justify-between shadow-xs"
+                animation="fade-up"
+                delay={idx * 60}
+                className="h-full"
               >
-                <div>
-                  {'photo_url' in t && t.photo_url ? (
-                    <img
-                      src={t.photo_url}
-                      alt={t.name}
-                      className="h-14 w-14 rounded-full object-cover mx-auto mb-2.5 ring-2 ring-brand-border"
-                    />
-                  ) : (
-                    <div className="h-14 w-14 rounded-full bg-brand-blush text-brand-maroon flex items-center justify-center font-bold text-sm mx-auto mb-2.5">
-                      {t.initials}
+                <div className="bg-white border border-brand-border rounded-xl p-4 text-center hover:border-brand-maroon transition-all flex flex-col justify-between shadow-xs h-full">
+                  <div>
+                    {'photo_url' in t && t.photo_url ? (
+                      <img
+                        src={t.photo_url}
+                        alt={t.name}
+                        className="h-14 w-14 rounded-full object-cover mx-auto mb-2.5 ring-2 ring-brand-border"
+                      />
+                    ) : (
+                      <div className="h-14 w-14 rounded-full bg-brand-blush text-brand-maroon flex items-center justify-center font-bold text-sm mx-auto mb-2.5">
+                        {t.initials}
+                      </div>
+                    )}
+                    <div className="bg-brand-maroon text-white rounded-md py-0.5 px-2 mb-1.5 font-bold text-xs">
+                      {t.pct}
                     </div>
-                  )}
-                  <div className="bg-brand-maroon text-white rounded-md py-0.5 px-2 mb-1.5 font-bold text-xs">
-                    {t.pct}
+                    <h4 className="text-xs font-bold text-brand-text leading-tight">{t.name}</h4>
+                    <p className="text-[10px] text-brand-muted mt-0.5">{t.stream}</p>
                   </div>
-                  <h4 className="text-xs font-bold text-brand-text leading-tight">{t.name}</h4>
-                  <p className="text-[10px] text-brand-muted mt-0.5">{t.stream}</p>
+                  <div className="mt-2.5 pt-2 border-t border-brand-border text-[9px] text-brand-muted">
+                    {t.school}
+                  </div>
                 </div>
-                <div className="mt-2.5 pt-2 border-t border-brand-border text-[9px] text-brand-muted">
-                  {t.school}
-                </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 6. Jaipur Physical Learning Center (Vidyapeeth style) */}
+      {/* 6. Jaipur Physical Learning Center */}
       <section className="py-12 sm:py-16 bg-white border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-brand-bg border border-brand-border rounded-2xl p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 space-y-4">
+            <ScrollReveal animation="fade-left" className="lg:col-span-7 space-y-4">
               <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
                 <Building2 className="h-3.5 w-3.5" />
                 <span>JAIPUR OFFLINE CENTER</span>
@@ -505,9 +526,9 @@ export default async function HomePage() {
                   <span>Book Free Campus Visit</span>
                 </Link>
               </div>
-            </div>
+            </ScrollReveal>
 
-            <div className="lg:col-span-5">
+            <ScrollReveal animation="fade-right" className="lg:col-span-5">
               <div className="rounded-xl overflow-hidden border border-brand-border bg-white shadow-xs">
                 <img
                   src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&h=380&fit=crop&auto=format"
@@ -519,7 +540,7 @@ export default async function HomePage() {
                   <p className="text-xs text-brand-muted">{HODU.address}</p>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -527,50 +548,56 @@ export default async function HomePage() {
       {/* 7. Student & Parent Reviews */}
       <section className="py-12 sm:py-16 bg-brand-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <span className="inline-block bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-              REVIEWS
-            </span>
-            <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
-              Loved by Students & Parents
-            </h2>
-          </div>
+          <ScrollReveal animation="fade-up">
+            <div className="text-center mb-10">
+              <span className="inline-block bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
+                REVIEWS
+              </span>
+              <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
+                Loved by Students & Parents
+              </h2>
+            </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-3 gap-5">
             {liveTestimonials.map((t, idx) => (
-              <div
+              <ScrollReveal
                 key={idx}
-                className="bg-white border border-brand-border rounded-xl p-5 shadow-xs flex flex-col justify-between"
+                animation="fade-up"
+                delay={idx * 100}
+                className="h-full"
               >
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-brand-maroon font-bold text-xs">★★★★★</span>
-                    <span className="bg-brand-bg text-brand-muted text-[10px] font-semibold px-2 py-0.5 rounded border border-brand-border">
-                      Verified
-                    </span>
-                  </div>
-                  <p className="text-xs text-brand-muted leading-relaxed mb-4">
-                    "{t.text}"
-                  </p>
-                </div>
-                <div className="flex items-center gap-2.5 pt-3 border-t border-brand-border">
-                  {'photo_url' in t && t.photo_url ? (
-                    <img
-                      src={t.photo_url}
-                      alt={t.name}
-                      className="h-9 w-9 rounded-full object-cover ring-1 ring-brand-border"
-                    />
-                  ) : (
-                    <div className="h-9 w-9 rounded-full bg-brand-blush text-brand-maroon flex items-center justify-center font-bold text-xs shrink-0">
-                      {t.initials}
-                    </div>
-                  )}
+                <div className="bg-white border border-brand-border rounded-xl p-5 shadow-xs flex flex-col justify-between h-full">
                   <div>
-                    <h4 className="font-bold text-xs text-brand-text">{t.name}</h4>
-                    <p className="text-[10px] text-brand-maroon font-medium">{t.score}</p>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-brand-maroon font-bold text-xs">★★★★★</span>
+                      <span className="bg-brand-bg text-brand-muted text-[10px] font-semibold px-2 py-0.5 rounded border border-brand-border">
+                        Verified
+                      </span>
+                    </div>
+                    <p className="text-xs text-brand-muted leading-relaxed mb-4">
+                      "{t.text}"
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2.5 pt-3 border-t border-brand-border">
+                    {'photo_url' in t && t.photo_url ? (
+                      <img
+                        src={t.photo_url}
+                        alt={t.name}
+                        className="h-9 w-9 rounded-full object-cover ring-1 ring-brand-border"
+                      />
+                    ) : (
+                      <div className="h-9 w-9 rounded-full bg-brand-blush text-brand-maroon flex items-center justify-center font-bold text-xs shrink-0">
+                        {t.initials}
+                      </div>
+                    )}
+                    <div>
+                      <h4 className="font-bold text-xs text-brand-text">{t.name}</h4>
+                      <p className="text-[10px] text-brand-maroon font-medium">{t.score}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -579,37 +606,43 @@ export default async function HomePage() {
       {/* 8. FAQ Accordion */}
       <section className="py-12 sm:py-16 bg-white border-y border-brand-border">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <span className="inline-block bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-              FAQ
-            </span>
-            <h2 className="font-serif-editorial text-2xl sm:text-3xl font-bold text-brand-maroon">
-              Frequently Asked Questions
-            </h2>
-          </div>
+          <ScrollReveal animation="fade-up">
+            <div className="text-center mb-8">
+              <span className="inline-block bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
+                FAQ
+              </span>
+              <h2 className="font-serif-editorial text-2xl sm:text-3xl font-bold text-brand-maroon">
+                Frequently Asked Questions
+              </h2>
+            </div>
+          </ScrollReveal>
+
           <div className="space-y-3">
             {faqs.map((faq, i) => (
-              <details
+              <ScrollReveal
                 key={i}
-                className="group border border-brand-border rounded-xl overflow-hidden bg-brand-bg"
+                animation="fade-up"
+                delay={i * 50}
               >
-                <summary className="flex items-center justify-between px-4 py-3.5 cursor-pointer list-none hover:bg-white transition-colors">
-                  <span className="font-bold text-brand-text text-xs sm:text-sm pr-3">{faq.q}</span>
-                  <ChevronDown className="h-4 w-4 text-brand-maroon shrink-0 transition-transform duration-200 group-open:rotate-180" />
-                </summary>
-                <div className="px-4 py-3.5 text-xs text-brand-muted leading-relaxed bg-white border-t border-brand-border">
-                  {faq.a}
-                </div>
-              </details>
+                <details className="group border border-brand-border rounded-xl overflow-hidden bg-brand-bg">
+                  <summary className="flex items-center justify-between px-4 py-3.5 cursor-pointer list-none hover:bg-white transition-colors">
+                    <span className="font-bold text-brand-text text-xs sm:text-sm pr-3">{faq.q}</span>
+                    <ChevronDown className="h-4 w-4 text-brand-maroon shrink-0 transition-transform duration-200 group-open:rotate-180" />
+                  </summary>
+                  <div className="px-4 py-3.5 text-xs text-brand-muted leading-relaxed bg-white border-t border-brand-border">
+                    {faq.a}
+                  </div>
+                </details>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 9. Free Academic Consultation Form (Clean Box) */}
-      <section className="py-12 sm:py-16 bg-brand-blush">
+      {/* 9. Free Academic Consultation Form */}
+      <section className="py-12 sm:py-16 bg-brand-blush overflow-hidden">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
-          <div className="space-y-3">
+          <ScrollReveal animation="fade-left" className="space-y-3">
             <span className="inline-block bg-brand-maroon text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
               TALK TO AN ACADEMIC EXPERT
             </span>
@@ -629,17 +662,19 @@ export default async function HomePage() {
                 <span>Campus: {HODU.address}</span>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div className="bg-white border border-brand-border rounded-2xl p-6 shadow-sm">
-            <h3 className="font-serif-editorial font-bold text-brand-maroon text-lg mb-1">
-              Request Free Callback
-            </h3>
-            <p className="text-[11px] text-brand-muted mb-4">
-              Our academic counselor will reach out to you within 2 hours.
-            </p>
-            <EnquiryForm />
-          </div>
+          <ScrollReveal animation="fade-right">
+            <div className="bg-white border border-brand-border rounded-2xl p-6 shadow-sm">
+              <h3 className="font-serif-editorial font-bold text-brand-maroon text-lg mb-1">
+                Request Free Callback
+              </h3>
+              <p className="text-[11px] text-brand-muted mb-4">
+                Our academic counselor will reach out to you within 2 hours.
+              </p>
+              <EnquiryForm />
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
