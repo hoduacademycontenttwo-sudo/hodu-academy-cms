@@ -21,10 +21,6 @@ import {
   HelpCircle,
   Clock,
   Laptop,
-  CalendarDays,
-  MonitorPlay,
-  FileEdit,
-  ClipboardCheck,
 } from 'lucide-react'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
@@ -33,6 +29,8 @@ import BatchHoverCard, { CurriculumTrack } from '@/components/hodu/BatchHoverCar
 import BatchCardsCarousel from '@/components/hodu/BatchCardsCarousel'
 import FeatureCardsCarousel from '@/components/hodu/FeatureCardsCarousel'
 import { parseCarouselRows } from '@/lib/homeCarousel'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Hodu Academy — Premier Coaching for Cambridge IGCSE, IB, CBSE, JEE & NEET | Jaipur',
@@ -101,25 +99,21 @@ const learningFeatures = [
     title: 'Structured Courses',
     subtitle: 'Master every subject, step by step',
     image: '/images/features/structured-courses.png',
-    icon: CalendarDays,
   },
   {
     title: 'Video Lectures',
     subtitle: '1000+ videos made easy to follow',
     image: '/images/features/video-lectures.png',
-    icon: MonitorPlay,
   },
   {
     title: 'Smart Notes',
     subtitle: 'Exam-ready notes, explained simply',
     image: '/images/features/smart-notes.png',
-    icon: FileEdit,
   },
   {
     title: 'Tests & Quizzes',
     subtitle: 'Instant analytics after every attempt',
     image: '/images/features/tests-quizzes.png',
-    icon: ClipboardCheck,
   },
 ]
 
@@ -147,35 +141,52 @@ const faqs = [
 ]
 
 export default async function HomePage() {
-  const supabase = await createClient()
+  let home: any = null
+  let notices: any[] = []
+  let results: any[] = []
+  let carouselRows: any[] = []
+  let dbTestimonials: any[] = []
+  let dbBatches: any[] = []
 
-  const [{ data: home }, { data: notices }, { data: results }, { data: carouselRows }, { data: dbTestimonials }, { data: dbBatches }] = await Promise.all([
-    supabase.from('cms_home_sections').select('*').eq('site_id', HODU_SITE_ID).single(),
-    supabase.from('cms_notices').select('*').eq('site_id', HODU_SITE_ID).eq('is_active', true).limit(4),
-    supabase.from('cms_results').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
-    supabase.from('cms_gallery').select('image_url, caption, sort_order').eq('site_id', HODU_SITE_ID).eq('category', 'Home Carousel').order('sort_order'),
-    supabase.from('cms_testimonials').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
-    supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Homepage Batches').order('sort_order'),
-  ])
+  try {
+    const supabase = await createClient()
+    const [hRes, nRes, rRes, cRes, tRes, bRes] = await Promise.allSettled([
+      supabase.from('cms_home_sections').select('*').eq('site_id', HODU_SITE_ID).single(),
+      supabase.from('cms_notices').select('*').eq('site_id', HODU_SITE_ID).eq('is_active', true).limit(4),
+      supabase.from('cms_results').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
+      supabase.from('cms_gallery').select('image_url, caption, sort_order').eq('site_id', HODU_SITE_ID).eq('category', 'Home Carousel').order('sort_order'),
+      supabase.from('cms_testimonials').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
+      supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Homepage Batches').order('sort_order'),
+    ])
+
+    if (hRes.status === 'fulfilled' && hRes.value?.data) home = hRes.value.data
+    if (nRes.status === 'fulfilled' && nRes.value?.data) notices = nRes.value.data
+    if (rRes.status === 'fulfilled' && rRes.value?.data) results = rRes.value.data
+    if (cRes.status === 'fulfilled' && cRes.value?.data) carouselRows = cRes.value.data
+    if (tRes.status === 'fulfilled' && tRes.value?.data) dbTestimonials = tRes.value.data
+    if (bRes.status === 'fulfilled' && bRes.value?.data) dbBatches = bRes.value.data
+  } catch (err) {
+    console.error('HomePage data fetch error:', err)
+  }
 
   const initialSlides = parseCarouselRows(carouselRows ?? [])
 
   const liveTestimonials = dbTestimonials && dbTestimonials.length > 0
     ? dbTestimonials.map(t => ({
-        initials: t.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase(),
-        name: t.name,
-        score: t.role,
-        text: t.message,
+        initials: (t.name || 'H').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase(),
+        name: t.name || 'Student',
+        score: t.role || 'Hodu Achiever',
+        text: t.message || '',
         photo_url: t.photo_url,
       }))
     : testimonials
 
   const achievers = results && results.length > 0
     ? results.map(r => ({
-        initials: r.student_name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase(),
-        name: r.student_name,
-        pct: r.rank_or_marks,
-        stream: `${r.exam} ${r.year}`,
+        initials: (r.student_name || 'H').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase(),
+        name: r.student_name || 'Student',
+        pct: r.rank_or_marks || 'Top Marks',
+        stream: `${r.exam || ''} ${r.year || ''}`.trim() || 'Hodu Academy',
         school: r.school_name || 'Hodu Academy Alum',
         photo_url: r.photo_url,
       }))

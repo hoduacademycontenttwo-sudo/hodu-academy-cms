@@ -1,13 +1,12 @@
 'use client'
 
 import React, { useState } from 'react'
-import { LucideIcon, BookOpen, Sparkles } from 'lucide-react'
+import { BookOpen, Sparkles, CalendarDays, MonitorPlay, FileEdit, ClipboardCheck } from 'lucide-react'
 
 export interface LearningFeature {
   title: string
   subtitle: string
   image: string
-  icon: LucideIcon
 }
 
 interface FeatureBookCardProps {
@@ -15,9 +14,11 @@ interface FeatureBookCardProps {
   index: number
 }
 
+const icons = [CalendarDays, MonitorPlay, FileEdit, ClipboardCheck]
+
 export default function FeatureBookCard({ feature, index }: FeatureBookCardProps) {
   const [isTouched, setIsTouched] = useState(false)
-  const Icon = feature.icon
+  const Icon = icons[index % icons.length]
 
   return (
     <div
