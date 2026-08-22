@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { CalendarDays, MonitorPlay, FileEdit, ClipboardCheck, ArrowUpRight } from 'lucide-react'
+import { CalendarDays, MonitorPlay, FileEdit, ClipboardCheck, ArrowUpRight, Sparkles } from 'lucide-react'
 
 export interface LearningFeature {
   title: string
@@ -23,56 +23,53 @@ export default function FeatureBookCard({ feature, index }: FeatureBookCardProps
   return (
     <div
       onClick={() => setIsTouched(prev => !prev)}
-      className={`hodu-gold-card group relative w-full h-[410px] sm:h-[430px] p-5 sm:p-6 flex flex-col justify-between items-center cursor-pointer select-none text-white ${
+      className={`hodu-gold-card group relative w-full h-[400px] sm:h-[420px] rounded-3xl overflow-hidden cursor-pointer select-none text-white transition-all duration-500 ${
         isTouched ? 'touched' : ''
       }`}
     >
       {/* ─── Animated Rotating Gold Border on Hover ─── */}
-      <div className="hodu-gold-border" />
+      <div className="hodu-gold-border z-30" />
 
-      {/* ─── Top Header / Tag ─── */}
-      <div className="w-full flex items-center justify-between z-10">
-        <span className="text-[10px] uppercase font-bold tracking-widest text-[#bd9f67] bg-[#bd9f67]/10 border border-[#bd9f67]/30 px-2.5 py-0.5 rounded-full">
-          Feature 0{index + 1}
+      {/* ─── 1. DEFAULT STATE (BEFORE HOVER): Large Icon in Center ─── */}
+      <div className="absolute inset-0 w-full h-full p-6 flex flex-col justify-between items-center transition-all duration-500 group-hover:opacity-0 group-hover:scale-95 z-10">
+        {/* Top Tag & Arrow */}
+        <div className="w-full flex items-center justify-between">
+          <span className="text-[10px] uppercase font-bold tracking-widest text-[#bd9f67] bg-[#bd9f67]/10 border border-[#bd9f67]/30 px-3 py-1 rounded-full flex items-center gap-1">
+            <Sparkles size={10} className="text-[#bd9f67]" />
+            <span>Feature 0{index + 1}</span>
+          </span>
+          <div className="w-7 h-7 rounded-full bg-[#bd9f67]/10 flex items-center justify-center text-[#bd9f67]">
+            <ArrowUpRight size={14} />
+          </div>
+        </div>
+
+        {/* Center Large Glowing Icon */}
+        <div className="flex flex-col items-center justify-center my-auto space-y-4">
+          <div className="relative p-6 sm:p-7 rounded-3xl bg-black/40 border border-[#bd9f67]/40 shadow-2xl">
+            <div className="hodu-logo-trail" />
+            <Icon className="h-16 w-16 sm:h-20 sm:w-20 text-[#bd9f67] drop-shadow-[0_0_15px_rgba(189,159,103,0.4)]" />
+          </div>
+
+          <span className="text-xs font-semibold text-[#bd9f67]/80 uppercase tracking-widest">
+            Hover to view
+          </span>
+        </div>
+
+        {/* Bottom Logo Tag */}
+        <span className="text-[10px] uppercase font-bold text-[#bd9f67]/70 tracking-[4px]">
+          HODU ACADEMY
         </span>
-        <div className="w-6 h-6 rounded-full bg-[#bd9f67]/10 flex items-center justify-center text-[#bd9f67] group-hover:bg-[#bd9f67] group-hover:text-black transition-all duration-300">
-          <ArrowUpRight size={13} className="transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-        </div>
       </div>
 
-      {/* ─── Center Animated Logo / Icon & Typography ─── */}
-      <div className="flex flex-col items-center text-center my-auto z-10 space-y-3 w-full px-2">
-        {/* Animated Gold Icon & Trail */}
-        <div className="relative p-3.5 rounded-2xl bg-black/40 border border-[#bd9f67]/40 shadow-inner group-hover:border-[#bd9f67] group-hover:bg-black/60 transition-all duration-500">
-          <div className="hodu-logo-trail" />
-          <Icon className="h-9 w-9 sm:h-10 sm:w-10 text-[#bd9f67] transform group-hover:scale-110 transition-transform duration-500" />
-        </div>
-
-        {/* Feature Title */}
-        <h3 className="font-serif-editorial font-bold text-xl sm:text-2xl text-white group-hover:text-[#f3e5c8] tracking-tight transition-colors duration-300">
-          {feature.title}
-        </h3>
-
-        {/* Feature Subtitle */}
-        <p className="text-xs sm:text-[13px] text-[#e0c9a6]/80 font-medium leading-relaxed max-w-[210px] mx-auto">
-          {feature.subtitle}
-        </p>
-
-        {/* Preview Thumbnail on Hover */}
-        <div className="w-full max-w-[200px] h-20 sm:h-24 rounded-xl overflow-hidden bg-white/5 border border-[#bd9f67]/20 p-1 mt-1 opacity-75 group-hover:opacity-100 group-hover:scale-105 group-hover:border-[#bd9f67]/60 transition-all duration-500">
-          <img
-            src={feature.image}
-            alt={feature.title}
-            loading="lazy"
-            className="w-full h-full object-contain rounded-lg"
-          />
-        </div>
+      {/* ─── 2. HOVERED STATE (AFTER HOVER): Complete Full Image on Card ─── */}
+      <div className="absolute inset-0 w-full h-full p-2.5 rounded-3xl bg-[#FFF9F9] flex items-center justify-center opacity-0 scale-95 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:scale-100 group-[.touched]:opacity-100 group-[.touched]:scale-100 z-20 overflow-hidden">
+        <img
+          src={feature.image}
+          alt={feature.title}
+          loading="lazy"
+          className="w-full h-full object-contain rounded-2xl transform transition-transform duration-500 group-hover:scale-[1.02]"
+        />
       </div>
-
-      {/* ─── Animated Tracking Gold Bottom Text ─── */}
-      <span className="hodu-bottom-text font-bold">
-        HODU ACADEMY
-      </span>
     </div>
   )
 }
