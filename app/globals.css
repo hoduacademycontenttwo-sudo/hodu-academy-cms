@@ -366,6 +366,26 @@ button[class*="bg-brand-maroon"]:active {
   }
 }
 
+/* ─── Batch Hover Card Expanding Corner Animation ─── */
+.batch-card-wrapper.touched .corner-top-right,
+.batch-card-wrapper.touched .corner-bottom-left {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 1rem !important;
+  opacity: 1 !important;
+}
+
+.batch-card-wrapper.touched > div:first-child {
+  opacity: 0.15 !important;
+}
+
+.batch-card-wrapper.touched > div:last-child {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
+}
+
+
 
 
 

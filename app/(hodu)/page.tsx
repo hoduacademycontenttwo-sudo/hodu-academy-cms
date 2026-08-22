@@ -25,6 +25,7 @@ import {
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
+import BatchHoverCard from '@/components/hodu/BatchHoverCard'
 import { parseCarouselRows } from '@/lib/homeCarousel'
 
 export const metadata = {
@@ -236,67 +237,7 @@ export default async function HomePage() {
               delay={idx * 90}
               className="h-full"
             >
-              <div className="group bg-white border border-brand-border hover:border-brand-maroon rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between h-full">
-                <div>
-                  {/* Minimal Banner Image with clean floating badges */}
-                  <div className="relative h-48 overflow-hidden bg-neutral-100">
-                    <img
-                      src={track.img}
-                      alt={track.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-
-                    {/* Top-Left Floating Badge */}
-                    <div className="absolute top-3.5 left-3.5">
-                      <span className="bg-white/95 backdrop-blur-md text-brand-maroon text-[11px] font-extrabold px-3 py-1 rounded-full border border-brand-border shadow-xs uppercase tracking-wider">
-                        {track.tag}
-                      </span>
-                    </div>
-
-                    {/* Bottom-Left Grade Pill */}
-                    <div className="absolute bottom-3 left-3.5">
-                      <span className="bg-black/60 backdrop-blur-xs text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-md border border-white/20">
-                        {track.grades}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Card Body */}
-                  <div className="p-6 space-y-3">
-                    <h3 className="font-bold text-lg text-brand-text group-hover:text-brand-maroon transition-colors line-clamp-1">
-                      {track.title}
-                    </h3>
-                    <p className="text-xs text-brand-muted leading-relaxed line-clamp-2">
-                      {track.desc}
-                    </p>
-
-                    {/* Minimal 3-Tag Highlights */}
-                    <div className="flex flex-wrap gap-1.5 pt-3 border-t border-brand-border/60">
-                      {track.features.slice(0, 3).map((feat, fIdx) => (
-                        <span
-                          key={fIdx}
-                          className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-brand-text bg-brand-bg px-2.5 py-1 rounded-lg border border-brand-border/50"
-                        >
-                          <CheckCircle2 className="h-3 w-3 text-brand-maroon shrink-0" />
-                          <span>{feat}</span>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Minimal Clean Action Link */}
-                <div className="p-6 pt-0">
-                  <Link
-                    href={track.href}
-                    className="w-full bg-brand-bg group-hover:bg-brand-maroon text-brand-maroon group-hover:text-white border border-brand-border group-hover:border-brand-maroon font-bold py-2.5 px-4 rounded-xl text-center flex items-center justify-between text-xs tracking-wider uppercase transition-all duration-200 shadow-2xs"
-                  >
-                    <span>Explore Program</span>
-                    <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </div>
+              <BatchHoverCard track={track} />
             </ScrollReveal>
           ))}
         </div>
