@@ -309,13 +309,22 @@ export default async function HomePage() {
       <section className="py-12 sm:py-16 bg-brand-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
-            <div className="text-center mb-10">
+            <div className="text-center mb-8 sm:mb-10 space-y-3">
               <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
                 Our Star Performers & Rankers
               </h2>
-              <p className="text-xs sm:text-sm text-brand-muted mt-1 max-w-md mx-auto">
+              <p className="text-xs sm:text-sm text-brand-muted max-w-md mx-auto">
                 Real results from dedicated students who prepared with Hodu Academy.
               </p>
+              <div className="pt-1">
+                <Link
+                  href="/results"
+                  className="group inline-flex items-center gap-2 bg-white border border-[#bd9f67]/40 hover:border-brand-maroon text-brand-maroon hover:bg-brand-maroon hover:text-white font-bold text-xs uppercase tracking-wider px-5 py-2 rounded-xl transition-all duration-300 shadow-xs hover:shadow-md hover:-translate-y-0.5"
+                >
+                  <span>View All Achievers</span>
+                  <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </div>
           </ScrollReveal>
 
