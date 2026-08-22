@@ -21,6 +21,10 @@ import {
   HelpCircle,
   Clock,
   Laptop,
+  CalendarDays,
+  MonitorPlay,
+  FileEdit,
+  ClipboardCheck,
 } from 'lucide-react'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
@@ -90,34 +94,30 @@ const curriculumTracks = [
   }
 ]
 
-const whyChooseUs = [
+const learningFeatures = [
   {
-    num: '01',
-    icon: Users,
-    title: '1:12 Small Interactive Batches',
-    badge: 'Personalized Focus',
-    desc: 'Intimate batches ensure individual faculty attention, continuous micro-assessments, and active student participation in every single session.',
+    title: 'Structured Courses',
+    subtitle: 'Master every subject, step by step',
+    image: '/images/features/structured-courses.png',
+    icon: CalendarDays,
   },
   {
-    num: '02',
-    icon: HelpCircle,
-    title: 'Daily 1-on-1 Doubt Desks',
-    badge: '4:00 – 7:30 PM Daily',
-    desc: 'Dedicated private doubt-clearing sessions daily with senior subject faculties. No pending questions carry over to the next lecture.',
+    title: 'Video Lectures',
+    subtitle: '1000+ videos made easy to follow',
+    image: '/images/features/video-lectures.png',
+    icon: MonitorPlay,
   },
   {
-    num: '03',
-    icon: Laptop,
-    title: 'Smart Learning & CBT Labs',
-    badge: 'Exam-Ready Testing',
-    desc: 'Modern digital classrooms with Computer-Based Test simulations, past paper decoders, and real-time chapter analytics sent to parents.',
+    title: 'Smart Notes',
+    subtitle: 'Exam-ready notes, explained simply',
+    image: '/images/features/smart-notes.png',
+    icon: FileEdit,
   },
   {
-    num: '04',
-    icon: Award,
-    title: 'Expert Educator Faculty',
-    badge: '10–25+ Yrs Exp',
-    desc: 'Seasoned subject masters specializing in Cambridge IGCSE, IB DP, CBSE, and JEE/NEET with proven track records of top percentiles.',
+    title: 'Tests & Quizzes',
+    subtitle: 'Instant analytics after every attempt',
+    image: '/images/features/tests-quizzes.png',
+    icon: ClipboardCheck,
   },
 ]
 
@@ -269,122 +269,70 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 4. Why Choose Hodu Academy (The Hodu Learning Edge) */}
-      <section className="relative py-16 sm:py-24 bg-gradient-to-b from-white via-brand-blush/20 to-white border-y border-brand-border overflow-hidden">
+      {/* 4. Everything You Need To Ace Your Exam In One Place */}
+      <section className="relative py-16 sm:py-24 bg-white border-y border-brand-border/60 overflow-hidden">
         {/* Subtle decorative background glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-brand-maroon/5 blur-[120px] rounded-full pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <ScrollReveal animation="fade-up">
-            <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-              <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full mb-3 shadow-xs">
-                <Sparkles className="h-3.5 w-3.5 text-amber-300" />
-                <span>WHY CHOOSE US</span>
-              </div>
-              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight">
-                The Hodu Learning Edge
+            <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
+              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-[2.65rem] font-bold text-brand-text tracking-tight leading-tight">
+                Everything You Need To{' '}
+                <span className="relative inline-block text-brand-maroon">
+                  Ace
+                  <span className="absolute -bottom-1.5 left-0 right-0 h-1 bg-brand-crimson rounded-full" />
+                </span>{' '}
+                Your Exam In One Place
               </h2>
-              <p className="text-xs sm:text-sm text-brand-muted mt-2 leading-relaxed">
-                A student-first academic ecosystem engineered for deep conceptual mastery and top international ranks.
+              <p className="text-xs sm:text-sm md:text-base text-brand-muted leading-relaxed max-w-2xl mx-auto">
+                Learn from Syllabus - Focused content and stay fully exam ready.
               </p>
             </div>
           </ScrollReveal>
 
-          {/* 4 Feature Cards with Alternate Directional Pans */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {whyChooseUs.map((item, idx) => {
+          {/* 4 Feature Illustration Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7">
+            {learningFeatures.map((item, idx) => {
               const Icon = item.icon
-              const animDirection = idx < 2 ? 'fade-left' : 'fade-right'
               return (
                 <ScrollReveal
                   key={idx}
-                  animation={animDirection}
-                  delay={(idx % 2) * 120}
+                  animation="fade-up"
+                  delay={idx * 100}
                   className="h-full"
                 >
-                  <div className="group relative bg-white border border-brand-border/80 hover:border-brand-maroon/80 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl flex flex-col justify-between overflow-hidden h-full">
-                    {/* Top hover accent bar */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-maroon via-brand-crimson to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="group relative bg-[#FFF9F9] border border-[#F6DFDF] hover:border-brand-maroon/40 rounded-3xl p-5 pt-8 flex flex-col justify-between items-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl overflow-hidden h-full">
+                    {/* Top Circular Maroon Icon Badge */}
+                    <div className="w-14 h-14 rounded-full bg-[#7E0D0D] text-white flex items-center justify-center mb-4 shadow-md group-hover:scale-110 group-hover:bg-[#922222] transition-all duration-300">
+                      <Icon className="h-6 w-6" />
+                    </div>
 
-                    {/* Watermark Index Number */}
-                    <span className="absolute top-4 right-4 font-serif text-3xl font-black text-brand-maroon/10 group-hover:text-brand-maroon/20 transition-colors pointer-events-none select-none">
-                      {item.num}
-                    </span>
+                    {/* Card Title */}
+                    <h3 className="font-serif-editorial font-bold text-xl text-[#7E0D0D] text-center mb-1 group-hover:text-brand-crimson transition-colors">
+                      {item.title}
+                    </h3>
 
-                    <div>
-                      {/* Icon container */}
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-maroon to-brand-crimson text-white flex items-center justify-center mb-5 shadow-md shadow-brand-maroon/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                        <Icon className="h-6 w-6" />
-                      </div>
+                    {/* Card Subtitle */}
+                    <p className="text-xs text-[#9B6B6B] text-center font-medium leading-relaxed mb-4 px-2 min-h-[32px] flex items-center justify-center">
+                      {item.subtitle}
+                    </p>
 
-                      {/* Badge chip */}
-                      <span className="inline-block bg-brand-bg text-brand-maroon text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-brand-border mb-2.5">
-                        {item.badge}
-                      </span>
-
-                      {/* Card title */}
-                      <h3 className="font-bold text-base text-brand-text group-hover:text-brand-maroon transition-colors mb-2">
-                        {item.title}
-                      </h3>
-
-                      {/* Card description */}
-                      <p className="text-xs text-brand-muted leading-relaxed">
-                        {item.desc}
-                      </p>
+                    {/* Card Illustration Image */}
+                    <div className="w-full mt-auto pt-2 flex items-end justify-center">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        loading="lazy"
+                        className="w-full h-auto max-h-56 object-contain transform group-hover:scale-105 transition-transform duration-500 rounded-b-2xl"
+                      />
                     </div>
                   </div>
                 </ScrollReveal>
               )
             })}
           </div>
-
-          {/* Enhanced Stats Strip */}
-          <ScrollReveal animation="zoom-in" delay={150}>
-            <div className="mt-12 sm:mt-16 bg-white border border-brand-border rounded-2xl p-6 sm:p-8 shadow-xs">
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 divide-y lg:divide-y-0 lg:divide-x divide-brand-border/70 text-center">
-                <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
-                  <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
-                    15,000+
-                  </span>
-                  <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
-                    Students Mentored
-                  </span>
-                  <span className="text-[11px] text-brand-muted mt-0.5">Across All Programs</span>
-                </div>
-
-                <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
-                  <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
-                    1 : 12
-                  </span>
-                  <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
-                    Teacher-Student Ratio
-                  </span>
-                  <span className="text-[11px] text-brand-muted mt-0.5">Strict Batch Cap</span>
-                </div>
-
-                <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
-                  <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
-                    99.4%
-                  </span>
-                  <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
-                    Highest Board Score
-                  </span>
-                  <span className="text-[11px] text-brand-muted mt-0.5">Top Jaipur Ranks</span>
-                </div>
-
-                <div className="pt-4 lg:pt-0 lg:px-4 flex flex-col items-center justify-center">
-                  <span className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-black text-brand-maroon tracking-tight block">
-                    100%
-                  </span>
-                  <span className="text-xs font-bold text-neutral-700 uppercase tracking-wider mt-1 block">
-                    Past Papers Solved
-                  </span>
-                  <span className="text-[11px] text-brand-muted mt-0.5">15-Year Question Banks</span>
-                </div>
-              </div>
-            </div>
-          </ScrollReveal>
         </div>
       </section>
 
