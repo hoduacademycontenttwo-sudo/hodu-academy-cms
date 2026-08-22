@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import {
   LayoutDashboard, BookOpen, Users, Trophy, Image, MessageSquare,
   Bell, FileText, Phone, Settings, LogOut, Menu, X, ChevronRight, Home, Newspaper,
-  Search, ExternalLink, ListTree,
+  Search, ExternalLink, ListTree, Building2,
 } from 'lucide-react'
 
 const navGroups: { title: string; items: { label: string; href: string; icon: any; keywords?: string }[] }[] = [
@@ -21,6 +21,7 @@ const navGroups: { title: string; items: { label: string; href: string; icon: an
     title: 'Website Content',
     items: [
       { label: 'Home Content', href: '/admin/home',    icon: Home,     keywords: 'hero stats banner cta' },
+      { label: 'Jaipur Campus', href: '/admin/campus', icon: Building2, keywords: 'jaipur campus offline video tour classroom center batch' },
       { label: 'Courses',      href: '/admin/courses', icon: BookOpen, keywords: 'batch program class' },
       { label: 'Faculty',      href: '/admin/faculty', icon: Users,    keywords: 'teacher staff educator' },
       { label: 'Results',      href: '/admin/results', icon: Trophy,   keywords: 'topper rank achiever' },
