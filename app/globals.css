@@ -32,6 +32,30 @@
   --animate-fade-in: fade-in 0.3s ease-out;
   --animate-slide-up: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   --animate-marquee: marquee 35s linear infinite;
+  --animate-navbar-reveal: navbar-reveal 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-hero-reveal: hero-reveal 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes navbar-reveal {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -32px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-reveal {
+  0% {
+    opacity: 0;
+    transform: scale3d(0.96, 0.96, 1) translate3d(0, 36px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
+  }
 }
 
 @keyframes fade-in {

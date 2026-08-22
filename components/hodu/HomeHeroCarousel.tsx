@@ -55,7 +55,7 @@ export default function HomeHeroCarousel({
   }, [next, paused, bannerSlides.length])
 
   return (
-    <section className="w-full max-w-full overflow-hidden bg-brand-maroon relative">
+    <section className="w-full max-w-full overflow-hidden bg-brand-maroon relative animate-hero-reveal">
       <div
         className="relative w-full min-h-[160px] sm:min-h-[220px] md:min-h-[280px] lg:min-h-[340px] aspect-[16/9] sm:aspect-[21/9] md:aspect-[1920/700] overflow-hidden bg-gradient-to-r from-brand-maroon via-brand-crimson to-brand-wine"
         onMouseEnter={() => setPaused(true)}
