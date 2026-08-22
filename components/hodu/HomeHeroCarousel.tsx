@@ -55,18 +55,27 @@ export default function HomeHeroCarousel({
   }, [next, paused, bannerSlides.length])
 
   return (
-    <section className="w-full max-w-full overflow-hidden bg-neutral-900 relative">
+    <section className="w-full max-w-full overflow-hidden bg-brand-maroon relative">
       <div
-        className="relative w-full aspect-[1920/700] overflow-hidden bg-neutral-950"
+        className="relative w-full aspect-[1920/700] overflow-hidden bg-gradient-to-r from-brand-maroon via-brand-crimson to-brand-wine"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
+        {/* Subtle background brand glow placeholder */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+          <div className="text-white text-2xl sm:text-4xl font-serif font-black tracking-widest uppercase">
+            Hodu Academy
+          </div>
+        </div>
+
         {/* Full-width 1920x700 aspect ratio banner image */}
         {bannerSlides.map((s, idx) => (
           <img
             key={idx}
             src={s.image}
             alt={`Banner ${idx + 1}`}
+            loading={idx === 0 ? 'eager' : 'lazy'}
+            fetchPriority={idx === 0 ? 'high' : 'auto'}
             className={`w-full h-full object-cover object-center absolute inset-0 transition-opacity duration-500 ${
               idx === current ? 'opacity-100' : 'opacity-0 pointer-events-none'
             }`}
