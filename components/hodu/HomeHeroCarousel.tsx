@@ -16,9 +16,8 @@ interface HomeHeroCarouselProps {
 
 const hardcodedSlides: { image: string; mediaType?: 'image' | 'video'; videoUrl?: string }[] = [
   {
-    image: 'https://drive.google.com/file/d/1_9DnITQYv8vS97GrxYzsRf3q7uBiAETq/view?usp=sharing',
-    mediaType: 'video',
-    videoUrl: 'https://drive.google.com/file/d/1_9DnITQYv8vS97GrxYzsRf3q7uBiAETq/view?usp=sharing',
+    image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1920&h=700&fit=crop&auto=format',
+    mediaType: 'image',
   },
   {
     image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1920&h=700&fit=crop&auto=format',

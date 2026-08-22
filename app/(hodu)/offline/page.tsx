@@ -164,17 +164,28 @@ export default async function OfflinePage() {
               </div>
             </div>
 
-            {/* Right Campus Snapshot */}
+            {/* Right Campus Video Tour Embed */}
             <div className="lg:col-span-5">
-              <div className="relative rounded-2xl overflow-hidden border border-white/20 bg-white/10 p-2">
-                <img
-                  src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&h=600&fit=crop&auto=format"
-                  alt="Hodu Academy Jaipur Campus"
-                  className="w-full h-80 sm:h-96 object-cover rounded-xl"
-                />
-                <div className="p-4 bg-white text-brand-text rounded-lg mt-2">
-                  <span className="text-[11px] font-bold text-brand-maroon uppercase tracking-wider block">Jaipur Main Hub</span>
-                  <p className="text-xs font-medium text-brand-muted">{HODU.address}</p>
+              <div className="relative rounded-2xl overflow-hidden border border-white/20 bg-white/10 p-2.5 shadow-2xl backdrop-blur-xs">
+                <div className="relative w-full aspect-video sm:h-80 lg:h-96 rounded-xl overflow-hidden bg-black shadow-inner">
+                  <iframe
+                    src="https://drive.google.com/file/d/1_9DnITQYv8vS97GrxYzsRf3q7uBiAETq/preview"
+                    title="Hodu Academy Jaipur Campus Video Tour"
+                    className="w-full h-full border-0 absolute inset-0"
+                    allow="autoplay; encrypted-media; fullscreen"
+                    allowFullScreen
+                  />
+                </div>
+                <div className="p-3.5 bg-white text-brand-text rounded-xl mt-2.5 flex items-center justify-between shadow-xs">
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-[11px] font-extrabold text-brand-maroon uppercase tracking-wider block">
+                        Jaipur Campus Video Tour
+                      </span>
+                    </div>
+                    <p className="text-xs font-medium text-brand-muted">{HODU.address}</p>
+                  </div>
                 </div>
               </div>
             </div>

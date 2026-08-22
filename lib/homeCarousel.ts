@@ -66,9 +66,8 @@ export function parseMediaUrl(url: string): { type: 'google_drive' | 'youtube' |
 }
 
 export const defaultFallbackSlide: CarouselSlide = {
-  image: 'https://drive.google.com/file/d/1_9DnITQYv8vS97GrxYzsRf3q7uBiAETq/view?usp=sharing',
-  mediaType: 'video',
-  videoUrl: 'https://drive.google.com/file/d/1_9DnITQYv8vS97GrxYzsRf3q7uBiAETq/view?usp=sharing',
+  image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1920&h=700&fit=crop&auto=format',
+  mediaType: 'image',
   headingHtml: `${toHtml('Everything You Need To ')}<span style="color:#921E1F">Ace Your Exam In Place</span>`,
   subtitleHtml: toHtml('Top faculty · Live & recorded classes · Test series · Personal mentoring — all in one place.', '#475569'),
   headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light',
