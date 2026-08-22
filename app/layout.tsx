@@ -50,6 +50,11 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${playfair.variable} ${openSans.variable} ${outfit.variable} h-full antialiased font-sans`}
     >
+      <head>
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+      </head>
       <body className="min-h-full flex flex-col font-sans bg-brand-bg text-brand-text selection:bg-brand-maroon selection:text-white overflow-x-hidden max-w-full w-full">
         <InitialPageLoader minDuration={2200} />
         {children}
