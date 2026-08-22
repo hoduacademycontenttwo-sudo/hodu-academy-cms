@@ -231,15 +231,6 @@ export default async function HomePage() {
         <ScrollReveal animation="fade-up">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-6">
             <div className="space-y-3 max-w-3xl">
-              {/* Animated Floating Pill */}
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-blush via-white to-brand-blush text-brand-maroon border border-brand-border px-3.5 py-1.5 rounded-full text-xs font-bold shadow-2xs">
-                <span className="flex h-2 w-2 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-maroon opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-maroon"></span>
-                </span>
-                <span className="tracking-wider uppercase text-[11px] font-extrabold">Admissions Open · Cohorts 2026–27</span>
-              </div>
-
               {/* High-Impact Editorial Heading with Accent Gradient */}
               <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-brand-maroon leading-[1.18] tracking-tight">
                 Explore Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-maroon via-brand-crimson to-brand-wine">Academic Cohorts</span>
