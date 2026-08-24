@@ -1,8 +1,8 @@
-// Hodu Academy - Advanced Offline & Slow-Network Resilient Service Worker
-const STATIC_CACHE = 'hodu-static-v1.3'
-const IMAGE_CACHE = 'hodu-images-v1.3'
-const PAGE_CACHE = 'hodu-pages-v1.3'
-const DATA_CACHE = 'hodu-data-v1.3'
+// Hodu Academy - Instant-Load Offline & Slow-Network Service Worker Engine
+const STATIC_CACHE = 'hodu-static-v1.4'
+const IMAGE_CACHE = 'hodu-images-v1.4'
+const PAGE_CACHE = 'hodu-pages-v1.4'
+const DATA_CACHE = 'hodu-data-v1.4'
 
 const CRITICAL_PRECACHE = [
   '/',
@@ -39,23 +39,7 @@ const CRITICAL_PRECACHE = [
   '/images/join_our_team_2.png',
 ]
 
-// Helper: Fast Network with Timeout for Slow Connections
-function fetchWithTimeout(request, timeoutMs = 2200) {
-  return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error('Slow Network Timeout')), timeoutMs)
-    fetch(request)
-      .then((response) => {
-        clearTimeout(timer)
-        resolve(response)
-      })
-      .catch((err) => {
-        clearTimeout(timer)
-        reject(err)
-      })
-  })
-}
-
-// 1. Install: Pre-cache critical viewer pages, admin routes, and all visual graphics
+// 1. Install: Pre-cache critical pages, images, and routes
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => {
@@ -72,7 +56,7 @@ self.addEventListener('install', (event) => {
   )
 })
 
-// 2. Activate: Purge old cache versions and claim immediate control
+// 2. Activate: Delete older cache versions and claim immediate control
 self.addEventListener('activate', (event) => {
   const currentCaches = [STATIC_CACHE, IMAGE_CACHE, PAGE_CACHE, DATA_CACHE]
   event.waitUntil(
@@ -88,15 +72,14 @@ self.addEventListener('activate', (event) => {
   )
 })
 
-// 3. Fetch Routing Strategy (Optimized for Offline & Slow Network)
+// 3. Fetch Routing Strategy (Cache-First / Stale-While-Revalidate for Instant 0ms Renders)
 self.addEventListener('fetch', (event) => {
   const req = event.request
   const url = new URL(req.url)
 
-  // Skip non-GET and chrome-extension schemes
   if (req.method !== 'GET' || !url.protocol.startsWith('http')) return
 
-  // A. Images (Local, Supabase Storage, and Unsplash) -> Cache First with background refresh
+  // A. Images -> Cache First (Instant load) with background update
   if (
     req.destination === 'image' ||
     url.pathname.match(/\.(png|jpg|jpeg|webp|svg|gif|ico)$/i) ||
@@ -106,7 +89,7 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       caches.match(req).then((cached) => {
         if (cached) return cached
-        return fetchWithTimeout(req, 3000)
+        return fetch(req)
           .then((networkRes) => {
             if (networkRes.status === 200 || networkRes.type === 'opaque') {
               const resClone = networkRes.clone()
@@ -114,59 +97,54 @@ self.addEventListener('fetch', (event) => {
             }
             return networkRes
           })
-          .catch(() => {
-            return caches.match('/favicon.png')
-          })
+          .catch(() => caches.match('/favicon.png'))
       })
     )
     return
   }
 
-  // B. Supabase REST API & Data Fetching -> Fast Network First with Data Cache fallback
-  if (url.hostname.includes('supabase.co') && url.pathname.includes('/rest/v1/')) {
-    event.respondWith(
-      fetchWithTimeout(req, 2000)
-        .then((networkRes) => {
-          if (networkRes.ok) {
-            const resClone = networkRes.clone()
-            caches.open(DATA_CACHE).then((cache) => cache.put(req, resClone))
-          }
-          return networkRes
-        })
-        .catch(() => {
-          return caches.match(req).then((cached) => {
-            if (cached) return cached
-            return new Response(JSON.stringify({ data: [], error: 'Offline cached data unavailable' }), {
-              headers: { 'Content-Type': 'application/json' },
-            })
-          })
-        })
-    )
-    return
-  }
-
-  // C. HTML Navigation Requests (Viewer & Admin Portal Pages) -> Fast Network First with Page Cache fallback
+  // B. HTML Navigation / Page Routes -> Stale-While-Revalidate / Cache-First (Instant 0ms Page Delivery)
   if (req.mode === 'navigate' || req.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
-      fetchWithTimeout(req, 2200)
-        .then((networkRes) => {
-          if (networkRes.ok) {
-            const resClone = networkRes.clone()
-            caches.open(PAGE_CACHE).then((cache) => cache.put(req, resClone))
-          }
-          return networkRes
-        })
-        .catch(() => {
-          return caches.match(req).then((cached) => {
-            if (cached) return cached
-            return caches.match('/')
+      caches.match(req).then((cached) => {
+        const fetchPromise = fetch(req)
+          .then((networkRes) => {
+            if (networkRes.ok) {
+              const resClone = networkRes.clone()
+              caches.open(PAGE_CACHE).then((cache) => cache.put(req, resClone))
+            }
+            return networkRes
           })
-        })
+          .catch(() => null)
+
+        // Return cached page instantly (0ms latency, eliminates 3G / slow net lag)
+        return cached || fetchPromise || caches.match('/')
+      })
     )
     return
   }
 
-  // D. Static Next.js JS Bundles, CSS, and Fonts -> Stale While Revalidate
+  // C. Supabase REST API -> Stale While Revalidate
+  if (url.hostname.includes('supabase.co') && url.pathname.includes('/rest/v1/')) {
+    event.respondWith(
+      caches.match(req).then((cached) => {
+        const fetchPromise = fetch(req)
+          .then((networkRes) => {
+            if (networkRes.ok) {
+              const resClone = networkRes.clone()
+              caches.open(DATA_CACHE).then((cache) => cache.put(req, resClone))
+            }
+            return networkRes
+          })
+          .catch(() => null)
+
+        return cached || fetchPromise
+      })
+    )
+    return
+  }
+
+  // D. Static Next.js Bundles, CSS, Fonts -> Stale While Revalidate
   event.respondWith(
     caches.match(req).then((cached) => {
       const fetchPromise = fetch(req)
