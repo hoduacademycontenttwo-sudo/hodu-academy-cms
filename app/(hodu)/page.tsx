@@ -338,10 +338,7 @@ export default async function HomePage() {
       <section className="py-10 sm:py-16 bg-white border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
-            <div className="text-center mb-6 sm:mb-10 space-y-2">
-              <span className="inline-block bg-brand-blush border border-brand-border text-brand-maroon text-[11px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-xs">
-                JAIPUR CAMPUS
-              </span>
+            <div className="text-center mb-6 sm:mb-10">
               <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
                 Jaipur’s New Destination for Learning
               </h2>
