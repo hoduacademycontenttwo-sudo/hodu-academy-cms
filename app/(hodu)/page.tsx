@@ -337,9 +337,18 @@ export default async function HomePage() {
       {/* 6. Jaipur Physical Learning Center */}
       <section className="py-12 sm:py-16 bg-white border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-brand-bg border border-brand-border rounded-2xl p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center">
-            <ScrollReveal animation="fade-left" className="lg:col-span-7 space-y-4">
-              <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+          <div className="relative overflow-hidden bg-brand-bg/80 border border-brand-border rounded-2xl p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center shadow-xs">
+            {/* Decorative Background Illustration from Google Drive */}
+            <div className="absolute right-2 sm:right-6 bottom-0 pointer-events-none opacity-20 sm:opacity-25 w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 z-0 flex items-end justify-end">
+              <img
+                src="/images/counsellor_image_offline.png"
+                alt=""
+                className="w-full h-full object-contain object-bottom-right select-none"
+              />
+            </div>
+
+            <ScrollReveal animation="fade-left" className="relative z-10 lg:col-span-7 space-y-4">
+              <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
                 <Building2 className="h-3.5 w-3.5" />
                 <span>JAIPUR OFFLINE CENTER</span>
               </div>
@@ -372,14 +381,14 @@ export default async function HomePage() {
               <div className="pt-2 flex flex-wrap gap-3">
                 <Link
                   href="/offline"
-                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-semibold px-5 py-2.5 rounded-lg text-xs transition-colors flex items-center gap-1.5"
+                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-semibold px-5 py-2.5 rounded-lg text-xs transition-colors flex items-center gap-1.5 shadow-xs"
                 >
                   <span>Explore Center Facilities</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
                 <Link
                   href="/contact"
-                  className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-semibold px-4 py-2.5 rounded-lg text-xs transition-colors flex items-center gap-1.5"
+                  className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-semibold px-4 py-2.5 rounded-lg text-xs transition-colors flex items-center gap-1.5 shadow-xs"
                 >
                   <MapPin className="h-3.5 w-3.5" />
                   <span>Book Free Campus Visit</span>
@@ -387,7 +396,7 @@ export default async function HomePage() {
               </div>
             </ScrollReveal>
 
-            <ScrollReveal animation="fade-right" className="lg:col-span-5">
+            <ScrollReveal animation="fade-right" className="relative z-10 lg:col-span-5">
               <div className="rounded-xl overflow-hidden border border-brand-border bg-white shadow-xs">
                 <img
                   src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&h=380&fit=crop&auto=format"
