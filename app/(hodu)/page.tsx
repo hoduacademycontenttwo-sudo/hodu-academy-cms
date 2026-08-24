@@ -394,55 +394,55 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 7. Regular Parent Updates & PTM Section */}
-      <section className="py-10 sm:py-16 bg-brand-bg border-y border-brand-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ScrollReveal animation="fade-up">
-            <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-brand-border shadow-md bg-[#250607] group">
-              {/* Full PTM Banner Graphic from Google Drive */}
-              <img
-                src="/images/ptm_section_bg.png"
-                alt="Regular Parent Updates & PTM Sessions at Hodu Academy"
-                className="w-full h-auto aspect-[1920/700] object-cover sm:object-contain object-center block select-none"
-              />
+      {/* 7. Regular Parent Updates & PTM Section - Full Width Complete Section BG */}
+      <section className="relative w-full overflow-hidden bg-[#200506] border-y border-brand-border">
+        {/* Full Bleed Background Graphic */}
+        <div className="w-full relative">
+          <img
+            src="/images/ptm_section_bg.png"
+            alt="Regular Parent Updates & PTM Sessions at Hodu Academy"
+            className="w-full h-auto object-cover object-center block select-none"
+          />
 
-              {/* Desktop Floating Action Buttons */}
-              <div className="hidden md:flex absolute bottom-5 left-5 lg:bottom-7 lg:left-7 z-10 items-center gap-3">
+          {/* Desktop Floating Action Buttons aligned within standard max-width container */}
+          <div className="hidden md:flex absolute inset-0 pointer-events-none items-end pb-8 lg:pb-12">
+            <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="pointer-events-auto flex items-center gap-3.5">
                 <Link
                   href="/ptm"
-                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-bold px-6 py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2 border border-white/20"
+                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-bold px-6 py-3 rounded-xl text-xs sm:text-sm transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 flex items-center gap-2 border border-white/25 backdrop-blur-xs"
                 >
                   <span>Explore PTM Gallery</span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   href="/contact"
-                  className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2"
+                  className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-bold px-5 py-3 rounded-xl text-xs sm:text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2"
                 >
                   <Users className="h-4 w-4 text-brand-maroon" />
                   <span>Book Parent Consultation</span>
                 </Link>
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Mobile Action Buttons (Neatly below graphic) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3.5 md:hidden">
-              <Link
-                href="/ptm"
-                className="w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-2.5 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-2 shadow-xs transition-colors"
-              >
-                <span>Explore PTM Gallery</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-              <Link
-                href="/contact"
-                className="w-full bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-bold py-2.5 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-2 shadow-2xs transition-colors"
-              >
-                <Users className="h-3.5 w-3.5 text-brand-maroon" />
-                <span>Book Parent Consultation</span>
-              </Link>
-            </div>
-          </ScrollReveal>
+        {/* Mobile Action Buttons (Displayed neatly beneath the graphic on mobile) */}
+        <div className="p-4 md:hidden bg-[#180304] border-t border-brand-maroon/30 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <Link
+            href="/ptm"
+            className="w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-2.5 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-2 shadow-xs transition-colors border border-white/10"
+          >
+            <span>Explore PTM Gallery</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+          <Link
+            href="/contact"
+            className="w-full bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-bold py-2.5 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-2 shadow-2xs transition-colors"
+          >
+            <Users className="h-3.5 w-3.5 text-brand-maroon" />
+            <span>Book Parent Consultation</span>
+          </Link>
         </div>
       </section>
 
