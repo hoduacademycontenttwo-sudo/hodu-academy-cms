@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from 'react'
 import { Search, Trophy, Sparkles, Filter, Award, GraduationCap } from 'lucide-react'
 import ResultRankerCard, { Ranker } from './ResultRankerCard'
+import ScrollReveal from './ScrollReveal'
 
 interface ResultsDirectoryProps {
   results: Ranker[]
@@ -125,9 +126,9 @@ export default function ResultsDirectory({ results }: ResultsDirectoryProps) {
       {filteredResults.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5">
           {filteredResults.map((ranker, idx) => (
-            <div key={idx} className="h-full">
+            <ScrollReveal key={idx} animation="zoom-in" delay={(idx % 6) * 55} className="h-full">
               <ResultRankerCard ranker={ranker} />
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       ) : (

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Phone, MapPin, CheckCircle2, Clock, Calendar, Bus, BookOpen, Building2, ArrowRight, Laptop, Smartphone, Target, School } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
+import ScrollReveal from '@/components/hodu/ScrollReveal'
 import { parseMediaUrl } from '@/lib/homeCarousel'
 
 export const metadata = {
@@ -275,52 +276,55 @@ export default async function OfflinePage() {
       </section>
 
       {/* Campus Infrastructure */}
-      <section className="reveal py-16 sm:py-20 bg-brand-bg">
+      <section className="py-16 sm:py-20 bg-brand-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-3">
-              FACILITIES
-            </span>
-            <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon tracking-tight">
-              Campus Infrastructure
-            </h2>
-            <p className="text-sm text-brand-muted mt-2 max-w-xl mx-auto leading-relaxed">
-              Designed for concentration, collaboration, and individual faculty access.
-            </p>
-          </div>
+          <ScrollReveal animation="fade-up">
+            <div className="text-center mb-12 sm:mb-16">
+              <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-3">
+                FACILITIES
+              </span>
+              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon tracking-tight">
+                Campus Infrastructure
+              </h2>
+              <p className="text-sm text-brand-muted mt-2 max-w-xl mx-auto leading-relaxed">
+                Designed for concentration, collaboration, and individual faculty access.
+              </p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {campusFacilities.map(item => {
+            {campusFacilities.map((item, idx) => {
               const IconComp = item.icon
               return (
-                <div key={item.title}
-                  className="rounded-2xl border border-brand-border bg-white shadow-xs hover:border-brand-maroon transition-all duration-300 flex flex-col justify-between overflow-hidden">
-                  
-                  {/* Photo Top */}
-                  <div className="relative h-44 overflow-hidden border-b border-brand-border">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <span className="absolute top-3 left-3 bg-brand-maroon text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded">
-                      {item.tag}
-                    </span>
-                  </div>
+                <ScrollReveal key={item.title} animation="fade-up" delay={idx * 80} className="h-full">
+                  <div className="rounded-2xl border border-brand-border bg-white shadow-xs hover:border-brand-maroon hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between overflow-hidden h-full">
+                    
+                    {/* Photo Top */}
+                    <div className="relative h-44 overflow-hidden border-b border-brand-border">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <span className="absolute top-3 left-3 bg-brand-maroon text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded">
+                        {item.tag}
+                      </span>
+                    </div>
 
-                  {/* Text Content */}
-                  <div className="p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <IconComp className="h-4 w-4 text-brand-maroon shrink-0" />
-                        <h3 className="font-bold text-brand-text text-base">
-                          {item.title}
-                        </h3>
+                    {/* Text Content */}
+                    <div className="p-5 flex-1 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <IconComp className="h-4 w-4 text-brand-maroon shrink-0" />
+                          <h3 className="font-bold text-brand-text text-base">
+                            {item.title}
+                          </h3>
+                        </div>
+                        <p className="text-xs text-brand-muted leading-relaxed">{item.desc}</p>
                       </div>
-                      <p className="text-xs text-brand-muted leading-relaxed">{item.desc}</p>
                     </div>
                   </div>
-                </div>
+                </ScrollReveal>
               )
             })}
           </div>
@@ -328,31 +332,33 @@ export default async function OfflinePage() {
       </section>
 
       {/* Offline Classroom Programs */}
-      <section className="reveal py-16 sm:py-20 bg-brand-blush border-y border-brand-border">
+      <section className="py-16 sm:py-20 bg-brand-blush border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-3">
-              COHORTS
-            </span>
-            <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon tracking-tight">
-              Classroom Programs
-            </h2>
-            <p className="text-sm text-brand-muted mt-2 max-w-lg mx-auto">
-              Structured modules, regular testing, and individual mentoring.
-            </p>
-          </div>
+          <ScrollReveal animation="fade-up">
+            <div className="text-center mb-12 sm:mb-16">
+              <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-3">
+                COHORTS
+              </span>
+              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon tracking-tight">
+                Classroom Programs
+              </h2>
+              <p className="text-sm text-brand-muted mt-2 max-w-lg mx-auto">
+                Structured modules, regular testing, and individual mentoring.
+              </p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-2 gap-7">
-            {offlinePrograms.map(prog => (
-              <div key={prog.title}
-                className="bg-white border border-brand-border rounded-2xl overflow-hidden shadow-xs hover:border-brand-maroon transition-all duration-300 flex flex-col justify-between">
-                
-                <div className="h-44 relative overflow-hidden border-b border-brand-border">
-                  <img src={prog.img} alt={prog.title} className="w-full h-full object-cover transition-transform duration-500" />
-                  <span className="absolute top-3 left-3 bg-brand-maroon text-white text-[10px] font-bold uppercase px-2.5 py-0.5 rounded">
-                    {prog.badge}
-                  </span>
-                </div>
+            {offlinePrograms.map((prog, idx) => (
+              <ScrollReveal key={prog.title} animation="fade-up" delay={idx * 90} className="h-full">
+                <div className="bg-white border border-brand-border rounded-2xl overflow-hidden shadow-xs hover:border-brand-maroon hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-full">
+                  
+                  <div className="h-44 relative overflow-hidden border-b border-brand-border">
+                    <img src={prog.img} alt={prog.title} className="w-full h-full object-cover transition-transform duration-500" />
+                    <span className="absolute top-3 left-3 bg-brand-maroon text-white text-[10px] font-bold uppercase px-2.5 py-0.5 rounded">
+                      {prog.badge}
+                    </span>
+                  </div>
 
                 <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
                   <div>
@@ -383,9 +389,9 @@ export default async function OfflinePage() {
                     </Link>
                   </div>
                 </div>
-
               </div>
-            ))}
+            </ScrollReveal>
+          ))}
           </div>
         </div>
       </section>

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { X, ChevronLeft, ChevronRight, Sparkles, Users, Calendar, Eye } from 'lucide-react'
+import ScrollReveal from './ScrollReveal'
 
 export interface PtmImage {
   id?: string
@@ -49,38 +50,39 @@ export default function PtmGalleryGrid({ images }: PtmGalleryGridProps) {
       {/* ─── Image Grid (2 columns on mobile, 3 on tablet/desktop) ─── */}
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-5 lg:gap-6">
         {images.map((item, idx) => (
-          <div
-            key={idx}
-            onClick={() => openLightbox(idx)}
-            className="group relative bg-white border border-brand-border/80 rounded-xl sm:rounded-2xl overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col"
-          >
-            <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
-              <img
-                src={item.image_url}
-                alt={item.caption || 'Hodu Academy PTM Session'}
-                className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-2 sm:p-4 text-white">
-                <span className="text-[10px] sm:text-xs font-semibold flex items-center gap-1 sm:gap-1.5 bg-brand-maroon/90 backdrop-blur-xs px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md sm:rounded-lg">
-                  <Eye className="h-2.5 w-2.5 sm:h-3 sm:w-3" /> View
-                </span>
+          <ScrollReveal key={idx} animation="zoom-in" delay={(idx % 6) * 70} className="h-full">
+            <div
+              onClick={() => openLightbox(idx)}
+              className="group relative bg-white border border-brand-border/80 rounded-xl sm:rounded-2xl overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col h-full"
+            >
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
+                <img
+                  src={item.image_url}
+                  alt={item.caption || 'Hodu Academy PTM Session'}
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-2 sm:p-4 text-white">
+                  <span className="text-[10px] sm:text-xs font-semibold flex items-center gap-1 sm:gap-1.5 bg-brand-maroon/90 backdrop-blur-xs px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md sm:rounded-lg">
+                    <Eye className="h-2.5 w-2.5 sm:h-3 sm:w-3" /> View
+                  </span>
+                </div>
               </div>
-            </div>
 
-            <div className="p-2.5 sm:p-4 flex-1 flex flex-col justify-between space-y-1.5 sm:space-y-2 bg-white">
-              <p className="text-[11px] sm:text-sm font-bold text-brand-text line-clamp-2 leading-snug">
-                {item.caption || 'Parent-Teacher Academic Growth Review Session'}
-              </p>
-              <div className="flex items-center justify-between text-[9px] sm:text-[11px] text-brand-muted pt-1 border-t border-brand-border/40">
-                <span className="flex items-center gap-0.5 sm:gap-1 truncate">
-                  <Users className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-brand-maroon shrink-0" />
-                  <span className="truncate">1-on-1 Faculty Desk</span>
-                </span>
-                <span className="font-semibold text-brand-maroon shrink-0 ml-1">Hodu</span>
+              <div className="p-2.5 sm:p-4 flex-1 flex flex-col justify-between space-y-1.5 sm:space-y-2 bg-white">
+                <p className="text-[11px] sm:text-sm font-bold text-brand-text line-clamp-2 leading-snug">
+                  {item.caption || 'Parent-Teacher Academic Growth Review Session'}
+                </p>
+                <div className="flex items-center justify-between text-[9px] sm:text-[11px] text-brand-muted pt-1 border-t border-brand-border/40">
+                  <span className="flex items-center gap-0.5 sm:gap-1 truncate">
+                    <Users className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-brand-maroon shrink-0" />
+                    <span className="truncate">1-on-1 Faculty Desk</span>
+                  </span>
+                  <span className="font-semibold text-brand-maroon shrink-0 ml-1">Hodu</span>
+                </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         ))}
       </div>
 

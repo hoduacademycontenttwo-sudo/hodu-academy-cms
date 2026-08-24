@@ -3,6 +3,7 @@ import { HODU_SITE_ID, HODU, COURSE_CATEGORIES } from '@/lib/hodu'
 import Link from 'next/link'
 import { CheckCircle2, ArrowRight, Phone } from 'lucide-react'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
+import ScrollReveal from '@/components/hodu/ScrollReveal'
 
 export const metadata = { title: 'All Courses — Hodu Academy' }
 
@@ -93,50 +94,52 @@ export default async function CoursesPage({ searchParams }: { searchParams: Prom
           <div className="lg:col-span-2 space-y-6">
             {courses && courses.length > 0 ? (
               <div className="grid sm:grid-cols-2 gap-6">
-                {courses.map(c => {
+                {courses.map((c, idx) => {
                   const cardImg = c.image_url || categoryImages[c.category] || 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500&h=220&fit=crop&auto=format'
                   return (
-                    <div key={c.id} className="bg-white border-2 border-brand-border rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:border-brand-maroon transition-all flex flex-col justify-between">
-                      <div>
-                        <div className="h-44 relative overflow-hidden border-b border-brand-border">
-                          <img src={cardImg} alt={c.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
-                          <div className="absolute top-3.5 left-3.5">
-                            <span className="bg-brand-maroon text-white text-[10px] font-bold uppercase px-3 py-1 rounded-md shadow-sm">
-                              {c.category}
+                    <ScrollReveal key={c.id} animation="fade-up" delay={(idx % 6) * 70} className="h-full">
+                      <div className="bg-white border-2 border-brand-border rounded-2xl overflow-hidden shadow-xs hover:shadow-md hover:border-brand-maroon hover:-translate-y-1 transition-all flex flex-col justify-between h-full">
+                        <div>
+                          <div className="h-44 relative overflow-hidden border-b border-brand-border">
+                            <img src={cardImg} alt={c.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                            <div className="absolute top-3.5 left-3.5">
+                              <span className="bg-brand-maroon text-white text-[10px] font-bold uppercase px-3 py-1 rounded-md shadow-sm">
+                                {c.category}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="p-6">
+                            <h3 className="font-serif-editorial font-bold text-neutral-900 text-lg mb-1 leading-snug">{c.title}</h3>
+                            {c.description && (
+                              <p className="text-xs text-neutral-600 font-normal line-clamp-3 mb-4 leading-relaxed">{c.description}</p>
+                            )}
+
+                            <div className="space-y-1.5 pt-3 border-t border-brand-border">
+                              {defaultFeatures.map((f, i) => (
+                                <div key={i} className="flex items-center gap-2 text-xs text-neutral-700">
+                                  <CheckCircle2 className="h-3.5 w-3.5 text-brand-maroon shrink-0" />
+                                  <span>{f}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="px-6 pb-6 pt-3 border-t border-brand-border flex items-center justify-between">
+                          <div>
+                            <span className="text-[10px] text-neutral-500 uppercase tracking-wider block font-semibold">Course Fee</span>
+                            <span className="text-lg font-black text-brand-maroon">
+                              {c.fee ? `₹${c.fee}` : 'On Request'}
                             </span>
                           </div>
-                        </div>
-
-                        <div className="p-6">
-                          <h3 className="font-serif-editorial font-bold text-neutral-900 text-lg mb-1 leading-snug">{c.title}</h3>
-                          {c.description && (
-                            <p className="text-xs text-neutral-600 font-normal line-clamp-3 mb-4 leading-relaxed">{c.description}</p>
-                          )}
-
-                          <div className="space-y-1.5 pt-3 border-t border-brand-border">
-                            {defaultFeatures.map((f, i) => (
-                              <div key={i} className="flex items-center gap-2 text-xs text-neutral-700">
-                                <CheckCircle2 className="h-3.5 w-3.5 text-brand-maroon shrink-0" />
-                                <span>{f}</span>
-                              </div>
-                            ))}
-                          </div>
+                          <Link href={`/courses/${c.slug}`}
+                            className="bg-brand-maroon hover:bg-brand-crimson text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5">
+                            View Details <ArrowRight className="h-3 w-3" />
+                          </Link>
                         </div>
                       </div>
-
-                      <div className="px-6 pb-6 pt-3 border-t border-brand-border flex items-center justify-between">
-                        <div>
-                          <span className="text-[10px] text-neutral-500 uppercase tracking-wider block font-semibold">Course Fee</span>
-                          <span className="text-lg font-black text-brand-maroon">
-                            {c.fee ? `₹${c.fee}` : 'On Request'}
-                          </span>
-                        </div>
-                        <Link href={`/courses/${c.slug}`}
-                          className="bg-brand-maroon hover:bg-brand-crimson text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5">
-                          View Details <ArrowRight className="h-3 w-3" />
-                        </Link>
-                      </div>
-                    </div>
+                    </ScrollReveal>
                   )
                 })}
               </div>
@@ -153,14 +156,16 @@ export default async function CoursesPage({ searchParams }: { searchParams: Prom
 
           {/* Sidebar */}
           <aside className="space-y-6">
-            <div className="bg-white border-2 border-brand-border rounded-2xl p-6 sm:p-7 shadow-md sticky top-28">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-brand-maroon bg-neutral-100 px-2.5 py-0.5 rounded-md inline-block mb-2 border border-brand-border">
-                ACADEMIC COUNSELLING
-              </span>
-              <h3 className="font-serif-editorial font-bold text-neutral-900 text-lg mb-1">Unsure Which Batch Fits?</h3>
-              <p className="text-xs text-neutral-600 mb-5 font-normal">Speak with an academic counselor to evaluate syllabus readiness.</p>
-              <EnquiryForm />
-            </div>
+            <ScrollReveal animation="fade-left" delay={100}>
+              <div className="bg-white border-2 border-brand-border rounded-2xl p-6 sm:p-7 shadow-md sticky top-28">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-brand-maroon bg-neutral-100 px-2.5 py-0.5 rounded-md inline-block mb-2 border border-brand-border">
+                  ACADEMIC COUNSELLING
+                </span>
+                <h3 className="font-serif-editorial font-bold text-neutral-900 text-lg mb-1">Unsure Which Batch Fits?</h3>
+                <p className="text-xs text-neutral-600 mb-5 font-normal">Speak with an academic counselor to evaluate syllabus readiness.</p>
+                <EnquiryForm />
+              </div>
+            </ScrollReveal>
           </aside>
 
         </div>
