@@ -337,74 +337,69 @@ export default async function HomePage() {
       {/* 6. Jaipur Physical Learning Center */}
       <section className="py-12 sm:py-16 bg-white border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-3xl border border-brand-maroon/20 bg-[#1D0304] shadow-xl">
-            
-            {/* High-Resolution Google Drive Banner Background */}
-            <img
-              src="/images/jaipur_center_bg.png"
-              alt="Hodu Academy Jaipur Campus & Faculty Team"
-              className="absolute inset-0 w-full h-full object-cover object-center select-none"
-            />
-            {/* Cinematic gradient overlay to guarantee perfect text legibility while keeping faculty visual vivid */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/75 to-black/30 lg:from-black/85 lg:via-black/60 lg:to-transparent" />
+          <div className="bg-brand-bg border border-brand-border rounded-2xl p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center">
+            <ScrollReveal animation="fade-left" className="lg:col-span-7 space-y-4">
+              <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                <Building2 className="h-3.5 w-3.5" />
+                <span>JAIPUR OFFLINE CENTER</span>
+              </div>
+              <h2 className="font-serif-editorial text-2xl sm:text-3xl font-bold text-brand-maroon leading-tight">
+                State-of-the-Art Offline Coaching in Jaipur
+              </h2>
+              <p className="text-xs sm:text-sm text-brand-muted leading-relaxed">
+                Smart classrooms, 1-on-1 daily doubt clearing desks, silent study reference library, and GPS AC conveyance across Jaipur.
+              </p>
 
-            <div className="relative z-10 p-6 sm:p-10 lg:p-12 grid lg:grid-cols-12 gap-8 items-center">
-              <ScrollReveal animation="fade-left" className="lg:col-span-8 space-y-4 text-white">
-                <div className="inline-flex items-center gap-1.5 bg-[#bd9f67]/25 border border-[#bd9f67]/40 text-[#f6e4c3] text-[11px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-xs">
-                  <Building2 className="h-3.5 w-3.5 text-[#bd9f67]" />
-                  <span>JAIPUR OFFLINE CENTER</span>
+              <div className="grid grid-cols-2 gap-2.5 pt-1 text-xs font-semibold text-brand-text">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-brand-maroon shrink-0" />
+                  <span>85" Smart Touchscreens</span>
                 </div>
-                <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight drop-shadow-sm">
-                  State-of-the-Art Offline Coaching in Jaipur
-                </h2>
-                <p className="text-xs sm:text-sm text-neutral-200 leading-relaxed max-w-xl font-light">
-                  Smart classrooms, 1-on-1 daily doubt clearing desks, silent study reference library, and GPS AC conveyance across Jaipur.
-                </p>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-brand-maroon shrink-0" />
+                  <span>Daily Doubt Desks</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-brand-maroon shrink-0" />
+                  <span>Silent Study Library</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-brand-maroon shrink-0" />
+                  <span>AC GPS Transport</span>
+                </div>
+              </div>
 
-                <div className="grid grid-cols-2 gap-3 pt-1 text-xs font-medium text-white/95 max-w-md">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-[#bd9f67] shrink-0" />
-                    <span>85" Smart Touchscreens</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-[#bd9f67] shrink-0" />
-                    <span>Daily Doubt Desks</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-[#bd9f67] shrink-0" />
-                    <span>Silent Study Library</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-[#bd9f67] shrink-0" />
-                    <span>AC GPS Transport</span>
-                  </div>
-                </div>
+              <div className="pt-2 flex flex-wrap gap-3">
+                <Link
+                  href="/offline"
+                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-semibold px-5 py-2.5 rounded-lg text-xs transition-colors flex items-center gap-1.5"
+                >
+                  <span>Explore Center Facilities</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-semibold px-4 py-2.5 rounded-lg text-xs transition-colors flex items-center gap-1.5"
+                >
+                  <MapPin className="h-3.5 w-3.5" />
+                  <span>Book Free Campus Visit</span>
+                </Link>
+              </div>
+            </ScrollReveal>
 
-                <div className="pt-3 flex flex-wrap gap-3">
-                  <Link
-                    href="/offline"
-                    className="bg-[#bd9f67] hover:bg-[#a58953] text-[#1a0506] font-bold px-5 py-2.5 rounded-xl text-xs transition-all shadow-md hover:shadow-lg flex items-center gap-1.5"
-                  >
-                    <span>Explore Center Facilities</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className="bg-white/10 hover:bg-white/20 text-white border border-white/25 backdrop-blur-xs font-semibold px-4 py-2.5 rounded-xl text-xs transition-colors flex items-center gap-1.5"
-                  >
-                    <MapPin className="h-3.5 w-3.5 text-[#bd9f67]" />
-                    <span>Book Free Campus Visit</span>
-                  </Link>
+            <ScrollReveal animation="fade-right" className="lg:col-span-5">
+              <div className="rounded-xl overflow-hidden border border-brand-border bg-white shadow-xs">
+                <img
+                  src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&h=380&fit=crop&auto=format"
+                  alt="Hodu Academy Smart Classroom"
+                  className="w-full h-56 sm:h-64 object-cover"
+                />
+                <div className="p-3 bg-white border-t border-brand-border">
+                  <span className="text-[11px] font-bold text-brand-maroon uppercase tracking-wider block">Jaipur Main Hub</span>
+                  <p className="text-xs text-brand-muted">{HODU.address}</p>
                 </div>
-              </ScrollReveal>
-
-              <ScrollReveal animation="fade-right" className="lg:col-span-4 hidden lg:flex justify-end">
-                <div className="bg-black/50 backdrop-blur-md border border-white/15 rounded-2xl p-4 text-white text-right space-y-1 shadow-lg max-w-xs">
-                  <span className="text-[11px] font-bold text-[#bd9f67] uppercase tracking-widest block">Jaipur Main Hub</span>
-                  <p className="text-xs text-neutral-300 font-light">{HODU.address}</p>
-                </div>
-              </ScrollReveal>
-            </div>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
