@@ -335,9 +335,20 @@ export default async function HomePage() {
       </section>
 
       {/* 6. Jaipur Physical Learning Center Banner */}
-      <section className="py-10 sm:py-14 bg-white border-y border-brand-border">
+      <section className="py-12 sm:py-16 bg-white border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
+            <div className="text-center mb-8 sm:mb-10 space-y-2">
+              <span className="inline-block bg-brand-blush border border-brand-border text-brand-maroon text-[11px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-xs">
+                JAIPUR CAMPUS
+              </span>
+              <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
+                Jaipur’s New Destination for Learning
+              </h2>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal animation="fade-up" delay={80}>
             <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-brand-border shadow-md bg-brand-maroon group">
               {/* Full Banner Graphic from Google Drive */}
               <img
