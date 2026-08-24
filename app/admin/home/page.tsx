@@ -72,7 +72,7 @@ const defaultBatches = [
   {
     tag: 'JAIPUR OFFLINE CAMPUS',
     title: 'Jaipur Physical Classroom Batches',
-    grades: 'All Curriculums · C-Scheme & Vaishali',
+    grades: 'All Curriculums · Vaishali Extension',
     desc: 'Study at our modern air-conditioned learning center in Jaipur with smart digital boards, silent reference library, and daily 1-on-1 doubt desks.',
     features: ['Acoustic Smart Classrooms', 'Dedicated 1-on-1 Faculty Doubt Desks', 'Silent Library (8 AM – 9 PM)', 'Doorstep AC GPS Transport'],
     href: '/offline',
