@@ -47,8 +47,8 @@ export default function BatchHoverCard({ track }: BatchHoverCardProps) {
 
         {/* Top-Right Decorative Corner Pill Preview */}
         <div className="absolute top-3.5 right-3.5 z-10 opacity-75 group-hover:opacity-0 transition-opacity duration-300">
-          <span className="bg-black/50 backdrop-blur-xs text-white/90 text-[10px] font-semibold px-2 py-0.5 rounded-full border border-white/20">
-            Hover for details
+          <span className="bg-black/50 backdrop-blur-xs text-white/90 text-[10px] font-semibold px-2.5 py-0.5 rounded-full border border-white/20">
+            Tap / Hover for details
           </span>
         </div>
 
