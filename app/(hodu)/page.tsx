@@ -335,10 +335,10 @@ export default async function HomePage() {
       </section>
 
       {/* 6. Jaipur Physical Learning Center Banner */}
-      <section className="py-12 sm:py-16 bg-white border-y border-brand-border">
+      <section className="py-10 sm:py-16 bg-white border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
-            <div className="text-center mb-8 sm:mb-10 space-y-2">
+            <div className="text-center mb-6 sm:mb-10 space-y-2">
               <span className="inline-block bg-brand-blush border border-brand-border text-brand-maroon text-[11px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-xs">
                 JAIPUR CAMPUS
               </span>
@@ -354,26 +354,44 @@ export default async function HomePage() {
               <img
                 src="/images/jaipur_center_bg.png"
                 alt="Hodu Academy Jaipur Campus & Faculty Team"
-                className="w-full h-auto object-cover sm:object-contain object-center block"
+                className="w-full h-auto aspect-[1920/700] object-cover sm:object-contain object-center block select-none"
               />
 
-              {/* Floating Action Buttons */}
-              <div className="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 md:bottom-8 md:left-8 z-10 flex flex-wrap items-center gap-2.5 sm:gap-3">
+              {/* Desktop Floating Action Buttons */}
+              <div className="hidden md:flex absolute bottom-5 left-5 lg:bottom-7 lg:left-7 z-10 items-center gap-3">
                 <Link
                   href="/offline"
-                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-bold px-4 py-2 sm:px-6 sm:py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2 border border-white/20"
+                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2 border border-white/20"
                 >
                   <span>Explore Center Facilities</span>
-                  <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   href="/contact"
-                  className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-bold px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2"
+                  className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2"
                 >
-                  <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand-maroon" />
+                  <MapPin className="h-4 w-4 text-brand-maroon" />
                   <span>Book Free Campus Visit</span>
                 </Link>
               </div>
+            </div>
+
+            {/* Mobile Action Buttons (Displayed neatly below the graphic on mobile) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3.5 md:hidden">
+              <Link
+                href="/offline"
+                className="w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-2.5 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-2 shadow-xs transition-colors"
+              >
+                <span>Explore Center Facilities</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+              <Link
+                href="/contact"
+                className="w-full bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-bold py-2.5 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-2 shadow-2xs transition-colors"
+              >
+                <MapPin className="h-3.5 w-3.5 text-brand-maroon" />
+                <span>Book Free Campus Visit</span>
+              </Link>
             </div>
           </ScrollReveal>
         </div>
