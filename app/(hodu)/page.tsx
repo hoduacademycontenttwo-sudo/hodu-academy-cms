@@ -394,64 +394,55 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 7. Student & Parent Reviews */}
-      <section className="py-12 sm:py-16 bg-brand-bg">
+      {/* 7. Regular Parent Updates & PTM Section */}
+      <section className="py-10 sm:py-16 bg-brand-bg border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
-            <div className="text-center mb-10">
-              <span className="inline-block bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-                REVIEWS
-              </span>
-              <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
-                Loved by Students & Parents
-              </h2>
+            <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-brand-border shadow-md bg-[#250607] group">
+              {/* Full PTM Banner Graphic from Google Drive */}
+              <img
+                src="/images/ptm_section_bg.png"
+                alt="Regular Parent Updates & PTM Sessions at Hodu Academy"
+                className="w-full h-auto aspect-[1920/700] object-cover sm:object-contain object-center block select-none"
+              />
+
+              {/* Desktop Floating Action Buttons */}
+              <div className="hidden md:flex absolute bottom-5 left-5 lg:bottom-7 lg:left-7 z-10 items-center gap-3">
+                <Link
+                  href="/ptm"
+                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-bold px-6 py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2 border border-white/20"
+                >
+                  <span>Explore PTM Gallery</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2"
+                >
+                  <Users className="h-4 w-4 text-brand-maroon" />
+                  <span>Book Parent Consultation</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Mobile Action Buttons (Neatly below graphic) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3.5 md:hidden">
+              <Link
+                href="/ptm"
+                className="w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-2.5 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-2 shadow-xs transition-colors"
+              >
+                <span>Explore PTM Gallery</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+              <Link
+                href="/contact"
+                className="w-full bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-bold py-2.5 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-2 shadow-2xs transition-colors"
+              >
+                <Users className="h-3.5 w-3.5 text-brand-maroon" />
+                <span>Book Parent Consultation</span>
+              </Link>
             </div>
           </ScrollReveal>
-
-          <div className="grid md:grid-cols-3 gap-5">
-            {liveTestimonials.map((t, idx) => {
-              const animType = idx === 0 ? 'fade-left' : idx === 1 ? 'zoom-in' : 'fade-right'
-              return (
-                <ScrollReveal
-                  key={idx}
-                  animation={animType}
-                  delay={idx * 100}
-                  className="h-full"
-                >
-                  <div className="bg-white border border-brand-border rounded-xl p-5 shadow-xs flex flex-col justify-between h-full">
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-brand-maroon font-bold text-xs">★★★★★</span>
-                      <span className="bg-brand-bg text-brand-muted text-[10px] font-semibold px-2 py-0.5 rounded border border-brand-border">
-                        Verified
-                      </span>
-                    </div>
-                    <p className="text-xs text-brand-muted leading-relaxed mb-4">
-                      "{t.text}"
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2.5 pt-3 border-t border-brand-border">
-                    {'photo_url' in t && t.photo_url ? (
-                      <img
-                        src={t.photo_url}
-                        alt={t.name}
-                        className="h-9 w-9 rounded-full object-cover ring-1 ring-brand-border"
-                      />
-                    ) : (
-                      <div className="h-9 w-9 rounded-full bg-brand-blush text-brand-maroon flex items-center justify-center font-bold text-xs shrink-0">
-                        {t.initials}
-                      </div>
-                    )}
-                    <div>
-                      <h4 className="font-bold text-xs text-brand-text">{t.name}</h4>
-                      <p className="text-[10px] text-brand-maroon font-medium">{t.score}</p>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            )
-          })}
-          </div>
         </div>
       </section>
 

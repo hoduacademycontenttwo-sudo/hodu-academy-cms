@@ -128,6 +128,8 @@ export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site, a
               {[
                 { label: 'Home Page', href: '/' },
                 { label: 'Jaipur Offline Center', href: '/offline' },
+                { label: 'PTM Moments & Gallery', href: '/ptm' },
+                { label: 'Results & Achievers', href: '/results' },
                 { label: 'Faculty & Directors', href: '/about' },
                 { label: 'Study Materials & DPPs', href: '/study-materials' },
                 { label: 'Academic Blog', href: '/blog' },

@@ -9,7 +9,7 @@ import { Plus, Trash2, Pencil } from 'lucide-react'
 
 const SITE_ID = 'a1b2c3d4-1111-1111-1111-000000000002'
 const EMPTY = { image_url: '', caption: '', category: 'Campus', sort_order: 0 }
-const CATS = ['Home Carousel', 'Offline Carousel', 'Campus', 'Classroom', 'Events', 'Results', 'Faculty', 'Other']
+const CATS = ['PTM Gallery', 'Home Carousel', 'Offline Carousel', 'Campus', 'Classroom', 'Events', 'Results', 'Faculty', 'Other']
 const CAROUSEL_CATS = ['Offline Carousel', 'Home Carousel']
 
 // Carousel slides store text as JSON in caption field
@@ -39,6 +39,7 @@ const WEIGHT_OPTS = [
 export default function GalleryPage() {
   const supabase = createClient()
   const [images, setImages] = useState<any[]>([])
+  const [activeTab, setActiveTab] = useState('All')
   const [modal, setModal]   = useState<'add' | 'edit' | null>(null)
   const [form, setForm]     = useState<any>(EMPTY)
   const [saving, setSaving] = useState(false)
@@ -65,7 +66,8 @@ export default function GalleryPage() {
       else setCarouselText({ heading: img.caption ?? '', highlight: '', subtitle: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'small', subtitleWeight: 'light', headingColor: '#1B2A44', highlightColor: '#7E0D0D', subtitleColor: '#475569' })
       setModal('edit')
     } else {
-      setForm(EMPTY)
+      const defaultCategory = activeTab !== 'All' ? activeTab : 'PTM Gallery'
+      setForm({ ...EMPTY, category: defaultCategory })
       setCarouselText({ heading: '', highlight: '', subtitle: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'small', subtitleWeight: 'light', headingColor: '#1B2A44', highlightColor: '#7E0D0D', subtitleColor: '#475569' })
       setModal('add')
     }
@@ -91,24 +93,53 @@ export default function GalleryPage() {
 
   const isCarousel = CAROUSEL_CATS.includes(form.category)
 
+  const filteredImages = activeTab === 'All'
+    ? images
+    : images.filter(img => img.category === activeTab)
+
   return (
     <AdminLayout>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-lg font-bold text-[#1B2A44]">Gallery</h2>
-          <p className="text-xs text-[#C9C8CB]">{images.length} images</p>
+          <h2 className="text-lg font-bold text-[#1B2A44]">Gallery & PTM Photos</h2>
+          <p className="text-xs text-[#C9C8CB]">
+            {filteredImages.length} images {activeTab !== 'All' ? `in ${activeTab}` : 'total'}
+          </p>
         </div>
-        <button onClick={() => open()} className="flex items-center gap-2 bg-[#7E0D0D] hover:bg-[#922222] text-white text-sm font-semibold px-4 py-2 rounded-xl">
+        <button onClick={() => open()} className="flex items-center gap-2 bg-[#7E0D0D] hover:bg-[#922222] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all shadow-xs cursor-pointer">
           <Plus size={16} /> Add Image
         </button>
       </div>
 
+      {/* Category Filter Pills */}
+      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-4">
+        {['All', ...CATS].map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setActiveTab(cat)}
+            className={`text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all whitespace-nowrap cursor-pointer ${
+              activeTab === cat
+                ? 'bg-[#7E0D0D] text-white shadow-xs'
+                : 'bg-white text-[#1B2A44] hover:bg-[#FDF5F5] border border-[#F3DCDC]'
+            }`}
+          >
+            {cat} {cat === 'PTM Gallery' && '✨'}
+          </button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {images.map((img) => (
-          <div key={img.id} className="relative group bg-white border border-[#F3DCDC] rounded-2xl overflow-hidden">
+        {filteredImages.map((img) => (
+          <div key={img.id} className="relative group bg-white border border-[#F3DCDC] rounded-2xl overflow-hidden shadow-xs">
             <img src={img.image_url} alt={img.caption ?? ''} className="w-full h-40 object-cover" />
             <div className="p-3">
-              <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full mb-1 inline-block ${CAROUSEL_CATS.includes(img.category) ? 'bg-brand-maroon/10 text-brand-maroon' : 'bg-[#FDF5F5] text-[#C9C8CB]'}`}>{img.category}</span>
+              <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full mb-1 inline-block ${
+                img.category === 'PTM Gallery'
+                  ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                  : CAROUSEL_CATS.includes(img.category)
+                  ? 'bg-brand-maroon/10 text-brand-maroon'
+                  : 'bg-[#FDF5F5] text-neutral-600'
+              }`}>{img.category}</span>
               <p className="text-xs font-medium text-[#1B2A44] truncate">
                 {CAROUSEL_CATS.includes(img.category)
                   ? (() => { try { return JSON.parse(img.caption)?.heading || 'Carousel Slide' } catch { return img.caption || 'Carousel Slide' } })()
@@ -116,13 +147,23 @@ export default function GalleryPage() {
               </p>
             </div>
             <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button onClick={() => open(img)} className="bg-white/90 backdrop-blur p-1.5 rounded-lg shadow"><Pencil size={13} className="text-[#1B2A44]" /></button>
-              <button onClick={() => del(img.id)} className="bg-white/90 backdrop-blur p-1.5 rounded-lg shadow"><Trash2 size={13} className="text-red-500" /></button>
+              <button onClick={() => open(img)} className="bg-white/90 backdrop-blur p-1.5 rounded-lg shadow cursor-pointer"><Pencil size={13} className="text-[#1B2A44]" /></button>
+              <button onClick={() => del(img.id)} className="bg-white/90 backdrop-blur p-1.5 rounded-lg shadow cursor-pointer"><Trash2 size={13} className="text-red-500" /></button>
             </div>
           </div>
         ))}
       </div>
-      {images.length === 0 && <p className="text-center text-[#C9C8CB] py-12 text-sm">No images yet.</p>}
+      {filteredImages.length === 0 && (
+        <div className="text-center bg-white border border-[#F3DCDC] rounded-2xl py-12 px-4 space-y-2">
+          <p className="text-sm font-semibold text-[#1B2A44]">No images found in {activeTab}.</p>
+          <p className="text-xs text-neutral-400 max-w-xs mx-auto">
+            Click "Add Image" to upload a new image under {activeTab === 'All' ? 'any category' : activeTab}.
+          </p>
+          <button onClick={() => open()} className="mt-2 text-xs font-bold text-brand-maroon bg-[#FDF5F5] px-3.5 py-1.5 rounded-lg hover:bg-brand-maroon hover:text-white transition-colors cursor-pointer">
+            + Upload Now
+          </button>
+        </div>
+      )}
 
       {modal && (
         <Modal title={modal === 'edit' ? 'Edit Image' : 'Add Image'} onClose={() => setModal(null)}>
