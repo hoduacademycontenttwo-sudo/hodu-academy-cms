@@ -21,11 +21,9 @@ import {
   HelpCircle,
   Clock,
   Laptop,
-  HeartHandshake,
 } from 'lucide-react'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
-import HomeTrustMetrics from '@/components/hodu/HomeTrustMetrics'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
 import BatchHoverCard, { CurriculumTrack } from '@/components/hodu/BatchHoverCard'
 import BatchCardsCarousel from '@/components/hodu/BatchCardsCarousel'
@@ -257,25 +255,14 @@ export default async function HomePage() {
         initialSlides={initialSlides}
       />
 
-      {/* 2. Floating Trust Credentials Bar */}
-      <HomeTrustMetrics />
 
       {/* 3. Popular Batches / Academic Pathways */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-10 sm:pb-16 overflow-hidden">
-        {/* Atmospheric Ambient Lighting Glow */}
-        <div className="absolute top-0 right-1/4 w-[500px] h-[300px] bg-gradient-to-br from-brand-maroon/8 via-brand-crimson/5 to-transparent blur-[100px] rounded-full pointer-events-none -z-10" />
-        <div className="absolute bottom-0 left-10 w-80 h-80 bg-amber-500/5 blur-[90px] rounded-full pointer-events-none -z-10" />
+        {/* Subtle decorative background ambient glow */}
+        <div className="absolute top-0 right-1/4 w-96 h-48 bg-brand-maroon/5 blur-[90px] rounded-full pointer-events-none -z-10" />
 
         <ScrollReveal animation="fade-up">
           <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
-            {/* Pill Badge */}
-            <div>
-              <span className="inline-flex items-center gap-1.5 bg-brand-maroon/10 text-brand-maroon border border-brand-maroon/20 text-[11px] font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full shadow-2xs">
-                <Sparkles size={11} className="text-brand-crimson" />
-                <span>Academic Pathways</span>
-              </span>
-            </div>
-
             {/* Centered Editorial Heading */}
             <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-brand-maroon leading-[1.18] tracking-tight">
               Explore Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-maroon via-brand-crimson to-brand-wine">Programs</span>
@@ -309,19 +296,12 @@ export default async function HomePage() {
       {/* 4. Everything You Need To Ace Your Exam In One Place */}
       <section className="relative py-16 sm:py-24 bg-white border-y border-brand-border/60 overflow-hidden">
         {/* Subtle decorative background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-brand-maroon/5 via-amber-500/4 to-brand-crimson/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-brand-maroon/5 blur-[120px] rounded-full pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <ScrollReveal animation="fade-up">
             <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
-              <div>
-                <span className="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-900 border border-amber-500/25 text-[11px] font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full shadow-2xs">
-                  <Sparkles size={11} className="text-amber-600" />
-                  <span>Syllabus Mastery</span>
-                </span>
-              </div>
-
               <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-[2.65rem] font-bold text-brand-text tracking-tight leading-tight">
                 Everything You Need To{' '}
                 <span className="relative inline-block text-brand-maroon">
@@ -336,7 +316,7 @@ export default async function HomePage() {
             </div>
           </ScrollReveal>
 
-          {/* 4 Feature Cards with Horizontal Scroll on Mobile */}
+          {/* 4 Feature 3D Book Cards with Horizontal Scroll on Mobile */}
           <ScrollReveal animation="fade-up" delay={100}>
             <FeatureCardsCarousel features={learningFeatures} />
           </ScrollReveal>
@@ -344,19 +324,10 @@ export default async function HomePage() {
       </section>
 
       {/* 5. Hall of Fame / Results */}
-      <section className="relative py-14 sm:py-18 bg-brand-bg overflow-hidden">
-        <div className="absolute top-0 right-10 w-96 h-96 bg-brand-maroon/5 blur-[100px] rounded-full pointer-events-none" />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-16 bg-brand-bg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
             <div className="text-center mb-8 sm:mb-10 space-y-3">
-              <div>
-                <span className="inline-flex items-center gap-1.5 bg-brand-maroon/10 text-brand-maroon border border-brand-maroon/20 text-[11px] font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full shadow-2xs">
-                  <Trophy size={11} className="text-brand-crimson" />
-                  <span>Hall of Fame</span>
-                </span>
-              </div>
-
               <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
                 Our Star Performers & Rankers
               </h2>
@@ -382,17 +353,10 @@ export default async function HomePage() {
       </section>
 
       {/* 6. Jaipur Physical Learning Center Banner */}
-      <section className="relative py-12 sm:py-18 bg-white border-y border-brand-border overflow-hidden">
+      <section className="py-10 sm:py-16 bg-white border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
-            <div className="text-center mb-6 sm:mb-10 space-y-2.5">
-              <div>
-                <span className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-800 border border-emerald-500/30 text-[11px] font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full shadow-2xs">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block" />
-                  <span>Flagship Offline Campus</span>
-                </span>
-              </div>
-
+            <div className="text-center mb-6 sm:mb-10">
               <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
                 Jaipur’s New Destination for Learning
               </h2>
@@ -449,17 +413,10 @@ export default async function HomePage() {
       </section>
 
       {/* 7. Regular Parent Updates & PTM Section */}
-      <section className="relative py-12 sm:py-18 bg-white border-y border-brand-border overflow-hidden">
+      <section className="py-12 sm:py-16 bg-white border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
             <div className="text-center mb-6 sm:mb-8 space-y-3">
-              <div>
-                <span className="inline-flex items-center gap-1.5 bg-brand-maroon/10 text-brand-maroon border border-brand-maroon/20 text-[11px] font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full shadow-2xs">
-                  <HeartHandshake size={12} className="text-brand-crimson" />
-                  <span>360° Parent Partnership</span>
-                </span>
-              </div>
-
               <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
                 Regular Parent Updates & PTM
               </h2>
@@ -504,17 +461,13 @@ export default async function HomePage() {
       <YouTubeChannelsSection channels={ytChannels} />
 
       {/* 9. FAQ Accordion */}
-      <section className="relative py-14 sm:py-20 bg-white border-y border-brand-border overflow-hidden">
+      <section className="py-12 sm:py-16 bg-white border-y border-brand-border">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
-            <div className="text-center mb-8 space-y-2">
-              <div>
-                <span className="inline-flex items-center gap-1.5 bg-brand-maroon/10 text-brand-maroon border border-brand-maroon/20 text-[11px] font-extrabold uppercase tracking-widest px-3.5 py-1 rounded-full shadow-2xs">
-                  <HelpCircle size={12} className="text-brand-crimson" />
-                  <span>Clear Answers</span>
-                </span>
-              </div>
-
+            <div className="text-center mb-8">
+              <span className="inline-block bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
+                FAQ
+              </span>
               <h2 className="font-serif-editorial text-2xl sm:text-3xl font-bold text-brand-maroon">
                 Frequently Asked Questions
               </h2>
@@ -528,12 +481,12 @@ export default async function HomePage() {
                 animation="fade-up"
                 delay={i * 50}
               >
-                <details className="group border border-brand-border/80 rounded-2xl overflow-hidden bg-brand-bg transition-all duration-200 hover:border-brand-maroon/50">
-                  <summary className="flex items-center justify-between px-5 py-4 cursor-pointer list-none hover:bg-white transition-colors">
+                <details className="group border border-brand-border rounded-xl overflow-hidden bg-brand-bg">
+                  <summary className="flex items-center justify-between px-4 py-3.5 cursor-pointer list-none hover:bg-white transition-colors">
                     <span className="font-bold text-brand-text text-xs sm:text-sm pr-3">{faq.q}</span>
                     <ChevronDown className="h-4 w-4 text-brand-maroon shrink-0 transition-transform duration-200 group-open:rotate-180" />
                   </summary>
-                  <div className="px-5 py-4 text-xs text-brand-muted leading-relaxed bg-white border-t border-brand-border">
+                  <div className="px-4 py-3.5 text-xs text-brand-muted leading-relaxed bg-white border-t border-brand-border">
                     {faq.a}
                   </div>
                 </details>
@@ -543,43 +496,33 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 10. Free Academic Consultation Form */}
-      <section className="relative py-14 sm:py-20 bg-brand-blush overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-maroon/5 blur-[120px] rounded-full pointer-events-none" />
-
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
+      {/* 9. Free Academic Consultation Form */}
+      <section className="py-12 sm:py-16 bg-brand-blush overflow-hidden">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
           <ScrollReveal animation="fade-left" className="space-y-3">
-            <div>
-              <span className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-2xs">
-                <Sparkles size={10} className="text-amber-300" />
-                <span>TALK TO AN ACADEMIC EXPERT</span>
-              </span>
-            </div>
-
+            <span className="inline-block bg-brand-maroon text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+              TALK TO AN ACADEMIC EXPERT
+            </span>
             <h2 className="font-serif-editorial text-2xl sm:text-3xl font-bold text-brand-maroon leading-tight">
               Get Free Academic Counseling & Syllabus Roadmap
             </h2>
             <p className="text-xs sm:text-sm text-brand-muted leading-relaxed">
               Connect with our academic directors to analyze your previous scorecards and choose the right batch.
             </p>
-            <div className="space-y-2.5 pt-2 text-xs">
-              <div className="flex items-center gap-2.5 text-brand-text font-semibold">
-                <div className="w-6 h-6 rounded-lg bg-brand-maroon/10 flex items-center justify-center text-brand-maroon">
-                  <Phone className="h-3.5 w-3.5" />
-                </div>
+            <div className="space-y-2 pt-2 text-xs">
+              <div className="flex items-center gap-2 text-brand-text font-semibold">
+                <Phone className="h-4 w-4 text-brand-maroon" />
                 <span>Helpline: {HODU.phone}</span>
               </div>
-              <div className="flex items-center gap-2.5 text-brand-text font-semibold">
-                <div className="w-6 h-6 rounded-lg bg-brand-maroon/10 flex items-center justify-center text-brand-maroon">
-                  <MapPin className="h-3.5 w-3.5" />
-                </div>
+              <div className="flex items-center gap-2 text-brand-text font-semibold">
+                <MapPin className="h-4 w-4 text-brand-maroon" />
                 <span>Campus: {HODU.address}</span>
               </div>
             </div>
           </ScrollReveal>
 
           <ScrollReveal animation="fade-right">
-            <div className="bg-white border border-brand-border rounded-3xl p-6 sm:p-7 shadow-lg shadow-brand-maroon/5">
+            <div className="bg-white border border-brand-border rounded-2xl p-6 shadow-sm">
               <h3 className="font-serif-editorial font-bold text-brand-maroon text-lg mb-1">
                 Request Free Callback
               </h3>
