@@ -38,22 +38,35 @@ export default function ResultsMarqueeCarousel({ rankers }: ResultsMarqueeCarous
     }
   }, [rankers])
 
-  // Continuous auto-scroll loop
+  // Continuous silky smooth 60fps auto-scroll loop
   useEffect(() => {
     const el = containerRef.current
     if (!el || isPaused || rankers.length <= 3) return
 
-    const interval = setInterval(() => {
-      if (!el) return
-      // When reached halfway (one full set), reset to start seamlessly
+    let animationFrameId: number
+    let lastTime = performance.now()
+
+    const step = (now: number) => {
+      if (!el || isPaused) return
+      const delta = now - lastTime
+      lastTime = now
+
+      // Move ~40px per second smoothly regardless of refresh rate
+      const pixelsToMove = (40 * delta) / 1000
       if (el.scrollLeft >= el.scrollWidth / 2) {
         el.scrollLeft = 0
       } else {
-        el.scrollLeft += 1
+        el.scrollLeft += pixelsToMove
       }
-    }, 25)
 
-    return () => clearInterval(interval)
+      animationFrameId = requestAnimationFrame(step)
+    }
+
+    animationFrameId = requestAnimationFrame(step)
+
+    return () => {
+      cancelAnimationFrame(animationFrameId)
+    }
   }, [isPaused, rankers.length])
 
   const scrollManual = (direction: 'left' | 'right') => {

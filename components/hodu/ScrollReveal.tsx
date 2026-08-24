@@ -18,10 +18,10 @@ export default function ScrollReveal({
   children,
   animation = 'fade-up',
   delay = 0,
-  duration = 950,
+  duration = 550,
   className = '',
-  threshold = 0.08,
-  once = false,
+  threshold = 0.05,
+  once = true,
 }: ScrollRevealProps) {
   const [isVisible, setIsVisible] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -38,13 +38,12 @@ export default function ScrollReveal({
             observer.unobserve(el)
           }
         } else if (!once) {
-          // Reverse animation when scrolled out of view
           setIsVisible(false)
         }
       },
       {
         threshold,
-        rootMargin: '0px 0px -20px 0px',
+        rootMargin: '0px 0px -10px 0px',
       }
     )
 
@@ -56,11 +55,7 @@ export default function ScrollReveal({
   }, [threshold, once])
 
   const getAnimationStyles = () => {
-    // Entrance is slightly slower & cinematic, exit is smooth & responsive
-    const transitionTiming = isVisible
-      ? `${duration}ms cubic-bezier(0.16, 1, 0.3, 1)`
-      : `550ms cubic-bezier(0.25, 1, 0.5, 1)`
-    
+    const transitionTiming = `${duration}ms cubic-bezier(0.16, 1, 0.3, 1)`
     const transitionDelay = isVisible ? `${delay}ms` : '0ms'
     const baseTransition = `opacity ${transitionTiming}, transform ${transitionTiming}`
 
@@ -69,49 +64,49 @@ export default function ScrollReveal({
         case 'fade-up':
           return {
             opacity: 0,
-            transform: 'translate3d(0, 46px, 0)',
+            transform: 'translate3d(0, 20px, 0)',
             transition: baseTransition,
             transitionDelay,
           }
         case 'fade-down':
           return {
             opacity: 0,
-            transform: 'translate3d(0, -46px, 0)',
+            transform: 'translate3d(0, -20px, 0)',
             transition: baseTransition,
             transitionDelay,
           }
         case 'fade-left':
           return {
             opacity: 0,
-            transform: 'translate3d(-60px, 0, 0)',
+            transform: 'translate3d(-24px, 0, 0)',
             transition: baseTransition,
             transitionDelay,
           }
         case 'fade-right':
           return {
             opacity: 0,
-            transform: 'translate3d(60px, 0, 0)',
+            transform: 'translate3d(24px, 0, 0)',
             transition: baseTransition,
             transitionDelay,
           }
         case 'zoom-in':
           return {
             opacity: 0,
-            transform: 'scale3d(0.88, 0.88, 1) translate3d(0, 30px, 0)',
+            transform: 'scale3d(0.95, 0.95, 1)',
             transition: baseTransition,
             transitionDelay,
           }
         case 'flip-up':
           return {
             opacity: 0,
-            transform: 'perspective(1000px) rotateX(18deg) translate3d(0, 40px, 0)',
+            transform: 'perspective(1000px) rotateX(10deg) translate3d(0, 20px, 0)',
             transition: baseTransition,
             transitionDelay,
           }
         default:
           return {
             opacity: 0,
-            transform: 'translate3d(0, 46px, 0)',
+            transform: 'translate3d(0, 20px, 0)',
             transition: baseTransition,
             transitionDelay,
           }
@@ -120,10 +115,9 @@ export default function ScrollReveal({
 
     return {
       opacity: 1,
-      transform: 'translate3d(0, 0, 0) scale3d(1, 1, 1) perspective(1000px) rotateX(0deg)',
+      transform: 'none',
       transition: baseTransition,
       transitionDelay,
-      willChange: 'transform, opacity',
     }
   }
 

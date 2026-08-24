@@ -297,7 +297,7 @@ export default function HoduNavbar({
   const isStudyMaterialsActive = pathname === '/study-materials' || pathname.startsWith('/study-materials/')
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b border-brand-border animate-navbar-reveal">
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-brand-border">
       
       {/* Solid Maroon Top Bar */}
       <div className="bg-brand-crimson text-white text-[11px] py-2 px-4 hidden md:block">
