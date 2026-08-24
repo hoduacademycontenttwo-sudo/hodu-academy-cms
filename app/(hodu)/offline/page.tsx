@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
 import { parseMediaUrl } from '@/lib/homeCarousel'
+import { normalizeImageUrl } from '@/lib/imageUtils'
 
 export const metadata = {
   title: 'Offline Coaching Jaipur — Hodu Academy Classroom Programs | IGCSE, IB, CBSE, JEE, NEET',
@@ -251,7 +252,7 @@ export default async function OfflinePage() {
                     )
                   ) : (
                     <img
-                      src={campusData.imageUrl}
+                      src={normalizeImageUrl(campusData.imageUrl)}
                       alt="Hodu Academy Jaipur Campus"
                       className="w-full h-full object-cover"
                     />

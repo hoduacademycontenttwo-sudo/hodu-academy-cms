@@ -82,8 +82,10 @@ self.addEventListener('fetch', (event) => {
   // A. Images -> Cache First (Instant load) with background update
   if (
     req.destination === 'image' ||
+    url.pathname.startsWith('/api/proxy-image') ||
     url.pathname.match(/\.(png|jpg|jpeg|webp|svg|gif|ico)$/i) ||
     (url.hostname.includes('supabase.co') && url.pathname.includes('/storage/')) ||
+    url.hostname.includes('googleusercontent.com') ||
     url.hostname.includes('images.unsplash.com')
   ) {
     event.respondWith(

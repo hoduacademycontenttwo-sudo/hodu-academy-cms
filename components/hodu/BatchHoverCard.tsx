@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { CheckCircle2, ArrowRight, Sparkles, GraduationCap } from 'lucide-react'
+import { normalizeImageUrl } from '@/lib/imageUtils'
 
 export interface CurriculumTrack {
   tag: string
@@ -31,7 +32,7 @@ export default function BatchHoverCard({ track }: BatchHoverCardProps) {
       {/* ─── 1. BASE / BEFORE HOVER CONTENT: Image + Title ─── */}
       <div className="absolute inset-0 w-full h-full transition-opacity duration-500 group-hover:opacity-15">
         <img
-          src={track.img}
+          src={normalizeImageUrl(track.img)}
           alt={track.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
         />

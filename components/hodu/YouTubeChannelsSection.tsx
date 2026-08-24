@@ -1,6 +1,7 @@
 import React from 'react'
 import { ExternalLink, Play } from 'lucide-react'
 import ScrollReveal from './ScrollReveal'
+import { normalizeImageUrl } from '@/lib/imageUtils'
 
 export interface YouTubeChannelItem {
   id?: string
@@ -71,7 +72,7 @@ export default function YouTubeChannelsSection({ channels }: YouTubeChannelsSect
                 {/* Banner Thumbnail */}
                 <div className="relative aspect-[16/9] w-full overflow-hidden bg-neutral-900">
                   <img
-                    src={channel.image_url}
+                    src={normalizeImageUrl(channel.image_url)}
                     alt={channel.title}
                     className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-500"
                     loading="lazy"

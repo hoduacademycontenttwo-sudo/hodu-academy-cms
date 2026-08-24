@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { CarouselSlide, parseMediaUrl } from '@/lib/homeCarousel'
+import { normalizeImageUrl } from '@/lib/imageUtils'
 
 interface HomeHeroCarouselProps {
   ctaText?: string
@@ -121,7 +122,7 @@ export default function HomeHeroCarousel({
                 )
               ) : (
                 <img
-                  src={s.image}
+                  src={normalizeImageUrl(s.image)}
                   alt={`Banner ${idx + 1}`}
                   loading={idx === 0 ? 'eager' : 'lazy'}
                   fetchPriority={idx === 0 ? 'high' : 'auto'}

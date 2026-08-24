@@ -122,10 +122,9 @@ export default function ImageUpload({
             src={imgSrc || normalizeImageUrl(value)}
             alt="preview"
             onError={() => {
-              // If lh3 format failed, try uc?export=view format
-              const gMatch = value.match(/([a-zA-Z0-9_-]{25,})/)
-              if (gMatch && gMatch[1] && !imgSrc.includes('export=view')) {
-                setImgSrc(`https://drive.google.com/uc?export=view&id=${gMatch[1]}`)
+              const gMatch = value.match(/([a-zA-Z0-9_-]{20,})/)
+              if (gMatch && gMatch[1] && !imgSrc.includes('/api/proxy-image')) {
+                setImgSrc(`/api/proxy-image?id=${gMatch[1]}`)
               }
             }}
             className="h-28 w-auto max-w-full rounded-xl border border-[#F3DCDC] object-cover bg-neutral-50 shadow-xs"

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { normalizeImageUrl } from '@/lib/imageUtils'
 
 export interface Ranker {
   initials: string
@@ -37,7 +38,7 @@ export default function ResultRankerCard({ ranker }: ResultRankerCardProps) {
         <div className="hodu-ranker-img absolute z-[3] flex flex-col items-center justify-center transition-all duration-500">
           {ranker.photo_url ? (
             <img
-              src={ranker.photo_url}
+              src={normalizeImageUrl(ranker.photo_url)}
               alt={ranker.name}
               className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-2 border-amber-300/50 shadow-2xl"
             />

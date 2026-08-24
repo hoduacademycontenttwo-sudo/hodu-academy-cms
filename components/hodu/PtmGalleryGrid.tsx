@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { X, ChevronLeft, ChevronRight, Sparkles, Users, Calendar, Eye } from 'lucide-react'
 import ScrollReveal from './ScrollReveal'
+import { normalizeImageUrl } from '@/lib/imageUtils'
 
 export interface PtmImage {
   id?: string
@@ -57,7 +58,7 @@ export default function PtmGalleryGrid({ images }: PtmGalleryGridProps) {
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
                 <img
-                  src={item.image_url}
+                  src={normalizeImageUrl(item.image_url)}
                   alt={item.caption || 'Hodu Academy PTM Session'}
                   className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
                   loading="lazy"
@@ -132,7 +133,7 @@ export default function PtmGalleryGrid({ images }: PtmGalleryGridProps) {
           >
             <div className="relative w-full max-h-[70vh] flex items-center justify-center bg-black/40 overflow-hidden">
               <img
-                src={images[selectedIdx].image_url}
+                src={normalizeImageUrl(images[selectedIdx].image_url)}
                 alt={images[selectedIdx].caption || 'PTM Session'}
                 className="max-h-[70vh] w-auto object-contain select-none"
               />
