@@ -40,42 +40,6 @@ export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site, a
 
   return (
     <footer className="bg-brand-crimson text-white border-t border-brand-border w-full max-w-full overflow-hidden">
-
-      {/* Top Value Propositions */}
-      <div className="border-b border-white/15 py-10 bg-brand-wine/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-white text-brand-maroon flex items-center justify-center shrink-0 shadow-sm">
-                <Award className="h-6 w-6" />
-              </div>
-              <div>
-                <h4 className="font-serif-editorial font-bold text-base text-white">Premier Tutoring Standard</h4>
-                <p className="text-xs text-white/90 font-normal mt-1 leading-relaxed">Curriculums curated by certified Cambridge, IB & board examiners.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-white text-brand-maroon flex items-center justify-center shrink-0 shadow-sm">
-                <CheckCircle2 className="h-6 w-6" />
-              </div>
-              <div>
-                <h4 className="font-serif-editorial font-bold text-base text-white">Guaranteed Concept Retention</h4>
-                <p className="text-xs text-white/90 font-normal mt-1 leading-relaxed">Continuous 1:12 batches, daily DPP sets, and bi-weekly diagnostic tests.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-white text-brand-maroon flex items-center justify-center shrink-0 shadow-sm">
-                <Phone className="h-6 w-6" />
-              </div>
-              <div>
-                <h4 className="font-serif-editorial font-bold text-base text-white">Free Academic Counselling</h4>
-                <p className="text-xs text-white/90 font-normal mt-1 leading-relaxed">Direct 1-on-1 strategy sessions with our academic directors.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10">

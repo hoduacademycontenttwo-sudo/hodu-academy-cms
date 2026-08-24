@@ -30,6 +30,7 @@ import BatchCardsCarousel from '@/components/hodu/BatchCardsCarousel'
 import FeatureCardsCarousel from '@/components/hodu/FeatureCardsCarousel'
 import ResultRankerCard from '@/components/hodu/ResultRankerCard'
 import ResultsMarqueeCarousel from '@/components/hodu/ResultsMarqueeCarousel'
+import YouTubeChannelsSection, { YouTubeChannelItem, defaultYouTubeChannels } from '@/components/hodu/YouTubeChannelsSection'
 import { parseCarouselRows } from '@/lib/homeCarousel'
 
 export const dynamic = 'force-dynamic'
@@ -149,16 +150,18 @@ export default async function HomePage() {
   let carouselRows: any[] = []
   let dbTestimonials: any[] = []
   let dbBatches: any[] = []
+  let dbYtChannels: any[] = []
 
   try {
     const supabase = await createClient()
-    const [hRes, nRes, rRes, cRes, tRes, bRes] = await Promise.allSettled([
+    const [hRes, nRes, rRes, cRes, tRes, bRes, yRes] = await Promise.allSettled([
       supabase.from('cms_home_sections').select('*').eq('site_id', HODU_SITE_ID).single(),
       supabase.from('cms_notices').select('*').eq('site_id', HODU_SITE_ID).eq('is_active', true).limit(4),
       supabase.from('cms_results').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
       supabase.from('cms_gallery').select('image_url, caption, sort_order').eq('site_id', HODU_SITE_ID).eq('category', 'Home Carousel').order('sort_order'),
       supabase.from('cms_testimonials').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
       supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Homepage Batches').order('sort_order'),
+      supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'YouTube Channel').order('sort_order'),
     ])
 
     if (hRes.status === 'fulfilled' && hRes.value?.data) home = hRes.value.data
@@ -167,6 +170,7 @@ export default async function HomePage() {
     if (cRes.status === 'fulfilled' && cRes.value?.data) carouselRows = cRes.value.data
     if (tRes.status === 'fulfilled' && tRes.value?.data) dbTestimonials = tRes.value.data
     if (bRes.status === 'fulfilled' && bRes.value?.data) dbBatches = bRes.value.data
+    if (yRes.status === 'fulfilled' && yRes.value?.data) dbYtChannels = yRes.value.data
   } catch (err) {
     console.error('HomePage data fetch error:', err)
   }
@@ -211,6 +215,20 @@ export default async function HomePage() {
         }
       })
     : curriculumTracks
+
+  const ytChannels: YouTubeChannelItem[] = dbYtChannels && dbYtChannels.length > 0
+    ? dbYtChannels.map(y => {
+        let parsed: any = {}
+        try { parsed = JSON.parse(y.caption ?? '{}') } catch { parsed = { title: y.caption } }
+        return {
+          id: y.id,
+          title: parsed.title || y.caption || 'Hodu Academy YouTube Channel',
+          url: parsed.url || 'https://www.youtube.com/@hoduacademy',
+          image_url: y.image_url || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=450&fit=crop&auto=format',
+          subscribers: parsed.subscribers || 'Subscribe & Watch Free',
+        }
+      })
+    : defaultYouTubeChannels
 
   return (
     <div className="space-y-0 animate-fade-in bg-brand-bg text-brand-text w-full max-w-full overflow-x-hidden">
@@ -439,7 +457,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 8. FAQ Accordion */}
+      {/* 8. YouTube Community / Network of Channels */}
+      <YouTubeChannelsSection channels={ytChannels} />
+
+      {/* 9. FAQ Accordion */}
       <section className="py-12 sm:py-16 bg-white border-y border-brand-border">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">

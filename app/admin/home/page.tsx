@@ -80,6 +80,27 @@ const defaultBatches = [
   }
 ]
 
+const defaultYtChannels = [
+  {
+    title: 'Hodu Academy | IGCSE & IBDP',
+    url: 'https://www.youtube.com/@hoduacademy',
+    image_url: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=450&fit=crop&auto=format',
+    subscribers: 'Cambridge & IB Lectures',
+  },
+  {
+    title: 'Hodu Academy - JEE | NEET | Boards',
+    url: 'https://www.youtube.com/@hoduacademy',
+    image_url: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&h=450&fit=crop&auto=format',
+    subscribers: 'Physics, Chemistry & Math Problem Sets',
+  },
+  {
+    title: 'Hodu Academy | Class 9 & 10',
+    url: 'https://www.youtube.com/@hoduacademy',
+    image_url: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=450&fit=crop&auto=format',
+    subscribers: 'Foundation & Board Concepts',
+  },
+]
+
 // Strip a single wrapping <p>...</p> so heading/subtitle HTML stays inline-friendly
 function unwrapParagraph(html: string) {
   const m = html.trim().match(/^<p>([\s\S]*)<\/p>$/)
@@ -97,6 +118,9 @@ export default function HomeContentPage() {
 
   const [batches, setBatches] = useState<any[]>([])
   const [batchesLoading, setBatchesLoading] = useState(true)
+
+  const [ytChannels, setYtChannels] = useState<any[]>([])
+  const [ytChannelsLoading, setYtChannelsLoading] = useState(true)
 
   useEffect(() => {
     supabase.from('cms_home_sections').select('*').eq('site_id', SITE_ID).single()
@@ -131,6 +155,7 @@ export default function HomeContentPage() {
       })
     loadSlides()
     loadBatches()
+    loadYtChannels()
   }, [])
 
   async function loadSlides() {
@@ -401,6 +426,120 @@ export default function HomeContentPage() {
       updated.map((b, idx) => {
         if (!String(b.id).startsWith('init-')) {
           return supabase.from('cms_gallery').update({ sort_order: idx }).eq('id', b.id)
+        }
+        return Promise.resolve()
+      })
+    )
+  }
+
+  // --- YouTube Channels & Community Manager ---
+
+  async function loadYtChannels() {
+    setYtChannelsLoading(true)
+    const { data } = await supabase
+      .from('cms_gallery')
+      .select('*')
+      .eq('site_id', SITE_ID)
+      .eq('category', 'YouTube Channel')
+      .order('sort_order')
+
+    if (data && data.length > 0) {
+      setYtChannels(data.map(row => {
+        let parsed: any = {}
+        try { parsed = JSON.parse(row.caption ?? '{}') } catch { parsed = { title: row.caption } }
+        return {
+          id: row.id,
+          title: parsed.title || row.caption || 'Hodu Academy YouTube Channel',
+          url: parsed.url || 'https://www.youtube.com/@hoduacademy',
+          subscribers: parsed.subscribers || 'Subscribe & Watch Free',
+          image_url: row.image_url || '',
+          sort_order: row.sort_order ?? 0,
+        }
+      }))
+    } else {
+      setYtChannels(defaultYtChannels.map((c, i) => ({ ...c, id: `default-${i}`, sort_order: i })))
+    }
+    setYtChannelsLoading(false)
+  }
+
+  function updateYtChannelLocal(id: string, patch: any) {
+    setYtChannels(prev => prev.map(c => c.id === id ? { ...c, ...patch } : c))
+  }
+
+  async function saveYtChannel(channel: any) {
+    const caption = JSON.stringify({
+      title: channel.title,
+      url: channel.url,
+      subscribers: channel.subscribers,
+    })
+
+    if (String(channel.id).startsWith('default-')) {
+      const { data, error } = await supabase.from('cms_gallery').insert({
+        site_id: SITE_ID,
+        category: 'YouTube Channel',
+        image_url: channel.image_url,
+        caption,
+        sort_order: channel.sort_order,
+      }).select().single()
+      if (!error && data) {
+        setYtChannels(prev => prev.map(c => c.id === channel.id ? { ...c, id: data.id } : c))
+        alert('YouTube channel card saved successfully!')
+      }
+    } else {
+      await supabase.from('cms_gallery').update({
+        image_url: channel.image_url,
+        caption,
+        sort_order: channel.sort_order,
+      }).eq('id', channel.id)
+      alert('YouTube channel card saved successfully!')
+    }
+  }
+
+  async function addYtChannel() {
+    const nextOrder = ytChannels.length > 0 ? Math.max(...ytChannels.map(c => c.sort_order ?? 0)) + 1 : 0
+    const { data } = await supabase.from('cms_gallery').insert({
+      site_id: SITE_ID,
+      category: 'YouTube Channel',
+      image_url: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=450&fit=crop&auto=format',
+      caption: JSON.stringify({
+        title: 'Hodu Academy New Channel',
+        url: 'https://www.youtube.com/@hoduacademy',
+        subscribers: 'Subscribe & Watch Free',
+      }),
+      sort_order: nextOrder,
+    }).select().single()
+
+    if (data) {
+      setYtChannels(prev => [...prev, {
+        id: data.id,
+        title: 'Hodu Academy New Channel',
+        url: 'https://www.youtube.com/@hoduacademy',
+        subscribers: 'Subscribe & Watch Free',
+        image_url: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=450&fit=crop&auto=format',
+        sort_order: nextOrder,
+      }])
+    }
+  }
+
+  async function deleteYtChannel(id: string) {
+    if (!confirm('Delete this YouTube channel card?')) return
+    if (!String(id).startsWith('default-')) {
+      await supabase.from('cms_gallery').delete().eq('id', id)
+    }
+    setYtChannels(prev => prev.filter(c => c.id !== id))
+  }
+
+  async function moveYtChannel(fromIndex: number, toIndex: number) {
+    if (toIndex < 0 || toIndex >= ytChannels.length) return
+    const updated = [...ytChannels]
+    const [moved] = updated.splice(fromIndex, 1)
+    updated.splice(toIndex, 0, moved)
+    setYtChannels(updated)
+
+    await Promise.all(
+      updated.map((c, idx) => {
+        if (!String(c.id).startsWith('default-')) {
+          return supabase.from('cms_gallery').update({ sort_order: idx }).eq('id', c.id)
         }
         return Promise.resolve()
       })
@@ -845,6 +984,150 @@ export default function HomeContentPage() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* 🔴 NEW: YouTube Channels & Community (Before FAQ) Manager */}
+        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
+          <div className="flex items-center justify-between border-b border-[#F3DCDC] pb-3">
+            <div>
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-lg bg-[#FF0000] text-white flex items-center justify-center shadow-xs">
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </div>
+                <h3 className="font-bold text-[#1B2A44] text-base">YouTube Channels & Community Section (Before FAQ)</h3>
+              </div>
+              <p className="text-xs text-[#C9C8CB] mt-0.5">
+                {ytChannels.length} Channel Card{ytChannels.length === 1 ? '' : 's'} · Upload channel images/banners, set channel names, YouTube URLs, and subtext
+              </p>
+            </div>
+            <button
+              onClick={addYtChannel}
+              className="flex items-center gap-1.5 text-xs bg-[#7E0D0D] hover:bg-[#922222] text-white font-semibold px-3 py-1.5 rounded-lg transition-all shrink-0 shadow-xs cursor-pointer"
+            >
+              <Plus size={13} /> Add Channel Card
+            </button>
+          </div>
+
+          {ytChannelsLoading ? (
+            <p className="text-xs text-[#C9C8CB]">Loading YouTube channels…</p>
+          ) : (
+            <div className="space-y-6">
+              {ytChannels.map((ch, i) => (
+                <div key={ch.id || i} className="border border-[#F3DCDC] rounded-xl p-5 space-y-4 bg-white shadow-2xs">
+                  {/* Top Bar with Reorder Controls */}
+                  <div className="flex items-center justify-between bg-neutral-50 p-2.5 rounded-lg border border-neutral-200/80">
+                    <div className="flex items-center gap-2">
+                      <GripVertical size={14} className="text-neutral-400" />
+                      <span className="text-xs font-bold text-[#1B2A44] uppercase tracking-wider">
+                        YouTube Card {i + 1}: {ch.title || 'Untitled Channel'}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => moveYtChannel(i, i - 1)}
+                        disabled={i === 0}
+                        title="Move Up"
+                        className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold cursor-pointer"
+                      >
+                        <ArrowUp size={13} />
+                        <span className="hidden sm:inline">Up</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => moveYtChannel(i, i + 1)}
+                        disabled={i === ytChannels.length - 1}
+                        title="Move Down"
+                        className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold cursor-pointer"
+                      >
+                        <ArrowDown size={13} />
+                        <span className="hidden sm:inline">Down</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => deleteYtChannel(ch.id)}
+                        title="Delete Channel"
+                        className="p-1.5 rounded-md border border-red-200 bg-white text-red-500 hover:bg-red-600 hover:text-white transition-all ml-1.5 cursor-pointer"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Channel Image Upload */}
+                  <ImageUpload
+                    value={ch.image_url ?? ''}
+                    onChange={url => updateYtChannelLocal(ch.id, { image_url: url })}
+                    folder="youtube-channels"
+                    label="Channel Card Image / Banner *"
+                  />
+
+                  {/* Title & Subtitle Inputs */}
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-[#1B2A44] mb-1">Channel Name / Title *</label>
+                      <input
+                        type="text"
+                        value={ch.title ?? ''}
+                        onChange={e => updateYtChannelLocal(ch.id, { title: e.target.value })}
+                        placeholder="e.g. Hodu Academy | IGCSE & IBDP"
+                        className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#1B2A44] mb-1">Subtext / Focus Topic</label>
+                      <input
+                        type="text"
+                        value={ch.subscribers ?? ''}
+                        onChange={e => updateYtChannelLocal(ch.id, { subscribers: e.target.value })}
+                        placeholder="e.g. Cambridge & IB Lectures"
+                        className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* YouTube URL */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#1B2A44] mb-1">YouTube Channel URL *</label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="url"
+                        value={ch.url ?? ''}
+                        onChange={e => updateYtChannelLocal(ch.id, { url: e.target.value })}
+                        placeholder="https://www.youtube.com/@hoduacademy"
+                        className="flex-1 border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
+                      />
+                      {ch.url && (
+                        <a
+                          href={ch.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="p-2 border border-[#F3DCDC] rounded-xl bg-neutral-50 hover:bg-[#7E0D0D] hover:text-white text-neutral-600 transition-colors"
+                          title="Test Link in new tab"
+                        >
+                          <ExternalLink size={15} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => saveYtChannel(ch)}
+                    className="bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  >
+                    <Save size={13} />
+                    <span>Save Channel Card {i + 1}</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </AdminLayout>
