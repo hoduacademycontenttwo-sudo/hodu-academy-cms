@@ -1,8 +1,8 @@
-// Hodu Academy - Advanced Offline Service Worker Cache Engine
-const STATIC_CACHE = 'hodu-static-v1.2'
-const IMAGE_CACHE = 'hodu-images-v1.2'
-const PAGE_CACHE = 'hodu-pages-v1.2'
-const DATA_CACHE = 'hodu-data-v1.2'
+// Hodu Academy - Advanced Offline & Slow-Network Resilient Service Worker
+const STATIC_CACHE = 'hodu-static-v1.3'
+const IMAGE_CACHE = 'hodu-images-v1.3'
+const PAGE_CACHE = 'hodu-pages-v1.3'
+const DATA_CACHE = 'hodu-data-v1.3'
 
 const CRITICAL_PRECACHE = [
   '/',
@@ -39,11 +39,26 @@ const CRITICAL_PRECACHE = [
   '/images/join_our_team_2.png',
 ]
 
+// Helper: Fast Network with Timeout for Slow Connections
+function fetchWithTimeout(request, timeoutMs = 2200) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('Slow Network Timeout')), timeoutMs)
+    fetch(request)
+      .then((response) => {
+        clearTimeout(timer)
+        resolve(response)
+      })
+      .catch((err) => {
+        clearTimeout(timer)
+        reject(err)
+      })
+  })
+}
+
 // 1. Install: Pre-cache critical viewer pages, admin routes, and all visual graphics
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => {
-      // Use Promise.allSettled so individual missing paths don't fail the entire precache
       return Promise.allSettled(
         CRITICAL_PRECACHE.map((url) =>
           fetch(url, { cache: 'no-cache' })
@@ -73,7 +88,7 @@ self.addEventListener('activate', (event) => {
   )
 })
 
-// 3. Fetch Routing Strategy
+// 3. Fetch Routing Strategy (Optimized for Offline & Slow Network)
 self.addEventListener('fetch', (event) => {
   const req = event.request
   const url = new URL(req.url)
@@ -85,13 +100,13 @@ self.addEventListener('fetch', (event) => {
   if (
     req.destination === 'image' ||
     url.pathname.match(/\.(png|jpg|jpeg|webp|svg|gif|ico)$/i) ||
-    url.hostname.includes('supabase.co') && url.pathname.includes('/storage/') ||
+    (url.hostname.includes('supabase.co') && url.pathname.includes('/storage/')) ||
     url.hostname.includes('images.unsplash.com')
   ) {
     event.respondWith(
       caches.match(req).then((cached) => {
         if (cached) return cached
-        return fetch(req)
+        return fetchWithTimeout(req, 3000)
           .then((networkRes) => {
             if (networkRes.status === 200 || networkRes.type === 'opaque') {
               const resClone = networkRes.clone()
@@ -100,7 +115,6 @@ self.addEventListener('fetch', (event) => {
             return networkRes
           })
           .catch(() => {
-            // Fallback for missing offline image
             return caches.match('/favicon.png')
           })
       })
@@ -108,10 +122,10 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // B. Supabase REST API & Data Fetching -> Network First with Data Cache fallback
+  // B. Supabase REST API & Data Fetching -> Fast Network First with Data Cache fallback
   if (url.hostname.includes('supabase.co') && url.pathname.includes('/rest/v1/')) {
     event.respondWith(
-      fetch(req)
+      fetchWithTimeout(req, 2000)
         .then((networkRes) => {
           if (networkRes.ok) {
             const resClone = networkRes.clone()
@@ -131,10 +145,10 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // C. HTML Navigation Requests (Viewer Portal & Admin Portal Pages) -> Network First with Page Cache fallback
+  // C. HTML Navigation Requests (Viewer & Admin Portal Pages) -> Fast Network First with Page Cache fallback
   if (req.mode === 'navigate' || req.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
-      fetch(req)
+      fetchWithTimeout(req, 2200)
         .then((networkRes) => {
           if (networkRes.ok) {
             const resClone = networkRes.clone()
@@ -145,7 +159,6 @@ self.addEventListener('fetch', (event) => {
         .catch(() => {
           return caches.match(req).then((cached) => {
             if (cached) return cached
-            // Fallback to static root page if specific route was not cached
             return caches.match('/')
           })
         })
