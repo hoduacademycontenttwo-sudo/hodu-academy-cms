@@ -337,78 +337,83 @@ export default async function HomePage() {
       {/* 6. Jaipur Physical Learning Center */}
       <section className="py-12 sm:py-16 bg-white border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden bg-brand-bg/80 border border-brand-border rounded-2xl p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center shadow-xs">
-            {/* Decorative Background Illustration from Google Drive */}
-            <div className="absolute right-2 sm:right-6 bottom-0 pointer-events-none opacity-20 sm:opacity-25 w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 z-0 flex items-end justify-end">
+          <div className="relative overflow-hidden bg-gradient-to-br from-[#FAF3F2] via-[#FDF9F8] to-[#F5ECEB] border border-brand-border rounded-3xl p-6 sm:p-10 lg:p-12 shadow-sm">
+            
+            {/* Background Decorative Illustration from Google Drive */}
+            <div className="absolute right-0 top-0 bottom-0 w-full lg:w-1/2 pointer-events-none opacity-15 sm:opacity-20 flex items-center justify-end overflow-hidden z-0">
               <img
                 src="/images/counsellor_image_offline.png"
                 alt=""
-                className="w-full h-full object-contain object-bottom-right select-none"
+                className="h-full max-h-[380px] w-auto object-contain translate-x-6 select-none"
               />
             </div>
 
-            <ScrollReveal animation="fade-left" className="relative z-10 lg:col-span-7 space-y-4">
-              <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
-                <Building2 className="h-3.5 w-3.5" />
-                <span>JAIPUR OFFLINE CENTER</span>
-              </div>
-              <h2 className="font-serif-editorial text-2xl sm:text-3xl font-bold text-brand-maroon leading-tight">
-                State-of-the-Art Offline Coaching in Jaipur
-              </h2>
-              <p className="text-xs sm:text-sm text-brand-muted leading-relaxed">
-                Smart classrooms, 1-on-1 daily doubt clearing desks, silent study reference library, and GPS AC conveyance across Jaipur.
-              </p>
+            <div className="relative z-10 grid lg:grid-cols-12 gap-8 items-center">
+              <ScrollReveal animation="fade-left" className="lg:col-span-7 space-y-4">
+                <div className="inline-flex items-center gap-1.5 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-xs">
+                  <Building2 className="h-3.5 w-3.5" />
+                  <span>JAIPUR OFFLINE CENTER</span>
+                </div>
+                <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon leading-tight">
+                  State-of-the-Art Offline Coaching in Jaipur
+                </h2>
+                <p className="text-xs sm:text-sm text-brand-muted leading-relaxed max-w-xl">
+                  Smart classrooms, 1-on-1 daily doubt clearing desks, silent study reference library, and GPS AC conveyance across Jaipur.
+                </p>
 
-              <div className="grid grid-cols-2 gap-2.5 pt-1 text-xs font-semibold text-brand-text">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-brand-maroon shrink-0" />
-                  <span>85" Smart Touchscreens</span>
+                <div className="grid grid-cols-2 gap-3 pt-1 text-xs font-semibold text-brand-text max-w-md">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-brand-maroon shrink-0" />
+                    <span>85" Smart Touchscreens</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-brand-maroon shrink-0" />
+                    <span>Daily Doubt Desks</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-brand-maroon shrink-0" />
+                    <span>Silent Study Library</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-brand-maroon shrink-0" />
+                    <span>AC GPS Transport</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-brand-maroon shrink-0" />
-                  <span>Daily Doubt Desks</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-brand-maroon shrink-0" />
-                  <span>Silent Study Library</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-brand-maroon shrink-0" />
-                  <span>AC GPS Transport</span>
-                </div>
-              </div>
 
-              <div className="pt-2 flex flex-wrap gap-3">
-                <Link
-                  href="/offline"
-                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-semibold px-5 py-2.5 rounded-lg text-xs transition-colors flex items-center gap-1.5 shadow-xs"
-                >
-                  <span>Explore Center Facilities</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-                <Link
-                  href="/contact"
-                  className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-semibold px-4 py-2.5 rounded-lg text-xs transition-colors flex items-center gap-1.5 shadow-xs"
-                >
-                  <MapPin className="h-3.5 w-3.5" />
-                  <span>Book Free Campus Visit</span>
-                </Link>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal animation="fade-right" className="relative z-10 lg:col-span-5">
-              <div className="rounded-xl overflow-hidden border border-brand-border bg-white shadow-xs">
-                <img
-                  src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&h=380&fit=crop&auto=format"
-                  alt="Hodu Academy Smart Classroom"
-                  className="w-full h-56 sm:h-64 object-cover"
-                />
-                <div className="p-3 bg-white border-t border-brand-border">
-                  <span className="text-[11px] font-bold text-brand-maroon uppercase tracking-wider block">Jaipur Main Hub</span>
-                  <p className="text-xs text-brand-muted">{HODU.address}</p>
+                <div className="pt-2 flex flex-wrap gap-3">
+                  <Link
+                    href="/offline"
+                    className="bg-brand-maroon hover:bg-brand-crimson text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition-all shadow-sm hover:shadow-md flex items-center gap-1.5"
+                  >
+                    <span>Explore Center Facilities</span>
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-semibold px-4 py-2.5 rounded-xl text-xs transition-colors flex items-center gap-1.5 shadow-2xs"
+                  >
+                    <MapPin className="h-3.5 w-3.5" />
+                    <span>Book Free Campus Visit</span>
+                  </Link>
                 </div>
-              </div>
-            </ScrollReveal>
+              </ScrollReveal>
+
+              <ScrollReveal animation="fade-right" className="lg:col-span-5 flex justify-center lg:justify-end">
+                <div className="relative w-full max-w-sm rounded-2xl overflow-hidden border border-brand-border bg-white shadow-sm p-4 sm:p-5 space-y-3">
+                  <div className="flex items-center justify-center bg-[#FAF3F2] rounded-xl p-4 sm:p-6 overflow-hidden border border-brand-border/60">
+                    <img
+                      src="/images/counsellor_image_offline.png"
+                      alt="Hodu Academy Academic Counselor"
+                      className="w-48 sm:w-56 h-auto max-h-56 object-contain transform hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="pt-1">
+                    <span className="text-[11px] font-bold text-brand-maroon uppercase tracking-wider block">Jaipur Main Hub</span>
+                    <p className="text-xs text-brand-muted mt-0.5">{HODU.address}</p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
           </div>
         </div>
       </section>
