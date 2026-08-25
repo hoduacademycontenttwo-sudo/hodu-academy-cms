@@ -23,6 +23,7 @@ import { createClient } from '@/lib/supabase/server'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
+import CampusFacilityCard from '@/components/hodu/CampusFacilityCard'
 import { parseMediaUrl } from '@/lib/homeCarousel'
 import { normalizeImageUrl } from '@/lib/imageUtils'
 
@@ -280,40 +281,11 @@ export default async function OfflinePage() {
           </ScrollReveal>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {activeFacilities.map((item, idx) => {
-              const IconComp = item.icon
-              return (
-                <ScrollReveal key={idx} animation="fade-up" delay={idx * 80} className="h-full">
-                  <div className="rounded-2xl border border-brand-border bg-white shadow-xs hover:border-brand-maroon hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between overflow-hidden h-full">
-                    
-                    {/* Photo Top */}
-                    <div className="relative h-44 overflow-hidden border-b border-brand-border">
-                      <img
-                        src={normalizeImageUrl(item.image)}
-                        alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <span className="absolute top-3 left-3 bg-brand-maroon text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded">
-                        {item.tag}
-                      </span>
-                    </div>
-
-                    {/* Text Content */}
-                    <div className="p-5 flex-1 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center gap-2 mb-1.5">
-                          <IconComp className="h-4 w-4 text-brand-maroon shrink-0" />
-                          <h3 className="font-bold text-brand-text text-base">
-                            {item.title}
-                          </h3>
-                        </div>
-                        <p className="text-xs text-brand-muted leading-relaxed">{item.desc}</p>
-                      </div>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              )
-            })}
+            {activeFacilities.map((item, idx) => (
+              <ScrollReveal key={idx} animation="fade-up" delay={idx * 80} className="h-full">
+                <CampusFacilityCard item={item} />
+              </ScrollReveal>
+            ))}
           </div>
         </div>
       </section>
