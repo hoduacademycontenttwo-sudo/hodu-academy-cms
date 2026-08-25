@@ -4,6 +4,7 @@ import { Phone, MapPin, CheckCircle2, Clock, Calendar, Bus, BookOpen, Building2,
 import { createClient } from '@/lib/supabase/server'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
+import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
 import { parseMediaUrl } from '@/lib/homeCarousel'
 import { normalizeImageUrl } from '@/lib/imageUtils'
 
@@ -108,19 +109,49 @@ const timetableSlots = [
 
 export default async function OfflinePage() {
   const supabase = await createClient()
-  const { data: dbFaculty } = await supabase
-    .from('cms_faculty')
-    .select('*')
-    .eq('site_id', HODU_SITE_ID)
-    .order('sort_order')
 
-  const { data: campusMediaRow } = await supabase
-    .from('cms_gallery')
-    .select('*')
-    .eq('site_id', HODU_SITE_ID)
-    .eq('category', 'Jaipur Campus Video')
-    .limit(1)
-    .maybeSingle()
+  const [facultyRes, campusMediaRes, carouselRes] = await Promise.allSettled([
+    supabase.from('cms_faculty').select('*').eq('site_id', HODU_SITE_ID).order('sort_order'),
+    supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Jaipur Campus Video').limit(1).maybeSingle(),
+    supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Jaipur Campus Carousel').order('sort_order'),
+  ])
+
+  const dbFaculty = facultyRes.status === 'fulfilled' && facultyRes.value?.data ? facultyRes.value.data : []
+  const campusMediaRow = campusMediaRes.status === 'fulfilled' && campusMediaRes.value?.data ? campusMediaRes.value.data : null
+
+  let campusSlides: any[] = [
+    {
+      image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1920&h=700&fit=crop&auto=format',
+      mediaType: 'image',
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1920&h=700&fit=crop&auto=format',
+      mediaType: 'image',
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1920&h=700&fit=crop&auto=format',
+      mediaType: 'image',
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1920&h=700&fit=crop&auto=format',
+      mediaType: 'image',
+    },
+  ]
+
+  if (carouselRes.status === 'fulfilled' && carouselRes.value?.data && carouselRes.value.data.length > 0) {
+    campusSlides = carouselRes.value.data.map(row => {
+      let parsed: any = {}
+      try { parsed = JSON.parse(row.caption ?? '{}') } catch {}
+      const mediaInfo = parseMediaUrl(row.image_url ?? '')
+      const mediaType = parsed.mediaType ?? (mediaInfo.type !== 'image' ? 'video' : 'image')
+      const videoUrl = parsed.videoUrl ?? (mediaType === 'video' ? row.image_url : '')
+      return {
+        image: row.image_url,
+        mediaType,
+        videoUrl,
+      }
+    })
+  }
 
   let campusData = {
     mediaType: 'video',
@@ -173,6 +204,9 @@ export default async function OfflinePage() {
   return (
     <div className="space-y-0 animate-fade-in bg-brand-bg text-brand-text">
       
+      {/* ─── Top Jaipur Campus Banner Carousel (Identical to Homepage) ─── */}
+      <HomeHeroCarousel initialSlides={campusSlides} />
+
       {/* Editorial Campus Hero */}
       <section className="relative overflow-hidden border-b border-brand-border bg-brand-wine text-white py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
