@@ -360,13 +360,13 @@ export default function AcademicExcellenceResults({
               </div>
 
               {/* ─── Main Content Flex Grid (Left Top Ranker + Right 10 Achievers) ─── */}
-              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-6 items-center">
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-8 items-center">
                 
                 {/* ─── Left Spotlight: Single Top Ranker ─── */}
                 <div className="lg:col-span-3 flex flex-col items-center justify-center text-center">
                   <div className="relative group">
                     {/* Glowing Spotlight Circle Backdrop */}
-                    <div className="w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full bg-gradient-to-b from-sky-100 to-sky-200/60 p-1.5 sm:p-2 shadow-inner flex items-center justify-center border border-sky-300/60">
+                    <div className="w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 rounded-full bg-gradient-to-b from-sky-100 to-sky-200/60 p-2 sm:p-2.5 shadow-inner flex items-center justify-center border-2 border-sky-300/70">
                       {activeDeck.topRanker?.photo ? (
                         <img
                           src={normalizeImageUrl(activeDeck.topRanker.photo)}
@@ -376,7 +376,7 @@ export default function AcademicExcellenceResults({
                         />
                       ) : (
                         <div
-                          className="w-full h-full rounded-full text-white font-serif-editorial font-bold text-2xl sm:text-4xl flex items-center justify-center shadow-md"
+                          className="w-full h-full rounded-full text-white font-serif-editorial font-bold text-3xl sm:text-5xl flex items-center justify-center shadow-md"
                           style={{ backgroundColor: cardThemeColor }}
                         >
                           {activeDeck.topRanker?.initials || 'TR'}
@@ -385,9 +385,9 @@ export default function AcademicExcellenceResults({
                     </div>
 
                     {/* Large Score Pill Below Photo */}
-                    <div className="absolute -bottom-2.5 sm:-bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap z-20">
+                    <div className="absolute -bottom-3 sm:-bottom-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap z-20">
                       <span
-                        className="inline-block text-white text-xs sm:text-base md:text-lg font-black px-4 sm:px-6 py-0.5 sm:py-1 rounded-full shadow-lg border-2 border-white tracking-wide"
+                        className="inline-block text-white text-sm sm:text-lg md:text-xl font-black px-5 sm:px-7 py-1 sm:py-1.5 rounded-full shadow-xl border-2 border-white tracking-wide"
                         style={{ backgroundColor: cardThemeColor }}
                       >
                         {activeDeck.topRanker?.score}
@@ -396,19 +396,19 @@ export default function AcademicExcellenceResults({
                   </div>
 
                   {/* Student Name */}
-                  <div className="mt-4 sm:mt-6 space-y-0.5">
-                    <h4 className="font-serif-editorial text-sm sm:text-base md:text-lg font-bold text-neutral-900">
+                  <div className="mt-5 sm:mt-7 space-y-0.5">
+                    <h4 className="font-serif-editorial text-base sm:text-lg md:text-xl font-bold text-neutral-900">
                       {activeDeck.topRanker?.name}
                     </h4>
-                    <p className="text-[10px] sm:text-[11px] font-semibold text-neutral-500 uppercase tracking-wider">
+                    <p className="text-[11px] sm:text-xs font-bold text-neutral-500 uppercase tracking-wider">
                       {activeDeck.topRanker?.designation || 'Batch Topper'}
                     </p>
                   </div>
                 </div>
 
-                {/* ─── Right Grid: Achievers (Responsive Grid on Mobile & Desktop) ─── */}
+                {/* ─── Right Grid: Achievers (Larger Responsive Grid on Mobile & Desktop) ─── */}
                 <div className="lg:col-span-9">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-4 sm:gap-y-8 gap-x-2 sm:gap-x-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-6 sm:gap-y-10 gap-x-3 sm:gap-x-5">
                     {activeDeck.performers?.map((student, sIdx) => (
                       <div
                         key={sIdx}
@@ -416,7 +416,7 @@ export default function AcademicExcellenceResults({
                       >
                         {/* Student Circle Portrait */}
                         <div className="relative">
-                          <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-22 md:h-22 rounded-full bg-gradient-to-b from-sky-100 to-sky-200/50 p-1 shadow-xs border border-sky-300/50 overflow-hidden flex items-center justify-center">
+                          <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-26 md:h-26 lg:w-28 lg:h-28 rounded-full bg-gradient-to-b from-sky-100 to-sky-200/60 p-1.5 shadow-sm border-2 border-sky-300/60 overflow-hidden flex items-center justify-center">
                             {student.photo ? (
                               <img
                                 src={normalizeImageUrl(student.photo)}
@@ -426,7 +426,7 @@ export default function AcademicExcellenceResults({
                               />
                             ) : (
                               <div
-                                className="w-full h-full rounded-full text-white font-bold text-xs sm:text-sm flex items-center justify-center"
+                                className="w-full h-full rounded-full text-white font-bold text-sm sm:text-base flex items-center justify-center"
                                 style={{ backgroundColor: cardThemeColor }}
                               >
                                 {student.initials || student.name.slice(0, 2).toUpperCase()}
@@ -435,9 +435,9 @@ export default function AcademicExcellenceResults({
                           </div>
 
                           {/* Score Pill */}
-                          <div className="absolute -bottom-2 sm:-bottom-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap z-10">
+                          <div className="absolute -bottom-2.5 sm:-bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap z-10">
                             <span
-                              className="inline-block text-white text-[10px] sm:text-xs font-black px-2 sm:px-3 py-0.5 rounded-full shadow-md border border-white tracking-tight"
+                              className="inline-block text-white text-xs sm:text-sm font-black px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full shadow-md border-2 border-white tracking-tight"
                               style={{ backgroundColor: cardThemeColor }}
                             >
                               {student.score}
@@ -446,7 +446,7 @@ export default function AcademicExcellenceResults({
                         </div>
 
                         {/* Student Name */}
-                        <h5 className="mt-3 sm:mt-4 text-[11px] sm:text-xs font-bold text-neutral-900 line-clamp-1 group-hover:opacity-80 transition-opacity">
+                        <h5 className="mt-4 sm:mt-5 text-xs sm:text-sm font-bold text-neutral-900 line-clamp-1 group-hover:opacity-80 transition-opacity">
                           {student.name}
                         </h5>
                       </div>
