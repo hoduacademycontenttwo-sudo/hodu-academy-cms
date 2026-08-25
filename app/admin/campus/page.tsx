@@ -20,6 +20,18 @@ import {
   BarChart3,
   MapPin,
   CheckCircle2,
+  School,
+  Target,
+  BookOpen,
+  Laptop,
+  Smartphone,
+  Bus,
+  Sparkles,
+  Award,
+  Users,
+  Shield,
+  Clock,
+  Check,
 } from 'lucide-react'
 import { parseMediaUrl } from '@/lib/homeCarousel'
 import { HODU } from '@/lib/hodu'
@@ -27,8 +39,86 @@ import { HODU } from '@/lib/hodu'
 const SITE_ID = 'a1b2c3d4-1111-1111-1111-000000000002'
 const CAROUSEL_CATEGORY = 'Jaipur Campus Carousel'
 const CAMPUS_INFO_CATEGORY = 'Jaipur Campus Video'
+const FACILITIES_CATEGORY = 'Jaipur Campus Facilities'
 
-const DEFAULT_VIDEO_URL = 'https://drive.google.com/file/d/1_9DnITQYv8vS97GrxYzsRf3q7uBiAETq/view?usp=sharing'
+const DEFAULT_VIDEO_URL = 'https://www.youtube.com/watch?v=Z3Gm-LVcB-E'
+
+export const defaultCampusFacilities = [
+  {
+    title: 'Smart Classrooms',
+    tag: 'Acoustic Treated',
+    desc: '85-inch interactive touchscreens, digital visualizers, and ergonomic seating.',
+    image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700&h=450&fit=crop&auto=format',
+    iconName: 'School',
+  },
+  {
+    title: '1-on-1 Doubt Desks',
+    tag: 'Daily 4:00 – 7:30 PM',
+    desc: 'Private consultation booths for subject masters to resolve queries line-by-line.',
+    image: 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=700&h=450&fit=crop&auto=format',
+    iconName: 'Target',
+  },
+  {
+    title: 'Silent Library',
+    tag: '8 AM – 9 PM',
+    desc: 'Air-conditioned study carrels with 15+ years of Cambridge, IB, CBSE & JEE archives.',
+    image: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=700&h=450&fit=crop&auto=format',
+    iconName: 'BookOpen',
+  },
+  {
+    title: 'CBT Testing Lab',
+    tag: 'Simulated Exams',
+    desc: 'High-speed desktop terminals replicating real NTA JEE Main, NEET & Cambridge exams.',
+    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=700&h=450&fit=crop&auto=format',
+    iconName: 'Laptop',
+  },
+  {
+    title: 'Biometric Attendance',
+    tag: 'Instant Alerts',
+    desc: 'Automated entry/exit timestamps sent to parents with weekly progress dashboards.',
+    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=700&h=450&fit=crop&auto=format',
+    iconName: 'Smartphone',
+  },
+  {
+    title: 'GPS AC Transport',
+    tag: 'Doorstep Pickup',
+    desc: 'Safe, air-conditioned bus network with live GPS parent tracking across Jaipur.',
+    image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=700&h=450&fit=crop&auto=format',
+    iconName: 'Bus',
+  },
+]
+
+const ICON_OPTIONS = [
+  { value: 'School', label: '🏫 School / Classroom' },
+  { value: 'Target', label: '🎯 Target / Doubt Desk' },
+  { value: 'BookOpen', label: '📖 Library / Books' },
+  { value: 'Laptop', label: '💻 Computer / CBT Lab' },
+  { value: 'Smartphone', label: '📱 Biometric / App Alerts' },
+  { value: 'Bus', label: '🚌 Bus / AC Transport' },
+  { value: 'Sparkles', label: '✨ Sparkles / Premium' },
+  { value: 'Building2', label: '🏛️ Campus / Building' },
+  { value: 'Users', label: '👥 Small Batches' },
+  { value: 'Award', label: '🏆 Excellence' },
+  { value: 'Clock', label: '⏰ Timings / Extended Study' },
+  { value: 'Shield', label: '🛡️ Safety / Security' },
+]
+
+export const ICON_MAP: Record<string, any> = {
+  School,
+  Target,
+  BookOpen,
+  Laptop,
+  Smartphone,
+  Bus,
+  Sparkles,
+  Building2,
+  Users,
+  Award,
+  Clock,
+  Shield,
+  MapPin,
+  CheckCircle2,
+}
 
 const defaultCampusSlides = [
   {
@@ -59,7 +149,7 @@ const defaultCampusSlides = [
 
 export default function JaipurCampusAdminPage() {
   const supabase = createClient()
-  const [activeTab, setActiveTab] = useState<'all' | 'slides' | 'overview' | 'pillars' | 'contact'>('all')
+  const [activeTab, setActiveTab] = useState<'all' | 'slides' | 'facilities' | 'overview' | 'pillars' | 'contact'>('all')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -68,6 +158,10 @@ export default function JaipurCampusAdminPage() {
   // Slides State
   const [slides, setSlides] = useState<any[]>([])
   const [slidesLoading, setSlidesLoading] = useState(true)
+
+  // Facilities Cards State
+  const [facilities, setFacilities] = useState<any[]>([])
+  const [facilitiesLoading, setFacilitiesLoading] = useState(true)
 
   // Campus Info Form
   const [form, setForm] = useState({
@@ -90,6 +184,7 @@ export default function JaipurCampusAdminPage() {
   useEffect(() => {
     loadCampusInfo()
     loadSlides()
+    loadFacilities()
   }, [])
 
   async function loadCampusInfo() {
@@ -159,7 +254,6 @@ export default function JaipurCampusAdminPage() {
         }
       }))
     } else {
-      // Initialize with default slides if empty
       setSlides(defaultCampusSlides.map((s, idx) => ({
         id: `init-${idx}`,
         image_url: s.image_url,
@@ -171,80 +265,70 @@ export default function JaipurCampusAdminPage() {
     setSlidesLoading(false)
   }
 
+  async function loadFacilities() {
+    setFacilitiesLoading(true)
+    const { data } = await supabase
+      .from('cms_gallery')
+      .select('*')
+      .eq('site_id', SITE_ID)
+      .eq('category', FACILITIES_CATEGORY)
+      .order('sort_order')
+
+    if (data && data.length > 0) {
+      setFacilities(data.map(row => {
+        let parsed: any = {}
+        try { parsed = JSON.parse(row.caption ?? '{}') } catch {}
+        return {
+          id: row.id,
+          title: parsed.title || row.title || 'Campus Facility',
+          tag: parsed.tag || 'FACILITY',
+          desc: parsed.desc || '',
+          image: row.image_url || 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700&h=450&fit=crop&auto=format',
+          iconName: parsed.iconName || 'School',
+          sort_order: row.sort_order ?? 0,
+        }
+      }))
+    } else {
+      setFacilities(defaultCampusFacilities.map((f, idx) => ({
+        id: `init-fac-${idx}`,
+        title: f.title,
+        tag: f.tag,
+        desc: f.desc,
+        image: f.image,
+        iconName: f.iconName,
+        sort_order: idx,
+      })))
+    }
+    setFacilitiesLoading(false)
+  }
+
   function set(k: string, v: any) {
     setForm(prev => ({ ...prev, [k]: v }))
   }
 
+  // Slide Helpers
   function updateSlideLocal(id: string, patch: any) {
     setSlides(prev => prev.map(s => s.id === id ? { ...s, ...patch } : s))
   }
 
-  async function saveSlide(slide: any) {
-    const isVideo = slide.mediaType === 'video'
-    const finalUrl = isVideo ? (slide.videoUrl || slide.image_url) : slide.image_url
-    const caption = JSON.stringify({
-      mediaType: slide.mediaType ?? 'image',
-      videoUrl: slide.videoUrl ?? '',
-      headingHtml: slide.headingHtml ?? '',
-      subtitleHtml: slide.subtitleHtml ?? '',
-      imageOpacity: slide.imageOpacity ?? 100,
-    })
-
-    if (slide.id && !String(slide.id).startsWith('init-')) {
-      await supabase
-        .from('cms_gallery')
-        .update({ image_url: finalUrl, caption, sort_order: slide.sort_order ?? 0 })
-        .eq('id', slide.id)
-    } else {
-      const { data } = await supabase
-        .from('cms_gallery')
-        .insert({
-          site_id: SITE_ID,
-          category: CAROUSEL_CATEGORY,
-          image_url: finalUrl,
-          caption,
-          sort_order: slide.sort_order ?? 0,
-        })
-        .select()
-        .single()
-      if (data) {
-        setSlides(prev => prev.map(s => s.id === slide.id ? { ...s, id: data.id } : s))
-      }
-    }
-    alert(`Jaipur Campus Slide saved successfully!`)
-  }
-
-  async function addSlide() {
-    const nextOrder = slides.length > 0 ? Math.max(...slides.map(s => s.sort_order ?? 0)) + 1 : 0
+  function addSlide() {
+    const nextOrder = slides.length
     const newSlide = {
+      id: `new-${Date.now()}`,
+      image_url: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1920&h=700&fit=crop&auto=format',
       mediaType: 'image',
-      image_url: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1920&h=700&fit=crop&auto=format',
       videoUrl: '',
       sort_order: nextOrder,
+      headingHtml: '',
+      subtitleHtml: '',
+      imageOpacity: 100,
     }
-
-    const { data } = await supabase
-      .from('cms_gallery')
-      .insert({
-        site_id: SITE_ID,
-        category: CAROUSEL_CATEGORY,
-        image_url: newSlide.image_url,
-        caption: JSON.stringify({ mediaType: 'image', videoUrl: '', headingHtml: '', subtitleHtml: '', imageOpacity: 100 }),
-        sort_order: nextOrder,
-      })
-      .select()
-      .single()
-
-    if (data) {
-      setSlides(prev => [...prev, { ...data, mediaType: 'image', videoUrl: '' }])
-    } else {
-      setSlides(prev => [...prev, { ...newSlide, id: `temp-${Date.now()}` }])
-    }
+    setSlides(prev => [...prev, newSlide])
   }
 
   async function deleteSlide(id: string) {
-    if (!confirm('Delete this Jaipur Campus slide?')) return
-    if (!String(id).startsWith('init-')) {
+    if (!confirm('Are you sure you want to delete this slide?')) return
+    if (!String(id).startsWith('init-') && !String(id).startsWith('new-')) {
       await supabase.from('cms_gallery').delete().eq('id', id)
     }
     setSlides(prev => prev.filter(s => s.id !== id))
@@ -256,15 +340,72 @@ export default function JaipurCampusAdminPage() {
     const [moved] = updated.splice(fromIndex, 1)
     updated.splice(toIndex, 0, moved)
     setSlides(updated)
+  }
 
-    await Promise.all(
-      updated.map((s, idx) => {
-        if (!String(s.id).startsWith('init-')) {
-          return supabase.from('cms_gallery').update({ sort_order: idx }).eq('id', s.id)
-        }
-        return Promise.resolve()
-      })
-    )
+  // Facility Card Helpers
+  function updateFacilityLocal(id: string, patch: any) {
+    setFacilities(prev => prev.map(f => f.id === id ? { ...f, ...patch } : f))
+  }
+
+  function addFacility() {
+    const nextOrder = facilities.length
+    const newFac = {
+      id: `new-fac-${Date.now()}`,
+      title: 'New Campus Facility',
+      tag: 'FACILITIES',
+      desc: 'High-tech facility with expert staff and modern learning tools.',
+      image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700&h=450&fit=crop&auto=format',
+      iconName: 'School',
+      sort_order: nextOrder,
+    }
+    setFacilities(prev => [...prev, newFac])
+  }
+
+  async function deleteFacility(id: string) {
+    if (!confirm('Are you sure you want to delete this facility card?')) return
+    if (!String(id).startsWith('init-') && !String(id).startsWith('new-')) {
+      await supabase.from('cms_gallery').delete().eq('id', id)
+    }
+    setFacilities(prev => prev.filter(f => f.id !== id))
+  }
+
+  function moveFacility(fromIndex: number, toIndex: number) {
+    if (toIndex < 0 || toIndex >= facilities.length) return
+    const updated = [...facilities]
+    const [moved] = updated.splice(fromIndex, 1)
+    updated.splice(toIndex, 0, moved)
+    setFacilities(updated)
+  }
+
+  async function seedDefaultFacilities() {
+    if (!confirm('Reset/populate default 6 campus facilities?')) return
+    setSaving(true)
+    try {
+      // Clear old
+      await supabase.from('cms_gallery').delete().eq('site_id', SITE_ID).eq('category', FACILITIES_CATEGORY)
+
+      for (let i = 0; i < defaultCampusFacilities.length; i++) {
+        const f = defaultCampusFacilities[i]
+        const caption = JSON.stringify({
+          title: f.title,
+          tag: f.tag,
+          desc: f.desc,
+          iconName: f.iconName,
+        })
+        await supabase.from('cms_gallery').insert({
+          site_id: SITE_ID,
+          category: FACILITIES_CATEGORY,
+          image_url: f.image,
+          caption,
+          sort_order: i,
+        })
+      }
+      await loadFacilities()
+      alert('Default campus infrastructure cards loaded successfully!')
+    } catch (err) {
+      console.error('Error seeding facilities:', err)
+    }
+    setSaving(false)
   }
 
   async function saveAll() {
@@ -313,7 +454,7 @@ export default function JaipurCampusAdminPage() {
       if (data) setRecordId(data.id)
     }
 
-    // Save any pending slides
+    // Save slides
     await Promise.all(
       slides.map(async (slide, idx) => {
         const isVid = slide.mediaType === 'video'
@@ -326,7 +467,7 @@ export default function JaipurCampusAdminPage() {
           imageOpacity: slide.imageOpacity ?? 100,
         })
 
-        if (String(slide.id).startsWith('init-')) {
+        if (String(slide.id).startsWith('init-') || String(slide.id).startsWith('new-')) {
           await supabase.from('cms_gallery').insert({
             site_id: SITE_ID,
             category: CAROUSEL_CATEGORY,
@@ -334,6 +475,40 @@ export default function JaipurCampusAdminPage() {
             caption: cap,
             sort_order: idx,
           })
+        } else {
+          await supabase.from('cms_gallery').update({
+            image_url: fUrl,
+            caption: cap,
+            sort_order: idx,
+          }).eq('id', slide.id)
+        }
+      })
+    )
+
+    // Save facility cards
+    await Promise.all(
+      facilities.map(async (fac, idx) => {
+        const cap = JSON.stringify({
+          title: fac.title,
+          tag: fac.tag,
+          desc: fac.desc,
+          iconName: fac.iconName || 'School',
+        })
+
+        if (String(fac.id).startsWith('init-') || String(fac.id).startsWith('new-')) {
+          await supabase.from('cms_gallery').insert({
+            site_id: SITE_ID,
+            category: FACILITIES_CATEGORY,
+            image_url: fac.image,
+            caption: cap,
+            sort_order: idx,
+          })
+        } else {
+          await supabase.from('cms_gallery').update({
+            image_url: fac.image,
+            caption: cap,
+            sort_order: idx,
+          }).eq('id', fac.id)
         }
       })
     )
@@ -342,9 +517,8 @@ export default function JaipurCampusAdminPage() {
     setSaved(true)
     setTimeout(() => setSaved(false), 3000)
     loadSlides()
+    loadFacilities()
   }
-
-  const mediaPreview = parseMediaUrl(form.videoUrl || '')
 
   return (
     <AdminLayout>
@@ -356,7 +530,7 @@ export default function JaipurCampusAdminPage() {
             <h2 className="text-xl font-bold text-[#1B2A44]">Jaipur Campus Management Hub</h2>
           </div>
           <p className="text-xs text-neutral-500 mt-0.5">
-            Manage Jaipur Campus banner slides carousel, Google Drive video tours, trust metrics, and offline details.
+            Manage Jaipur Campus banner slides, infrastructure cards, YouTube tour video, trust metrics, and address.
           </p>
         </div>
 
@@ -385,7 +559,8 @@ export default function JaipurCampusAdminPage() {
         {[
           { id: 'all', label: '🌟 All Sections' },
           { id: 'slides', label: '🖼️ Campus Banner Slides (Carousel)' },
-          { id: 'overview', label: '🏛️ Overview & Video Tour' },
+          { id: 'facilities', label: '🏛️ Campus Infrastructure Cards' },
+          { id: 'overview', label: '🎥 YouTube Virtual Tour Video' },
           { id: 'pillars', label: '📊 Trust Pillars & Stats' },
           { id: 'contact', label: '📍 Address & Contact' },
         ].map((tab) => (
@@ -408,7 +583,7 @@ export default function JaipurCampusAdminPage() {
         {/* ─── 1. JAIPUR CAMPUS BANNER SLIDES (CAROUSEL GRID) ─── */}
         {(activeTab === 'all' || activeTab === 'slides') && (
           <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
-            <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
+            <div className="flex items-center justify-between border-b border-neutral-100 pb-3 flex-wrap gap-3">
               <div>
                 <div className="flex items-center gap-2">
                   <ImageIcon className="text-[#7E0D0D] h-5 w-5" />
@@ -448,18 +623,28 @@ export default function JaipurCampusAdminPage() {
                       <div className="flex items-center justify-between bg-white p-2.5 rounded-xl border border-neutral-200">
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-black text-[#1B2A44] uppercase">
-                            SLIDE {i + 1}
+                            Slide {i + 1}
                           </span>
-                          <span
-                            className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase px-2 py-0.5 rounded-md ${
-                              isVideo
-                                ? 'bg-amber-100 text-amber-900 border border-amber-300'
-                                : 'bg-blue-100 text-blue-900 border border-blue-300'
-                            }`}
-                          >
-                            {isVideo ? <Video size={10} /> : <ImageIcon size={10} />}
-                            <span>{isVideo ? 'Video' : 'Image'}</span>
-                          </span>
+                          <div className="flex items-center bg-neutral-100 rounded-lg p-0.5 text-[10px] font-bold">
+                            <button
+                              type="button"
+                              onClick={() => updateSlideLocal(slide.id, { mediaType: 'image' })}
+                              className={`px-2 py-0.5 rounded-md transition-all cursor-pointer ${
+                                !isVideo ? 'bg-[#7E0D0D] text-white shadow-2xs' : 'text-neutral-600 hover:text-[#7E0D0D]'
+                              }`}
+                            >
+                              Image
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => updateSlideLocal(slide.id, { mediaType: 'video' })}
+                              className={`px-2 py-0.5 rounded-md transition-all cursor-pointer ${
+                                isVideo ? 'bg-[#7E0D0D] text-white shadow-2xs' : 'text-neutral-600 hover:text-[#7E0D0D]'
+                              }`}
+                            >
+                              Drive Video
+                            </button>
+                          </div>
                         </div>
 
                         <div className="flex items-center gap-1">
@@ -467,91 +652,224 @@ export default function JaipurCampusAdminPage() {
                             type="button"
                             onClick={() => moveSlide(i, i - 1)}
                             disabled={i === 0}
-                            className="p-1 rounded-md border border-neutral-200 hover:bg-neutral-100 disabled:opacity-30 cursor-pointer"
-                            title="Move Up"
+                            className="p-1 rounded text-neutral-400 hover:text-[#1B2A44] hover:bg-neutral-100 disabled:opacity-30 cursor-pointer"
+                            title="Move Left"
                           >
-                            <ArrowUp size={12} />
+                            <ArrowUp size={13} />
                           </button>
                           <button
                             type="button"
                             onClick={() => moveSlide(i, i + 1)}
                             disabled={i === slides.length - 1}
-                            className="p-1 rounded-md border border-neutral-200 hover:bg-neutral-100 disabled:opacity-30 cursor-pointer"
-                            title="Move Down"
+                            className="p-1 rounded text-neutral-400 hover:text-[#1B2A44] hover:bg-neutral-100 disabled:opacity-30 cursor-pointer"
+                            title="Move Right"
                           >
-                            <ArrowDown size={12} />
+                            <ArrowDown size={13} />
                           </button>
                           <button
                             type="button"
                             onClick={() => deleteSlide(slide.id)}
-                            className="p-1 rounded-md border border-red-200 text-red-500 hover:bg-red-50 cursor-pointer"
+                            className="p-1 rounded text-red-500 hover:bg-red-50 cursor-pointer ml-1"
                             title="Delete Slide"
                           >
-                            <Trash2 size={12} />
+                            <Trash2 size={13} />
                           </button>
                         </div>
                       </div>
 
-                      {/* Media Toggle */}
-                      <div className="grid grid-cols-2 gap-1.5">
-                        <button
-                          type="button"
-                          onClick={() => updateSlideLocal(slide.id, { mediaType: 'image' })}
-                          className={`py-1.5 px-2 rounded-lg border text-xs font-bold transition-all cursor-pointer ${
-                            !isVideo
-                              ? 'bg-[#7E0D0D] text-white border-[#7E0D0D]'
-                              : 'bg-white text-neutral-600 border-neutral-200'
-                          }`}
-                        >
-                          Image Slide
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => updateSlideLocal(slide.id, { mediaType: 'video' })}
-                          className={`py-1.5 px-2 rounded-lg border text-xs font-bold transition-all cursor-pointer ${
-                            isVideo
-                              ? 'bg-[#7E0D0D] text-white border-[#7E0D0D]'
-                              : 'bg-white text-neutral-600 border-neutral-200'
-                          }`}
-                        >
-                          Video / Drive
-                        </button>
-                      </div>
-
-                      {/* Media Input */}
-                      {isVideo ? (
+                      {/* Media selector & Upload */}
+                      {!isVideo ? (
                         <div className="space-y-2">
-                          <input
-                            type="text"
-                            value={slide.videoUrl ?? slide.image_url ?? ''}
-                            onChange={e => updateSlideLocal(slide.id, { videoUrl: e.target.value, image_url: e.target.value })}
-                            placeholder="Paste Google Drive video link (or YouTube / MP4)..."
-                            className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs bg-white text-[#1B2A44]"
+                          <ImageUpload
+                            value={slide.image_url || ''}
+                            onChange={url => updateSlideLocal(slide.id, { image_url: url })}
+                            label={`Slide ${i + 1} Image (1920x700 recommended)`}
                           />
-                          {slide.videoUrl && (
-                            <p className="text-[11px] text-neutral-500 font-mono break-all line-clamp-1">
-                              Preview: {slide.videoUrl}
-                            </p>
-                          )}
                         </div>
                       ) : (
-                        <ImageUpload
-                          value={slide.image_url ?? ''}
-                          onChange={url => updateSlideLocal(slide.id, { image_url: url })}
-                          folder="campus-carousel"
-                          label="Slide Cover Image"
-                        />
+                        <div className="space-y-2">
+                          <label className="block text-[11px] font-bold text-[#1B2A44]">
+                            Google Drive Video URL
+                          </label>
+                          <input
+                            type="text"
+                            value={slide.videoUrl || ''}
+                            onChange={e => updateSlideLocal(slide.id, { videoUrl: e.target.value })}
+                            placeholder="https://drive.google.com/file/d/.../view?usp=sharing"
+                            className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs bg-white"
+                          />
+                        </div>
                       )}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        )}
 
-                      {/* Save Button */}
-                      <div className="pt-2">
-                        <button
-                          onClick={() => saveSlide(slide)}
-                          className="w-full bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-bold py-2 rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
+        {/* ─── 2. CAMPUS INFRASTRUCTURE & FACILITIES CARDS (NEW FEATURE) ─── */}
+        {(activeTab === 'all' || activeTab === 'facilities') && (
+          <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
+            <div className="flex items-center justify-between border-b border-neutral-100 pb-3 flex-wrap gap-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <School className="text-[#7E0D0D] h-5 w-5" />
+                  <h3 className="font-bold text-[#1B2A44] text-base">Campus Infrastructure & Facilities Cards</h3>
+                </div>
+                <p className="text-xs text-neutral-500 mt-0.5">
+                  Manage facility cards displayed under "Campus Infrastructure" on the Jaipur Campus page (Photos, Badges, Titles & Details).
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={seedDefaultFacilities}
+                  className="flex items-center gap-1 text-xs font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-300 px-3 py-2 rounded-xl transition-all cursor-pointer"
+                  title="Reset to default 6 campus facilities"
+                >
+                  <Sparkles size={13} className="text-amber-600" />
+                  <span>Reset Default 6 Cards</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={addFacility}
+                  className="flex items-center gap-1.5 text-xs bg-[#7E0D0D] hover:bg-[#922222] text-white font-bold px-3.5 py-2 rounded-xl transition-all shrink-0 shadow-xs cursor-pointer"
+                >
+                  <Plus size={14} />
+                  <span>Add Facility Card</span>
+                </button>
+              </div>
+            </div>
+
+            {facilitiesLoading ? (
+              <p className="text-xs text-neutral-500">Loading infrastructure cards…</p>
+            ) : facilities.length === 0 ? (
+              <div className="p-8 text-center border border-dashed border-neutral-300 rounded-2xl space-y-2">
+                <p className="text-xs text-neutral-500">No facility cards added yet.</p>
+                <button onClick={addFacility} className="text-xs font-bold text-[#7E0D0D] hover:underline">+ Add First Card</button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {facilities.map((fac, idx) => {
+                  const CurrentIcon = ICON_MAP[fac.iconName] || School
+
+                  return (
+                    <div
+                      key={fac.id || idx}
+                      className="border border-[#F3DCDC] rounded-2xl p-4 bg-neutral-50/50 hover:bg-white transition-all shadow-2xs flex flex-col justify-between space-y-4"
+                    >
+                      {/* Top Action Bar */}
+                      <div className="flex items-center justify-between bg-white p-2.5 rounded-xl border border-neutral-200">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-lg bg-brand-blush text-brand-maroon flex items-center justify-center">
+                            <CurrentIcon size={14} />
+                          </div>
+                          <span className="text-xs font-black text-[#1B2A44] uppercase">
+                            Card #{idx + 1}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => moveFacility(idx, idx - 1)}
+                            disabled={idx === 0}
+                            className="p-1 rounded text-neutral-400 hover:text-[#1B2A44] hover:bg-neutral-100 disabled:opacity-30 cursor-pointer"
+                            title="Move Up"
+                          >
+                            <ArrowUp size={13} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => moveFacility(idx, idx + 1)}
+                            disabled={idx === facilities.length - 1}
+                            className="p-1 rounded text-neutral-400 hover:text-[#1B2A44] hover:bg-neutral-100 disabled:opacity-30 cursor-pointer"
+                            title="Move Down"
+                          >
+                            <ArrowDown size={13} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => deleteFacility(fac.id)}
+                            className="p-1 rounded text-red-500 hover:bg-red-50 cursor-pointer ml-1"
+                            title="Delete Card"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Image Upload */}
+                      <div>
+                        <ImageUpload
+                          value={fac.image || ''}
+                          onChange={url => updateFacilityLocal(fac.id, { image: url })}
+                          label="Facility Image (Upload or Paste Link)"
+                        />
+                      </div>
+
+                      {/* Title & Tag */}
+                      <div className="grid grid-cols-2 gap-2.5">
+                        <div>
+                          <label className="block text-[10px] font-bold text-neutral-700 mb-1">
+                            Card Title
+                          </label>
+                          <input
+                            type="text"
+                            value={fac.title}
+                            onChange={e => updateFacilityLocal(fac.id, { title: e.target.value })}
+                            placeholder="e.g. Smart Classrooms"
+                            className="w-full border border-neutral-300 rounded-xl px-2.5 py-1.5 text-xs font-bold bg-white"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-bold text-neutral-700 mb-1">
+                            Badge / Tag
+                          </label>
+                          <input
+                            type="text"
+                            value={fac.tag}
+                            onChange={e => updateFacilityLocal(fac.id, { tag: e.target.value })}
+                            placeholder="e.g. Acoustic Treated"
+                            className="w-full border border-neutral-300 rounded-xl px-2.5 py-1.5 text-xs font-bold text-brand-maroon bg-white"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Icon Selector */}
+                      <div>
+                        <label className="block text-[10px] font-bold text-neutral-700 mb-1">
+                          Icon Symbol
+                        </label>
+                        <select
+                          value={fac.iconName || 'School'}
+                          onChange={e => updateFacilityLocal(fac.id, { iconName: e.target.value })}
+                          className="w-full border border-neutral-300 rounded-xl px-2.5 py-1.5 text-xs bg-white font-medium"
                         >
-                          <Save size={13} />
-                          <span>Save Slide {i + 1}</span>
-                        </button>
+                          {ICON_OPTIONS.map(opt => (
+                            <option key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Description */}
+                      <div>
+                        <label className="block text-[10px] font-bold text-neutral-700 mb-1">
+                          Facility Description
+                        </label>
+                        <textarea
+                          rows={2}
+                          value={fac.desc}
+                          onChange={e => updateFacilityLocal(fac.id, { desc: e.target.value })}
+                          placeholder="Short description of this facility..."
+                          className="w-full border border-neutral-300 rounded-xl px-2.5 py-1.5 text-xs bg-white leading-relaxed"
+                        />
                       </div>
                     </div>
                   )
@@ -561,86 +879,39 @@ export default function JaipurCampusAdminPage() {
           </div>
         )}
 
-        {/* ─── 2. CAMPUS OVERVIEW & VIDEO TOUR ─── */}
+        {/* ─── 3. OVERVIEW & YOUTUBE VIRTUAL TOUR VIDEO ─── */}
         {(activeTab === 'all' || activeTab === 'overview') && (
           <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
-            <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
-              <div>
-                <h3 className="font-bold text-[#1B2A44] text-base">Campus Overview & Feature Video</h3>
-                <p className="text-xs text-neutral-500 mt-0.5">Hero headlines and 1-on-1 campus video preview</p>
-              </div>
-              <span className={`inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg ${
-                form.mediaType === 'video' ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-blue-100 text-blue-900 border border-blue-300'
-              }`}>
-                {form.mediaType === 'video' ? <Video size={13} /> : <ImageIcon size={13} />}
-                <span>{form.mediaType === 'video' ? 'Video Active' : 'Image Active'}</span>
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-[#1B2A44] mb-1">Hero Pill Badge</label>
-                <input
-                  type="text"
-                  value={form.heroBadge}
-                  onChange={e => set('heroBadge', e.target.value)}
-                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs bg-white text-[#1B2A44]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-[#1B2A44] mb-1">Campus Phone</label>
-                <input
-                  type="text"
-                  value={form.phone}
-                  onChange={e => set('phone', e.target.value)}
-                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs bg-white text-[#1B2A44]"
-                />
-              </div>
-
-              <div className="md:col-span-2">
-                <label className="block text-xs font-bold text-[#1B2A44] mb-1">Hero Headline</label>
-                <input
-                  type="text"
-                  value={form.heroTitle}
-                  onChange={e => set('heroTitle', e.target.value)}
-                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs font-bold bg-white text-[#1B2A44]"
-                />
-              </div>
-
-              <div className="md:col-span-2">
-                <label className="block text-xs font-bold text-[#1B2A44] mb-1">Hero Subtitle</label>
-                <textarea
-                  rows={2}
-                  value={form.heroSubtitle}
-                  onChange={e => set('heroSubtitle', e.target.value)}
-                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs bg-white text-[#1B2A44]"
-                />
-              </div>
+            <div className="border-b border-neutral-100 pb-3">
+              <h3 className="font-bold text-[#1B2A44] text-base">Jaipur Campus Virtual Tour & Overview</h3>
+              <p className="text-xs text-neutral-500 mt-0.5">Embed the YouTube video or Google Drive walkthrough</p>
             </div>
 
             {/* Video Tour Link */}
-            <div className="space-y-2 pt-2 border-t border-neutral-100">
+            <div className="space-y-2">
               <label className="block text-xs font-bold text-[#1B2A44]">
-                Campus Feature Video (Google Drive / YouTube)
+                Campus Walkthrough Video URL (YouTube / Google Drive)
               </label>
               <input
                 type="text"
                 value={form.videoUrl}
                 onChange={e => set('videoUrl', e.target.value)}
-                placeholder="https://drive.google.com/file/d/.../view?usp=sharing"
-                className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs bg-white text-[#1B2A44]"
+                placeholder="https://www.youtube.com/watch?v=Z3Gm-LVcB-E"
+                className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs bg-white text-[#1B2A44] font-medium"
               />
+              <p className="text-[11px] text-neutral-400">
+                Supports YouTube URLs (e.g. https://www.youtube.com/watch?v=Z3Gm-LVcB-E) or Google Drive sharing links.
+              </p>
             </div>
           </div>
         )}
 
-        {/* ─── 3. TRUST PILLARS & STATS ─── */}
+        {/* ─── 4. TRUST PILLARS & STATS ─── */}
         {(activeTab === 'all' || activeTab === 'pillars') && (
           <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
             <div className="border-b border-neutral-100 pb-3">
               <h3 className="font-bold text-[#1B2A44] text-base">Campus Trust Pillars (3 Key Metrics)</h3>
-              <p className="text-xs text-neutral-500 mt-0.5">Displayed prominently below the campus hero</p>
+              <p className="text-xs text-neutral-500 mt-0.5">Displayed prominently across Jaipur Campus highlights</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -701,7 +972,7 @@ export default function JaipurCampusAdminPage() {
           </div>
         )}
 
-        {/* ─── 4. ADDRESS & LOCATION ─── */}
+        {/* ─── 5. ADDRESS & LOCATION ─── */}
         {(activeTab === 'all' || activeTab === 'contact') && (
           <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
             <div className="border-b border-neutral-100 pb-3">
