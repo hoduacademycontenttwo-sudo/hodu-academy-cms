@@ -5,7 +5,6 @@ import { Trophy, Sparkles, ArrowRight, BookOpen, Star, Award, ShieldCheck, Gradu
 import ScrollReveal from '@/components/hodu/ScrollReveal'
 import ResultsDirectory from '@/components/hodu/ResultsDirectory'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
-import AcademicExcellenceResults from '@/components/hodu/AcademicExcellenceResults'
 import { Ranker } from '@/components/hodu/ResultRankerCard'
 
 export const dynamic = 'force-dynamic'
@@ -28,37 +27,17 @@ const defaultToppers: Ranker[] = [
 
 export default async function ResultsPage() {
   let dbResults: any[] = []
-  let customDecks: any[] | undefined = undefined
 
   try {
     const supabase = await createClient()
-    const [rRes, dRes] = await Promise.allSettled([
-      supabase.from('cms_results').select('*').eq('site_id', HODU_SITE_ID).order('year', { ascending: false }),
-      supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Academic Excellence Decks').order('sort_order'),
-    ])
+    const { data } = await supabase
+      .from('cms_results')
+      .select('*')
+      .eq('site_id', HODU_SITE_ID)
+      .order('year', { ascending: false })
 
-    if (rRes.status === 'fulfilled' && rRes.value?.data && rRes.value.data.length > 0) {
-      dbResults = rRes.value.data
-    }
-
-    if (dRes.status === 'fulfilled' && dRes.value?.data && dRes.value.data.length > 0) {
-      customDecks = dRes.value.data.map(row => {
-        let p: any = {}
-        try { p = typeof row.caption === 'string' ? JSON.parse(row.caption) : (row.caption || {}) } catch {}
-        return {
-          id: row.id,
-          tabLabel: p.tabLabel || 'Result Deck',
-          cardTitle: p.cardTitle || 'EXCELLENCE RESULTS 2026',
-          themeColor: p.themeColor || '#1A6ECB',
-          pillBg: p.pillBg || 'bg-[#1A6ECB]',
-          bgFrom: p.bgFrom || '#FFFDF0',
-          bgVia: p.bgVia || '#FFF8E1',
-          bgTo: p.bgTo || '#FFF3CD',
-          is_featured_on_home: p.is_featured_on_home !== false,
-          topRanker: p.topRanker || { name: 'Topper Name', score: '99.6%', photo: row.image_url || '', initials: 'TN' },
-          performers: Array.isArray(p.performers) ? p.performers : [],
-        }
-      })
+    if (data && data.length > 0) {
+      dbResults = data
     }
   } catch (err) {
     console.error('Error fetching results:', err)
@@ -112,10 +91,7 @@ export default async function ResultsPage() {
         </div>
       </section>
 
-      {/* ─── Academic Excellence Results Banner Decks (Customizable) ─── */}
-      <AcademicExcellenceResults decks={customDecks} />
-
-      {/* ─── Results Directory Section ─── */}
+      {/* ─── Results Directory Section (Search & Filter All Achievers) ─── */}
       <section className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ResultsDirectory results={allRankers} />
       </section>
@@ -140,13 +116,19 @@ export default async function ResultsPage() {
                 <span>Small 1:12 Interactive Batches</span>
               </div>
               <div className="flex items-center gap-2 bg-brand-bg px-3.5 py-2 rounded-xl border border-brand-border">
-                <BookOpen className="h-4 w-4 text-brand-maroon" />
-                <span>Daily 1-on-1 Doubt Desks</span>
+                <ShieldCheck className="h-4 w-4 text-brand-maroon" />
+                <span>1-on-1 Faculty Mentoring</span>
               </div>
             </div>
           </div>
 
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-6 bg-brand-bg p-6 sm:p-8 rounded-3xl border border-brand-border shadow-xs">
+            <h3 className="font-serif-editorial text-xl font-bold text-brand-maroon mb-2">
+              Book Free Diagnostic & Campus Tour
+            </h3>
+            <p className="text-xs text-brand-muted mb-6">
+              Fill out this quick form and our academic counselor will contact you within 24 hours.
+            </p>
             <EnquiryForm />
           </div>
         </div>
