@@ -237,9 +237,6 @@ export default async function OfflinePage() {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
             <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-2">
-              <span className="inline-flex items-center gap-1.5 bg-brand-blush text-brand-maroon text-[11px] font-extrabold uppercase tracking-widest px-3.5 py-1.5 rounded-full border border-brand-maroon/20">
-                <span>CAMPUS TOUR & WALKTHROUGH</span>
-              </span>
               <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon tracking-tight">
                 Experience Hodu Academy Jaipur Campus
               </h2>
@@ -262,16 +259,16 @@ export default async function OfflinePage() {
         </div>
       </section>
 
-      {/* Campus Infrastructure */}
+      {/* Why Choose Hodu Academy */}
       <section className="py-16 sm:py-20 bg-brand-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
             <div className="text-center mb-12 sm:mb-16">
               <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-3">
-                FACILITIES
+                WHY HODU
               </span>
               <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon tracking-tight">
-                Campus Infrastructure
+                Why Choose Hodu Academy
               </h2>
               <p className="text-sm text-brand-muted mt-2 max-w-xl mx-auto leading-relaxed">
                 Designed for concentration, collaboration, and individual faculty access.
