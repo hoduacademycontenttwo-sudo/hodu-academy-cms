@@ -32,6 +32,7 @@ import ResultRankerCard from '@/components/hodu/ResultRankerCard'
 import ResultsMarqueeCarousel from '@/components/hodu/ResultsMarqueeCarousel'
 import AcademicExcellenceResults from '@/components/hodu/AcademicExcellenceResults'
 import YouTubeChannelsSection, { YouTubeChannelItem, defaultYouTubeChannels } from '@/components/hodu/YouTubeChannelsSection'
+import ProgramsIllustrationInteractive from '@/components/hodu/ProgramsIllustrationInteractive'
 import { parseCarouselRows } from '@/lib/homeCarousel'
 
 export const dynamic = 'force-dynamic'
@@ -280,34 +281,56 @@ export default async function HomePage() {
 
 
       {/* 3. Popular Batches / Academic Pathways */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-10 sm:pb-16 overflow-hidden">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-10 sm:pb-16 overflow-hidden">
         {/* Subtle decorative background ambient glow */}
         <div className="absolute top-0 right-1/4 w-96 h-48 bg-brand-maroon/5 blur-[90px] rounded-full pointer-events-none -z-10" />
 
         <ScrollReveal animation="fade-up">
-          <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
-            {/* Centered Editorial Heading */}
-            <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-brand-maroon leading-[1.18] tracking-tight">
-              Explore Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-maroon via-brand-crimson to-brand-wine">Programs</span>
-            </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center mb-10 sm:mb-14">
+            
+            {/* Left Column: Heading, Subtext, Badges & CTA */}
+            <div className="lg:col-span-7 space-y-4 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 bg-brand-blush/80 text-brand-maroon text-xs font-extrabold uppercase tracking-wider px-3.5 py-1.5 rounded-full border border-brand-maroon/20">
+                <Sparkles size={13} className="text-brand-crimson" />
+                <span>Curated Academic Pathways 2026</span>
+              </div>
 
-            {/* Centered Subtext */}
-            <p className="text-xs sm:text-sm md:text-base text-brand-muted leading-relaxed max-w-2xl mx-auto">
-              Choose the right program for your goals with expert teaching and personal support.
-            </p>
+              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-brand-maroon leading-[1.18] tracking-tight">
+                Explore Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-maroon via-brand-crimson to-brand-wine">Programs</span>
+              </h2>
 
-            {/* Centered CTA Button */}
-            <div className="pt-2 flex justify-center">
-              <Link
-                href="/courses"
-                className="group inline-flex items-center gap-2.5 bg-gradient-to-r from-brand-maroon to-brand-crimson hover:from-brand-crimson hover:to-brand-wine text-white font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
-              >
-                <span>View All Programs</span>
-                <div className="w-5 h-5 rounded-lg bg-white/15 flex items-center justify-center group-hover:bg-white group-hover:text-brand-maroon text-white transition-all">
-                  <ArrowRight className="h-3 w-3 transform group-hover:translate-x-0.5 transition-transform" />
-                </div>
-              </Link>
+              <p className="text-xs sm:text-sm md:text-base text-brand-muted leading-relaxed max-w-xl mx-auto lg:mx-0">
+                Choose the right program for your academic goals with examiner-guided teaching, 1:12 intimate batches, and daily 1-on-1 personal doubt support.
+              </p>
+
+              {/* Curriculums Mini Pills */}
+              <div className="flex items-center justify-center lg:justify-start gap-2 flex-wrap pt-1">
+                {['Cambridge IGCSE & A-Levels', 'IB Diploma (MYP & DP)', 'CBSE Board Masterclass', 'IIT-JEE & NEET-UG'].map((cur, cIdx) => (
+                  <span key={cIdx} className="text-[11px] font-bold bg-white text-neutral-700 border border-neutral-200/90 shadow-2xs px-3 py-1 rounded-full">
+                    {cur}
+                  </span>
+                ))}
+              </div>
+
+              {/* CTA Button */}
+              <div className="pt-2 flex justify-center lg:justify-start">
+                <Link
+                  href="/courses"
+                  className="group inline-flex items-center gap-2.5 bg-gradient-to-r from-brand-maroon to-brand-crimson hover:from-brand-crimson hover:to-brand-wine text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
+                >
+                  <span>View All Programs</span>
+                  <div className="w-5 h-5 rounded-lg bg-white/15 flex items-center justify-center group-hover:bg-white group-hover:text-brand-maroon text-white transition-all">
+                    <ArrowRight className="h-3 w-3 transform group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </Link>
+              </div>
             </div>
+
+            {/* Right Column: Mouse-Interactive Parallax 3D Illustration */}
+            <div className="lg:col-span-5 flex justify-center">
+              <ProgramsIllustrationInteractive />
+            </div>
+
           </div>
         </ScrollReveal>
 
