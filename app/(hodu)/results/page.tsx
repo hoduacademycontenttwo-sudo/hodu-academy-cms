@@ -5,6 +5,7 @@ import { Trophy, Sparkles, ArrowRight, BookOpen, Star, Award, ShieldCheck, Gradu
 import ScrollReveal from '@/components/hodu/ScrollReveal'
 import ResultsDirectory from '@/components/hodu/ResultsDirectory'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
+import AcademicExcellenceResults from '@/components/hodu/AcademicExcellenceResults'
 import { Ranker } from '@/components/hodu/ResultRankerCard'
 
 export const dynamic = 'force-dynamic'
@@ -27,17 +28,37 @@ const defaultToppers: Ranker[] = [
 
 export default async function ResultsPage() {
   let dbResults: any[] = []
+  let customDecks: any[] | undefined = undefined
 
   try {
     const supabase = await createClient()
-    const { data } = await supabase
-      .from('cms_results')
-      .select('*')
-      .eq('site_id', HODU_SITE_ID)
-      .order('year', { ascending: false })
+    const [rRes, dRes] = await Promise.allSettled([
+      supabase.from('cms_results').select('*').eq('site_id', HODU_SITE_ID).order('year', { ascending: false }),
+      supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Academic Excellence Decks').order('sort_order'),
+    ])
 
-    if (data && data.length > 0) {
-      dbResults = data
+    if (rRes.status === 'fulfilled' && rRes.value?.data && rRes.value.data.length > 0) {
+      dbResults = rRes.value.data
+    }
+
+    if (dRes.status === 'fulfilled' && dRes.value?.data && dRes.value.data.length > 0) {
+      customDecks = dRes.value.data.map(row => {
+        let p: any = {}
+        try { p = typeof row.caption === 'string' ? JSON.parse(row.caption) : (row.caption || {}) } catch {}
+        return {
+          id: row.id,
+          tabLabel: p.tabLabel || 'Result Deck',
+          cardTitle: p.cardTitle || 'EXCELLENCE RESULTS 2026',
+          themeColor: p.themeColor || '#1A6ECB',
+          pillBg: p.pillBg || 'bg-[#1A6ECB]',
+          bgFrom: p.bgFrom || '#FFFDF0',
+          bgVia: p.bgVia || '#FFF8E1',
+          bgTo: p.bgTo || '#FFF3CD',
+          is_featured_on_home: p.is_featured_on_home !== false,
+          topRanker: p.topRanker || { name: 'Topper Name', score: '99.6%', photo: row.image_url || '', initials: 'TN' },
+          performers: Array.isArray(p.performers) ? p.performers : [],
+        }
+      })
     }
   } catch (err) {
     console.error('Error fetching results:', err)
@@ -90,6 +111,9 @@ export default async function ResultsPage() {
           </div>
         </div>
       </section>
+
+      {/* ─── Academic Excellence Results Banner Decks (Customizable) ─── */}
+      <AcademicExcellenceResults decks={customDecks} />
 
       {/* ─── Results Directory Section ─── */}
       <section className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

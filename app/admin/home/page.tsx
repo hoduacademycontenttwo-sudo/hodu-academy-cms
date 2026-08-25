@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import AdminLayout from '@/components/admin/AdminLayout'
 import ImageUpload from '@/components/admin/ImageUpload'
 import InlineRichTextEditor from '@/components/admin/InlineRichTextEditor'
+import AcademicDecksManager from '@/components/admin/AcademicDecksManager'
 import {
   Save,
   Plus,
@@ -18,6 +19,11 @@ import {
   HelpCircle,
   GraduationCap,
   Layers,
+  Trophy,
+  BarChart3,
+  Tv,
+  Check,
+  CheckCircle2,
 } from 'lucide-react'
 import { parseMediaUrl } from '@/lib/homeCarousel'
 
@@ -101,14 +107,24 @@ const defaultYtChannels = [
   },
 ]
 
-// Strip a single wrapping <p>...</p> so heading/subtitle HTML stays inline-friendly
 function unwrapParagraph(html: string) {
   const m = html.trim().match(/^<p>([\s\S]*)<\/p>$/)
   return m ? m[1] : html
 }
 
+const SECTION_TABS = [
+  { id: 'all', label: '🌟 All Sections' },
+  { id: 'slides', label: '🖼️ Banner Slides' },
+  { id: 'results', label: '🏆 Result Decks & Toppers' },
+  { id: 'batches', label: '📚 Batches & Tracks' },
+  { id: 'youtube', label: '🎥 YouTube Channels' },
+  { id: 'stats', label: '⚙️ Hero & Stats' },
+]
+
 export default function HomeContentPage() {
   const supabase = createClient()
+  const [activeTab, setActiveTab] = useState('all')
+
   const [form, setForm]     = useState<any>(null)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved]   = useState(false)
@@ -265,8 +281,7 @@ export default function HomeContentPage() {
     setTimeout(() => setSaved(false), 3000)
   }
 
-  // --- Banner slides (cms_gallery, category = Home Carousel) ---
-
+  // Banner Slides
   function updateSlideLocal(id: string, patch: any) {
     setSlides(prev => prev.map(s => s.id === id ? { ...s, ...patch } : s))
   }
@@ -310,7 +325,6 @@ export default function HomeContentPage() {
     updated.splice(toIndex, 0, moved)
     setSlides(updated)
 
-    // Save new sort order in database immediately
     await Promise.all(
       updated.map((s, idx) =>
         supabase.from('cms_gallery').update({ sort_order: idx }).eq('id', s.id)
@@ -318,8 +332,7 @@ export default function HomeContentPage() {
     )
   }
 
-  // --- Homepage Batches / Academic Pathways Manager ---
-
+  // Batches
   function updateBatchLocal(id: string, patch: any) {
     setBatches(prev => prev.map(b => b.id === id ? { ...b, ...patch } : b))
   }
@@ -421,7 +434,6 @@ export default function HomeContentPage() {
     updated.splice(toIndex, 0, moved)
     setBatches(updated)
 
-    // Save order
     await Promise.all(
       updated.map((b, idx) => {
         if (!String(b.id).startsWith('init-')) {
@@ -432,8 +444,7 @@ export default function HomeContentPage() {
     )
   }
 
-  // --- YouTube Channels & Community Manager ---
-
+  // YouTube Channels
   async function loadYtChannels() {
     setYtChannelsLoading(true)
     const { data } = await supabase
@@ -550,12 +561,16 @@ export default function HomeContentPage() {
 
   return (
     <AdminLayout>
-      <div className="flex items-center justify-between mb-6">
+      {/* ─── Top Sticky Bar ─── */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-brand-border">
         <div>
-          <h2 className="text-lg font-bold text-[#1B2A44]">Home Page Content</h2>
-          <p className="text-xs text-[#C9C8CB]">Edit hero fallback, banner slides, academic batches, and stats</p>
+          <h2 className="text-xl font-bold text-[#1B2A44]">Homepage CMS Hub</h2>
+          <p className="text-xs text-neutral-500 mt-0.5">
+            Manage banner slides, results & topper templates, batch tracks, and community sections in compact grids.
+          </p>
         </div>
-        <div className="flex items-center gap-3">
+
+        <div className="flex items-center gap-2.5">
           <a
             href="/"
             target="_blank"
@@ -565,570 +580,519 @@ export default function HomeContentPage() {
             <ExternalLink size={13} />
             <span>View Website</span>
           </a>
-          <button onClick={save} disabled={saving} className="flex items-center gap-2 bg-[#7E0D0D] hover:bg-[#922222] text-white text-sm font-semibold px-4 py-2 rounded-xl disabled:opacity-60 shadow-xs">
-            <Save size={15} /> {saving ? 'Saving…' : saved ? 'Saved!' : 'Save Changes'}
+          <button
+            onClick={save}
+            disabled={saving}
+            className="flex items-center gap-2 bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-bold px-4 py-2.5 rounded-xl disabled:opacity-60 shadow-xs cursor-pointer transition-all"
+          >
+            <Save size={15} /> {saving ? 'Saving…' : saved ? 'Saved Successfully!' : 'Save Page Changes'}
           </button>
         </div>
       </div>
 
-      <div className="max-w-3xl space-y-6">
-        {/* Fallback Hero */}
-        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4 shadow-2xs">
-          <div>
-            <h3 className="font-semibold text-[#1B2A44]">Fallback Hero</h3>
-            <p className="text-xs text-[#C9C8CB] mt-0.5">Shown only when there are no Banner Slides below. Select any text and use the toolbar for bold, italic or color.</p>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-[#1B2A44] mb-1">Hero Title *</label>
-            <InlineRichTextEditor value={form.hero_title} onChange={v => set('hero_title', v)} placeholder="Your Dream Rank Starts Here" />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-[#1B2A44] mb-1">Hero Subtitle</label>
-            <InlineRichTextEditor value={form.hero_subtitle} onChange={v => set('hero_subtitle', v)} placeholder="A short supporting line…" multiline />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-medium text-[#1B2A44] mb-1">CTA Button Text</label>
-              <input value={form.cta_text} onChange={(e) => set('cta_text', e.target.value)} className="w-full border border-[#F3DCDC] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#7E0D0D]" />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-[#1B2A44] mb-1">CTA Link</label>
-              <input value={form.cta_link} onChange={(e) => set('cta_link', e.target.value)} className="w-full border border-[#F3DCDC] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#7E0D0D]" />
-            </div>
-          </div>
-          <ImageUpload value={form.hero_image_url ?? ''} onChange={(url) => set('hero_image_url', url)} folder="hero" label="Hero Image" />
-        </div>
+      {/* ─── Section Navigation Filter Pills ─── */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 scrollbar-none no-scrollbar">
+        {SECTION_TABS.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`text-xs font-bold px-4 py-2 rounded-xl transition-all cursor-pointer shrink-0 ${
+              activeTab === tab.id
+                ? 'bg-[#7E0D0D] text-white shadow-md'
+                : 'bg-white text-neutral-600 hover:text-[#7E0D0D] hover:bg-brand-blush border border-neutral-200 shadow-2xs'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
-        {/* Banner Slides manager */}
-        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4 shadow-2xs">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold text-[#1B2A44]">Homepage Banner Slides</h3>
-              <p className="text-xs text-[#C9C8CB] mt-0.5">{slides.length} slide{slides.length === 1 ? '' : 's'} · Supports Images & Google Drive Videos</p>
+      <div className="space-y-8">
+        
+        {/* ─── 1. BANNER SLIDES (GRID LAYOUT) ─── */}
+        {(activeTab === 'all' || activeTab === 'slides') && (
+          <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
+            <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <ImageIcon className="text-[#7E0D0D] h-5 w-5" />
+                  <h3 className="font-bold text-[#1B2A44] text-base">Homepage Banner Slides (Carousel)</h3>
+                </div>
+                <p className="text-xs text-neutral-500 mt-0.5">
+                  {slides.length} Slide{slides.length === 1 ? '' : 's'} · Supports Images & Google Drive Videos in a responsive grid
+                </p>
+              </div>
+              <button
+                onClick={addSlide}
+                className="flex items-center gap-1.5 text-xs bg-[#7E0D0D] hover:bg-[#922222] text-white font-bold px-3.5 py-2 rounded-xl transition-all shrink-0 shadow-xs cursor-pointer"
+              >
+                <Plus size={14} /> Add Slide
+              </button>
             </div>
-            <button onClick={addSlide} className="flex items-center gap-1.5 text-xs text-[#7E0D0D] hover:underline font-medium shrink-0">
-              <Plus size={13} /> Add Slide
-            </button>
-          </div>
 
-          {slidesLoading ? (
-            <p className="text-xs text-[#C9C8CB]">Loading slides…</p>
-          ) : slides.length === 0 ? (
-            <p className="text-xs text-[#C9C8CB] py-4 text-center border border-dashed border-[#F3DCDC] rounded-xl">No banner slides yet — the Fallback Hero above is shown on the homepage.</p>
-          ) : (
-            <div className="space-y-6">
-              {slides.map((slide, i) => {
-                const isVideo = slide.mediaType === 'video'
-                const mediaPreview = parseMediaUrl(slide.videoUrl || slide.image_url || '')
+            {slidesLoading ? (
+              <p className="text-xs text-neutral-500">Loading slides…</p>
+            ) : slides.length === 0 ? (
+              <div className="p-8 text-center border border-dashed border-neutral-300 rounded-2xl space-y-2">
+                <p className="text-xs text-neutral-500">No custom banner slides yet. The fallback hero will be shown.</p>
+                <button onClick={addSlide} className="text-xs font-bold text-[#7E0D0D] hover:underline">+ Add First Slide</button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {slides.map((slide, i) => {
+                  const isVideo = slide.mediaType === 'video'
+                  const mediaPreview = parseMediaUrl(slide.videoUrl || slide.image_url || '')
 
-                return (
-                  <div key={slide.id} className="border border-[#F3DCDC] rounded-xl p-4 space-y-4 bg-white shadow-2xs">
-                    {/* Header bar with Re-arrange controls */}
-                    <div className="flex items-center justify-between bg-neutral-50 p-2.5 rounded-lg border border-neutral-200/80">
-                      <div className="flex items-center gap-2">
-                        <GripVertical size={14} className="text-neutral-400" />
-                        <span className="text-xs font-bold text-[#1B2A44] uppercase tracking-wider">
-                          Slide {i + 1}
-                        </span>
-                        <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${
-                          isVideo ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-blue-100 text-blue-900 border border-blue-300'
-                        }`}>
-                          {isVideo ? <Video size={11} /> : <ImageIcon size={11} />}
-                          <span>{isVideo ? 'Video / Drive' : 'Image'}</span>
-                        </span>
-                        {slides.length > 1 && (
-                          <span className="text-[10px] text-neutral-500 font-medium hidden sm:inline">
-                            ({i + 1} of {slides.length})
+                  return (
+                    <div
+                      key={slide.id}
+                      className="border border-[#F3DCDC] rounded-2xl p-4 space-y-3 bg-neutral-50/50 hover:bg-white transition-all shadow-2xs flex flex-col justify-between"
+                    >
+                      {/* Top bar with reorder & delete */}
+                      <div className="flex items-center justify-between bg-white p-2.5 rounded-xl border border-neutral-200">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-black text-[#1B2A44] uppercase">
+                            Slide {i + 1}
                           </span>
-                        )}
+                          <span
+                            className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase px-2 py-0.5 rounded-md ${
+                              isVideo
+                                ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                                : 'bg-blue-100 text-blue-900 border border-blue-300'
+                            }`}
+                          >
+                            {isVideo ? <Video size={10} /> : <ImageIcon size={10} />}
+                            <span>{isVideo ? 'Video' : 'Image'}</span>
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => moveSlide(i, i - 1)}
+                            disabled={i === 0}
+                            className="p-1 rounded-md border border-neutral-200 hover:bg-neutral-100 disabled:opacity-30"
+                            title="Move Up"
+                          >
+                            <ArrowUp size={12} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => moveSlide(i, i + 1)}
+                            disabled={i === slides.length - 1}
+                            className="p-1 rounded-md border border-neutral-200 hover:bg-neutral-100 disabled:opacity-30"
+                            title="Move Down"
+                          >
+                            <ArrowDown size={12} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => deleteSlide(slide.id)}
+                            className="p-1 rounded-md border border-red-200 text-red-500 hover:bg-red-50"
+                            title="Delete Slide"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-1">
-                        <button
-                          type="button"
-                          onClick={() => moveSlide(i, i - 1)}
-                          disabled={i === 0}
-                          title="Move Slide Up"
-                          className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
-                        >
-                          <ArrowUp size={13} />
-                          <span className="hidden sm:inline">Up</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => moveSlide(i, i + 1)}
-                          disabled={i === slides.length - 1}
-                          title="Move Slide Down"
-                          className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
-                        >
-                          <ArrowDown size={13} />
-                          <span className="hidden sm:inline">Down</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => deleteSlide(slide.id)}
-                          title="Delete Slide"
-                          className="p-1.5 rounded-md border border-red-200 bg-white text-red-500 hover:bg-red-600 hover:text-white transition-all ml-1.5"
-                        >
-                          <Trash2 size={13} />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Media Type Toggle: Image vs Video */}
-                    <div>
-                      <label className="block text-xs font-semibold text-[#1B2A44] mb-1.5">Media Type</label>
-                      <div className="grid grid-cols-2 gap-2">
+                      {/* Media Toggle */}
+                      <div className="grid grid-cols-2 gap-1.5">
                         <button
                           type="button"
                           onClick={() => updateSlideLocal(slide.id, { mediaType: 'image' })}
-                          className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg border text-xs font-bold transition-all ${
+                          className={`py-1.5 px-2 rounded-lg border text-xs font-bold transition-all ${
                             !isVideo
-                              ? 'bg-[#7E0D0D] text-white border-[#7E0D0D] shadow-xs'
-                              : 'bg-neutral-50 text-neutral-700 border-neutral-200 hover:bg-neutral-100'
+                              ? 'bg-[#7E0D0D] text-white border-[#7E0D0D]'
+                              : 'bg-white text-neutral-600 border-neutral-200'
                           }`}
                         >
-                          <ImageIcon size={14} />
-                          <span>Image Slide</span>
+                          Image Slide
                         </button>
-
                         <button
                           type="button"
                           onClick={() => updateSlideLocal(slide.id, { mediaType: 'video' })}
-                          className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg border text-xs font-bold transition-all ${
+                          className={`py-1.5 px-2 rounded-lg border text-xs font-bold transition-all ${
                             isVideo
-                              ? 'bg-[#7E0D0D] text-white border-[#7E0D0D] shadow-xs'
-                              : 'bg-neutral-50 text-neutral-700 border-neutral-200 hover:bg-neutral-100'
+                              ? 'bg-[#7E0D0D] text-white border-[#7E0D0D]'
+                              : 'bg-white text-neutral-600 border-neutral-200'
                           }`}
                         >
-                          <Video size={14} />
-                          <span>Google Drive / Video Link</span>
+                          Video / Drive
                         </button>
                       </div>
-                    </div>
 
-                    {/* Conditional Input based on Media Type */}
-                    {isVideo ? (
-                      <div className="space-y-3 bg-neutral-50 border border-neutral-200 rounded-xl p-3.5">
-                        <div>
-                          <label className="block text-xs font-bold text-[#1B2A44] mb-1">
-                            Google Drive / Video Link *
-                          </label>
+                      {/* Media Input */}
+                      {isVideo ? (
+                        <div className="space-y-2">
                           <input
                             type="text"
                             value={slide.videoUrl ?? slide.image_url ?? ''}
                             onChange={e => updateSlideLocal(slide.id, { videoUrl: e.target.value, image_url: e.target.value })}
-                            placeholder="https://drive.google.com/file/d/.../view?usp=sharing"
-                            className="w-full border border-neutral-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-[#7E0D0D] bg-white"
+                            placeholder="Paste Google Drive video link..."
+                            className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs bg-white"
                           />
                         </div>
+                      ) : (
+                        <ImageUpload
+                          value={slide.image_url ?? ''}
+                          onChange={url => updateSlideLocal(slide.id, { image_url: url })}
+                          folder="home-carousel"
+                          label="Slide Cover Image"
+                        />
+                      )}
 
-                        <div className="flex items-start gap-2 bg-white border border-amber-200 rounded-lg p-2.5 text-[11px] text-amber-900 leading-relaxed">
-                          <HelpCircle size={14} className="text-amber-700 shrink-0 mt-0.5" />
-                          <div>
-                            <span className="font-bold">Google Drive Sharing Instructions:</span>
-                            <ul className="list-disc list-inside mt-0.5 space-y-0.5 text-neutral-700">
-                              <li>Paste your Google Drive video link directly.</li>
-                              <li>Ensure file access is set to: <strong className="text-[#7E0D0D]">"Anyone with the link can view"</strong> on Drive.</li>
-                              <li>YouTube embed links or direct MP4 links are also supported.</li>
-                            </ul>
-                          </div>
-                        </div>
-
-                        {(slide.videoUrl || slide.image_url) && (
-                          <div>
-                            <span className="block text-[11px] font-bold text-neutral-700 mb-1">Live Embed Preview:</span>
-                            <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-neutral-300 bg-black">
-                              {mediaPreview.type === 'google_drive' ? (
-                                <iframe
-                                  src={mediaPreview.embedUrl}
-                                  title="Google Drive Preview"
-                                  className="w-full h-full border-0"
-                                  allow="autoplay; encrypted-media; fullscreen"
-                                  allowFullScreen
-                                />
-                              ) : mediaPreview.type === 'youtube' ? (
-                                <iframe
-                                  src={mediaPreview.embedUrl}
-                                  title="YouTube Preview"
-                                  className="w-full h-full border-0"
-                                  allowFullScreen
-                                />
-                              ) : (
-                                <video
-                                  src={slide.videoUrl || slide.image_url}
-                                  controls
-                                  className="w-full h-full object-cover"
-                                />
-                              )}
-                            </div>
-                          </div>
-                        )}
+                      {/* Save Button */}
+                      <div className="pt-2">
+                        <button
+                          onClick={() => saveSlide(slide)}
+                          className="w-full bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-bold py-2 rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
+                        >
+                          <Save size={13} />
+                          <span>Save Slide {i + 1}</span>
+                        </button>
                       </div>
-                    ) : (
-                      <ImageUpload
-                        value={slide.image_url ?? ''}
-                        onChange={url => updateSlideLocal(slide.id, { image_url: url })}
-                        folder="home-carousel"
-                        label="Slide Image"
-                      />
-                    )}
-
-                    <div className="pt-1">
-                      <button
-                        onClick={() => saveSlide(slide)}
-                        className="bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5 shadow-xs"
-                      >
-                        <Save size={13} />
-                        <span>Save Slide {i + 1}</span>
-                      </button>
                     </div>
-                  </div>
-                )
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* 🌟 NEW: Explore Our Batches / Academic Pathways Cards Manager */}
-        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
-          <div className="flex items-center justify-between border-b border-[#F3DCDC] pb-3">
-            <div>
-              <div className="flex items-center gap-2">
-                <GraduationCap className="text-[#7E0D0D] h-5 w-5" />
-                <h3 className="font-bold text-[#1B2A44] text-base">Explore Our Batches (Hover Cards)</h3>
+                  )
+                })}
               </div>
-              <p className="text-xs text-[#C9C8CB] mt-0.5">
-                {batches.length} Batch Card{batches.length === 1 ? '' : 's'} · Manage card images, titles, descriptions, feature bullets, and course links
-              </p>
-            </div>
-            <button
-              onClick={addBatch}
-              className="flex items-center gap-1.5 text-xs bg-[#7E0D0D] hover:bg-[#922222] text-white font-semibold px-3 py-1.5 rounded-lg transition-all shrink-0 shadow-xs"
-            >
-              <Plus size={13} /> Add Batch Card
-            </button>
+            )}
           </div>
+        )}
 
-          {batchesLoading ? (
-            <p className="text-xs text-[#C9C8CB]">Loading batch cards…</p>
-          ) : (
-            <div className="space-y-6">
-              {batches.map((batch, i) => (
-                <div key={batch.id || i} className="border border-[#F3DCDC] rounded-xl p-5 space-y-4 bg-white shadow-2xs">
-                  {/* Top Bar with Reorder Controls */}
-                  <div className="flex items-center justify-between bg-neutral-50 p-2.5 rounded-lg border border-neutral-200/80">
-                    <div className="flex items-center gap-2">
-                      <GripVertical size={14} className="text-neutral-400" />
-                      <span className="text-xs font-bold text-[#1B2A44] uppercase tracking-wider">
-                        Batch Card {i + 1}: {batch.title || 'Untitled'}
+        {/* ─── 2. ACADEMIC EXCELLENCE RESULTS DECKS (TOPPERS & MARKS TEMPLATES) ─── */}
+        {(activeTab === 'all' || activeTab === 'results') && (
+          <AcademicDecksManager />
+        )}
+
+        {/* ─── 3. BATCHES & CURRICULUM PATHWAYS (GRID LAYOUT) ─── */}
+        {(activeTab === 'all' || activeTab === 'batches') && (
+          <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
+            <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <GraduationCap className="text-[#7E0D0D] h-5 w-5" />
+                  <h3 className="font-bold text-[#1B2A44] text-base">Explore Our Batches (Hover Cards)</h3>
+                </div>
+                <p className="text-xs text-neutral-500 mt-0.5">
+                  {batches.length} Batch Card{batches.length === 1 ? '' : 's'} · Manage curriculum cards in a clean 2-column grid
+                </p>
+              </div>
+              <button
+                onClick={addBatch}
+                className="flex items-center gap-1.5 text-xs bg-[#7E0D0D] hover:bg-[#922222] text-white font-bold px-3.5 py-2 rounded-xl transition-all shrink-0 shadow-xs cursor-pointer"
+              >
+                <Plus size={14} /> Add Batch Card
+              </button>
+            </div>
+
+            {batchesLoading ? (
+              <p className="text-xs text-neutral-500">Loading batch cards…</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {batches.map((batch, i) => (
+                  <div
+                    key={batch.id || i}
+                    className="border border-[#F3DCDC] rounded-2xl p-4 space-y-3 bg-neutral-50/50 hover:bg-white transition-all shadow-2xs flex flex-col justify-between"
+                  >
+                    {/* Header */}
+                    <div className="flex items-center justify-between bg-white p-2.5 rounded-xl border border-neutral-200">
+                      <span className="text-xs font-black text-[#1B2A44] truncate max-w-[200px]">
+                        {i + 1}. {batch.title || 'Untitled Batch'}
                       </span>
+
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => moveBatch(i, i - 1)}
+                          disabled={i === 0}
+                          className="p-1 rounded-md border border-neutral-200 hover:bg-neutral-100 disabled:opacity-30"
+                          title="Move Up"
+                        >
+                          <ArrowUp size={12} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => moveBatch(i, i + 1)}
+                          disabled={i === batches.length - 1}
+                          className="p-1 rounded-md border border-neutral-200 hover:bg-neutral-100 disabled:opacity-30"
+                          title="Move Down"
+                        >
+                          <ArrowDown size={12} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => deleteBatch(batch.id)}
+                          className="p-1 rounded-md border border-red-200 text-red-500 hover:bg-red-50"
+                          title="Delete Card"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-1">
-                      <button
-                        type="button"
-                        onClick={() => moveBatch(i, i - 1)}
-                        disabled={i === 0}
-                        title="Move Up"
-                        className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
-                      >
-                        <ArrowUp size={13} />
-                        <span className="hidden sm:inline">Up</span>
-                      </button>
+                    {/* Image */}
+                    <ImageUpload
+                      value={batch.image_url ?? ''}
+                      onChange={url => updateBatchLocal(batch.id, { image_url: url })}
+                      folder="batches"
+                      label="Batch Cover Image"
+                    />
 
-                      <button
-                        type="button"
-                        onClick={() => moveBatch(i, i + 1)}
-                        disabled={i === batches.length - 1}
-                        title="Move Down"
-                        className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold"
-                      >
-                        <ArrowDown size={13} />
-                        <span className="hidden sm:inline">Down</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => deleteBatch(batch.id)}
-                        title="Delete Card"
-                        className="p-1.5 rounded-md border border-red-200 bg-white text-red-500 hover:bg-red-600 hover:text-white transition-all ml-1.5"
-                      >
-                        <Trash2 size={13} />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Card Image */}
-                  <ImageUpload
-                    value={batch.image_url ?? ''}
-                    onChange={url => updateBatchLocal(batch.id, { image_url: url })}
-                    folder="batches"
-                    label="Batch Card Cover Image"
-                  />
-
-                  {/* Tag & Title */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-[#1B2A44] mb-1">Badge Tag *</label>
+                    {/* Tag & Title */}
+                    <div className="grid grid-cols-2 gap-2">
                       <input
                         type="text"
                         value={batch.tag ?? ''}
                         onChange={e => updateBatchLocal(batch.id, { tag: e.target.value })}
-                        placeholder="e.g. CAMBRIDGE IGCSE & A-LEVELS"
-                        className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
+                        placeholder="Badge Tag"
+                        className="w-full border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs bg-white"
                       />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-[#1B2A44] mb-1">Program Title *</label>
                       <input
                         type="text"
                         value={batch.title ?? ''}
                         onChange={e => updateBatchLocal(batch.id, { title: e.target.value })}
-                        placeholder="e.g. Cambridge International Program"
-                        className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
+                        placeholder="Program Title"
+                        className="w-full border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs font-bold bg-white"
                       />
                     </div>
-                  </div>
 
-                  {/* Grades & Link */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-[#1B2A44] mb-1">Grades / Target Class *</label>
+                    {/* Grades & Link */}
+                    <div className="grid grid-cols-2 gap-2">
                       <input
                         type="text"
                         value={batch.grades ?? ''}
                         onChange={e => updateBatchLocal(batch.id, { grades: e.target.value })}
-                        placeholder="e.g. Grades 8 to 12 · IGCSE / AS & A Levels"
-                        className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
+                        placeholder="Classes / Grades"
+                        className="w-full border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs bg-white"
                       />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-[#1B2A44] mb-1">Explore Program Link *</label>
                       <input
                         type="text"
                         value={batch.href ?? ''}
                         onChange={e => updateBatchLocal(batch.id, { href: e.target.value })}
-                        placeholder="e.g. /courses?category=IGCSE or /offline"
-                        className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
+                        placeholder="Page Link (e.g. /courses)"
+                        className="w-full border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs bg-white"
                       />
                     </div>
-                  </div>
 
-                  {/* Description */}
-                  <div>
-                    <label className="block text-xs font-bold text-[#1B2A44] mb-1">Curriculum Summary Description *</label>
+                    {/* Desc */}
                     <textarea
                       rows={2}
                       value={batch.desc ?? ''}
                       onChange={e => updateBatchLocal(batch.id, { desc: e.target.value })}
-                      placeholder="Targeted coaching for Extended Math, Physics, Chemistry..."
-                      className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D] resize-none"
+                      placeholder="Brief description..."
+                      className="w-full border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs bg-white resize-none"
                     />
-                  </div>
 
-                  {/* Features / Bullets */}
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="block text-xs font-bold text-[#1B2A44]">Feature Bullets (1 per line)</label>
-                      <span className="text-[11px] text-[#C9C8CB]">Shown on hover</span>
-                    </div>
+                    {/* Features */}
                     <textarea
-                      rows={3}
+                      rows={2}
                       value={batch.features ?? ''}
                       onChange={e => updateBatchLocal(batch.id, { features: e.target.value })}
-                      placeholder="Past 15 Years Question Bank Decoded&#10;Command Word Marking Rubrics&#10;Individual Coursework & IA Review"
-                      className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D] font-mono leading-relaxed"
+                      placeholder="Bullet points (1 per line)..."
+                      className="w-full border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs bg-white font-mono"
                     />
+
+                    <button
+                      onClick={() => saveBatch(batch)}
+                      className="w-full bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-bold py-2 rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
+                    >
+                      <Save size={13} />
+                      <span>Save Batch Card</span>
+                    </button>
                   </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
-                  <button
-                    onClick={() => saveBatch(batch)}
-                    className="bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5 shadow-xs"
+        {/* ─── 4. YOUTUBE CHANNELS (GRID LAYOUT) ─── */}
+        {(activeTab === 'all' || activeTab === 'youtube') && (
+          <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
+            <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <Tv className="text-red-600 h-5 w-5" />
+                  <h3 className="font-bold text-[#1B2A44] text-base">YouTube Channels & Video Hub</h3>
+                </div>
+                <p className="text-xs text-neutral-500 mt-0.5">
+                  {ytChannels.length} Channel Card{ytChannels.length === 1 ? '' : 's'} · Manage YouTube hubs in a 3-column grid
+                </p>
+              </div>
+              <button
+                onClick={addYtChannel}
+                className="flex items-center gap-1.5 text-xs bg-[#7E0D0D] hover:bg-[#922222] text-white font-bold px-3.5 py-2 rounded-xl transition-all shrink-0 shadow-xs cursor-pointer"
+              >
+                <Plus size={14} /> Add Channel
+              </button>
+            </div>
+
+            {ytChannelsLoading ? (
+              <p className="text-xs text-neutral-500">Loading YouTube channels…</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {ytChannels.map((ch, i) => (
+                  <div
+                    key={ch.id || i}
+                    className="border border-[#F3DCDC] rounded-2xl p-4 space-y-3 bg-neutral-50/50 hover:bg-white transition-all shadow-2xs flex flex-col justify-between"
                   >
-                    <Save size={13} />
-                    <span>Save Batch Card {i + 1}</span>
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Stats */}
-        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4 shadow-2xs">
-          <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-[#1B2A44]">Stats</h3>
-            <button onClick={addStat} className="text-xs text-[#7E0D0D] hover:underline font-medium">+ Add Stat</button>
-          </div>
-          <div className="space-y-3">
-            {(form.stats_json ?? []).map((stat: any, i: number) => (
-              <div key={i} className="flex gap-3 items-center">
-                <input
-                  value={stat.label ?? ''}
-                  onChange={(e) => setStat(i, 'label', e.target.value)}
-                  placeholder="Label (e.g. Students)"
-                  className="flex-1 border border-[#F3DCDC] rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]"
-                />
-                <input
-                  value={stat.value ?? ''}
-                  onChange={(e) => setStat(i, 'value', e.target.value)}
-                  placeholder="Value (e.g. 50,000+)"
-                  className="w-36 border border-[#F3DCDC] rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]"
-                />
-                <button onClick={() => removeStat(i)} className="text-red-400 hover:text-red-600">
-                  <Trash2 size={16} />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 🔴 NEW: YouTube Channels & Community (Before FAQ) Manager */}
-        <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
-          <div className="flex items-center justify-between border-b border-[#F3DCDC] pb-3">
-            <div>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-lg bg-[#FF0000] text-white flex items-center justify-center shadow-xs">
-                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                  </svg>
-                </div>
-                <h3 className="font-bold text-[#1B2A44] text-base">YouTube Channels & Community Section (Before FAQ)</h3>
-              </div>
-              <p className="text-xs text-[#C9C8CB] mt-0.5">
-                {ytChannels.length} Channel Card{ytChannels.length === 1 ? '' : 's'} · Upload channel images/banners, set channel names, YouTube URLs, and subtext
-              </p>
-            </div>
-            <button
-              onClick={addYtChannel}
-              className="flex items-center gap-1.5 text-xs bg-[#7E0D0D] hover:bg-[#922222] text-white font-semibold px-3 py-1.5 rounded-lg transition-all shrink-0 shadow-xs cursor-pointer"
-            >
-              <Plus size={13} /> Add Channel Card
-            </button>
-          </div>
-
-          {ytChannelsLoading ? (
-            <p className="text-xs text-[#C9C8CB]">Loading YouTube channels…</p>
-          ) : (
-            <div className="space-y-6">
-              {ytChannels.map((ch, i) => (
-                <div key={ch.id || i} className="border border-[#F3DCDC] rounded-xl p-5 space-y-4 bg-white shadow-2xs">
-                  {/* Top Bar with Reorder Controls */}
-                  <div className="flex items-center justify-between bg-neutral-50 p-2.5 rounded-lg border border-neutral-200/80">
-                    <div className="flex items-center gap-2">
-                      <GripVertical size={14} className="text-neutral-400" />
-                      <span className="text-xs font-bold text-[#1B2A44] uppercase tracking-wider">
-                        YouTube Card {i + 1}: {ch.title || 'Untitled Channel'}
+                    {/* Header */}
+                    <div className="flex items-center justify-between bg-white p-2.5 rounded-xl border border-neutral-200">
+                      <span className="text-xs font-black text-[#1B2A44] truncate max-w-[150px]">
+                        {ch.title || 'Channel'}
                       </span>
-                    </div>
-
-                    <div className="flex items-center gap-1">
-                      <button
-                        type="button"
-                        onClick={() => moveYtChannel(i, i - 1)}
-                        disabled={i === 0}
-                        title="Move Up"
-                        className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold cursor-pointer"
-                      >
-                        <ArrowUp size={13} />
-                        <span className="hidden sm:inline">Up</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => moveYtChannel(i, i + 1)}
-                        disabled={i === ytChannels.length - 1}
-                        title="Move Down"
-                        className="p-1.5 rounded-md border border-[#F3DCDC] bg-white text-neutral-700 hover:bg-[#7E0D0D] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[11px] font-semibold cursor-pointer"
-                      >
-                        <ArrowDown size={13} />
-                        <span className="hidden sm:inline">Down</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => deleteYtChannel(ch.id)}
-                        title="Delete Channel"
-                        className="p-1.5 rounded-md border border-red-200 bg-white text-red-500 hover:bg-red-600 hover:text-white transition-all ml-1.5 cursor-pointer"
-                      >
-                        <Trash2 size={13} />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Channel Image Upload */}
-                  <ImageUpload
-                    value={ch.image_url ?? ''}
-                    onChange={url => updateYtChannelLocal(ch.id, { image_url: url })}
-                    folder="youtube-channels"
-                    label="Channel Card Image / Banner *"
-                  />
-
-                  {/* Title & Subtitle Inputs */}
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-bold text-[#1B2A44] mb-1">Channel Name / Title *</label>
-                      <input
-                        type="text"
-                        value={ch.title ?? ''}
-                        onChange={e => updateYtChannelLocal(ch.id, { title: e.target.value })}
-                        placeholder="e.g. Hodu Academy | IGCSE & IBDP"
-                        className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-[#1B2A44] mb-1">Subtext / Focus Topic</label>
-                      <input
-                        type="text"
-                        value={ch.subscribers ?? ''}
-                        onChange={e => updateYtChannelLocal(ch.id, { subscribers: e.target.value })}
-                        placeholder="e.g. Cambridge & IB Lectures"
-                        className="w-full border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
-                      />
-                    </div>
-                  </div>
-
-                  {/* YouTube URL */}
-                  <div>
-                    <label className="block text-xs font-bold text-[#1B2A44] mb-1">YouTube Channel URL *</label>
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="url"
-                        value={ch.url ?? ''}
-                        onChange={e => updateYtChannelLocal(ch.id, { url: e.target.value })}
-                        placeholder="https://www.youtube.com/@hoduacademy"
-                        className="flex-1 border border-[#F3DCDC] rounded-xl px-3.5 py-2 text-xs font-medium focus:outline-none focus:border-[#7E0D0D]"
-                      />
-                      {ch.url && (
-                        <a
-                          href={ch.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="p-2 border border-[#F3DCDC] rounded-xl bg-neutral-50 hover:bg-[#7E0D0D] hover:text-white text-neutral-600 transition-colors"
-                          title="Test Link in new tab"
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => moveYtChannel(i, i - 1)}
+                          disabled={i === 0}
+                          className="p-1 rounded-md border border-neutral-200 hover:bg-neutral-100 disabled:opacity-30"
                         >
-                          <ExternalLink size={15} />
-                        </a>
-                      )}
+                          <ArrowUp size={12} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => moveYtChannel(i, i + 1)}
+                          disabled={i === ytChannels.length - 1}
+                          className="p-1 rounded-md border border-neutral-200 hover:bg-neutral-100 disabled:opacity-30"
+                        >
+                          <ArrowDown size={12} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => deleteYtChannel(ch.id)}
+                          className="p-1 rounded-md border border-red-200 text-red-500 hover:bg-red-50"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
                     </div>
-                  </div>
 
-                  <button
-                    onClick={() => saveYtChannel(ch)}
-                    className="bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5 shadow-xs cursor-pointer"
-                  >
-                    <Save size={13} />
-                    <span>Save Channel Card {i + 1}</span>
-                  </button>
+                    <ImageUpload
+                      value={ch.image_url ?? ''}
+                      onChange={url => updateYtChannelLocal(ch.id, { image_url: url })}
+                      folder="youtube-channels"
+                      label="Channel Cover Banner"
+                    />
+
+                    <input
+                      type="text"
+                      value={ch.title ?? ''}
+                      onChange={e => updateYtChannelLocal(ch.id, { title: e.target.value })}
+                      placeholder="Channel Title"
+                      className="w-full border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs font-bold bg-white"
+                    />
+
+                    <input
+                      type="text"
+                      value={ch.subscribers ?? ''}
+                      onChange={e => updateYtChannelLocal(ch.id, { subscribers: e.target.value })}
+                      placeholder="Subtitle / Focus"
+                      className="w-full border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs bg-white"
+                    />
+
+                    <input
+                      type="url"
+                      value={ch.url ?? ''}
+                      onChange={e => updateYtChannelLocal(ch.id, { url: e.target.value })}
+                      placeholder="YouTube URL"
+                      className="w-full border border-neutral-300 rounded-lg px-2.5 py-1.5 text-xs bg-white"
+                    />
+
+                    <button
+                      onClick={() => saveYtChannel(ch)}
+                      className="w-full bg-[#7E0D0D] hover:bg-[#922222] text-white text-xs font-bold py-2 rounded-xl transition-colors flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
+                    >
+                      <Save size={13} />
+                      <span>Save Channel</span>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ─── 5. HERO TEXT & STATS (GRID LAYOUT) ─── */}
+        {(activeTab === 'all' || activeTab === 'stats') && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            {/* Fallback Hero Card */}
+            <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4 shadow-2xs">
+              <div>
+                <h3 className="font-bold text-[#1B2A44] text-base">Fallback Hero Text</h3>
+                <p className="text-xs text-neutral-500 mt-0.5">Shown when there are no active banner slides.</p>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#1B2A44] mb-1">Hero Title</label>
+                <InlineRichTextEditor value={form.hero_title} onChange={v => set('hero_title', v)} placeholder="Your Dream Rank Starts Here" />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#1B2A44] mb-1">Hero Subtitle</label>
+                <InlineRichTextEditor value={form.hero_subtitle} onChange={v => set('hero_subtitle', v)} placeholder="A short supporting line…" multiline />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-[#1B2A44] mb-1">CTA Button Text</label>
+                  <input
+                    value={form.cta_text}
+                    onChange={(e) => set('cta_text', e.target.value)}
+                    className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs"
+                  />
                 </div>
-              ))}
+                <div>
+                  <label className="block text-xs font-bold text-[#1B2A44] mb-1">CTA Link</label>
+                  <input
+                    value={form.cta_link}
+                    onChange={(e) => set('cta_link', e.target.value)}
+                    className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs"
+                  />
+                </div>
+              </div>
+
+              <ImageUpload value={form.hero_image_url ?? ''} onChange={(url) => set('hero_image_url', url)} folder="hero" label="Hero Image" />
             </div>
-          )}
-        </div>
+
+            {/* Stats Card */}
+            <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-4 shadow-2xs">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-[#1B2A44] text-base">Key Metrics & Stats</h3>
+                  <p className="text-xs text-neutral-500 mt-0.5">Numerical milestones displayed on the homepage.</p>
+                </div>
+                <button onClick={addStat} className="text-xs text-[#7E0D0D] font-bold hover:underline">+ Add Stat</button>
+              </div>
+
+              <div className="space-y-3">
+                {(form.stats_json ?? []).map((stat: any, i: number) => (
+                  <div key={i} className="flex gap-2 items-center bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
+                    <input
+                      value={stat.label ?? ''}
+                      onChange={(e) => setStat(i, 'label', e.target.value)}
+                      placeholder="Label (e.g. Students)"
+                      className="flex-1 border border-neutral-300 rounded-lg px-3 py-1.5 text-xs bg-white"
+                    />
+                    <input
+                      value={stat.value ?? ''}
+                      onChange={(e) => setStat(i, 'value', e.target.value)}
+                      placeholder="Value (e.g. 50,000+)"
+                      className="w-28 border border-neutral-300 rounded-lg px-3 py-1.5 text-xs font-bold text-brand-maroon bg-white"
+                    />
+                    <button onClick={() => removeStat(i)} className="text-neutral-400 hover:text-red-600 p-1">
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        )}
+
       </div>
     </AdminLayout>
   )

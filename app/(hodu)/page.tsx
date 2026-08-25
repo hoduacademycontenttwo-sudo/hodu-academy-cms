@@ -155,7 +155,7 @@ export default async function HomePage() {
 
   try {
     const supabase = await createClient()
-    const [hRes, nRes, rRes, cRes, tRes, bRes, yRes] = await Promise.allSettled([
+    const [hRes, nRes, rRes, cRes, tRes, bRes, yRes, dRes] = await Promise.allSettled([
       supabase.from('cms_home_sections').select('*').eq('site_id', HODU_SITE_ID).single(),
       supabase.from('cms_notices').select('*').eq('site_id', HODU_SITE_ID).eq('is_active', true).limit(4),
       supabase.from('cms_results').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
@@ -163,6 +163,7 @@ export default async function HomePage() {
       supabase.from('cms_testimonials').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
       supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Homepage Batches').order('sort_order'),
       supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'YouTube Channel').order('sort_order'),
+      supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Academic Excellence Decks').order('sort_order'),
     ])
 
     if (hRes.status === 'fulfilled' && hRes.value?.data) home = hRes.value.data
@@ -172,6 +173,27 @@ export default async function HomePage() {
     if (tRes.status === 'fulfilled' && tRes.value?.data) dbTestimonials = tRes.value.data
     if (bRes.status === 'fulfilled' && bRes.value?.data) dbBatches = bRes.value.data
     if (yRes.status === 'fulfilled' && yRes.value?.data) dbYtChannels = yRes.value.data
+    if (dRes.status === 'fulfilled' && dRes.value?.data && dRes.value.data.length > 0) {
+      const parsedDecks = dRes.value.data.map(row => {
+        let p: any = {}
+        try { p = typeof row.caption === 'string' ? JSON.parse(row.caption) : (row.caption || {}) } catch {}
+        return {
+          id: row.id,
+          tabLabel: p.tabLabel || 'Result Deck',
+          cardTitle: p.cardTitle || 'EXCELLENCE RESULTS 2026',
+          themeColor: p.themeColor || '#1A6ECB',
+          pillBg: p.pillBg || 'bg-[#1A6ECB]',
+          bgFrom: p.bgFrom || '#FFFDF0',
+          bgVia: p.bgVia || '#FFF8E1',
+          bgTo: p.bgTo || '#FFF3CD',
+          is_featured_on_home: p.is_featured_on_home !== false,
+          topRanker: p.topRanker || { name: 'Topper Name', score: '99.6%', photo: row.image_url || '', initials: 'TN' },
+          performers: Array.isArray(p.performers) ? p.performers : [],
+        }
+      })
+      const featured = parsedDecks.filter(d => d.is_featured_on_home)
+      if (featured.length > 0) (home as any).customAcademicDecks = featured
+    }
   } catch (err) {
     console.error('HomePage data fetch error:', err)
   }
@@ -325,7 +347,7 @@ export default async function HomePage() {
       </section>
 
       {/* 5. Academic Excellence : Results Banner Section */}
-      <AcademicExcellenceResults />
+      <AcademicExcellenceResults decks={(home as any)?.customAcademicDecks} />
 
       {/* 6. Jaipur Physical Learning Center Banner */}
       <section className="py-10 sm:py-16 bg-white border-y border-brand-border">
