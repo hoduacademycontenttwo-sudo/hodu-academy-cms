@@ -230,23 +230,23 @@ export default async function OfflinePage() {
       <HomeHeroCarousel initialSlides={campusSlides} />
 
       {/* ─── Video Section: Jaipur Campus Experience / Virtual Tour ─── */}
-      <section className="relative py-12 sm:py-16 bg-white border-b border-brand-border/60 overflow-hidden">
+      <section className="relative pt-8 sm:pt-14 pb-12 sm:pb-16 bg-white border-b border-brand-border/60 overflow-hidden">
         {/* Subtle ambient backdrop glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[350px] bg-brand-maroon/5 blur-[120px] rounded-full pointer-events-none" />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
-            <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-2">
-              <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon tracking-tight">
+            <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-10 space-y-2">
+              <h2 className="font-serif-editorial text-xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon tracking-tight leading-snug sm:leading-tight px-1">
                 Experience Hodu Academy Jaipur Campus
               </h2>
-              <p className="text-xs sm:text-sm text-brand-muted leading-relaxed">
+              <p className="text-xs sm:text-sm text-brand-muted leading-relaxed max-w-xl mx-auto">
                 Take an inside look at our smart interactive classrooms, 1-on-1 daily doubt cells, silent library, and vibrant learning atmosphere.
               </p>
             </div>
 
             {/* Video Player Frame with Cinema Border & Glow */}
-            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 border-brand-maroon/20 bg-black aspect-video max-w-5xl mx-auto group">
+            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl border border-brand-maroon/20 bg-black aspect-video max-w-5xl mx-auto w-full group">
               <iframe
                 src={videoEmbedUrl}
                 title="Hodu Academy Jaipur Campus Tour"
