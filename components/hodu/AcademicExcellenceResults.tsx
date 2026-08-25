@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { ChevronLeft, ChevronRight, Trophy, Sparkles, Award } from 'lucide-react'
+import Link from 'next/link'
+import { ChevronLeft, ChevronRight, Trophy, Sparkles, Award, ArrowRight } from 'lucide-react'
 import ScrollReveal from './ScrollReveal'
 import { normalizeImageUrl } from '@/lib/imageUtils'
 
@@ -249,13 +250,22 @@ export default function AcademicExcellenceResults({ decks = defaultResultsDecks 
         
         {/* ─── Section Header ─── */}
         <ScrollReveal animation="fade-up">
-          <div className="text-center mb-6 sm:mb-10 space-y-2">
+          <div className="text-center mb-6 sm:mb-10 space-y-3">
             <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-black text-brand-maroon tracking-tight">
               Academic Excellence : Results
             </h2>
             <p className="text-xs sm:text-sm text-brand-muted font-medium max-w-xl mx-auto">
               Giving wings to a million dreams, a million more to go
             </p>
+            <div className="pt-1">
+              <Link
+                href="/results"
+                className="group inline-flex items-center gap-2 bg-white border border-[#bd9f67]/50 hover:border-brand-maroon text-brand-maroon hover:bg-brand-maroon hover:text-white font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all duration-300 shadow-xs hover:shadow-md hover:-translate-y-0.5"
+              >
+                <span>View All Achievers</span>
+                <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
         </ScrollReveal>
 
@@ -441,6 +451,19 @@ export default function AcademicExcellenceResults({ decks = defaultResultsDecks 
               </div>
 
             </div>
+          </div>
+        </ScrollReveal>
+
+        {/* Bottom View All Achievers Callout Button */}
+        <ScrollReveal animation="fade-up" delay={120}>
+          <div className="text-center pt-8">
+            <Link
+              href="/results"
+              className="group inline-flex items-center gap-2.5 bg-brand-maroon text-white hover:bg-[#5C0A0C] font-bold text-xs sm:text-sm uppercase tracking-wider px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
+            >
+              <span>Explore All Verified Achievers & Rankers</span>
+              <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1.5 transition-transform" />
+            </Link>
           </div>
         </ScrollReveal>
 
