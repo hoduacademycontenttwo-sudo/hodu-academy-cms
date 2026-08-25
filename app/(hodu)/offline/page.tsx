@@ -53,46 +53,46 @@ const ICON_MAP: Record<string, any> = {
 
 const defaultCampusFacilities = [
   {
-    icon: School,
+    iconName: 'School',
     title: 'Smart Classrooms',
     tag: 'Acoustic Treated',
     desc: '85-inch interactive touchscreens, digital visualizers, and ergonomic seating.',
-    image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700&h=450&fit=crop&auto=format'
+    image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700&h=450&fit=crop&auto=format',
   },
   {
-    icon: Target,
+    iconName: 'Target',
     title: '1-on-1 Doubt Desks',
     tag: 'Daily 4:00 – 7:30 PM',
     desc: 'Private consultation booths for subject masters to resolve queries line-by-line.',
-    image: 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=700&h=450&fit=crop&auto=format'
+    image: 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=700&h=450&fit=crop&auto=format',
   },
   {
-    icon: BookOpen,
+    iconName: 'BookOpen',
     title: 'Silent Library',
     tag: '8 AM – 9 PM',
     desc: 'Air-conditioned study carrels with 15+ years of Cambridge, IB, CBSE & JEE archives.',
-    image: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=700&h=450&fit=crop&auto=format'
+    image: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=700&h=450&fit=crop&auto=format',
   },
   {
-    icon: Laptop,
+    iconName: 'Laptop',
     title: 'CBT Testing Lab',
     tag: 'Simulated Exams',
     desc: 'High-speed desktop terminals replicating real NTA JEE Main, NEET & Cambridge exams.',
-    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=700&h=450&fit=crop&auto=format'
+    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=700&h=450&fit=crop&auto=format',
   },
   {
-    icon: Smartphone,
+    iconName: 'Smartphone',
     title: 'Biometric Attendance',
     tag: 'Instant Alerts',
     desc: 'Automated entry/exit timestamps sent to parents with weekly progress dashboards.',
-    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=700&h=450&fit=crop&auto=format'
+    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=700&h=450&fit=crop&auto=format',
   },
   {
-    icon: Bus,
+    iconName: 'Bus',
     title: 'GPS AC Transport',
     tag: 'Doorstep Pickup',
     desc: 'Safe, air-conditioned bus network with live GPS parent tracking across Jaipur.',
-    image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=700&h=450&fit=crop&auto=format'
+    image: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=700&h=450&fit=crop&auto=format',
   },
 ]
 
@@ -216,9 +216,8 @@ export default async function OfflinePage() {
     activeFacilities = facilitiesRes.value.data.map(row => {
       let parsed: any = {}
       try { parsed = JSON.parse(row.caption ?? '{}') } catch {}
-      const IconComponent = ICON_MAP[parsed.iconName] || School
       return {
-        icon: IconComponent,
+        iconName: parsed.iconName || 'School',
         title: parsed.title || row.title || 'Campus Facility',
         tag: parsed.tag || 'FACILITIES',
         desc: parsed.desc || '',

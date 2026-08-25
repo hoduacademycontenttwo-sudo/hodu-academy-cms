@@ -2,21 +2,55 @@
 
 import React, { useState } from 'react'
 import { normalizeImageUrl } from '@/lib/imageUtils'
-import { Sparkles, LucideIcon } from 'lucide-react'
+import {
+  School,
+  Target,
+  BookOpen,
+  Laptop,
+  Smartphone,
+  Bus,
+  Sparkles,
+  Award,
+  Users,
+  Shield,
+  Clock,
+  Building2,
+  MapPin,
+  CheckCircle2,
+} from 'lucide-react'
+
+const ICON_MAP: Record<string, any> = {
+  School,
+  Target,
+  BookOpen,
+  Laptop,
+  Smartphone,
+  Bus,
+  Sparkles,
+  Award,
+  Users,
+  Shield,
+  Clock,
+  Building2,
+  MapPin,
+  CheckCircle2,
+}
+
+export interface CampusFacilityItem {
+  iconName?: string
+  title: string
+  tag: string
+  desc: string
+  image: string
+}
 
 interface CampusFacilityCardProps {
-  item: {
-    icon: LucideIcon
-    title: string
-    tag: string
-    desc: string
-    image: string
-  }
+  item: CampusFacilityItem
 }
 
 export default function CampusFacilityCard({ item }: CampusFacilityCardProps) {
   const [isTouched, setIsTouched] = useState(false)
-  const IconComp = item.icon
+  const IconComp = (item.iconName && ICON_MAP[item.iconName]) || School
 
   return (
     <div
