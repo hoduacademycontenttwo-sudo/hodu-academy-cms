@@ -1,5 +1,5 @@
 // Hodu Academy - Instant-Load High-Performance Offline & PWA Service Worker Engine
-const CACHE_VERSION = 'hodu-v2.0'
+const CACHE_VERSION = 'hodu-v2.1'
 const STATIC_CACHE = `${CACHE_VERSION}-static`
 const IMAGE_CACHE = `${CACHE_VERSION}-images`
 const PAGE_CACHE = `${CACHE_VERSION}-pages`
@@ -59,14 +59,13 @@ const OFFLINE_FALLBACK_HTML = `<!DOCTYPE html>
     <h1>Hodu Academy</h1>
     <p>You are currently viewing cached content or working offline. Reconnect to the internet for live sync, or explore saved pages.</p>
     <div class="btn-group">
-      <a href="/" class="btn btn-primary">Go to Home Page</a>
-      <a href="/results" class="btn btn-outline">View Achievers & Results</a>
-      <a href="/offline" class="btn btn-outline">Jaipur Campus Details</a>
-      <button onclick="window.location.reload()" class="btn btn-outline" style="border-color:#ccc;color:#555;">Retry Connection</button>
+      <a href="/" class="btn btn-primary">Return to Homepage</a>
+      <a href="/courses" class="btn btn-outline">Explore Courses</a>
+      <a href="/offline" class="btn btn-outline">Jaipur Campus Info</a>
+      <a href="/results" class="btn btn-outline">Academic Achievers</a>
     </div>
     <div class="contact-box">
-      <strong>Jaipur Campus:</strong> C-28, Vaishali Estate, Gandhi Path West, Jaipur<br>
-      <strong>Direct Phone:</strong> +91 9257879555
+      Helpline: +91-9257879555 | Email: contact@hoduacademy.com
     </div>
   </div>
   <script>
@@ -75,7 +74,7 @@ const OFFLINE_FALLBACK_HTML = `<!DOCTYPE html>
 </body>
 </html>`
 
-// 1. Install: Pre-cache critical application routes and assets
+// 1. Install: Pre-cache critical application shell
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(STATIC_CACHE).then(async (cache) => {
@@ -126,27 +125,14 @@ self.addEventListener('fetch', (event) => {
 
   if (req.method !== 'GET' || !url.protocol.startsWith('http')) return
 
-  // A. Navigation Requests (HTML Pages) -> Cache First with Fast Network Fallback & Safe Catch
+  // A. Navigation Requests (HTML Pages) -> Network First with Fast Cache Fallback
   if (req.mode === 'navigate' || req.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
       (async () => {
-        // 1. Try cache first for instant 0ms offline renders
-        const cachedPage = await caches.match(req)
-        if (cachedPage) {
-          // If we have internet in background, revalidate cache
-          fetch(req).then(async (freshRes) => {
-            if (freshRes && freshRes.ok) {
-              const cache = await caches.open(PAGE_CACHE)
-              cache.put(req, freshRes.clone())
-            }
-          }).catch(() => {})
-          return cachedPage
-        }
-
-        // 2. Try network with short timeout
+        // 1. Try fresh network first
         try {
           const controller = new AbortController()
-          const timeoutId = setTimeout(() => controller.abort(), 3000)
+          const timeoutId = setTimeout(() => controller.abort(), 2500)
           const netRes = await fetch(req, { signal: controller.signal })
           clearTimeout(timeoutId)
 
@@ -156,7 +142,13 @@ self.addEventListener('fetch', (event) => {
             return netRes
           }
         } catch (e) {
-          // Network failed or timed out
+          // Network failed or timed out -> fall back to cache
+        }
+
+        // 2. Try cache for offline mode
+        const cachedPage = await caches.match(req)
+        if (cachedPage) {
+          return cachedPage
         }
 
         // 3. Fallbacks: Check Home page or Offline page from cache
