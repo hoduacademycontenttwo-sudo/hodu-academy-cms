@@ -191,17 +191,20 @@ export default async function OfflinePage() {
   }
 
   // Dynamic Video Tour URL
-  let videoEmbedUrl = 'https://www.youtube-nocookie.com/embed/Z3Gm-LVcB-E?rel=0&modestbranding=1&playsinline=1'
+  let videoEmbedUrl = 'https://www.youtube-nocookie.com/embed/Z3Gm-LVcB-E?rel=0&modestbranding=1&playsinline=1&controls=1'
   if (videoRes.status === 'fulfilled' && videoRes.value?.data) {
     try {
       const vData = videoRes.value.data
       const parsed = typeof vData.caption === 'string' ? JSON.parse(vData.caption) : (vData.caption || {})
-      const rawUrl = parsed.videoUrl || vData.image_url || ''
-      const mediaInfo = parseMediaUrl(rawUrl)
-      if (mediaInfo.type === 'youtube' && mediaInfo.embedUrl) {
-        videoEmbedUrl = mediaInfo.embedUrl
-      } else if (mediaInfo.type === 'google_drive' && mediaInfo.embedUrl) {
-        videoEmbedUrl = mediaInfo.embedUrl
+      const rawUrl = (parsed.videoUrl || vData.image_url || '').trim()
+      const ytMatch = rawUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)
+      if (ytMatch?.[1]) {
+        videoEmbedUrl = `https://www.youtube-nocookie.com/embed/${ytMatch[1]}?rel=0&modestbranding=1&playsinline=1&controls=1`
+      } else if (rawUrl.includes('drive.google.com')) {
+        const driveMatch = rawUrl.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/) || rawUrl.match(/drive\.google\.com\/(?:open|uc)\?id=([a-zA-Z0-9_-]+)/)
+        if (driveMatch?.[1]) {
+          videoEmbedUrl = `https://drive.google.com/file/d/${driveMatch[1]}/preview`
+        }
       }
     } catch {}
   }
@@ -246,13 +249,13 @@ export default async function OfflinePage() {
             </div>
 
             {/* Video Player Frame with Cinema Border & Glow */}
-            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl border border-brand-maroon/20 bg-black aspect-video max-w-5xl mx-auto w-full group">
+            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl border-2 border-brand-maroon/20 bg-black aspect-video max-w-5xl mx-auto w-full group">
               <iframe
                 src={videoEmbedUrl}
                 title="Hodu Academy Jaipur Campus Tour"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
-                className="w-full h-full border-0"
+                className="absolute inset-0 w-full h-full border-0"
               />
             </div>
           </ScrollReveal>
