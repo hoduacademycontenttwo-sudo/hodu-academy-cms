@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import AdminLayout from '@/components/admin/AdminLayout'
 import ImageUpload from '@/components/admin/ImageUpload'
+import * as XLSX from 'xlsx'
 import {
   Save,
   Plus,
@@ -32,6 +33,11 @@ import {
   Shield,
   Clock,
   Check,
+  FileSpreadsheet,
+  FileUp,
+  FileDown,
+  Download,
+  Upload,
 } from 'lucide-react'
 import { parseMediaUrl } from '@/lib/homeCarousel'
 import { HODU } from '@/lib/hodu'
@@ -162,6 +168,8 @@ export default function JaipurCampusAdminPage() {
   // Facilities Cards State
   const [facilities, setFacilities] = useState<any[]>([])
   const [facilitiesLoading, setFacilitiesLoading] = useState(true)
+  const [facilitiesBulkNotice, setFacilitiesBulkNotice] = useState<string | null>(null)
+  const facilitiesCsvInputRef = useRef<HTMLInputElement>(null)
 
   // Campus Info Form
   const [form, setForm] = useState({
@@ -408,6 +416,157 @@ export default function JaipurCampusAdminPage() {
     setSaving(false)
   }
 
+  /**
+   * Downloads a sample CSV / Excel template for Facilities Cards bulk upload
+   */
+  function downloadSampleFacilitiesTemplate() {
+    const sampleData = [
+      {
+        'Card Title': 'Smart Classrooms',
+        'Badge / Tag': 'Acoustic Treated',
+        'Facility Description': '85-inch interactive touchscreens, digital visualizers, and ergonomic seating.',
+        'Image URL': 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700&h=450&fit=crop&auto=format',
+        'Icon Symbol (Optional)': 'School',
+      },
+      {
+        'Card Title': '1-on-1 Doubt Desks',
+        'Badge / Tag': 'Daily 4:00 – 7:30 PM',
+        'Facility Description': 'Private consultation booths for subject masters to resolve queries line-by-line.',
+        'Image URL': 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=700&h=450&fit=crop&auto=format',
+        'Icon Symbol (Optional)': 'Target',
+      },
+      {
+        'Card Title': 'Silent Library',
+        'Badge / Tag': '8 AM – 9 PM',
+        'Facility Description': 'Air-conditioned study carrels with 15+ years of Cambridge, IB, CBSE & JEE archives.',
+        'Image URL': 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=700&h=450&fit=crop&auto=format',
+        'Icon Symbol (Optional)': 'BookOpen',
+      },
+      {
+        'Card Title': 'CBT Testing Lab',
+        'Badge / Tag': 'Simulated Exams',
+        'Facility Description': 'High-speed desktop terminals replicating real NTA JEE Main, NEET & Cambridge exams.',
+        'Image URL': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=700&h=450&fit=crop&auto=format',
+        'Icon Symbol (Optional)': 'Laptop',
+      },
+      {
+        'Card Title': 'Biometric Attendance',
+        'Badge / Tag': 'Instant Alerts',
+        'Facility Description': 'Automated entry/exit timestamps sent to parents with weekly progress dashboards.',
+        'Image URL': 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=700&h=450&fit=crop&auto=format',
+        'Icon Symbol (Optional)': 'Smartphone',
+      },
+      {
+        'Card Title': 'GPS AC Transport',
+        'Badge / Tag': 'Doorstep Pickup',
+        'Facility Description': 'Safe, air-conditioned bus network with live GPS parent tracking across Jaipur.',
+        'Image URL': 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=700&h=450&fit=crop&auto=format',
+        'Icon Symbol (Optional)': 'Bus',
+      },
+    ]
+
+    const ws = XLSX.utils.json_to_sheet(sampleData)
+    ws['!cols'] = [
+      { wch: 24 },
+      { wch: 20 },
+      { wch: 48 },
+      { wch: 45 },
+      { wch: 22 },
+    ]
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'Facilities Template')
+    XLSX.writeFile(wb, 'Hodu_Campus_Facilities_Template.xlsx')
+  }
+
+  /**
+   * Exports all current facilities to an Excel spreadsheet
+   */
+  function exportFacilitiesToExcel() {
+    const data = facilities.map((f, idx) => ({
+      'Card #': idx + 1,
+      'Card Title': f.title || '',
+      'Badge / Tag': f.tag || '',
+      'Facility Description': f.desc || '',
+      'Image URL': f.image || '',
+      'Icon Symbol': f.iconName || 'School',
+    }))
+
+    const ws = XLSX.utils.json_to_sheet(data)
+    ws['!cols'] = [
+      { wch: 8 },
+      { wch: 24 },
+      { wch: 20 },
+      { wch: 48 },
+      { wch: 45 },
+      { wch: 18 },
+    ]
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'Facilities')
+    XLSX.writeFile(wb, 'Hodu_Campus_Facilities_Export.xlsx')
+  }
+
+  /**
+   * Bulk Uploads CSV / Excel file to populate or add facility cards
+   */
+  function handleFacilitiesCsvUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = (evt) => {
+      try {
+        const bstr = evt.target?.result
+        const wb = XLSX.read(bstr, { type: 'binary' })
+        const wsName = wb.SheetNames[0]
+        const ws = wb.Sheets[wsName]
+        const rawJson: any[] = XLSX.utils.sheet_to_json(ws, { defval: '' })
+
+        if (!rawJson || rawJson.length === 0) {
+          alert('Uploaded CSV/Excel file is empty or contains no valid rows.')
+          return
+        }
+
+        const parsedFacilities = rawJson.map((row: any, rIdx: number) => {
+          const title = row['Card Title'] || row['Title'] || row['Facility Name'] || row['Facility'] || row['Name'] || Object.values(row)[0] || `Facility ${rIdx + 1}`
+          const tag = row['Badge / Tag'] || row['Badge'] || row['Tag'] || row['Subtitle'] || 'FACILITIES'
+          const desc = row['Facility Description'] || row['Description'] || row['Desc'] || row['Details'] || ''
+          const image = row['Image URL'] || row['Photo URL'] || row['Photo'] || row['Image'] || row['image'] || row['photo'] || 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700&h=450&fit=crop&auto=format'
+          let iconName = row['Icon Symbol (Optional)'] || row['Icon Symbol'] || row['Icon'] || row['icon'] || 'School'
+
+          // Normalize icon name
+          if (!ICON_MAP[iconName]) {
+            const match = ICON_OPTIONS.find(o => o.label.toLowerCase().includes(String(iconName).toLowerCase()) || o.value.toLowerCase() === String(iconName).toLowerCase())
+            iconName = match ? match.value : 'School'
+          }
+
+          return {
+            id: `csv-fac-${Date.now()}-${rIdx}`,
+            title: String(title).trim(),
+            tag: String(tag).trim(),
+            desc: String(desc).trim(),
+            image: String(image).trim(),
+            iconName: String(iconName).trim(),
+            sort_order: rIdx,
+          }
+        }).filter(f => f.title)
+
+        if (parsedFacilities.length === 0) {
+          alert('Could not find any valid facility records. Please check the CSV/Excel column headings.')
+          return
+        }
+
+        setFacilities(parsedFacilities)
+        setFacilitiesBulkNotice(`✅ Successfully imported ${parsedFacilities.length} facility cards from CSV/Excel!\nClick "Save Campus Changes" on top right to persist your changes.`)
+        setTimeout(() => setFacilitiesBulkNotice(null), 7000)
+      } catch (err) {
+        console.error('Error parsing Facilities CSV/Excel:', err)
+        alert('Failed to parse file. Please upload a valid .csv, .xlsx, or .xls file.')
+      }
+    }
+    reader.readAsBinaryString(file)
+    e.target.value = ''
+  }
+
   async function saveAll() {
     setSaving(true)
     const isVideo = form.mediaType === 'video'
@@ -495,7 +654,7 @@ export default function JaipurCampusAdminPage() {
           iconName: fac.iconName || 'School',
         })
 
-        if (String(fac.id).startsWith('init-') || String(fac.id).startsWith('new-')) {
+        if (String(fac.id).startsWith('init-') || String(fac.id).startsWith('new-') || String(fac.id).startsWith('csv-')) {
           await supabase.from('cms_gallery').insert({
             site_id: SITE_ID,
             category: FACILITIES_CATEGORY,
@@ -530,7 +689,7 @@ export default function JaipurCampusAdminPage() {
             <h2 className="text-xl font-bold text-[#1B2A44]">Jaipur Campus Management Hub</h2>
           </div>
           <p className="text-xs text-neutral-500 mt-0.5">
-            Manage Jaipur Campus banner slides, infrastructure cards, YouTube tour video, trust metrics, and address.
+            Manage Jaipur Campus banner slides, infrastructure cards, CSV bulk uploads, YouTube tour video, and address.
           </p>
         </div>
 
@@ -559,7 +718,7 @@ export default function JaipurCampusAdminPage() {
         {[
           { id: 'all', label: '🌟 All Sections' },
           { id: 'slides', label: '🖼️ Campus Banner Slides (Carousel)' },
-          { id: 'facilities', label: '🏛️ Campus Infrastructure Cards' },
+          { id: 'facilities', label: '🏛️ Campus Infrastructure Cards (CSV Bulk Upload)' },
           { id: 'overview', label: '🎥 YouTube Virtual Tour Video' },
           { id: 'pillars', label: '📊 Trust Pillars & Stats' },
           { id: 'contact', label: '📍 Address & Contact' },
@@ -708,7 +867,7 @@ export default function JaipurCampusAdminPage() {
           </div>
         )}
 
-        {/* ─── 2. CAMPUS INFRASTRUCTURE & FACILITIES CARDS (NEW FEATURE) ─── */}
+        {/* ─── 2. CAMPUS INFRASTRUCTURE & FACILITIES CARDS (WITH BULK CSV UPLOAD) ─── */}
         {(activeTab === 'all' || activeTab === 'facilities') && (
           <div className="bg-white border border-[#F3DCDC] rounded-2xl p-6 space-y-5 shadow-2xs">
             <div className="flex items-center justify-between border-b border-neutral-100 pb-3 flex-wrap gap-3">
@@ -718,11 +877,11 @@ export default function JaipurCampusAdminPage() {
                   <h3 className="font-bold text-[#1B2A44] text-base">Campus Infrastructure & Facilities Cards</h3>
                 </div>
                 <p className="text-xs text-neutral-500 mt-0.5">
-                  Manage facility cards displayed under "Campus Infrastructure" on the Jaipur Campus page (Photos, Badges, Titles & Details).
+                  Manage facility cards displayed under "Why Choose Hodu Academy" on the Jaipur Campus page ({facilities.length} Cards).
                 </p>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <button
                   type="button"
                   onClick={seedDefaultFacilities}
@@ -742,6 +901,69 @@ export default function JaipurCampusAdminPage() {
                   <span>Add Facility Card</span>
                 </button>
               </div>
+            </div>
+
+            {/* ─── BULK CSV / EXCEL UPLOAD TOOLBAR ─── */}
+            <div className="p-4 bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 rounded-2xl border border-emerald-200 space-y-3">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <FileSpreadsheet className="h-4 w-4 text-emerald-700" />
+                    <h4 className="text-xs font-extrabold text-emerald-950 uppercase tracking-wider">
+                      CSV / Excel Bulk Upload For Campus Cards
+                    </h4>
+                  </div>
+                  <p className="text-[11px] text-emerald-800 mt-0.5">
+                    Upload a spreadsheet with Card Title, Badge, Description, Image URL, and Icon to populate all facility cards instantly.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 flex-wrap">
+                  {/* Hidden CSV input */}
+                  <input
+                    ref={facilitiesCsvInputRef}
+                    type="file"
+                    accept=".csv, .xlsx, .xls"
+                    className="hidden"
+                    onChange={handleFacilitiesCsvUpload}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => facilitiesCsvInputRef.current?.click()}
+                    className="flex items-center gap-1.5 text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-2 rounded-xl transition-all shadow-xs cursor-pointer"
+                  >
+                    <FileUp size={14} />
+                    <span>Upload CSV / Excel</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={downloadSampleFacilitiesTemplate}
+                    className="flex items-center gap-1 text-[11px] font-bold bg-white text-emerald-900 hover:bg-emerald-100/70 px-3 py-2 rounded-xl border border-emerald-300 transition-all cursor-pointer"
+                    title="Download pre-formatted sample spreadsheet"
+                  >
+                    <Download size={13} />
+                    <span>Sample Template</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={exportFacilitiesToExcel}
+                    className="flex items-center gap-1 text-[11px] font-bold bg-white text-neutral-700 hover:bg-neutral-100 px-3 py-2 rounded-xl border border-neutral-300 transition-all cursor-pointer"
+                    title="Export current facility cards to Excel"
+                  >
+                    <FileDown size={13} />
+                    <span>Export</span>
+                  </button>
+                </div>
+              </div>
+
+              {facilitiesBulkNotice && (
+                <div className="p-3 bg-white/95 border border-emerald-300 rounded-xl text-xs font-bold text-emerald-900 whitespace-pre-line animate-fade-in shadow-2xs">
+                  {facilitiesBulkNotice}
+                </div>
+              )}
             </div>
 
             {facilitiesLoading ? (
