@@ -1,11 +1,8 @@
 import { HODU, HODU_SITE_ID } from '@/lib/hodu'
 import { createClient } from '@/lib/supabase/server'
-import Link from 'next/link'
-import { Trophy, Sparkles, ArrowRight, BookOpen, Star, Award, ShieldCheck, GraduationCap } from 'lucide-react'
-import ScrollReveal from '@/components/hodu/ScrollReveal'
-import ResultsDirectory from '@/components/hodu/ResultsDirectory'
+import { Trophy, ShieldCheck, Award, Star, GraduationCap } from 'lucide-react'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
-import { Ranker } from '@/components/hodu/ResultRankerCard'
+import AcademicExcellenceResults from '@/components/hodu/AcademicExcellenceResults'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,45 +11,49 @@ export const metadata = {
   description: 'Discover the exceptional achievements of Hodu Academy students across Cambridge IGCSE, IB Diploma, CBSE Class 10 & 12, IIT-JEE, and NEET.',
 }
 
-const defaultToppers: Ranker[] = [
-  { initials: 'AK', name: 'Aryan Kapoor',   pct: '99.4%',    stream: 'JEE Advanced 2026',  school: 'Jayshree Periwal High School' },
-  { initials: 'PS', name: 'Priya Sharma',   pct: '8x A*',    stream: 'Cambridge IGCSE 2026', school: 'Neerja Modi School' },
-  { initials: 'RV', name: 'Rohit Verma',    pct: '710/720',  stream: 'NEET UG 2026',       school: 'DPS Jaipur' },
-  { initials: 'SM', name: 'Sneha Mehta',    pct: '44/45',    stream: 'IB Diploma 2026',    school: 'Sanskar School' },
-  { initials: 'KS', name: 'Karan Singh',    pct: 'AIR 4',    stream: 'Math Olympiad 2026', school: 'Seedling Public' },
-  { initials: 'DG', name: 'Divya Gupta',    pct: '99.2%',    stream: 'Class 12 Board 2026', school: 'MGD Girls School' },
-  { initials: 'AA', name: 'Aarav Agarwal',  pct: '98.8%',    stream: 'Class 10 Board 2026', school: 'St. Xavier’s School' },
-  { initials: 'RJ', name: 'Riya Joshi',     pct: '99.1%',    stream: 'JEE Main 2026',      school: 'Step By Step International' },
-]
-
 export default async function ResultsPage() {
-  let dbResults: any[] = []
+  let customDecks: any[] | undefined = undefined
 
   try {
     const supabase = await createClient()
     const { data } = await supabase
-      .from('cms_results')
+      .from('cms_gallery')
       .select('*')
       .eq('site_id', HODU_SITE_ID)
-      .order('year', { ascending: false })
+      .eq('category', 'Academic Excellence Decks')
+      .order('sort_order')
 
     if (data && data.length > 0) {
-      dbResults = data
+      customDecks = data.map(row => {
+        try {
+          const parsed = JSON.parse(row.caption || '{}')
+          return {
+            id: row.id,
+            tabLabel: parsed.tabLabel || row.title || 'Result',
+            cardTitle: parsed.cardTitle || row.title || 'ACADEMIC RESULTS',
+            themeColor: parsed.themeColor || '#1A6ECB',
+            pillBg: parsed.pillBg || 'bg-[#1A6ECB]',
+            bgFrom: parsed.bgFrom || '#FFFDF0',
+            bgVia: parsed.bgVia || '#FFF8E1',
+            bgTo: parsed.bgTo || '#FFF3CD',
+            is_featured_on_home: parsed.is_featured_on_home !== false,
+            topRanker: parsed.topRanker || {
+              name: 'Topper Name',
+              score: '99.6%',
+              photo: row.image_url,
+              initials: 'TN',
+              designation: 'Top Ranker',
+            },
+            performers: parsed.performers || [],
+          }
+        } catch {
+          return null
+        }
+      }).filter(Boolean)
     }
   } catch (err) {
-    console.error('Error fetching results:', err)
+    console.error('Error fetching academic decks:', err)
   }
-
-  const allRankers: Ranker[] = dbResults.length > 0
-    ? dbResults.map((r) => ({
-        initials: (r.student_name || 'H').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase(),
-        name: r.student_name || 'Student',
-        pct: r.rank_or_marks || 'Top Rank',
-        stream: `${r.exam || ''} ${r.year || ''}`.trim() || 'Hodu Academy',
-        school: r.school_name || r.course_name || 'Hodu Academy Alum',
-        photo_url: r.photo_url,
-      }))
-    : defaultToppers
 
   return (
     <div className="space-y-0 animate-fade-in bg-brand-bg text-brand-text">
@@ -91,10 +92,8 @@ export default async function ResultsPage() {
         </div>
       </section>
 
-      {/* ─── Results Directory Section (Search & Filter All Achievers) ─── */}
-      <section className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ResultsDirectory results={allRankers} />
-      </section>
+      {/* ─── Academic Excellence Results Banner Decks (Customizable, All Decks, No Self-Explore Buttons) ─── */}
+      <AcademicExcellenceResults decks={customDecks} showViewAllButton={false} />
 
       {/* ─── Bottom CTA / Enquiry Section ─── */}
       <section className="py-14 sm:py-20 bg-white border-t border-brand-border">

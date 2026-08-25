@@ -226,9 +226,13 @@ export const defaultResultsDecks: ResultCategoryDeck[] = [
 
 interface AcademicExcellenceResultsProps {
   decks?: ResultCategoryDeck[]
+  showViewAllButton?: boolean
 }
 
-export default function AcademicExcellenceResults({ decks = defaultResultsDecks }: AcademicExcellenceResultsProps) {
+export default function AcademicExcellenceResults({
+  decks = defaultResultsDecks,
+  showViewAllButton = true,
+}: AcademicExcellenceResultsProps) {
   const activeDecks = decks && decks.length > 0 ? decks : defaultResultsDecks
   const [activeDeckIdx, setActiveDeckIdx] = useState(0)
 
@@ -257,15 +261,17 @@ export default function AcademicExcellenceResults({ decks = defaultResultsDecks 
             <p className="text-xs sm:text-sm text-brand-muted font-medium max-w-xl mx-auto">
               Giving wings to a million dreams, a million more to go
             </p>
-            <div className="pt-1">
-              <Link
-                href="/results"
-                className="group inline-flex items-center gap-2 bg-white border border-[#bd9f67]/50 hover:border-brand-maroon text-brand-maroon hover:bg-brand-maroon hover:text-white font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all duration-300 shadow-xs hover:shadow-md hover:-translate-y-0.5"
-              >
-                <span>View All Achievers</span>
-                <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
+            {showViewAllButton && (
+              <div className="pt-1">
+                <Link
+                  href="/results"
+                  className="group inline-flex items-center gap-2 bg-white border border-[#bd9f67]/50 hover:border-brand-maroon text-brand-maroon hover:bg-brand-maroon hover:text-white font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all duration-300 shadow-xs hover:shadow-md hover:-translate-y-0.5"
+                >
+                  <span>View All Achievers</span>
+                  <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            )}
           </div>
         </ScrollReveal>
 
@@ -455,17 +461,19 @@ export default function AcademicExcellenceResults({ decks = defaultResultsDecks 
         </ScrollReveal>
 
         {/* Bottom View All Achievers Callout Button */}
-        <ScrollReveal animation="fade-up" delay={120}>
-          <div className="text-center pt-8">
-            <Link
-              href="/results"
-              className="group inline-flex items-center gap-2.5 bg-brand-maroon text-white hover:bg-[#5C0A0C] font-bold text-xs sm:text-sm uppercase tracking-wider px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
-            >
-              <span>Explore All Verified Achievers & Rankers</span>
-              <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1.5 transition-transform" />
-            </Link>
-          </div>
-        </ScrollReveal>
+        {showViewAllButton && (
+          <ScrollReveal animation="fade-up" delay={120}>
+            <div className="text-center pt-8">
+              <Link
+                href="/results"
+                className="group inline-flex items-center gap-2.5 bg-brand-maroon text-white hover:bg-[#5C0A0C] font-bold text-xs sm:text-sm uppercase tracking-wider px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
+              >
+                <span>Explore All Verified Achievers & Rankers</span>
+                <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1.5 transition-transform" />
+              </Link>
+            </div>
+          </ScrollReveal>
+        )}
 
       </div>
     </section>
