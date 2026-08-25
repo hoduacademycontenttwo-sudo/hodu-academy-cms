@@ -20,6 +20,7 @@ import {
   Users,
   X,
   Upload,
+  Loader2,
 } from 'lucide-react'
 import { ResultCategoryDeck, defaultResultsDecks } from '@/components/hodu/AcademicExcellenceResults'
 import { normalizeImageUrl } from '@/lib/imageUtils'
@@ -43,6 +44,7 @@ export default function AcademicDecksManager() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [saving, setSaving] = useState(false)
   const [savedNotice, setSavedNotice] = useState<string | null>(null)
+  const [uploadingIdx, setUploadingIdx] = useState<number | null>(null)
 
   useEffect(() => {
     loadDecks()
@@ -285,6 +287,32 @@ export default function AcademicDecksManager() {
       updated.splice(index, 1)
       return { ...prev, performers: updated }
     })
+  }
+
+  async function handleStudentPhotoFile(sIdx: number, file: File) {
+    if (!file) return
+    if (file.size > 10 * 1024 * 1024) {
+      alert('File too large. Max size: 10MB')
+      return
+    }
+
+    setUploadingIdx(sIdx)
+    const fd = new FormData()
+    fd.append('file', file)
+    fd.append('folder', 'results')
+
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: fd })
+      const data = await res.json()
+      if (data.url) {
+        setPerformer(sIdx, 'photo', data.url)
+      } else {
+        alert(data.error ?? 'Upload failed.')
+      }
+    } catch {
+      alert('Upload failed. Check your connection.')
+    }
+    setUploadingIdx(null)
   }
 
   return (
@@ -677,20 +705,55 @@ export default function AcademicDecksManager() {
                       className="bg-neutral-50 p-3 rounded-2xl border border-neutral-200 relative flex items-start gap-3 hover:border-brand-maroon/40 transition-colors"
                     >
                       {/* Photo Upload / Avatar */}
-                      <div className="w-16 shrink-0">
-                        <div className="w-14 h-14 rounded-full overflow-hidden bg-white border border-neutral-300 mx-auto">
-                          {student.photo ? (
-                            <img
-                              src={normalizeImageUrl(student.photo)}
-                              alt={student.name}
-                              className="w-full h-full object-cover"
-                            />
+                      <div className="w-16 shrink-0 flex flex-col items-center gap-1.5">
+                        <label
+                          htmlFor={`student-file-input-${sIdx}`}
+                          className="relative w-14 h-14 rounded-full overflow-hidden bg-white border-2 border-dashed border-neutral-300 hover:border-brand-maroon cursor-pointer group shadow-2xs transition-all flex items-center justify-center"
+                          title="Click to upload student photo from computer"
+                        >
+                          {uploadingIdx === sIdx ? (
+                            <div className="w-full h-full bg-brand-maroon/10 flex items-center justify-center">
+                              <Loader2 className="w-5 h-5 text-brand-maroon animate-spin" />
+                            </div>
+                          ) : student.photo ? (
+                            <>
+                              <img
+                                src={normalizeImageUrl(student.photo)}
+                                alt={student.name}
+                                className="w-full h-full object-cover group-hover:opacity-75 transition-opacity"
+                              />
+                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                                <Upload size={14} />
+                              </div>
+                            </>
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center font-bold text-xs text-neutral-400">
-                              #{sIdx + 1}
+                            <div className="w-full h-full flex flex-col items-center justify-center text-neutral-400 group-hover:text-brand-maroon transition-colors">
+                              <Upload size={14} />
+                              <span className="text-[9px] font-bold mt-0.5">#{sIdx + 1}</span>
                             </div>
                           )}
-                        </div>
+                        </label>
+
+                        {/* Hidden file input */}
+                        <input
+                          id={`student-file-input-${sIdx}`}
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0]
+                            if (file) handleStudentPhotoFile(sIdx, file)
+                            e.target.value = ''
+                          }}
+                        />
+
+                        <label
+                          htmlFor={`student-file-input-${sIdx}`}
+                          className="text-[10px] font-bold text-brand-maroon hover:underline cursor-pointer flex items-center gap-1"
+                        >
+                          <Upload size={10} />
+                          <span>{student.photo ? 'Change' : 'Upload'}</span>
+                        </label>
                       </div>
 
                       {/* Name & Score Inputs */}
