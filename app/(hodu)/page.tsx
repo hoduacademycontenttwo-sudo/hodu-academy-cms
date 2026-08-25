@@ -326,8 +326,8 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Right Column: Mouse-Interactive Parallax 3D Illustration */}
-            <div className="lg:col-span-5 flex justify-center">
+            {/* Right Column: Mouse-Interactive Parallax 3D Illustration (Hidden on Mobile) */}
+            <div className="hidden lg:flex lg:col-span-5 justify-center">
               <ProgramsIllustrationInteractive />
             </div>
 
