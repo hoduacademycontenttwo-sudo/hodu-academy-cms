@@ -110,14 +110,12 @@ const timetableSlots = [
 export default async function OfflinePage() {
   const supabase = await createClient()
 
-  const [facultyRes, campusMediaRes, carouselRes] = await Promise.allSettled([
+  const [facultyRes, carouselRes] = await Promise.allSettled([
     supabase.from('cms_faculty').select('*').eq('site_id', HODU_SITE_ID).order('sort_order'),
-    supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Jaipur Campus Video').limit(1).maybeSingle(),
     supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Jaipur Campus Carousel').order('sort_order'),
   ])
 
   const dbFaculty = facultyRes.status === 'fulfilled' && facultyRes.value?.data ? facultyRes.value.data : []
-  const campusMediaRow = campusMediaRes.status === 'fulfilled' && campusMediaRes.value?.data ? campusMediaRes.value.data : null
 
   let campusSlides: any[] = [
     {
@@ -153,162 +151,11 @@ export default async function OfflinePage() {
     })
   }
 
-  let campusData = {
-    mediaType: 'video',
-    videoUrl: 'https://drive.google.com/file/d/1_9DnITQYv8vS97GrxYzsRf3q7uBiAETq/view?usp=sharing',
-    imageUrl: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&h=600&fit=crop&auto=format',
-    heroBadge: 'JAIPUR CAMPUS',
-    heroTitle: 'An Offline Campus Built for Deep Academic Focus',
-    heroSubtitle: 'Air-conditioned smart classrooms, dedicated 1-on-1 faculty doubt cells, silent study library, and intimate cohorts capped at 12 students.',
-    address: HODU.address,
-    phone: HODU.phone,
-    pillar1Value: '1 : 12',
-    pillar1Label: 'Cohort Limit',
-    pillar2Value: '8 AM – 9 PM',
-    pillar2Label: 'Library & Doubts',
-    pillar3Value: '100% AC',
-    pillar3Label: 'GPS Transport',
-  }
-
-  if (campusMediaRow) {
-    try {
-      const parsed = JSON.parse(campusMediaRow.caption ?? '{}')
-      const media = parseMediaUrl(campusMediaRow.image_url ?? '')
-      campusData = {
-        ...campusData,
-        mediaType: parsed.mediaType ?? (media.type !== 'image' ? 'video' : 'image'),
-        videoUrl: parsed.videoUrl ?? (media.type !== 'image' ? campusMediaRow.image_url : campusData.videoUrl),
-        imageUrl: parsed.imageUrl ?? campusMediaRow.image_url ?? campusData.imageUrl,
-        heroBadge: parsed.heroBadge ?? campusData.heroBadge,
-        heroTitle: parsed.heroTitle ?? campusData.heroTitle,
-        heroSubtitle: parsed.heroSubtitle ?? campusData.heroSubtitle,
-        address: parsed.address ?? campusData.address,
-        phone: parsed.phone ?? campusData.phone,
-        pillar1Value: parsed.pillar1Value ?? campusData.pillar1Value,
-        pillar1Label: parsed.pillar1Label ?? campusData.pillar1Label,
-        pillar2Value: parsed.pillar2Value ?? campusData.pillar2Value,
-        pillar2Label: parsed.pillar2Label ?? campusData.pillar2Label,
-        pillar3Value: parsed.pillar3Value ?? campusData.pillar3Value,
-        pillar3Label: parsed.pillar3Label ?? campusData.pillar3Label,
-      }
-    } catch {
-      if (campusMediaRow.image_url) {
-        campusData.videoUrl = campusMediaRow.image_url
-      }
-    }
-  }
-
-  const mediaPreview = parseMediaUrl(campusData.videoUrl || '')
-  const isVideo = campusData.mediaType === 'video' || mediaPreview.type !== 'image'
-
   return (
     <div className="space-y-0 animate-fade-in bg-brand-bg text-brand-text">
       
       {/* ─── Top Jaipur Campus Banner Carousel (Identical to Homepage) ─── */}
       <HomeHeroCarousel initialSlides={campusSlides} />
-
-      {/* Editorial Campus Hero */}
-      <section className="relative overflow-hidden border-b border-brand-border bg-brand-wine text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            
-            {/* Left Content */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 bg-white text-brand-maroon px-3.5 py-1.5 rounded-full text-xs font-bold">
-                <Building2 className="h-3.5 w-3.5" />
-                <span>{campusData.heroBadge}</span>
-              </div>
-
-              <h1 className="font-serif-editorial text-4xl sm:text-5xl lg:text-[3.2rem] font-bold text-white leading-[1.15] tracking-tight">
-                {campusData.heroTitle}
-              </h1>
-
-              <p className="text-sm sm:text-base text-white/85 leading-relaxed max-w-xl">
-                {campusData.heroSubtitle}
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-                <a href="#visit-form"
-                  className="bg-white hover:bg-brand-blush text-brand-maroon font-bold px-7 py-3.5 rounded-lg transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
-                  <span>Schedule Campus Visit</span>
-                  <ArrowRight className="h-4 w-4" />
-                </a>
-                <a href={`tel:${campusData.phone}`}
-                  className="border-2 border-white/60 hover:border-white text-white font-semibold px-6 py-3.5 rounded-lg transition-all flex items-center justify-center gap-2 text-xs">
-                  <Phone className="h-4 w-4" />
-                  <span>{campusData.phone}</span>
-                </a>
-              </div>
-
-              {/* Quick Trust Pillars */}
-              <div className="grid grid-cols-3 gap-3 pt-6 border-t border-white/20 max-w-lg">
-                <div>
-                  <span className="text-xl font-bold text-white block">{campusData.pillar1Value}</span>
-                  <span className="text-[10px] text-white/70 font-semibold uppercase tracking-wider">{campusData.pillar1Label}</span>
-                </div>
-                <div>
-                  <span className="text-xl font-bold text-white block">{campusData.pillar2Value}</span>
-                  <span className="text-[10px] text-white/70 font-semibold uppercase tracking-wider">{campusData.pillar2Label}</span>
-                </div>
-                <div>
-                  <span className="text-xl font-bold text-white block">{campusData.pillar3Value}</span>
-                  <span className="text-[10px] text-white/70 font-semibold uppercase tracking-wider">{campusData.pillar3Label}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Campus Video Tour / Image Embed */}
-            <div className="lg:col-span-5">
-              <div className="relative rounded-2xl overflow-hidden border border-white/20 bg-white/10 p-2.5 shadow-2xl backdrop-blur-xs">
-                <div className="relative w-full aspect-video sm:h-80 lg:h-96 rounded-xl overflow-hidden bg-black shadow-inner">
-                  {isVideo ? (
-                    mediaPreview.type === 'google_drive' ? (
-                      <iframe
-                        src={mediaPreview.embedUrl}
-                        title="Hodu Academy Jaipur Campus Video Tour"
-                        className="w-full h-full border-0 absolute inset-0"
-                        allow="autoplay; encrypted-media; fullscreen"
-                        allowFullScreen
-                      />
-                    ) : mediaPreview.type === 'youtube' ? (
-                      <iframe
-                        src={mediaPreview.embedUrl}
-                        title="Hodu Academy Jaipur Campus YouTube Tour"
-                        className="w-full h-full border-0 absolute inset-0"
-                        allowFullScreen
-                      />
-                    ) : (
-                      <video
-                        src={campusData.videoUrl}
-                        controls
-                        className="w-full h-full object-cover"
-                      />
-                    )
-                  ) : (
-                    <img
-                      src={normalizeImageUrl(campusData.imageUrl)}
-                      alt="Hodu Academy Jaipur Campus"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                <div className="p-3.5 bg-white text-brand-text rounded-xl mt-2.5 flex items-center justify-between shadow-xs">
-                  <div>
-                    <div className="flex items-center gap-1.5 mb-0.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      <span className="text-[11px] font-extrabold text-brand-maroon uppercase tracking-wider block">
-                        {isVideo ? 'Jaipur Campus Video Tour' : 'Jaipur Main Hub'}
-                      </span>
-                    </div>
-                    <p className="text-xs font-medium text-brand-muted">{campusData.address}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
 
       {/* Campus Infrastructure */}
       <section className="py-16 sm:py-20 bg-brand-bg">
