@@ -45,9 +45,40 @@ const COLOR_PRESETS = [
 ]
 
 /**
+ * Formats Excel percentages, decimals, and custom strings into clean human-readable text (e.g. 0.952 -> 95.2%)
+ */
+export function formatExcelScore(scoreRaw: any): string {
+  if (scoreRaw === undefined || scoreRaw === null) return '95%'
+  const str = String(scoreRaw).trim()
+  if (!str) return '95%'
+
+  // If already formatted like "AIR 14", "710/720", "8x A*"
+  if (/(?:AIR|Rank|#|\/|A\*)/i.test(str)) {
+    return str
+  }
+
+  // Handle number formats from Excel
+  const numVal = typeof scoreRaw === 'number' ? scoreRaw : parseFloat(str.replace('%', ''))
+  if (!isNaN(numVal)) {
+    // Excel decimal percentage (e.g. 0.952 or 0.9279999999999999 -> 95.2%, 92.8%)
+    if (numVal > 0 && numVal <= 1 && !str.includes('%')) {
+      const pct = parseFloat((numVal * 100).toFixed(2))
+      return `${pct}%`
+    }
+    // Clean floating point errors like 95.20000000000001
+    if (numVal > 1 && numVal <= 100) {
+      const rounded = parseFloat(numVal.toFixed(2))
+      return `${rounded}%`
+    }
+  }
+
+  return str
+}
+
+/**
  * Robust score parsing and numeric conversion for rank evaluation.
  * Supports:
- * - Percentages: 99.6%, 98.4
+ * - Percentages: 99.6%, 98.4, 0.952
  * - Marks Ratio: 710/720, 44/45, 98/100
  * - AIR / Rank: AIR 1, Rank 3, #1
  * - Letter Grades: 8x A*, 7 A*
@@ -79,10 +110,17 @@ export function parseScoreToNumeric(scoreRaw: any): number {
     return 90 + parseFloat(gradeMatch[1])
   }
 
-  // 4. Percentage or Percentile: "99.6%", "99.85 %ile", "98.4"
+  // 4. Percentage, Percentile or Excel Decimal (0.952 -> 95.2)
   const cleanNum = str.replace(/[%ilePercentile]/gi, '').trim()
   const numVal = parseFloat(cleanNum)
-  return isNaN(numVal) ? 0 : numVal
+  if (!isNaN(numVal)) {
+    if (numVal > 0 && numVal <= 1 && !str.includes('%')) {
+      return numVal * 100
+    }
+    return numVal
+  }
+
+  return 0
 }
 
 /**
@@ -109,14 +147,14 @@ export function autoEvaluateAndSortStudents(allStudents: any[]): { topRanker: an
   return {
     topRanker: {
       name: top.name || 'Top Ranker',
-      score: top.score || top.rank_or_marks || top.marks || '99.6%',
+      score: formatExcelScore(top.score || top.rank_or_marks || top.marks || '99.6%'),
       photo: top.photo || top.photo_url || '',
       initials: (top.name || 'TR').split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase(),
       designation: top.designation || 'Batch Topper (Rank 1)',
     },
     performers: rest.map((s, idx) => ({
       name: s.name || `Student ${idx + 2}`,
-      score: s.score || s.rank_or_marks || s.marks || '95%+',
+      score: formatExcelScore(s.score || s.rank_or_marks || s.marks || '95%+'),
       photo: s.photo || s.photo_url || '',
       initials: (s.name || `S${idx + 2}`).split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase(),
       designation: s.designation || `Rank ${idx + 2}`,
@@ -558,13 +596,13 @@ export default function AcademicDecksManager() {
         // Map column names flexibly
         const parsedStudents = rawJson.map((row: any, rIdx: number) => {
           const name = row['Student Name'] || row['Name'] || row['student_name'] || row['student'] || row['Student'] || Object.values(row)[0] || `Student ${rIdx + 1}`
-          const score = row['Marks / Score'] || row['Marks'] || row['Score'] || row['Rank'] || row['Percentage'] || row['marks'] || row['score'] || row['rank'] || '95%'
+          const scoreRaw = row['Marks / Score'] ?? row['Marks'] ?? row['Score'] ?? row['Rank'] ?? row['Percentage'] ?? row['marks'] ?? row['score'] ?? row['rank'] ?? '95%'
           const photo = row['Photo URL (Optional)'] || row['Photo URL'] || row['Photo'] || row['Image URL'] || row['Image'] || row['photo'] || row['photo_url'] || ''
           const designation = row['Designation / Note (Optional)'] || row['Designation'] || row['Title'] || row['designation'] || ''
 
           return {
             name: String(name).trim(),
-            score: String(score).trim(),
+            score: formatExcelScore(scoreRaw),
             photo: String(photo).trim(),
             designation: String(designation).trim(),
           }
