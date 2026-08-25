@@ -29,6 +29,8 @@ import {
   ArrowUpDown,
   FileDown,
   HelpCircle,
+  ToggleLeft,
+  ToggleRight,
 } from 'lucide-react'
 import { ResultCategoryDeck, defaultResultsDecks } from '@/components/hodu/AcademicExcellenceResults'
 import { normalizeImageUrl } from '@/lib/imageUtils'
@@ -124,12 +126,15 @@ export function parseScoreToNumeric(scoreRaw: any): number {
 }
 
 /**
- * Automatically sorts students in descending rank order and assigns the #1 student as Spotlight Topper
+ * Automatically sorts students in descending rank order and assigns the #1 student as Spotlight Topper (if enabled)
  */
-export function autoEvaluateAndSortStudents(allStudents: any[]): { topRanker: any; performers: any[] } {
+export function autoEvaluateAndSortStudents(
+  allStudents: any[],
+  hasTopRanker: boolean = true
+): { topRanker: any; performers: any[] } {
   if (!allStudents || allStudents.length === 0) {
     return {
-      topRanker: { name: 'Top Student', score: '99.6%', photo: '', initials: 'TS', designation: 'Batch Topper' },
+      topRanker: { name: '', score: '99.6%', photo: '', initials: 'TS', designation: 'Batch Topper' },
       performers: [],
     }
   }
@@ -140,6 +145,20 @@ export function autoEvaluateAndSortStudents(allStudents: any[]): { topRanker: an
     const scoreB = parseScoreToNumeric(b.score || b.rank_or_marks || b.marks)
     return scoreB - scoreA
   })
+
+  // If spotlight topper is disabled (e.g. College admissions/placements), put all students in performers grid!
+  if (!hasTopRanker) {
+    return {
+      topRanker: { name: '', score: '', photo: '', initials: '', designation: '' },
+      performers: sorted.map((s, idx) => ({
+        name: s.name || `Student ${idx + 1}`,
+        score: formatExcelScore(s.score || s.rank_or_marks || s.marks || '95%+'),
+        photo: s.photo || s.photo_url || '',
+        initials: (s.name || `S${idx + 1}`).split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase(),
+        designation: s.designation || `Rank ${idx + 1}`,
+      })),
+    }
+  }
 
   const top = sorted[0]
   const rest = sorted.slice(1)
@@ -196,6 +215,10 @@ export default function AcademicDecksManager() {
               parsed = typeof row.caption === 'string' ? JSON.parse(row.caption) : (row.caption || {})
             } catch {}
 
+            const hasTopper = parsed.has_spotlight_topper !== undefined
+              ? parsed.has_spotlight_topper
+              : !!(parsed.topRanker?.name?.trim())
+
             return {
               id: row.id,
               sort_order: row.sort_order ?? 0,
@@ -207,8 +230,9 @@ export default function AcademicDecksManager() {
               bgVia: parsed.bgVia || '#FFF8E1',
               bgTo: parsed.bgTo || '#FFF3CD',
               is_featured_on_home: parsed.is_featured_on_home !== false,
+              has_spotlight_topper: hasTopper,
               topRanker: parsed.topRanker || {
-                name: 'Student Name',
+                name: '',
                 score: '99.6%',
                 photo: row.image_url || '',
                 initials: 'SN',
@@ -242,6 +266,7 @@ export default function AcademicDecksManager() {
           bgVia: '#FFF8E1',
           bgTo: '#FFF3CD',
           is_featured_on_home: true,
+          has_spotlight_topper: !!d.topRanker?.name?.trim(),
           topRanker: d.topRanker,
           performers: d.performers,
         })
@@ -266,14 +291,15 @@ export default function AcademicDecksManager() {
   function createNewDeck() {
     setEditingDeck({
       id: null,
-      tabLabel: 'Class 12 CBSE',
-      cardTitle: 'CBSE CLASS 12TH RESULT 2026',
-      themeColor: '#1A6ECB',
-      pillBg: 'bg-[#1A6ECB]',
-      bgFrom: '#FFFDF0',
-      bgVia: '#FFF8E1',
-      bgTo: '#FFF3CD',
+      tabLabel: 'College Placements',
+      cardTitle: 'TOP COLLEGE ADMISSIONS 2026',
+      themeColor: '#7E0D0D',
+      pillBg: 'bg-[#7E0D0D]',
+      bgFrom: '#FFFDF5',
+      bgVia: '#FFF1F1',
+      bgTo: '#FFE4E4',
       is_featured_on_home: true,
+      has_spotlight_topper: true,
       topRanker: {
         name: 'Sonakshi Goyal',
         score: '99.6%',
@@ -282,19 +308,21 @@ export default function AcademicDecksManager() {
         designation: 'Batch Topper',
       },
       performers: [
-        { name: 'Divya Gupta', score: '99.4%', photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&h=300&fit=crop&auto=format', initials: 'DG' },
-        { name: 'Aarav Sharma', score: '710/720', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&auto=format', initials: 'AS' },
-        { name: 'Advait Vyas', score: '99.0%', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&auto=format', initials: 'AV' },
-        { name: 'Rhea Biyani', score: '98.8%', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop&auto=format', initials: 'RB' },
-        { name: 'Samarth Jain', score: '98.6%', photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&auto=format', initials: 'SJ' },
+        { name: 'Himanshu Yadav', score: 'BITS PILANI', photo: '', initials: 'HY' },
+        { name: 'Amay', score: 'IIIT Pune', photo: '', initials: 'AM' },
+        { name: 'Vihaan Vats', score: 'IIT BOMBAY', photo: '', initials: 'VV' },
+        { name: 'Spraha Vats', score: 'IIT DELHI', photo: '', initials: 'SV' },
+        { name: 'Bhavya Sharma', score: 'MNIT Jaipur', photo: '', initials: 'BS' },
       ],
     })
     setIsModalOpen(true)
   }
 
   function openEditDeck(deck: any) {
+    const hasTopper = deck.has_spotlight_topper !== false && !!deck.topRanker?.name?.trim()
     setEditingDeck({
       ...deck,
+      has_spotlight_topper: hasTopper,
       topRanker: deck.topRanker ? { ...deck.topRanker } : { name: '', score: '', photo: '', initials: 'TR', designation: 'Batch Topper' },
       performers: Array.isArray(deck.performers) ? deck.performers.map((p: any) => ({ ...p })) : [],
     })
@@ -305,6 +333,8 @@ export default function AcademicDecksManager() {
     if (!editingDeck) return
     setSaving(true)
 
+    const hasTopper = editingDeck.has_spotlight_topper !== false && !!editingDeck.topRanker?.name?.trim()
+
     const caption = JSON.stringify({
       tabLabel: editingDeck.tabLabel,
       cardTitle: editingDeck.cardTitle,
@@ -314,7 +344,8 @@ export default function AcademicDecksManager() {
       bgVia: editingDeck.bgVia,
       bgTo: editingDeck.bgTo,
       is_featured_on_home: editingDeck.is_featured_on_home,
-      topRanker: editingDeck.topRanker,
+      has_spotlight_topper: hasTopper,
+      topRanker: hasTopper ? editingDeck.topRanker : { name: '', score: '', photo: '', initials: '', designation: '' },
       performers: editingDeck.performers,
     })
 
@@ -322,7 +353,7 @@ export default function AcademicDecksManager() {
       await supabase
         .from('cms_gallery')
         .update({
-          image_url: editingDeck.topRanker?.photo || '',
+          image_url: hasTopper ? (editingDeck.topRanker?.photo || '') : '',
           caption,
         })
         .eq('id', editingDeck.id)
@@ -331,7 +362,7 @@ export default function AcademicDecksManager() {
       await supabase.from('cms_gallery').insert({
         site_id: SITE_ID,
         category: 'Academic Excellence Decks',
-        image_url: editingDeck.topRanker?.photo || '',
+        image_url: hasTopper ? (editingDeck.topRanker?.photo || '') : '',
         caption,
         sort_order: nextOrder,
       })
@@ -429,6 +460,7 @@ export default function AcademicDecksManager() {
    */
   function handleAutoSortCurrentDeck() {
     if (!editingDeck) return
+    const hasTop = editingDeck.has_spotlight_topper !== false
     const all = [
       ...(editingDeck.topRanker?.name ? [editingDeck.topRanker] : []),
       ...(editingDeck.performers || []),
@@ -439,14 +471,17 @@ export default function AcademicDecksManager() {
       return
     }
 
-    const evaluated = autoEvaluateAndSortStudents(all)
+    const evaluated = autoEvaluateAndSortStudents(all, hasTop)
     setEditingDeck((prev: any) => ({
       ...prev,
       topRanker: evaluated.topRanker,
       performers: evaluated.performers,
     }))
 
-    setBulkNotice(`⚡ Evaluated & Sorted ${all.length} students rank-wise! (Top: ${evaluated.topRanker.name} - ${evaluated.topRanker.score})`)
+    const topMsg = (hasTop && evaluated.topRanker?.name)
+      ? `Top: ${evaluated.topRanker.name} (${evaluated.topRanker.score})`
+      : 'All students sorted in full Achievers Grid'
+    setBulkNotice(`⚡ Evaluated & Sorted ${all.length} students rank-wise! (${topMsg})`)
     setTimeout(() => setBulkNotice(null), 5000)
   }
 
@@ -541,19 +576,20 @@ export default function AcademicDecksManager() {
    */
   function exportCurrentDeckToExcel() {
     if (!editingDeck) return
+    const hasTopper = editingDeck.has_spotlight_topper !== false && !!editingDeck.topRanker?.name?.trim()
     const allStudents = [
-      {
+      ...(hasTopper ? [{
         'Rank': 'Top Ranker (1)',
         'Student Name': editingDeck.topRanker?.name || '',
         'Marks / Score': editingDeck.topRanker?.score || '',
         'Designation': editingDeck.topRanker?.designation || 'Batch Topper',
         'Photo URL': editingDeck.topRanker?.photo || '',
-      },
+      }] : []),
       ...(editingDeck.performers || []).map((p: any, idx: number) => ({
-        'Rank': idx + 2,
+        'Rank': hasTopper ? idx + 2 : idx + 1,
         'Student Name': p.name || '',
         'Marks / Score': p.score || '',
-        'Designation': p.designation || `Rank ${idx + 2}`,
+        'Designation': p.designation || `Rank ${hasTopper ? idx + 2 : idx + 1}`,
         'Photo URL': p.photo || '',
       }))
     ]
@@ -613,8 +649,9 @@ export default function AcademicDecksManager() {
           return
         }
 
-        // Auto-evaluate and sort rank-wise!
-        const evaluated = autoEvaluateAndSortStudents(parsedStudents)
+        // Auto-evaluate and sort rank-wise (respecting has_spotlight_topper setting)!
+        const hasTop = editingDeck.has_spotlight_topper !== false
+        const evaluated = autoEvaluateAndSortStudents(parsedStudents, hasTop)
 
         setEditingDeck((prev: any) => ({
           ...prev,
@@ -622,7 +659,11 @@ export default function AcademicDecksManager() {
           performers: evaluated.performers,
         }))
 
-        setBulkNotice(`✅ Successfully evaluated ${parsedStudents.length} students from Excel!\n• Top Ranker: ${evaluated.topRanker.name} (${evaluated.topRanker.score})\n• Achievers: ${evaluated.performers.length} students automatically sorted in rank order.`)
+        const noticeMsg = hasTop
+          ? `✅ Evaluated ${parsedStudents.length} students from Excel!\n• Top Ranker: ${evaluated.topRanker.name} (${evaluated.topRanker.score})\n• Achievers: ${evaluated.performers.length} students in rank order.`
+          : `✅ Evaluated ${parsedStudents.length} students from Excel into full Achievers Grid!`
+
+        setBulkNotice(noticeMsg)
         setTimeout(() => setBulkNotice(null), 6000)
       } catch (err) {
         console.error('Error parsing Excel:', err)
@@ -645,7 +686,7 @@ export default function AcademicDecksManager() {
             </h3>
           </div>
           <p className="text-xs text-neutral-500 mt-1">
-            Build custom banner cards with category tabs, theme color palettes, top spotlight rankers, and 10+ student performer grids.
+            Build custom banner cards with category tabs, theme color palettes, optional spotlight topper, and student performer grids.
           </p>
         </div>
 
@@ -697,154 +738,170 @@ export default function AcademicDecksManager() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {decks.map((deck, idx) => (
-            <div
-              key={deck.id || idx}
-              className="bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
-            >
-              {/* Card Header with Custom Theme Color Banner */}
-              <div
-                className="p-4 text-white relative overflow-hidden"
-                style={{
-                  backgroundColor: deck.themeColor || '#1A6ECB',
-                }}
-              >
-                <div className="relative z-10 flex items-center justify-between">
-                  <span className="text-[11px] font-extrabold uppercase tracking-wider bg-black/25 px-2.5 py-0.5 rounded-full backdrop-blur-xs">
-                    {deck.tabLabel}
-                  </span>
+          {decks.map((deck, idx) => {
+            const hasTopper = deck.has_spotlight_topper !== false && !!deck.topRanker?.name?.trim()
 
-                  <div className="flex items-center gap-1 bg-black/30 px-2 py-0.5 rounded-lg text-[10px] font-bold">
-                    <Star size={10} className="text-amber-300" />
-                    <span>{deck.is_featured_on_home ? 'Featured on Home' : 'Results Page Only'}</span>
+            return (
+              <div
+                key={deck.id || idx}
+                className="bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+              >
+                {/* Card Header with Custom Theme Color Banner */}
+                <div
+                  className="p-4 text-white relative overflow-hidden"
+                  style={{
+                    backgroundColor: deck.themeColor || '#1A6ECB',
+                  }}
+                >
+                  <div className="relative z-10 flex items-center justify-between">
+                    <span className="text-[11px] font-extrabold uppercase tracking-wider bg-black/25 px-2.5 py-0.5 rounded-full backdrop-blur-xs">
+                      {deck.tabLabel}
+                    </span>
+
+                    <div className="flex items-center gap-1 bg-black/30 px-2 py-0.5 rounded-lg text-[10px] font-bold">
+                      <Star size={10} className="text-amber-300" />
+                      <span>{deck.is_featured_on_home ? 'Featured on Home' : 'Results Page Only'}</span>
+                    </div>
                   </div>
+
+                  <h4 className="font-serif-editorial text-base font-black tracking-tight mt-2 text-white line-clamp-1">
+                    {deck.cardTitle}
+                  </h4>
                 </div>
 
-                <h4 className="font-serif-editorial text-base font-black tracking-tight mt-2 text-white line-clamp-1">
-                  {deck.cardTitle}
-                </h4>
-              </div>
+                {/* Topper Spotlight Preview OR Grid-Only Notice */}
+                {hasTopper ? (
+                  <div className="p-4 bg-neutral-50/70 border-b border-neutral-100 flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-white border-2 border-amber-300 shrink-0 shadow-2xs">
+                      {deck.topRanker?.photo ? (
+                        <img
+                          src={normalizeImageUrl(deck.topRanker.photo)}
+                          alt={deck.topRanker.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center font-bold text-xs text-brand-maroon bg-brand-blush">
+                          {deck.topRanker?.initials || 'TR'}
+                        </div>
+                      )}
+                    </div>
 
-              {/* Topper Spotlight Preview */}
-              <div className="p-4 bg-neutral-50/70 border-b border-neutral-100 flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full overflow-hidden bg-white border-2 border-amber-300 shrink-0 shadow-2xs">
-                  {deck.topRanker?.photo ? (
-                    <img
-                      src={normalizeImageUrl(deck.topRanker.photo)}
-                      alt={deck.topRanker.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center font-bold text-xs text-brand-maroon bg-brand-blush">
-                      {deck.topRanker?.initials || 'TR'}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-extrabold text-amber-900 bg-amber-100 px-2 py-0.5 rounded uppercase">
+                          Top Spotlight
+                        </span>
+                        <span
+                          className="text-xs font-black px-2 py-0.5 rounded-full text-white"
+                          style={{ backgroundColor: deck.themeColor || '#1A6ECB' }}
+                        >
+                          {deck.topRanker?.score || '99.6%'}
+                        </span>
+                      </div>
+                      <h5 className="font-bold text-xs text-neutral-900 truncate mt-0.5">
+                        {deck.topRanker?.name || 'Student Name'}
+                      </h5>
+                      <p className="text-[10px] text-neutral-500 truncate">
+                        {deck.topRanker?.designation || 'Batch Topper'}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-3 bg-neutral-50/50 border-b border-neutral-100 flex items-center justify-between text-xs text-neutral-600">
+                    <span className="text-[11px] font-bold text-neutral-500 flex items-center gap-1">
+                      <Layers size={13} className="text-neutral-400" />
+                      <span>Full-Width Achievers Grid (No Spotlight)</span>
+                    </span>
+                    <span className="text-[10px] font-extrabold bg-neutral-200/70 text-neutral-700 px-2 py-0.5 rounded">
+                      Equal Layout
+                    </span>
+                  </div>
+                )}
+
+                {/* Performers Preview & Count */}
+                <div className="p-4 space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-neutral-500 font-medium">Achievers List:</span>
+                    <span className="font-bold text-neutral-800 bg-neutral-100 px-2 py-0.5 rounded-md">
+                      {deck.performers?.length || 0} Students
+                    </span>
+                  </div>
+
+                  {deck.performers && deck.performers.length > 0 && (
+                    <div className="flex items-center gap-1 overflow-hidden pt-1">
+                      {deck.performers.slice(0, 6).map((p: any, pIdx: number) => (
+                        <div
+                          key={pIdx}
+                          className="w-7 h-7 rounded-full overflow-hidden bg-neutral-200 border border-white shrink-0 shadow-2xs"
+                          title={`${p.name} (${p.score})`}
+                        >
+                          {p.photo ? (
+                            <img
+                              src={normalizeImageUrl(p.photo)}
+                              alt={p.name}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-[8px] font-bold text-neutral-600 bg-neutral-100">
+                              {p.initials || 'S'}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                      {deck.performers.length > 6 && (
+                        <span className="text-[10px] font-bold text-neutral-500 pl-1">
+                          +{deck.performers.length - 6} more
+                        </span>
+                      )}
                     </div>
                   )}
                 </div>
 
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-extrabold text-amber-900 bg-amber-100 px-2 py-0.5 rounded uppercase">
-                      Top Spotlight
-                    </span>
-                    <span
-                      className="text-xs font-black px-2 py-0.5 rounded-full text-white"
-                      style={{ backgroundColor: deck.themeColor || '#1A6ECB' }}
+                {/* Actions Footer */}
+                <div className="p-3 bg-neutral-50 border-t border-neutral-100 flex items-center justify-between">
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => moveDeck(idx, -1)}
+                      disabled={idx === 0}
+                      className="p-1.5 rounded-lg border border-neutral-200 hover:bg-white disabled:opacity-30 cursor-pointer"
+                      title="Move Left/Up"
                     >
-                      {deck.topRanker?.score || '99.6%'}
-                    </span>
+                      <ArrowUp size={12} />
+                    </button>
+                    <button
+                      onClick={() => moveDeck(idx, 1)}
+                      disabled={idx === decks.length - 1}
+                      className="p-1.5 rounded-lg border border-neutral-200 hover:bg-white disabled:opacity-30 cursor-pointer"
+                      title="Move Right/Down"
+                    >
+                      <ArrowDown size={12} />
+                    </button>
                   </div>
-                  <h5 className="font-bold text-xs text-neutral-900 truncate mt-0.5">
-                    {deck.topRanker?.name || 'Student Name'}
-                  </h5>
-                  <p className="text-[10px] text-neutral-500 truncate">
-                    {deck.topRanker?.designation || 'Batch Topper'}
-                  </p>
-                </div>
-              </div>
 
-              {/* Performers Preview & Count */}
-              <div className="p-4 space-y-2">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-neutral-500 font-medium">Performers Grid:</span>
-                  <span className="font-bold text-neutral-800 bg-neutral-100 px-2 py-0.5 rounded-md">
-                    {deck.performers?.length || 0} Students
-                  </span>
-                </div>
-
-                {deck.performers && deck.performers.length > 0 && (
-                  <div className="flex items-center gap-1 overflow-hidden pt-1">
-                    {deck.performers.slice(0, 6).map((p: any, pIdx: number) => (
-                      <div
-                        key={pIdx}
-                        className="w-7 h-7 rounded-full overflow-hidden bg-neutral-200 border border-white shrink-0 shadow-2xs"
-                        title={`${p.name} (${p.score})`}
-                      >
-                        {p.photo ? (
-                          <img
-                            src={normalizeImageUrl(p.photo)}
-                            alt={p.name}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-[8px] font-bold text-neutral-600 bg-neutral-100">
-                            {p.initials || 'S'}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                    {deck.performers.length > 6 && (
-                      <span className="text-[10px] font-bold text-neutral-500 pl-1">
-                        +{deck.performers.length - 6} more
-                      </span>
-                    )}
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => openEditDeck(deck)}
+                      className="flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-neutral-300 hover:border-brand-maroon text-brand-maroon shadow-2xs transition-colors cursor-pointer"
+                    >
+                      <Pencil size={12} />
+                      <span>Customize</span>
+                    </button>
+                    <button
+                      onClick={() => deleteDeck(deck.id)}
+                      className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 border border-transparent hover:border-red-200 transition-colors cursor-pointer"
+                      title="Delete Deck"
+                    >
+                      <Trash2 size={13} />
+                    </button>
                   </div>
-                )}
-              </div>
-
-              {/* Actions Footer */}
-              <div className="p-3 bg-neutral-50 border-t border-neutral-100 flex items-center justify-between">
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => moveDeck(idx, -1)}
-                    disabled={idx === 0}
-                    className="p-1.5 rounded-lg border border-neutral-200 hover:bg-white disabled:opacity-30 cursor-pointer"
-                    title="Move Left/Up"
-                  >
-                    <ArrowUp size={12} />
-                  </button>
-                  <button
-                    onClick={() => moveDeck(idx, 1)}
-                    disabled={idx === decks.length - 1}
-                    className="p-1.5 rounded-lg border border-neutral-200 hover:bg-white disabled:opacity-30 cursor-pointer"
-                    title="Move Right/Down"
-                  >
-                    <ArrowDown size={12} />
-                  </button>
-                </div>
-
-                <div className="flex items-center gap-1.5">
-                  <button
-                    onClick={() => openEditDeck(deck)}
-                    className="flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-neutral-300 hover:border-brand-maroon text-brand-maroon shadow-2xs transition-colors cursor-pointer"
-                  >
-                    <Pencil size={12} />
-                    <span>Customize</span>
-                  </button>
-                  <button
-                    onClick={() => deleteDeck(deck.id)}
-                    className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 border border-transparent hover:border-red-200 transition-colors cursor-pointer"
-                    title="Delete Deck"
-                  >
-                    <Trash2 size={13} />
-                  </button>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
 
-      {/* ─── CUSTOMIZE DECK MODAL WITH BULK EXCEL UPLOAD ─── */}
+      {/* ─── CUSTOMIZE DECK MODAL WITH BULK EXCEL UPLOAD & REMOVE TOPPER FEATURE ─── */}
       {isModalOpen && editingDeck && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-neutral-200 animate-scale-up">
@@ -877,7 +934,7 @@ export default function AcademicDecksManager() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-neutral-700 mb-1">
-                    Tab Label (e.g. Class 12 CBSE / NEET UG 2026)
+                    Tab Label (e.g. Class 12 CBSE / College Placements)
                   </label>
                   <input
                     type="text"
@@ -890,7 +947,7 @@ export default function AcademicDecksManager() {
 
                 <div>
                   <label className="block text-xs font-bold text-neutral-700 mb-1">
-                    Card Title (e.g. CBSE CLASS 12TH RESULT 2026)
+                    Card Title (e.g. CBSE CLASS 12TH RESULT 2026 / COLLEGE ADMISSIONS)
                   </label>
                   <input
                     type="text"
@@ -976,7 +1033,7 @@ export default function AcademicDecksManager() {
                       </h4>
                     </div>
                     <p className="text-[11px] text-emerald-800 mt-0.5">
-                      Upload an Excel spreadsheet with student marks/scores. The system will <strong>automatically evaluate scores, pick the #1 Top Ranker</strong>, and sort the Achievers Grid rank-wise!
+                      Upload an Excel spreadsheet with student marks/scores. The system will automatically evaluate scores and sort the deck rank-wise!
                     </p>
                   </div>
 
@@ -1028,75 +1085,141 @@ export default function AcademicDecksManager() {
                 )}
               </div>
 
-              {/* Section 1: Top Ranker (Spotlight Topper) */}
-              <div className="p-5 bg-amber-50/60 rounded-2xl border border-amber-200/80 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Star className="h-4 w-4 text-amber-600" />
-                    <h4 className="text-xs font-extrabold uppercase tracking-wider text-amber-900">
-                      Top Ranker (Spotlight Topper)
-                    </h4>
-                  </div>
-                  <span className="text-[10px] font-bold bg-amber-200/80 text-amber-950 px-2 py-0.5 rounded">
-                    Auto-Selected Highest Score
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start">
-                  <div className="sm:col-span-4">
-                    <ImageUpload
-                      value={editingDeck.topRanker?.photo || ''}
-                      onChange={(url) => setTopRanker('photo', url)}
-                      label="Topper Photo (Upload or Paste Link)"
-                    />
-                  </div>
-
-                  <div className="sm:col-span-8 space-y-3">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-[11px] font-bold text-neutral-700 mb-1">
-                          Student Full Name
-                        </label>
-                        <input
-                          type="text"
-                          value={editingDeck.topRanker?.name || ''}
-                          onChange={(e) => setTopRanker('name', e.target.value)}
-                          placeholder="e.g. Sonakshi Goyal"
-                          className="w-full text-xs font-bold border border-neutral-300 rounded-xl px-3 py-2 bg-white"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-[11px] font-bold text-neutral-700 mb-1">
-                          Score / Percentage / Rank (e.g. 99.6% / AIR 142)
-                        </label>
-                        <input
-                          type="text"
-                          value={editingDeck.topRanker?.score || ''}
-                          onChange={(e) => setTopRanker('score', e.target.value)}
-                          placeholder="e.g. 99.6%"
-                          className="w-full text-xs font-black border border-neutral-300 rounded-xl px-3 py-2 bg-white text-brand-maroon"
-                        />
-                      </div>
+              {/* ─── SECTION 1: TOP RANKER (SPOTLIGHT TOPPER) WITH ENABLE/DISABLE/REMOVE TOGGLE ─── */}
+              {editingDeck.has_spotlight_topper !== false ? (
+                <div className="p-5 bg-amber-50/70 rounded-2xl border border-amber-200 space-y-4 transition-all">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="flex items-center gap-2">
+                      <Star className="h-4 w-4 text-amber-600" />
+                      <h4 className="text-xs font-extrabold uppercase tracking-wider text-amber-900">
+                        Top Ranker (Spotlight Topper)
+                      </h4>
                     </div>
 
-                    <div>
-                      <label className="block text-[11px] font-bold text-neutral-700 mb-1">
-                        Badge Subtitle / Designation
-                      </label>
-                      <input
-                        type="text"
-                        value={editingDeck.topRanker?.designation || 'Batch Topper'}
-                        onChange={(e) => setTopRanker('designation', e.target.value)}
-                        placeholder="e.g. Batch Topper / All India Rank 1"
-                        className="w-full text-xs border border-neutral-300 rounded-xl px-3 py-2 bg-white"
+                    {/* Toggle & Remove / Cross Button */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          // Move topRanker to performers if name exists so data isn't lost
+                          if (editingDeck.topRanker?.name?.trim()) {
+                            setEditingDeck((prev: any) => ({
+                              ...prev,
+                              has_spotlight_topper: false,
+                              performers: [
+                                {
+                                  name: prev.topRanker.name,
+                                  score: prev.topRanker.score,
+                                  photo: prev.topRanker.photo,
+                                  initials: prev.topRanker.initials || 'ST',
+                                  designation: prev.topRanker.designation,
+                                },
+                                ...prev.performers,
+                              ],
+                              topRanker: { name: '', score: '', photo: '', initials: '', designation: '' },
+                            }))
+                          } else {
+                            setEditingDeck((prev: any) => ({
+                              ...prev,
+                              has_spotlight_topper: false,
+                              topRanker: { name: '', score: '', photo: '', initials: '', designation: '' },
+                            }))
+                          }
+                        }}
+                        className="flex items-center gap-1 text-[11px] font-bold text-red-700 bg-red-100/80 hover:bg-red-200 px-3 py-1.5 rounded-xl border border-red-300 transition-colors cursor-pointer"
+                        title="Remove Spotlight Topper (All students will display in full-width Achievers Grid)"
+                      >
+                        <Trash2 size={12} />
+                        <span>Remove / Cross Topper (No Spotlight)</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start">
+                    <div className="sm:col-span-4">
+                      <ImageUpload
+                        value={editingDeck.topRanker?.photo || ''}
+                        onChange={(url) => setTopRanker('photo', url)}
+                        label="Topper Photo (Upload or Paste Link)"
                       />
                     </div>
+
+                    <div className="sm:col-span-8 space-y-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-[11px] font-bold text-neutral-700 mb-1">
+                            Student Full Name
+                          </label>
+                          <input
+                            type="text"
+                            value={editingDeck.topRanker?.name || ''}
+                            onChange={(e) => setTopRanker('name', e.target.value)}
+                            placeholder="e.g. Sonakshi Goyal"
+                            className="w-full text-xs font-bold border border-neutral-300 rounded-xl px-3 py-2 bg-white"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-bold text-neutral-700 mb-1">
+                            Score / Percentage / Rank (e.g. 99.6% / AIR 142)
+                          </label>
+                          <input
+                            type="text"
+                            value={editingDeck.topRanker?.score || ''}
+                            onChange={(e) => setTopRanker('score', e.target.value)}
+                            placeholder="e.g. 99.6%"
+                            className="w-full text-xs font-black border border-neutral-300 rounded-xl px-3 py-2 bg-white text-brand-maroon"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-bold text-neutral-700 mb-1">
+                          Badge Subtitle / Designation
+                        </label>
+                        <input
+                          type="text"
+                          value={editingDeck.topRanker?.designation || 'Batch Topper'}
+                          onChange={(e) => setTopRanker('designation', e.target.value)}
+                          placeholder="e.g. Batch Topper / All India Rank 1"
+                          className="w-full text-xs border border-neutral-300 rounded-xl px-3 py-2 bg-white"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                /* Disabled / No Topper Banner */
+                <div className="p-4 bg-amber-50/40 rounded-2xl border-2 border-dashed border-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                      <Users size={16} />
+                    </div>
+                    <div>
+                      <h5 className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
+                        <span>No Spotlight Topper (Full-Width Equal Grid Active)</span>
+                        <span className="text-[10px] font-black bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded">
+                          College Placements Mode
+                        </span>
+                      </h5>
+                      <p className="text-[11px] text-neutral-500 mt-0.5">
+                        All students will be displayed with equal emphasis across the full-width Achievers Grid. No empty placeholder circle will appear.
+                      </p>
+                    </div>
+                  </div>
 
-              {/* Section 2: Achievers / Performers Grid */}
+                  <button
+                    type="button"
+                    onClick={() => setEditingDeck((prev: any) => ({ ...prev, has_spotlight_topper: true }))}
+                    className="flex items-center gap-1 text-xs font-bold text-brand-maroon bg-white hover:bg-brand-blush px-3.5 py-2 rounded-xl border border-brand-maroon/30 transition-colors shrink-0 cursor-pointer shadow-2xs"
+                  >
+                    <Plus size={14} />
+                    <span>+ Add / Enable Spotlight Topper</span>
+                  </button>
+                </div>
+              )}
+
+              {/* ─── SECTION 2: ACHIEVERS / PERFORMERS GRID ─── */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <div className="flex items-center gap-2">
@@ -1129,104 +1252,108 @@ export default function AcademicDecksManager() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-80 overflow-y-auto p-1">
-                  {editingDeck.performers?.map((student: any, sIdx: number) => (
-                    <div
-                      key={sIdx}
-                      className="bg-neutral-50 p-3 rounded-2xl border border-neutral-200 relative flex items-start gap-3 hover:border-brand-maroon/40 transition-colors"
-                    >
-                      {/* Photo Upload / Avatar with local file button */}
-                      <div className="w-16 shrink-0 flex flex-col items-center gap-1.5">
-                        <label
-                          htmlFor={`student-file-input-${sIdx}`}
-                          className="relative w-14 h-14 rounded-full overflow-hidden bg-white border-2 border-dashed border-neutral-300 hover:border-brand-maroon cursor-pointer group shadow-2xs transition-all flex items-center justify-center"
-                          title="Click to upload student photo from computer"
-                        >
-                          {uploadingIdx === sIdx ? (
-                            <div className="w-full h-full bg-brand-maroon/10 flex items-center justify-center">
-                              <Loader2 className="w-5 h-5 text-brand-maroon animate-spin" />
-                            </div>
-                          ) : student.photo ? (
-                            <>
-                              <img
-                                src={normalizeImageUrl(student.photo)}
-                                alt={student.name}
-                                className="w-full h-full object-cover group-hover:opacity-75 transition-opacity"
-                              />
-                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
-                                <Upload size={14} />
+                  {editingDeck.performers?.map((student: any, sIdx: number) => {
+                    const rankNum = editingDeck.has_spotlight_topper !== false ? sIdx + 2 : sIdx + 1
+
+                    return (
+                      <div
+                        key={sIdx}
+                        className="bg-neutral-50 p-3 rounded-2xl border border-neutral-200 relative flex items-start gap-3 hover:border-brand-maroon/40 transition-colors"
+                      >
+                        {/* Photo Upload / Avatar with local file button */}
+                        <div className="w-16 shrink-0 flex flex-col items-center gap-1.5">
+                          <label
+                            htmlFor={`student-file-input-${sIdx}`}
+                            className="relative w-14 h-14 rounded-full overflow-hidden bg-white border-2 border-dashed border-neutral-300 hover:border-brand-maroon cursor-pointer group shadow-2xs transition-all flex items-center justify-center"
+                            title="Click to upload student photo from computer"
+                          >
+                            {uploadingIdx === sIdx ? (
+                              <div className="w-full h-full bg-brand-maroon/10 flex items-center justify-center">
+                                <Loader2 className="w-5 h-5 text-brand-maroon animate-spin" />
                               </div>
-                            </>
-                          ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center text-neutral-400 group-hover:text-brand-maroon transition-colors">
-                              <Upload size={14} />
-                              <span className="text-[9px] font-bold mt-0.5">#{sIdx + 2}</span>
-                            </div>
-                          )}
-                        </label>
+                            ) : student.photo ? (
+                              <>
+                                <img
+                                  src={normalizeImageUrl(student.photo)}
+                                  alt={student.name}
+                                  className="w-full h-full object-cover group-hover:opacity-75 transition-opacity"
+                                />
+                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                                  <Upload size={14} />
+                                </div>
+                              </>
+                            ) : (
+                              <div className="w-full h-full flex flex-col items-center justify-center text-neutral-400 group-hover:text-brand-maroon transition-colors">
+                                <Upload size={14} />
+                                <span className="text-[9px] font-bold mt-0.5">#{rankNum}</span>
+                              </div>
+                            )}
+                          </label>
 
-                        {/* Hidden file input */}
-                        <input
-                          id={`student-file-input-${sIdx}`}
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0]
-                            if (file) handleStudentPhotoFile(sIdx, file)
-                            e.target.value = ''
-                          }}
-                        />
+                          {/* Hidden file input */}
+                          <input
+                            id={`student-file-input-${sIdx}`}
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0]
+                              if (file) handleStudentPhotoFile(sIdx, file)
+                              e.target.value = ''
+                            }}
+                          />
 
-                        <label
-                          htmlFor={`student-file-input-${sIdx}`}
-                          className="text-[10px] font-bold text-brand-maroon hover:underline cursor-pointer flex items-center gap-1"
-                        >
-                          <Upload size={10} />
-                          <span>{student.photo ? 'Change' : 'Upload'}</span>
-                        </label>
-                      </div>
+                          <label
+                            htmlFor={`student-file-input-${sIdx}`}
+                            className="text-[10px] font-bold text-brand-maroon hover:underline cursor-pointer flex items-center gap-1"
+                          >
+                            <Upload size={10} />
+                            <span>{student.photo ? 'Change' : 'Upload'}</span>
+                          </label>
+                        </div>
 
-                      {/* Name, Score & Photo Link Inputs */}
-                      <div className="flex-1 space-y-1.5">
-                        <div className="flex items-center gap-1">
-                          <span className="text-[10px] font-black text-neutral-400">#{sIdx + 2}</span>
+                        {/* Name, Score & Photo Link Inputs */}
+                        <div className="flex-1 space-y-1.5">
+                          <div className="flex items-center gap-1">
+                            <span className="text-[10px] font-black text-neutral-400">#{rankNum}</span>
+                            <input
+                              type="text"
+                              value={student.name}
+                              onChange={(e) => setPerformer(sIdx, 'name', e.target.value)}
+                              placeholder="Student Name"
+                              className="w-full text-xs font-bold border border-neutral-300 rounded-lg px-2 py-1 bg-white text-neutral-900"
+                            />
+                          </div>
+
                           <input
                             type="text"
-                            value={student.name}
-                            onChange={(e) => setPerformer(sIdx, 'name', e.target.value)}
-                            placeholder="Student Name"
-                            className="w-full text-xs font-bold border border-neutral-300 rounded-lg px-2 py-1 bg-white text-neutral-900"
+                            value={student.score}
+                            onChange={(e) => setPerformer(sIdx, 'score', e.target.value)}
+                            placeholder="College / Score (e.g. BITS Pilani / 98.4%)"
+                            className="w-full text-xs font-black text-brand-maroon border border-neutral-300 rounded-lg px-2 py-1 bg-white"
+                          />
+
+                          <input
+                            type="text"
+                            value={student.photo || ''}
+                            onChange={(e) => setPerformer(sIdx, 'photo', e.target.value)}
+                            placeholder="Photo link or Drive URL"
+                            className="w-full text-[10px] text-neutral-500 border border-neutral-200 rounded-lg px-2 py-0.5 bg-white truncate"
                           />
                         </div>
 
-                        <input
-                          type="text"
-                          value={student.score}
-                          onChange={(e) => setPerformer(sIdx, 'score', e.target.value)}
-                          placeholder="Score (e.g. 98.4%)"
-                          className="w-full text-xs font-black text-brand-maroon border border-neutral-300 rounded-lg px-2 py-1 bg-white"
-                        />
-
-                        <input
-                          type="text"
-                          value={student.photo || ''}
-                          onChange={(e) => setPerformer(sIdx, 'photo', e.target.value)}
-                          placeholder="Photo link or Drive URL"
-                          className="w-full text-[10px] text-neutral-500 border border-neutral-200 rounded-lg px-2 py-0.5 bg-white truncate"
-                        />
+                        {/* Remove Student */}
+                        <button
+                          type="button"
+                          onClick={() => removePerformer(sIdx)}
+                          className="text-neutral-400 hover:text-red-600 p-1 cursor-pointer"
+                          title="Remove student"
+                        >
+                          <Trash2 size={14} />
+                        </button>
                       </div>
-
-                      {/* Remove Student */}
-                      <button
-                        type="button"
-                        onClick={() => removePerformer(sIdx)}
-                        className="text-neutral-400 hover:text-red-600 p-1 cursor-pointer"
-                        title="Remove student"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
 
