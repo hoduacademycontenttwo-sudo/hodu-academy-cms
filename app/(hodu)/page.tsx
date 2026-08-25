@@ -30,6 +30,7 @@ import BatchCardsCarousel from '@/components/hodu/BatchCardsCarousel'
 import FeatureCardsCarousel from '@/components/hodu/FeatureCardsCarousel'
 import ResultRankerCard from '@/components/hodu/ResultRankerCard'
 import ResultsMarqueeCarousel from '@/components/hodu/ResultsMarqueeCarousel'
+import AcademicExcellenceResults from '@/components/hodu/AcademicExcellenceResults'
 import YouTubeChannelsSection, { YouTubeChannelItem, defaultYouTubeChannels } from '@/components/hodu/YouTubeChannelsSection'
 import { parseCarouselRows } from '@/lib/homeCarousel'
 
@@ -323,34 +324,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5. Hall of Fame / Results */}
-      <section className="py-12 sm:py-16 bg-brand-bg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ScrollReveal animation="fade-up">
-            <div className="text-center mb-8 sm:mb-10 space-y-3">
-              <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon">
-                Our Star Performers & Rankers
-              </h2>
-              <p className="text-xs sm:text-sm text-brand-muted max-w-md mx-auto">
-                Real results from dedicated students who prepared with Hodu Academy.
-              </p>
-              <div className="pt-1">
-                <Link
-                  href="/results"
-                  className="group inline-flex items-center gap-2 bg-white border border-[#bd9f67]/40 hover:border-brand-maroon text-brand-maroon hover:bg-brand-maroon hover:text-white font-bold text-xs uppercase tracking-wider px-5 py-2 rounded-xl transition-all duration-300 shadow-xs hover:shadow-md hover:-translate-y-0.5"
-                >
-                  <span>View All Achievers</span>
-                  <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal animation="fade-up" delay={80}>
-            <ResultsMarqueeCarousel rankers={achievers} />
-          </ScrollReveal>
-        </div>
-      </section>
+      {/* 5. Academic Excellence : Results Banner Section */}
+      <AcademicExcellenceResults />
 
       {/* 6. Jaipur Physical Learning Center Banner */}
       <section className="py-10 sm:py-16 bg-white border-y border-brand-border">

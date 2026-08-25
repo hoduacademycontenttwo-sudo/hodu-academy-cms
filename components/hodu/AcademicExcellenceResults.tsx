@@ -1,0 +1,373 @@
+'use client'
+
+import React, { useState } from 'react'
+import { ChevronLeft, ChevronRight, Trophy, Sparkles, Award } from 'lucide-react'
+import ScrollReveal from './ScrollReveal'
+import { normalizeImageUrl } from '@/lib/imageUtils'
+
+export interface StudentPerformer {
+  name: string
+  score: string
+  photo?: string
+  initials?: string
+  stream?: string
+  school?: string
+}
+
+export interface ResultCategoryDeck {
+  id: string
+  tabLabel: string
+  cardTitle: string
+  themeColor?: string
+  pillBg?: string
+  topRanker: StudentPerformer
+  performers: StudentPerformer[]
+}
+
+export const defaultResultsDecks: ResultCategoryDeck[] = [
+  // 1. CBSE Class 12
+  {
+    id: 'cbse-12',
+    tabLabel: 'Class 12 CBSE',
+    cardTitle: 'CBSE CLASS 12TH RESULT 2026',
+    themeColor: '#1A6ECB',
+    pillBg: 'bg-[#1A6ECB]',
+    topRanker: {
+      name: 'Sonakshi Goyal',
+      score: '99.6%',
+      photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&auto=format',
+      initials: 'SG',
+    },
+    performers: [
+      { name: 'Neelesh Joshi', score: '98.6%', photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&auto=format', initials: 'NJ' },
+      { name: 'Jashandeep Kaur', score: '98.4%', photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&h=300&fit=crop&auto=format', initials: 'JK' },
+      { name: 'Naitik', score: '98.4%', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&auto=format', initials: 'NK' },
+      { name: 'Harnoor Kaur', score: '98.2%', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop&auto=format', initials: 'HK' },
+      { name: 'Jessica Chhabra', score: '98.2%', photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&auto=format', initials: 'JC' },
+      { name: 'Pragya Jain', score: '97.8%', photo: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=300&fit=crop&auto=format', initials: 'PJ' },
+      { name: 'Sirjan', score: '97.6%', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop&auto=format', initials: 'SJ' },
+      { name: 'Shanvi', score: '97.6%', photo: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=300&h=300&fit=crop&auto=format', initials: 'SH' },
+      { name: 'Sourasis Mandal', score: '97.4%', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&auto=format', initials: 'SM' },
+      { name: 'Manvi Goyal', score: '97.2%', photo: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=300&h=300&fit=crop&auto=format', initials: 'MG' },
+    ],
+  },
+
+  // 2. NEET UG
+  {
+    id: 'neet-ug',
+    tabLabel: 'NEET UG Result 2026',
+    cardTitle: 'NEET-UG RESULT 2026',
+    themeColor: '#059669',
+    pillBg: 'bg-[#059669]',
+    topRanker: {
+      name: 'Rohit Verma',
+      score: '715/720',
+      photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&auto=format',
+      initials: 'RV',
+    },
+    performers: [
+      { name: 'Aarav Sharma', score: '710/720', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&auto=format', initials: 'AS' },
+      { name: 'Ananya Singhal', score: '705/720', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop&auto=format', initials: 'AS' },
+      { name: 'Dhruv Meena', score: '702/720', photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&auto=format', initials: 'DM' },
+      { name: 'Kavya Pareek', score: '698/720', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&auto=format', initials: 'KP' },
+      { name: 'Rohan Joshi', score: '695/720', photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&fit=crop&auto=format', initials: 'RJ' },
+      { name: 'Tanvi Agarwal', score: '692/720', photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&h=300&fit=crop&auto=format', initials: 'TA' },
+      { name: 'Yashwardhan', score: '690/720', photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop&auto=format', initials: 'YW' },
+      { name: 'Sneha Rathore', score: '688/720', photo: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=300&fit=crop&auto=format', initials: 'SR' },
+      { name: 'Harshit Gupta', score: '685/720', photo: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&h=300&fit=crop&auto=format', initials: 'HG' },
+      { name: 'Diya Choudhary', score: '682/720', photo: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=300&h=300&fit=crop&auto=format', initials: 'DC' },
+    ],
+  },
+
+  // 3. JEE Advanced
+  {
+    id: 'jee-adv',
+    tabLabel: 'JEE Advanced Result 2026',
+    cardTitle: 'JEE ADVANCED RESULT 2026',
+    themeColor: '#7E0D0D',
+    pillBg: 'bg-[#7E0D0D]',
+    topRanker: {
+      name: 'Aryan Kapoor',
+      score: 'AIR 142',
+      photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&auto=format',
+      initials: 'AK',
+    },
+    performers: [
+      { name: 'Lakshya Khandelwal', score: 'AIR 284', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&auto=format', initials: 'LK' },
+      { name: 'Kushagra Soni', score: 'AIR 419', photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&auto=format', initials: 'KS' },
+      { name: 'Aditya Mathur', score: 'AIR 580', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&auto=format', initials: 'AM' },
+      { name: 'Varun Somani', score: 'AIR 745', photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop&auto=format', initials: 'VS' },
+      { name: 'Riddhima Saxena', score: 'AIR 912', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&auto=format', initials: 'RS' },
+      { name: 'Devansh Tiwari', score: '99.85 %ile', photo: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&h=300&fit=crop&auto=format', initials: 'DT' },
+      { name: 'Shubham Bansal', score: '99.72 %ile', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&auto=format', initials: 'SB' },
+      { name: 'Pranav Goyal', score: '99.64 %ile', photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&auto=format', initials: 'PG' },
+      { name: 'Bhavya Rawat', score: '99.58 %ile', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop&auto=format', initials: 'BR' },
+      { name: 'Naman Jain', score: '99.51 %ile', photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&fit=crop&auto=format', initials: 'NJ' },
+    ],
+  },
+
+  // 4. Cambridge IGCSE & IB DP
+  {
+    id: 'cambridge-igcse',
+    tabLabel: 'Cambridge IGCSE & IB',
+    cardTitle: 'CAMBRIDGE IGCSE & IBDP 2026',
+    themeColor: '#8B5CF6',
+    pillBg: 'bg-[#8B5CF6]',
+    topRanker: {
+      name: 'Priya Sharma',
+      score: '8x A* Marks',
+      photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop&auto=format',
+      initials: 'PS',
+    },
+    performers: [
+      { name: 'Sneha Mehta', score: '44/45 DP', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&auto=format', initials: 'SM' },
+      { name: 'Karan Patel', score: '7x A* Grade', photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&fit=crop&auto=format', initials: 'KP' },
+      { name: 'Aanya Singhania', score: '43/45 DP', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop&auto=format', initials: 'AS' },
+      { name: 'Reyansh Sethi', score: '6x A* Grade', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&auto=format', initials: 'RS' },
+      { name: 'Myra Talwar', score: '42/45 DP', photo: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=300&fit=crop&auto=format', initials: 'MT' },
+      { name: 'Kabir Bhasin', score: '6x A* Grade', photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&auto=format', initials: 'KB' },
+      { name: 'Zoya Merchant', score: '42/45 DP', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop&auto=format', initials: 'ZM' },
+      { name: 'Shaurya Dadhich', score: '5x A* Grade', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&auto=format', initials: 'SD' },
+      { name: 'Ahana Kapoor', score: '41/45 DP', photo: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=300&h=300&fit=crop&auto=format', initials: 'AK' },
+      { name: 'Neil Varma', score: '5x A* Grade', photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop&auto=format', initials: 'NV' },
+    ],
+  },
+
+  // 5. Class 10 CBSE
+  {
+    id: 'cbse-10',
+    tabLabel: 'Class 10 CBSE',
+    cardTitle: 'CBSE CLASS 10TH RESULT 2026',
+    themeColor: '#0284C7',
+    pillBg: 'bg-[#0284C7]',
+    topRanker: {
+      name: 'Divya Gupta',
+      score: '99.4%',
+      photo: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop&auto=format',
+      initials: 'DG',
+    },
+    performers: [
+      { name: 'Advait Vyas', score: '99.0%', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&auto=format', initials: 'AV' },
+      { name: 'Rhea Biyani', score: '98.8%', photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&h=300&fit=crop&auto=format', initials: 'RB' },
+      { name: 'Samarth Jain', score: '98.6%', photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&auto=format', initials: 'SJ' },
+      { name: 'Isha Kothari', score: '98.4%', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&auto=format', initials: 'IK' },
+      { name: 'Ritik Mittal', score: '98.2%', photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&fit=crop&auto=format', initials: 'RM' },
+      { name: 'Tanisha Roy', score: '98.0%', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop&auto=format', initials: 'TR' },
+      { name: 'Kunal Saini', score: '97.8%', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&auto=format', initials: 'KS' },
+      { name: 'Bhoomika Suri', score: '97.6%', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop&auto=format', initials: 'BS' },
+      { name: 'Ayush Ranawat', score: '97.4%', photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop&auto=format', initials: 'AR' },
+      { name: 'Siya Khandelwal', score: '97.2%', photo: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=300&h=300&fit=crop&auto=format', initials: 'SK' },
+    ],
+  },
+
+  // 6. ICSE & State Boards
+  {
+    id: 'icse-state',
+    tabLabel: 'Class 10 ICSE & State',
+    cardTitle: 'ICSE & STATE BOARDS 2026',
+    themeColor: '#EA580C',
+    pillBg: 'bg-[#EA580C]',
+    topRanker: {
+      name: 'Karan Singh',
+      score: '99.2%',
+      photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&auto=format',
+      initials: 'KS',
+    },
+    performers: [
+      { name: 'Mehak Narang', score: '98.6%', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&fit=crop&auto=format', initials: 'MN' },
+      { name: 'Ritvik Sen', score: '98.4%', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&auto=format', initials: 'RS' },
+      { name: 'Khushi Somani', score: '98.2%', photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&h=300&fit=crop&auto=format', initials: 'KS' },
+      { name: 'Arman Qureshi', score: '98.0%', photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&auto=format', initials: 'AQ' },
+      { name: 'Navya Dugar', score: '97.8%', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop&auto=format', initials: 'ND' },
+      { name: 'Parth Goswami', score: '97.6%', photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&fit=crop&auto=format', initials: 'PG' },
+      { name: 'Aashi Lodha', score: '97.4%', photo: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&h=300&fit=crop&auto=format', initials: 'AL' },
+      { name: 'Gautam Bishnoi', score: '97.2%', photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop&auto=format', initials: 'GB' },
+      { name: 'Pooja Kumawat', score: '97.0%', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop&auto=format', initials: 'PK' },
+      { name: 'Tarun Shekhawat', score: '96.8%', photo: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&h=300&fit=crop&auto=format', initials: 'TS' },
+    ],
+  },
+]
+
+interface AcademicExcellenceResultsProps {
+  decks?: ResultCategoryDeck[]
+}
+
+export default function AcademicExcellenceResults({ decks = defaultResultsDecks }: AcademicExcellenceResultsProps) {
+  const [activeDeckIdx, setActiveDeckIdx] = useState(0)
+
+  const activeDeck = decks[activeDeckIdx] || decks[0]
+
+  const prevDeck = () => {
+    setActiveDeckIdx((prev) => (prev - 1 + decks.length) % decks.length)
+  }
+
+  const nextDeck = () => {
+    setActiveDeckIdx((prev) => (prev + 1) % decks.length)
+  }
+
+  return (
+    <section className="py-14 sm:py-20 bg-white border-y border-brand-border overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* ─── Section Header ─── */}
+        <ScrollReveal animation="fade-up">
+          <div className="text-center mb-8 sm:mb-12 space-y-2.5">
+            <h2 className="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-black text-brand-maroon tracking-tight">
+              Academic Excellence : Results
+            </h2>
+            <p className="text-xs sm:text-sm md:text-base text-brand-muted font-medium max-w-xl mx-auto">
+              Giving wings to a million dreams, a million more to go
+            </p>
+          </div>
+        </ScrollReveal>
+
+        {/* ─── Filter Tabs Bar (Pills) ─── */}
+        <ScrollReveal animation="fade-up" delay={60}>
+          <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-4 pt-1 px-1 scrollbar-none no-scrollbar">
+            {decks.map((deck, idx) => {
+              const isActive = idx === activeDeckIdx
+              return (
+                <button
+                  key={deck.id}
+                  onClick={() => setActiveDeckIdx(idx)}
+                  className={`shrink-0 text-xs sm:text-xs font-semibold px-4 sm:px-5 py-2 sm:py-2.5 rounded-full transition-all duration-300 cursor-pointer whitespace-nowrap ${
+                    isActive
+                      ? 'bg-white text-brand-maroon border-2 border-brand-maroon shadow-md font-bold -translate-y-0.5'
+                      : 'bg-white text-neutral-600 hover:text-brand-maroon border border-neutral-300/80 hover:border-brand-maroon/50 shadow-2xs'
+                  }`}
+                >
+                  {deck.tabLabel}
+                </button>
+              )
+            })}
+          </div>
+        </ScrollReveal>
+
+        {/* ─── Main Banner Carousel Card ─── */}
+        <ScrollReveal animation="zoom-in" delay={100}>
+          <div className="relative mt-4 sm:mt-6">
+            
+            {/* Left Nav Arrow Button */}
+            <button
+              onClick={prevDeck}
+              aria-label="Previous result category"
+              className="absolute -left-3 sm:-left-5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white border border-neutral-300 shadow-xl flex items-center justify-center text-neutral-700 hover:text-brand-maroon hover:scale-110 hover:border-brand-maroon transition-all cursor-pointer"
+            >
+              <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+            </button>
+
+            {/* Right Nav Arrow Button */}
+            <button
+              onClick={nextDeck}
+              aria-label="Next result category"
+              className="absolute -right-3 sm:-right-5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white border border-neutral-300 shadow-xl flex items-center justify-center text-neutral-700 hover:text-brand-maroon hover:scale-110 hover:border-brand-maroon transition-all cursor-pointer"
+            >
+              <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
+            </button>
+
+            {/* Radiant Sunburst Banner Card Container */}
+            <div className="relative w-full rounded-2xl sm:rounded-3xl border border-amber-200/90 overflow-hidden shadow-lg p-5 sm:p-8 lg:p-10 bg-gradient-to-b from-[#FFFDF0] via-[#FFF8E1] to-[#FFF3CD]">
+              
+              {/* Subtle Radiant Rays SVG Pattern in Background */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-100/40 via-transparent to-transparent pointer-events-none" />
+              
+              {/* ─── Top Display Headline inside Banner ─── */}
+              <div className="relative z-10 text-center mb-8 sm:mb-10">
+                <h3 className="font-serif-editorial text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-[#1A6ECB] [text-shadow:_0_2px_0_#ffffff,_0_4px_12px_rgba(26,110,203,0.25)] stroke-1">
+                  {activeDeck.cardTitle}
+                </h3>
+              </div>
+
+              {/* ─── Main Content Flex Grid (Left Top Ranker + Right 10 Achievers) ─── */}
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
+                
+                {/* ─── Left Spotlight: Single Top Ranker ─── */}
+                <div className="lg:col-span-3 flex flex-col items-center justify-center text-center">
+                  <div className="relative group">
+                    {/* Glowing Spotlight Circle Backdrop */}
+                    <div className="w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 rounded-full bg-gradient-to-b from-sky-100 to-sky-200/60 p-2 shadow-inner flex items-center justify-center border border-sky-300/60">
+                      {activeDeck.topRanker.photo ? (
+                        <img
+                          src={normalizeImageUrl(activeDeck.topRanker.photo)}
+                          alt={activeDeck.topRanker.name}
+                          className="w-full h-full rounded-full object-cover shadow-md group-hover:scale-105 transition-transform duration-500"
+                          loading="eager"
+                        />
+                      ) : (
+                        <div className="w-full h-full rounded-full bg-brand-maroon text-amber-200 font-serif-editorial font-bold text-4xl flex items-center justify-center shadow-md">
+                          {activeDeck.topRanker.initials || 'SR'}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Large Score Pill Below Photo */}
+                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap z-20">
+                      <span className="inline-block bg-[#1A6ECB] text-white text-base sm:text-lg font-black px-6 py-1 rounded-full shadow-lg border-2 border-white tracking-wide">
+                        {activeDeck.topRanker.score}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Student Name */}
+                  <div className="mt-6 space-y-0.5">
+                    <h4 className="font-serif-editorial text-base sm:text-lg font-bold text-neutral-900">
+                      {activeDeck.topRanker.name}
+                    </h4>
+                    <p className="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider">
+                      Batch Topper
+                    </p>
+                  </div>
+                </div>
+
+                {/* ─── Right Grid: 10 Performers (2 Rows of 5 Columns) ─── */}
+                <div className="lg:col-span-9">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-6 sm:gap-y-8 gap-x-3 sm:gap-x-4">
+                    {activeDeck.performers.map((student, sIdx) => (
+                      <div
+                        key={sIdx}
+                        className="flex flex-col items-center text-center group cursor-pointer"
+                      >
+                        {/* Student Circle Portrait */}
+                        <div className="relative">
+                          <div className="w-18 h-18 sm:w-20 sm:h-20 md:w-22 md:h-22 rounded-full bg-gradient-to-b from-sky-100 to-sky-200/50 p-1 shadow-xs border border-sky-300/50 overflow-hidden flex items-center justify-center">
+                            {student.photo ? (
+                              <img
+                                src={normalizeImageUrl(student.photo)}
+                                alt={student.name}
+                                className="w-full h-full rounded-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                loading="lazy"
+                              />
+                            ) : (
+                              <div className="w-full h-full rounded-full bg-brand-maroon text-amber-200 font-bold text-sm flex items-center justify-center">
+                                {student.initials || student.name.slice(0, 2).toUpperCase()}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Score Pill */}
+                          <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap z-10">
+                            <span className="inline-block bg-[#1A6ECB] text-white text-[11px] sm:text-xs font-black px-2.5 sm:px-3 py-0.5 rounded-full shadow-md border border-white tracking-tight">
+                              {student.score}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Student Name */}
+                        <h5 className="mt-4 text-xs sm:text-xs font-bold text-neutral-900 line-clamp-1 group-hover:text-[#1A6ECB] transition-colors">
+                          {student.name}
+                        </h5>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </ScrollReveal>
+
+      </div>
+    </section>
+  )
+}

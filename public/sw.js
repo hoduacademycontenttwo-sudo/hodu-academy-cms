@@ -1,8 +1,8 @@
 // Hodu Academy - Instant-Load Offline & Slow-Network Service Worker Engine
-const STATIC_CACHE = 'hodu-static-v1.5'
-const IMAGE_CACHE = 'hodu-images-v1.5'
-const PAGE_CACHE = 'hodu-pages-v1.5'
-const DATA_CACHE = 'hodu-data-v1.5'
+const STATIC_CACHE = 'hodu-static-v1.6'
+const IMAGE_CACHE = 'hodu-images-v1.6'
+const PAGE_CACHE = 'hodu-pages-v1.6'
+const DATA_CACHE = 'hodu-data-v1.6'
 
 const CRITICAL_PRECACHE = [
   '/',
@@ -16,6 +16,9 @@ const CRITICAL_PRECACHE = [
   '/ptm-gallery',
   '/results',
   '/contact',
+  '/terms',
+  '/privacy-policy',
+  '/faq',
   '/admin',
   '/admin/login',
   '/admin/dashboard',

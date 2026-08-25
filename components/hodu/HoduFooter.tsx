@@ -96,6 +96,7 @@ export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site, a
                 { label: 'Results & Achievers', href: '/results' },
                 { label: 'Faculty & Directors', href: '/about' },
                 { label: 'Study Materials & DPPs', href: '/study-materials' },
+                { label: 'Frequently Asked Questions', href: '/faq' },
                 { label: 'Academic Blog', href: '/blog' },
                 { label: 'Contact & Diagnostic', href: '/contact' },
               ].map(l => (
@@ -146,10 +147,11 @@ export default function HoduFooter({ siteName = HODU.name, logoUrl = '', site, a
         {/* Bottom Bar */}
         <div className="mt-14 pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center text-xs text-white/80 space-y-4 md:space-y-0">
           <span>© {new Date().getFullYear()} {siteName}. All rights reserved. Jaipur, Rajasthan, India.</span>
-          <div className="flex space-x-6">
+          <div className="flex flex-wrap gap-4 sm:gap-6">
             <Link href="/about" className="hover:underline">About</Link>
-            <Link href="/contact" className="hover:underline">Privacy Policy</Link>
-            <Link href="/contact" className="hover:underline">Admissions Terms</Link>
+            <Link href="/faq" className="hover:underline">FAQs</Link>
+            <Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link>
+            <Link href="/terms" className="hover:underline">Terms & Conditions</Link>
           </div>
         </div>
       </div>
