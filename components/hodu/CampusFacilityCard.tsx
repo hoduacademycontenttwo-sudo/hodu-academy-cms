@@ -56,7 +56,7 @@ export default function CampusFacilityCard({ item }: CampusFacilityCardProps) {
     <div className="group relative flex flex-col justify-between w-full h-full min-h-[380px] p-5 sm:p-6 bg-white border border-[#F3DCDC] rounded-2xl overflow-hidden shadow-xs hover:shadow-2xl transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer select-none">
       
       {/* ─── Expanding Left Stripe Background On Hover ─── */}
-      <div className="absolute inset-y-0 left-0 w-1.5 group-hover:w-full bg-gradient-to-br from-[#7E0D0D] via-[#941515] to-[#4E0404] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] z-0 pointer-events-none" />
+      <div className="absolute inset-y-0 left-0 w-1.5 group-hover:w-full bg-gradient-to-br from-[#7E0D0D] via-[#941515] to-[#520505] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] z-0 pointer-events-none" />
 
       {/* ─── Card Content (Elevated above expanding stripe) ─── */}
       <div className="relative z-10 flex flex-col h-full justify-between transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] space-y-4">
@@ -90,23 +90,26 @@ export default function CampusFacilityCard({ item }: CampusFacilityCardProps) {
           </div>
 
           {/* Paragraph / Description */}
-          <p className="text-xs sm:text-sm text-neutral-600 group-hover:text-white/90 leading-relaxed transition-colors duration-500 line-clamp-3">
+          <p className="text-xs sm:text-sm text-neutral-600 group-hover:text-white/95 leading-relaxed transition-colors duration-500 line-clamp-3">
             {item.desc}
           </p>
         </div>
 
-        {/* Bottom Bar: Action Button */}
+        {/* Bottom Bar: Action Button Linking to Login Portal */}
         <div className="pt-3 border-t border-neutral-100 group-hover:border-white/20 transition-colors duration-500 flex items-center justify-between">
-          <span className="text-[11px] font-bold text-neutral-400 group-hover:text-white/70 transition-colors duration-500 tracking-wider uppercase">
+          <span className="text-[11px] font-bold text-neutral-400 group-hover:text-white/75 transition-colors duration-500 tracking-wider uppercase">
             Campus Facility
           </span>
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg transition-all duration-500 bg-gradient-to-r from-brand-maroon to-[#9C1B1B] text-white shadow-xs group-hover:bg-white group-hover:text-brand-maroon hover:outline hover:outline-2 hover:outline-white cursor-pointer active:scale-95"
+          <a
+            href="https://portal.hoduacademy.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={e => e.stopPropagation()}
+            className="inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg transition-all duration-300 bg-[#7E0D0D] text-white shadow-xs group-hover:!bg-white group-hover:!text-[#7E0D0D] group-hover:shadow-md hover:scale-105 active:scale-95 cursor-pointer z-20"
           >
             <span>Learn more</span>
-            <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform duration-300" />
-          </button>
+            <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+          </a>
         </div>
 
       </div>
