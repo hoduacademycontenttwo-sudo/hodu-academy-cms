@@ -18,6 +18,8 @@ import {
   Award,
   Users,
   Shield,
+  Crown,
+  GraduationCap,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
@@ -170,6 +172,48 @@ export default async function OfflinePage() {
   ])
 
   const dbFaculty = facultyRes.status === 'fulfilled' && facultyRes.value?.data ? facultyRes.value.data : []
+
+  // Split Directors vs Faculty
+  const dbDirectors = dbFaculty.filter((f: any) => f.role === 'Director' || f.subject?.toLowerCase().includes('director'))
+  const dbFacultyMembers = dbFaculty.filter((f: any) => f.role !== 'Director' && !f.subject?.toLowerCase().includes('director'))
+
+  // 3 Directors Placeholders / DB Cards
+  const defaultDirectors = [
+    {
+      id: 'dir-placeholder-1',
+      name: 'Director & Academic Head',
+      subject: 'Academic Leadership & Pedagogy',
+      experience: '20+ years',
+      bio: 'Leading curriculum design, master faculty development, and international board standards.',
+      photo_url: '',
+      role: 'Director',
+    },
+    {
+      id: 'dir-placeholder-2',
+      name: 'Managing Director',
+      subject: 'Operations & Strategic Growth',
+      experience: '18+ years',
+      bio: 'Driving institutional excellence, student success roadmaps, and campus infrastructure.',
+      photo_url: '',
+      role: 'Director',
+    },
+    {
+      id: 'dir-placeholder-3',
+      name: 'Director of Mentorship',
+      subject: 'Student Growth & Counseling',
+      experience: '15+ years',
+      bio: 'Dedicated to personalized 1-on-1 mentorship, doubt cells, and parent collaboration.',
+      photo_url: '',
+      role: 'Director',
+    },
+  ]
+
+  const activeDirectors = [
+    ...dbDirectors,
+    ...defaultDirectors.slice(dbDirectors.length),
+  ].slice(0, 3)
+
+  const activeFacultyMembers = dbFacultyMembers.length > 0 ? dbFacultyMembers : dbFaculty
 
   // Dynamic Life at Hodu Photos
   let activeLifePhotos = defaultLifePhotos
@@ -346,51 +390,133 @@ export default async function OfflinePage() {
         </div>
       </section>
 
-      {/* Classroom Faculty Mentors */}
-      {dbFaculty.length > 0 && (
-        <section className="py-16 sm:py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ScrollReveal animation="fade-up">
-              <div className="text-center mb-12 sm:mb-16">
-                <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-3">
-                  MENTORS
-                </span>
-                <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon tracking-tight">
-                  Meet Your Classroom Faculty
-                </h2>
-                <p className="text-sm text-brand-muted mt-2 max-w-xl mx-auto leading-relaxed">
-                  Learn directly from master educators with over 15+ years of proven teaching pedigree.
-                </p>
-              </div>
-            </ScrollReveal>
+      {/* ─── Academic Leadership & Classroom Faculty ─── */}
+      <section className="py-16 sm:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal animation="fade-up">
+            <div className="text-center mb-12 sm:mb-16">
+              <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-3">
+                LEADERSHIP & MENTORS
+              </span>
+              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon tracking-tight">
+                Meet Our Leadership & Faculty
+              </h2>
+              <p className="text-sm text-brand-muted mt-2 max-w-xl mx-auto leading-relaxed">
+                Guided by experienced directors and taught by master subject educators with proven pedagogical pedigree.
+              </p>
+            </div>
+          </ScrollReveal>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {dbFaculty.map((f: any, idx: number) => (
-                <ScrollReveal key={f.id} animation="fade-up" delay={idx * 60}>
-                  <div className="bg-brand-blush/40 border border-brand-border rounded-2xl p-5 text-center flex flex-col items-center hover:border-brand-maroon/40 transition-all duration-300">
-                    <div className="w-24 h-24 rounded-full overflow-hidden mb-3 border-2 border-brand-border bg-white shadow-xs">
-                      {f.photo_url ? (
-                        <img
-                          src={normalizeImageUrl(f.photo_url)}
-                          alt={f.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center font-bold text-brand-maroon bg-brand-blush">
-                          {f.name.slice(0, 2).toUpperCase()}
-                        </div>
+          {/* ─── 1. Three Directors Spotlight Placeholders / Cards ─── */}
+          <div className="mb-14 sm:mb-20">
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <span className="h-px w-8 bg-amber-300" />
+              <span className="text-xs font-bold uppercase tracking-widest text-amber-800 flex items-center gap-1.5">
+                <Crown size={14} className="text-amber-600" /> Board of Directors
+              </span>
+              <span className="h-px w-8 bg-amber-300" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {activeDirectors.map((dir: any, idx: number) => (
+                <ScrollReveal key={dir.id || idx} animation="fade-up" delay={idx * 80}>
+                  <div className="relative bg-gradient-to-b from-amber-50/50 via-white to-white border-2 border-amber-200/90 rounded-3xl p-6 sm:p-7 text-center shadow-xs hover:shadow-xl hover:border-amber-400 transition-all duration-300 flex flex-col justify-between h-full group">
+                    <span className="absolute top-3.5 right-3.5 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300 px-2.5 py-0.5 rounded-full shadow-2xs">
+                      <Crown size={11} className="text-amber-600" /> Director
+                    </span>
+
+                    <div>
+                      <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden mx-auto mb-4 border-2 border-amber-400 bg-white shadow-sm ring-4 ring-amber-100/60 group-hover:scale-105 transition-transform duration-300">
+                        {dir.photo_url ? (
+                          <img
+                            src={normalizeImageUrl(dir.photo_url)}
+                            alt={dir.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center font-serif-editorial font-bold text-amber-800 bg-gradient-to-br from-amber-100 to-amber-200">
+                            <Crown size={22} className="text-amber-700 mb-0.5 opacity-80" />
+                            <span className="text-[10px] font-sans tracking-widest font-bold">DIRECTOR</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <h3 className="font-serif-editorial text-lg sm:text-xl font-bold text-brand-text group-hover:text-brand-maroon transition-colors">
+                        {dir.name}
+                      </h3>
+                      <p className="text-xs font-bold text-amber-800 mt-1">{dir.subject}</p>
+                      {dir.experience && (
+                        <p className="text-[11px] font-semibold text-brand-crimson mt-0.5">{dir.experience} Experience</p>
                       )}
                     </div>
-                    <h3 className="font-bold text-brand-text text-sm">{f.name}</h3>
-                    <p className="text-xs text-brand-maroon font-semibold mt-0.5">{f.subject}</p>
-                    <p className="text-[11px] text-brand-muted mt-1">{f.experience} Experience</p>
+
+                    {dir.bio && (
+                      <p className="text-xs text-brand-muted leading-relaxed mt-3 pt-3 border-t border-amber-200/60">
+                        {dir.bio}
+                      </p>
+                    )}
                   </div>
                 </ScrollReveal>
               ))}
             </div>
           </div>
-        </section>
-      )}
+
+          {/* ─── 2. Classroom Faculty Mentors (Small & Good Cards) ─── */}
+          {activeFacultyMembers.length > 0 && (
+            <div>
+              <div className="flex items-center justify-center gap-2 mb-6">
+                <span className="h-px w-8 bg-brand-border" />
+                <span className="text-xs font-bold uppercase tracking-widest text-brand-maroon flex items-center gap-1.5">
+                  <Users size={14} /> Classroom Faculty Mentors
+                </span>
+                <span className="h-px w-8 bg-brand-border" />
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
+                {activeFacultyMembers.map((f: any, idx: number) => (
+                  <ScrollReveal key={f.id || idx} animation="zoom-in" delay={(idx % 6) * 50}>
+                    <div className="bg-brand-blush/30 border border-brand-border/80 hover:border-brand-maroon/50 rounded-2xl p-3.5 sm:p-4 text-center flex flex-col justify-between items-center shadow-2xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full group bg-white">
+                      <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full overflow-hidden mb-2.5 border-2 border-brand-maroon/20 bg-white shadow-2xs group-hover:border-brand-maroon transition-colors shrink-0">
+                        {f.photo_url ? (
+                          <img
+                            src={normalizeImageUrl(f.photo_url)}
+                            alt={f.name}
+                            className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-400"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center font-bold text-xs sm:text-sm text-brand-maroon bg-brand-blush">
+                            {f.name.slice(0, 2).toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="w-full space-y-1">
+                        <h4 className="font-bold text-xs sm:text-sm text-brand-text truncate leading-tight group-hover:text-brand-maroon transition-colors">
+                          {f.name}
+                        </h4>
+                        <span className="text-[10px] font-bold text-brand-maroon bg-brand-blush px-2 py-0.5 rounded-full inline-block truncate max-w-full">
+                          {f.subject}
+                        </span>
+                        {f.experience && (
+                          <p className="text-[10px] font-semibold text-brand-crimson truncate">
+                            {f.experience}
+                          </p>
+                        )}
+                      </div>
+
+                      {f.bio && (
+                        <p className="text-[10px] text-brand-muted line-clamp-2 mt-2 pt-1.5 border-t border-brand-border/40 leading-tight">
+                          {f.bio}
+                        </p>
+                      )}
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
 
       {/* Daily Schedule & Timetable Slots */}
       <section className="py-16 sm:py-20 bg-brand-bg border-t border-brand-border">
