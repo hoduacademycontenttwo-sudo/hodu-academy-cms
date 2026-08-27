@@ -8,8 +8,8 @@ import ImageUpload from '@/components/admin/ImageUpload'
 import { Plus, Trash2, Pencil } from 'lucide-react'
 
 const SITE_ID = 'a1b2c3d4-1111-1111-1111-000000000002'
-const EMPTY = { image_url: '', caption: '', category: 'Campus', sort_order: 0 }
-const CATS = ['PTM Gallery', 'Home Carousel', 'Offline Carousel', 'Campus', 'Classroom', 'Events', 'Results', 'Faculty', 'Other']
+const EMPTY = { image_url: '', caption: '', category: 'Life at Hodu Academy', sort_order: 0 }
+const CATS = ['Life at Hodu Academy', 'PTM Gallery', 'Home Carousel', 'Offline Carousel', 'Campus', 'Classroom', 'Events', 'Results', 'Faculty', 'Other']
 const CAROUSEL_CATS = ['Offline Carousel', 'Home Carousel']
 
 // Carousel slides store text as JSON in caption field
@@ -123,7 +123,7 @@ export default function GalleryPage() {
                 : 'bg-white text-[#1B2A44] hover:bg-[#FDF5F5] border border-[#F3DCDC]'
             }`}
           >
-            {cat} {cat === 'PTM Gallery' && '✨'}
+            {cat} {cat === 'Life at Hodu Academy' && '📸'} {cat === 'PTM Gallery' && '✨'}
           </button>
         ))}
       </div>
@@ -134,7 +134,9 @@ export default function GalleryPage() {
             <img src={img.image_url} alt={img.caption ?? ''} className="w-full h-40 object-cover" />
             <div className="p-3">
               <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full mb-1 inline-block ${
-                img.category === 'PTM Gallery'
+                img.category === 'Life at Hodu Academy'
+                  ? 'bg-rose-100 text-rose-900 border border-rose-300'
+                  : img.category === 'PTM Gallery'
                   ? 'bg-amber-100 text-amber-900 border border-amber-300'
                   : CAROUSEL_CATS.includes(img.category)
                   ? 'bg-brand-maroon/10 text-brand-maroon'

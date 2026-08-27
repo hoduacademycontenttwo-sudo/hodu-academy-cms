@@ -166,7 +166,7 @@ export default async function OfflinePage() {
     supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Jaipur Campus Carousel').order('sort_order'),
     supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Jaipur Campus Facilities').order('sort_order'),
     supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Jaipur Campus Video').limit(1).maybeSingle(),
-    supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).in('category', ['Life at Hodu', 'PTM Gallery']).order('sort_order'),
+    supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).in('category', ['Life at Hodu Academy', 'Life at Hodu', 'PTM Gallery']).order('sort_order'),
   ])
 
   const dbFaculty = facultyRes.status === 'fulfilled' && facultyRes.value?.data ? facultyRes.value.data : []
@@ -174,7 +174,11 @@ export default async function OfflinePage() {
   // Dynamic Life at Hodu Photos
   let activeLifePhotos = defaultLifePhotos
   if (lifePhotosRes.status === 'fulfilled' && lifePhotosRes.value?.data && lifePhotosRes.value.data.length > 0) {
-    activeLifePhotos = lifePhotosRes.value.data.map((row: any) => ({
+    const lifeOnly = lifePhotosRes.value.data.filter((row: any) => 
+      row.category === 'Life at Hodu Academy' || row.category === 'Life at Hodu'
+    )
+    const listToUse = lifeOnly.length > 0 ? lifeOnly : lifePhotosRes.value.data
+    activeLifePhotos = listToUse.map((row: any) => ({
       id: row.id,
       image_url: row.image_url,
       alt: row.caption || 'Life at Hodu Academy',
