@@ -67,6 +67,8 @@ export default function CampusFacilityCard({ item }: CampusFacilityCardProps) {
             <img
               src={normalizeImageUrl(item.image)}
               alt={item.title}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
             />
 

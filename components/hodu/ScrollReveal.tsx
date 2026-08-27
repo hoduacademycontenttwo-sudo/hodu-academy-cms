@@ -27,11 +27,11 @@ export default function ScrollReveal({
   children,
   animation = 'fade-up',
   delay = 0,
-  duration = 650,
+  duration = 500,
   className = '',
-  threshold = 0.08,
-  once = false,
-  distance = 28,
+  threshold = 0.05,
+  once = true,
+  distance = 16,
 }: ScrollRevealProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [scrollDir, setScrollDir] = useState<'down' | 'up'>('down')
@@ -62,10 +62,17 @@ export default function ScrollReveal({
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // IntersectionObserver for entering & leaving viewport
+  // IntersectionObserver for entering viewport
   useEffect(() => {
     const el = ref.current
     if (!el) return
+
+    // If already in view on mount (e.g. top of page), trigger immediately
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setIsVisible(true)
+      if (once) return
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -80,7 +87,7 @@ export default function ScrollReveal({
       },
       {
         threshold,
-        rootMargin: '20px 0px -30px 0px',
+        rootMargin: '120px 0px 100px 0px',
       }
     )
 

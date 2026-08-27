@@ -40,6 +40,8 @@ export default function ResultRankerCard({ ranker }: ResultRankerCardProps) {
             <img
               src={normalizeImageUrl(ranker.photo_url)}
               alt={ranker.name}
+              loading="lazy"
+              decoding="async"
               className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-2 border-amber-300/50 shadow-2xl"
             />
           ) : (

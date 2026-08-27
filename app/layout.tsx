@@ -70,6 +70,12 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/favicon.png" />
         <link rel="manifest" href="/manifest.json" />
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://lh3.googleusercontent.com" />
+        <link rel="preconnect" href="https://bgaidfuzvcrjbxmpfvym.supabase.co" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
+        <link rel="dns-prefetch" href="https://drive.google.com" />
         <meta name="theme-color" content="#7E0D0D" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -78,7 +84,6 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans bg-brand-bg text-brand-text selection:bg-brand-maroon selection:text-white overflow-x-hidden max-w-full w-full">
         <SmoothScroll />
         <Academic3DCursor />
-        <InitialPageLoader minDuration={2200} />
         <OfflinePwaManager />
         {children}
       </body>

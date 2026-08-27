@@ -157,9 +157,10 @@ export default function LifeAtHoduCarousel({ photos }: LifeAtHoduCarouselProps) 
             <img
               src={normalizeImageUrl(photo.image_url)}
               alt={photo.alt || `Life at Hodu Academy ${idx + 1}`}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/photo:scale-108"
               draggable={false}
-              loading="lazy"
             />
           </div>
         ))}
