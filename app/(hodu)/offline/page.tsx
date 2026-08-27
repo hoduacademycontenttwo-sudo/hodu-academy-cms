@@ -263,10 +263,10 @@ export default async function OfflinePage() {
       </section>
 
       {/* Why Choose Hodu Academy */}
-      <section className="py-16 sm:py-20 bg-brand-bg">
+      <section className="py-16 sm:py-20 bg-brand-bg overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
-            <div className="text-center mb-12 sm:mb-16">
+            <div className="text-center mb-10 sm:mb-14">
               <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-3">
                 WHY HODU
               </span>
@@ -278,7 +278,10 @@ export default async function OfflinePage() {
               </p>
             </div>
           </ScrollReveal>
+        </div>
 
+        {/* Full-bleed Expanded Horizontal Track */}
+        <div className="w-full">
           <ScrollReveal animation="fade-up" delay={100}>
             <CampusFacilitiesSection facilities={activeFacilities} />
           </ScrollReveal>
