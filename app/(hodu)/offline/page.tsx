@@ -23,7 +23,7 @@ import { createClient } from '@/lib/supabase/server'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
-import CampusFacilityCard from '@/components/hodu/CampusFacilityCard'
+import CampusFacilitiesSection from '@/components/hodu/CampusFacilitiesSection'
 import { parseMediaUrl } from '@/lib/homeCarousel'
 import { normalizeImageUrl } from '@/lib/imageUtils'
 
@@ -279,13 +279,9 @@ export default async function OfflinePage() {
             </div>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {activeFacilities.map((item, idx) => (
-              <ScrollReveal key={idx} animation="fade-up" delay={idx * 80} className="h-full">
-                <CampusFacilityCard item={item} />
-              </ScrollReveal>
-            ))}
-          </div>
+          <ScrollReveal animation="fade-up" delay={100}>
+            <CampusFacilitiesSection facilities={activeFacilities} />
+          </ScrollReveal>
         </div>
       </section>
 
