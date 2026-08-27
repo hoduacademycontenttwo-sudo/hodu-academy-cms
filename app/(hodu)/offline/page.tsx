@@ -24,6 +24,7 @@ import EnquiryForm from '@/components/hodu/EnquiryForm'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
 import CampusFacilitiesSection from '@/components/hodu/CampusFacilitiesSection'
+import LifeAtHoduCarousel from '@/components/hodu/LifeAtHoduCarousel'
 import { parseMediaUrl } from '@/lib/homeCarousel'
 import { normalizeImageUrl } from '@/lib/imageUtils'
 
@@ -33,6 +34,18 @@ export const metadata = {
   title: 'Offline Coaching Jaipur — Hodu Academy Classroom Programs | IGCSE, IB, CBSE, JEE, NEET',
   description: 'Join Hodu Academy’s state-of-the-art offline coaching centre in Jaipur. Smart digital classrooms, 1:12 batch sizes, 1-on-1 daily doubt cells, and GPS AC transport.',
 }
+
+const defaultLifePhotos = [
+  { image_url: 'https://lh3.googleusercontent.com/d/1rgiHyqvgevfO3g6T6-kJhYdQ5BrU6xB1', alt: 'Classroom interaction and lectures' },
+  { image_url: 'https://lh3.googleusercontent.com/d/12ZQ2kfYVjY-alMbjzWviy8iBnHgoAq-8', alt: 'Weekly testing session' },
+  { image_url: 'https://lh3.googleusercontent.com/d/1Ca0vKdYR61b0YMnjS42WBDmkpa9sgs1E', alt: '1-on-1 Mentorship consultation' },
+  { image_url: 'https://lh3.googleusercontent.com/d/18tdedQrdhO5BQQMWIRchERq6aiXFA3RM', alt: 'Student focus & study hour' },
+  { image_url: 'https://lh3.googleusercontent.com/d/1dn3qBCGLr4BtDZDBvwfPWroUxVhj-RmJ', alt: 'Faculty doubt solving booth' },
+  { image_url: 'https://lh3.googleusercontent.com/d/1LIJ_8cC195zVM1PxRYEnLFXp4xYHuZB5', alt: 'Group collaborative learning' },
+  { image_url: '/api/proxy-image?id=1T76yiwQqRAkaeYXamomDKHGiPdGiYXDJ', alt: 'Campus classroom' },
+  { image_url: '/api/proxy-image?id=12b7XFLX6oMJ_f6sT9rnlYmkt0gx9ieAe', alt: 'Campus learning' },
+  { image_url: '/api/proxy-image?id=1YtfUVVgT46kGZ3EeNM2O3U36FrhgXoRG', alt: 'Academic hub' },
+]
 
 const ICON_MAP: Record<string, any> = {
   School,
@@ -148,14 +161,25 @@ const timetableSlots = [
 export default async function OfflinePage() {
   const supabase = await createClient()
 
-  const [facultyRes, carouselRes, facilitiesRes, videoRes] = await Promise.allSettled([
+  const [facultyRes, carouselRes, facilitiesRes, videoRes, lifePhotosRes] = await Promise.allSettled([
     supabase.from('cms_faculty').select('*').eq('site_id', HODU_SITE_ID).order('sort_order'),
     supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Jaipur Campus Carousel').order('sort_order'),
     supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Jaipur Campus Facilities').order('sort_order'),
     supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Jaipur Campus Video').limit(1).maybeSingle(),
+    supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).in('category', ['Life at Hodu', 'PTM Gallery']).order('sort_order'),
   ])
 
   const dbFaculty = facultyRes.status === 'fulfilled' && facultyRes.value?.data ? facultyRes.value.data : []
+
+  // Dynamic Life at Hodu Photos
+  let activeLifePhotos = defaultLifePhotos
+  if (lifePhotosRes.status === 'fulfilled' && lifePhotosRes.value?.data && lifePhotosRes.value.data.length > 0) {
+    activeLifePhotos = lifePhotosRes.value.data.map((row: any) => ({
+      id: row.id,
+      image_url: row.image_url,
+      alt: row.caption || 'Life at Hodu Academy',
+    }))
+  }
 
   let campusSlides: any[] = [
     {
@@ -285,81 +309,36 @@ export default async function OfflinePage() {
         </div>
       </section>
 
-      {/* Offline Classroom Programs */}
-      <section className="py-16 sm:py-20 bg-brand-blush border-y border-brand-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ─── Life at Hodu Academy Section ─── */}
+      <section className="py-16 sm:py-24 bg-brand-blush border-y border-brand-border overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
           <ScrollReveal animation="fade-up">
-            <div className="text-center mb-12 sm:mb-16">
-              <span className="inline-block bg-brand-maroon text-white text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-3">
-                PROGRAMS
-              </span>
-              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon tracking-tight">
-                Offline Classroom Batches
-              </h2>
-              <p className="text-sm text-brand-muted mt-2 max-w-xl mx-auto leading-relaxed">
-                Small batch sizes of maximum 12 students with personal faculty attention.
-              </p>
+            <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6">
+              <div className="max-w-2xl space-y-2">
+                <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon tracking-tight">
+                  Life at Hodu Academy
+                </h2>
+                <p className="text-xs sm:text-sm text-brand-muted leading-relaxed">
+                  Glimpses of daily classroom sessions, interactive problem-solving, celebrations, and vibrant campus moments.
+                </p>
+              </div>
+
+              <Link
+                href="/ptm"
+                className="inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-crimson text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl transition-all shadow-sm hover:shadow-md shrink-0 group cursor-pointer"
+              >
+                <span>Explore gallery for more</span>
+                <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           </ScrollReveal>
+        </div>
 
-          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-            {offlinePrograms.map((prog, idx) => (
-              <ScrollReveal key={prog.title} animation="fade-up" delay={idx * 100} className="h-full">
-                <div className="bg-white rounded-3xl border border-brand-border overflow-hidden shadow-xs hover:shadow-xl hover:border-brand-maroon/50 transition-all duration-300 flex flex-col justify-between h-full group">
-                  <div className="h-48 overflow-hidden relative">
-                    <img
-                      src={prog.img}
-                      alt={prog.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                    <span className="absolute top-4 left-4 bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
-                      {prog.badge}
-                    </span>
-                    <span className="absolute bottom-4 left-4 text-white text-xs font-medium bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded">
-                      {prog.schedule}
-                    </span>
-                  </div>
-
-                  <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                    <div>
-                      <h3 className="font-serif-editorial text-xl font-bold text-brand-text group-hover:text-brand-maroon transition-colors">
-                        {prog.title}
-                      </h3>
-                      <p className="text-xs font-bold text-brand-crimson mt-0.5">{prog.target}</p>
-                      <p className="text-xs text-brand-muted leading-relaxed mt-2">{prog.desc}</p>
-                      
-                      <div className="mt-4 space-y-1.5 border-t border-brand-border/60 pt-3">
-                        {prog.features.map(f => (
-                          <div key={f} className="flex items-center gap-2 text-xs text-brand-text">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-brand-maroon shrink-0" />
-                            <span>{f}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="pt-4 border-t border-brand-border/60 flex items-center justify-between">
-                      <Link
-                        href={prog.link}
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-maroon hover:text-brand-crimson group-hover:translate-x-1 transition-all"
-                      >
-                        <span>View Batch Details</span>
-                        <ArrowRight className="h-3.5 w-3.5" />
-                      </Link>
-
-                      <Link
-                        href={`/enroll?program=${encodeURIComponent(prog.title)}`}
-                        className="bg-brand-maroon text-white hover:bg-brand-crimson text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-xs"
-                      >
-                        Enroll Now
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
+        {/* Pure Image Carousel without Text */}
+        <div className="w-full">
+          <ScrollReveal animation="fade-up" delay={100}>
+            <LifeAtHoduCarousel photos={activeLifePhotos} />
+          </ScrollReveal>
         </div>
       </section>
 
