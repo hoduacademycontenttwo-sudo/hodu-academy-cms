@@ -14,6 +14,12 @@ export default function CampusFacilitiesSection({ facilities }: CampusFacilities
   const [canScrollRight, setCanScrollRight] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
 
+  // Grab & Drag Scroll State
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeftPos, setScrollLeftPos] = useState(0)
+  const [hasMoved, setHasMoved] = useState(false)
+
   const checkScroll = () => {
     if (!containerRef.current) return
     const { scrollLeft, scrollWidth, clientWidth } = containerRef.current
@@ -33,16 +39,16 @@ export default function CampusFacilitiesSection({ facilities }: CampusFacilities
     }
   }, [facilities])
 
-  // Auto-scroll loop for desktop horizontal movement (pauses on hover)
+  // Auto-scroll loop for desktop horizontal movement (pauses on hover or while dragging)
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
 
     let animationFrameId: number
-    const speed = 0.6 // pixels per frame
+    const speed = 0.5 // pixels per frame
 
     const autoScroll = () => {
-      if (!isHovered && el) {
+      if (!isHovered && !isDragging && el) {
         el.scrollLeft += speed
         // Wrap around seamlessly
         if (el.scrollLeft >= el.scrollWidth / 2) {
@@ -54,7 +60,29 @@ export default function CampusFacilitiesSection({ facilities }: CampusFacilities
 
     animationFrameId = requestAnimationFrame(autoScroll)
     return () => cancelAnimationFrame(animationFrameId)
-  }, [isHovered])
+  }, [isHovered, isDragging])
+
+  // Grab & Scroll Handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!containerRef.current) return
+    setIsDragging(true)
+    setHasMoved(false)
+    setStartX(e.pageX - containerRef.current.offsetLeft)
+    setScrollLeftPos(containerRef.current.scrollLeft)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !containerRef.current) return
+    e.preventDefault()
+    setHasMoved(true)
+    const x = e.pageX - containerRef.current.offsetLeft
+    const walk = (x - startX) * 1.6 // Multiplier for smooth responsive drag
+    containerRef.current.scrollLeft = scrollLeftPos - walk
+  }
+
+  const handleMouseUpOrLeave = () => {
+    setIsDragging(false)
+  }
 
   const scroll = (direction: 'left' | 'right') => {
     if (!containerRef.current) return
@@ -79,11 +107,14 @@ export default function CampusFacilitiesSection({ facilities }: CampusFacilities
         </div>
       </div>
 
-      {/* ─── Desktop View: Full-Bleed Edge-to-Edge Moving Horizontal Showcase ─── */}
+      {/* ─── Desktop View: Full-Bleed Edge-to-Edge Grab-to-Scroll Horizontal Carousel ─── */}
       <div
         className="hidden md:block relative group/carousel w-full overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseLeave={() => {
+          setIsHovered(false)
+          handleMouseUpOrLeave()
+        }}
       >
         {/* Left Gradient Edge Fade */}
         <div className="absolute left-0 inset-y-0 w-16 lg:w-24 bg-gradient-to-r from-brand-bg via-brand-bg/80 to-transparent z-20 pointer-events-none" />
@@ -115,15 +146,20 @@ export default function CampusFacilitiesSection({ facilities }: CampusFacilities
           <ChevronRight className="h-6 w-6 transform translate-x-0.5" />
         </button>
 
-        {/* Horizontal Moving Scroll Track */}
+        {/* Horizontal Moving Scroll Track with Mouse Drag / Grab */}
         <div
           ref={containerRef}
-          className="flex items-stretch gap-6 overflow-x-auto scrollbar-none no-scrollbar py-4 px-6 lg:px-16"
-          style={{ scrollBehavior: 'smooth' }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUpOrLeave}
+          className={`flex items-stretch gap-6 overflow-x-auto scrollbar-none no-scrollbar py-4 px-6 lg:px-16 select-none ${
+            isDragging ? 'cursor-grabbing' : 'cursor-grab'
+          }`}
+          style={{ scrollBehavior: isDragging ? 'auto' : 'smooth' }}
         >
-          {/* Double or triple list for infinite seamless loop */}
+          {/* Repeated list for seamless continuous infinite motion */}
           {(facilities.length >= 3 ? [...facilities, ...facilities, ...facilities] : facilities).map((item, idx) => (
-            <div key={idx} className="w-[330px] sm:w-[350px] shrink-0 h-full">
+            <div key={idx} className="w-[330px] sm:w-[350px] shrink-0 h-full pointer-events-auto">
               <CampusFacilityCard item={item} />
             </div>
           ))}
