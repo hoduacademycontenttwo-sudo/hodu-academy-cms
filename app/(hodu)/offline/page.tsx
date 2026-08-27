@@ -208,12 +208,70 @@ export default async function OfflinePage() {
     },
   ]
 
+  // Default Faculty Mentors & Placeholders
+  const defaultFacultyMembers = [
+    {
+      id: 'fac-1',
+      name: 'Mr. V.P. Singh',
+      subject: 'Senior Physics Educator',
+      experience: '25+ years of teaching experience',
+      bio: 'With over 25 years of experience, Mr. V.P. Singh has mentored more than 10,000 students, guiding them to success in JEE, NEET, and board exams. A Civil Engineering graduate from MNIT Jaipur, he is renowned for his ability to simplify physics and inspire a genuine love for the subject.',
+      photo_url: '',
+      role: 'Faculty',
+    },
+    {
+      id: 'fac-2',
+      name: 'Mr. Rohit Jain',
+      subject: 'Expert Physics & Chemistry Educator',
+      experience: '15+ years of teaching experience',
+      bio: 'With over a decade of experience, Mr. Rohit Jain has mentored 6,000+ students, guiding them to top ranks in JEE, NEET, and international curriculums like IGCSE and IB. A B.Tech graduate from MNIT Jaipur, his innovative teaching and leadership in education inspire excellence.',
+      photo_url: '',
+      role: 'Faculty',
+    },
+    {
+      id: 'fac-3',
+      name: 'Ms. Shraddha Tiwari',
+      subject: 'Passionate English & Humanities Educator',
+      experience: '12+ years of teaching experience',
+      bio: 'With extensive experience mentoring CBSE and Cambridge students, Miss Shraddha is an educator renowned for nurturing critical thinking, creative writing, and literary appreciation. Holds a Master’s degree in English Literature.',
+      photo_url: '',
+      role: 'Faculty',
+    },
+    {
+      id: 'fac-4',
+      name: 'Dr. Ananya Sharma',
+      subject: 'Senior Biology & NEET Specialist',
+      experience: '14+ years of teaching experience',
+      bio: 'Ph.D. in Life Sciences. Renowned for conceptual clarity in Genetics, Human Physiology, and NCERT line-by-line deep dives for 360/360 score targets in NEET-UG.',
+      photo_url: '',
+      role: 'Faculty',
+    },
+    {
+      id: 'fac-5',
+      name: 'Mr. Vikramaditya Rathore',
+      subject: 'Lead Mathematics Educator (JEE & IB HL)',
+      experience: '16+ years of teaching experience',
+      bio: 'Master in Mathematics & former Olympiad coach. Specializes in advanced Calculus, Coordinate Geometry, and Vector Algebra with rapid problem-solving shortcuts.',
+      photo_url: '',
+      role: 'Faculty',
+    },
+    {
+      id: 'fac-6',
+      name: 'Mr. Saurabh Verma',
+      subject: 'Organic Chemistry Master Educator',
+      experience: '11+ years of teaching experience',
+      bio: 'Expert in reaction mechanisms, stereochemistry, and laboratory experiments with a track record of producing single-digit ranks in national entrance exams.',
+      photo_url: '',
+      role: 'Faculty',
+    },
+  ]
+
   const activeDirectors = [
     ...dbDirectors,
     ...defaultDirectors.slice(dbDirectors.length),
   ].slice(0, 3)
 
-  const activeFacultyMembers = dbFacultyMembers.length > 0 ? dbFacultyMembers : dbFaculty
+  const activeFacultyMembers = dbFacultyMembers.length > 0 ? dbFacultyMembers : defaultFacultyMembers
 
   // Dynamic Life at Hodu Photos
   let activeLifePhotos = defaultLifePhotos
