@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, Calendar, ChevronRight, Home, ArrowRight, User } from
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID } from '@/lib/hodu'
+import { FALLBACK_BLOGS } from '@/lib/blogFallbacks'
 import type { Metadata } from 'next'
 
 const legacyIdToSlug: Record<string, string> = {
@@ -19,22 +20,41 @@ const legacyIdToSlug: Record<string, string> = {
   '5': 'is-homework-a-hassle-unpacking-the-debate',
 }
 
+export async function generateStaticParams() {
+  const slugs = Object.keys(FALLBACK_BLOGS)
+  const legacyIds = Object.keys(legacyIdToSlug)
+  return [
+    ...slugs.map((slug) => ({ slug })),
+    ...legacyIds.map((slug) => ({ slug })),
+  ]
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const targetSlug = legacyIdToSlug[slug] || slug
 
-  const supabase = await createClient()
-  const { data: dbPost } = await supabase
-    .from('cms_blogs')
-    .select('title, excerpt')
-    .eq('site_id', HODU_SITE_ID)
-    .eq('slug', targetSlug)
-    .maybeSingle()
+  try {
+    const supabase = await createClient()
+    const { data: dbPost } = await supabase
+      .from('cms_blogs')
+      .select('title, excerpt')
+      .eq('site_id', HODU_SITE_ID)
+      .eq('slug', targetSlug)
+      .maybeSingle()
 
-  if (dbPost) {
+    if (dbPost) {
+      return {
+        title: `${dbPost.title} | Hodu Academy`,
+        description: dbPost.excerpt || dbPost.title,
+      }
+    }
+  } catch {}
+
+  const fallback = FALLBACK_BLOGS[targetSlug]
+  if (fallback) {
     return {
-      title: `${dbPost.title} | Hodu Academy`,
-      description: dbPost.excerpt || dbPost.title,
+      title: `${fallback.title} | Hodu Academy`,
+      description: fallback.excerpt || fallback.title,
     }
   }
 
@@ -45,60 +65,90 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const { slug: rawSlug } = await params
   const slug = legacyIdToSlug[rawSlug] || rawSlug
 
-  const supabase = await createClient()
+  let dbPost: any = null
+  let supabase: any = null
 
-  let { data: dbPost } = await supabase
-    .from('cms_blogs')
-    .select('*')
-    .eq('site_id', HODU_SITE_ID)
-    .eq('slug', slug)
-    .maybeSingle()
-
-  // Fallback: If not found by slug, search by secondary_link or numeric ID
-  if (!dbPost) {
-    const { data: altPost } = await supabase
+  try {
+    supabase = await createClient()
+    const { data } = await supabase
       .from('cms_blogs')
       .select('*')
       .eq('site_id', HODU_SITE_ID)
-      .or(`secondary_link.ilike.%${rawSlug}%,secondary_link.ilike.%entryid=${rawSlug}%`)
+      .eq('slug', slug)
       .maybeSingle()
-    dbPost = altPost
-  }
 
-  if (!dbPost) {
+    dbPost = data
+
+    // Fallback: If not found by slug, search by secondary_link or numeric ID
+    if (!dbPost) {
+      const { data: altPost } = await supabase
+        .from('cms_blogs')
+        .select('*')
+        .eq('site_id', HODU_SITE_ID)
+        .or(`secondary_link.ilike.%${rawSlug}%,secondary_link.ilike.%entryid=${rawSlug}%`)
+        .maybeSingle()
+      dbPost = altPost
+    }
+  } catch {}
+
+  const fallback = FALLBACK_BLOGS[slug] || FALLBACK_BLOGS[legacyIdToSlug[rawSlug]]
+  const activePost = dbPost || fallback
+
+  if (!activePost) {
     return notFound()
   }
 
   let formattedDate = 'Recently'
   try {
-    formattedDate = new Date(dbPost.created_at).toLocaleDateString('en-GB', {
+    formattedDate = new Date(activePost.created_at || activePost.date).toLocaleDateString('en-GB', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
     })
-  } catch {}
+  } catch {
+    formattedDate = activePost.date || 'Recently'
+  }
 
   const post = {
-    id: dbPost.id,
-    title: dbPost.title,
+    id: activePost.id,
+    title: activePost.title,
     date: formattedDate,
-    category: dbPost.category || 'General',
-    readTime: dbPost.read_time || '5 min read',
-    author: dbPost.author || 'Abhishek Agarwal',
-    excerpt: dbPost.excerpt,
-    cover_image: dbPost.cover_image,
-    htmlContent: dbPost.content as string,
+    category: activePost.category || 'General',
+    readTime: activePost.read_time || '5 min read',
+    author: activePost.author || 'Abhishek Agarwal',
+    excerpt: activePost.excerpt,
+    cover_image: activePost.cover_image,
+    htmlContent: (activePost.content || activePost.htmlContent) as string,
   }
 
   // Fetch recent/related posts for bottom section
-  const { data: recentPosts } = await supabase
-    .from('cms_blogs')
-    .select('slug, title, category, created_at, cover_image')
-    .eq('site_id', HODU_SITE_ID)
-    .eq('published', true)
-    .neq('id', dbPost.id)
-    .order('created_at', { ascending: false })
-    .limit(3)
+  let recentPosts: any[] = []
+  if (supabase) {
+    try {
+      const { data } = await supabase
+        .from('cms_blogs')
+        .select('slug, title, category, created_at, cover_image')
+        .eq('site_id', HODU_SITE_ID)
+        .eq('published', true)
+        .neq('slug', slug)
+        .order('created_at', { ascending: false })
+        .limit(3)
+      recentPosts = data || []
+    } catch {}
+  }
+
+  if (recentPosts.length === 0) {
+    recentPosts = Object.values(FALLBACK_BLOGS)
+      .filter((b: any) => b.slug !== slug)
+      .slice(0, 3)
+      .map((b: any) => ({
+        slug: b.slug,
+        title: b.title,
+        category: b.category,
+        created_at: b.date,
+        cover_image: b.cover_image,
+      }))
+  }
 
   return (
     <div className="min-h-screen bg-white">
