@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import {
   LayoutDashboard, BookOpen, Users, Trophy, Image, MessageSquare,
   Bell, FileText, Phone, Settings, LogOut, Menu, X, ChevronRight, Home, Newspaper,
-  Search, ExternalLink, ListTree, Building2,
+  Search, ExternalLink, ListTree, Building2, Globe,
 } from 'lucide-react'
 
 const navGroups: { title: string; items: { label: string; href: string; icon: any; keywords?: string }[] }[] = [
@@ -34,8 +34,9 @@ const navGroups: { title: string; items: { label: string; href: string; icon: an
   {
     title: 'Publishing',
     items: [
-      { label: 'Blog',      href: '/admin/blog',      icon: Newspaper, keywords: 'article post write editor' },
-      { label: 'Resources', href: '/admin/resources', icon: FileText,  keywords: 'pdf notes pyq sample paper download' },
+      { label: 'Blog',         href: '/admin/blog',      icon: Newspaper, keywords: 'article post write editor' },
+      { label: 'Custom Pages', href: '/admin/pages',     icon: Globe,     keywords: 'page custom moodle mod page legacy html links' },
+      { label: 'Resources',    href: '/admin/resources', icon: FileText,  keywords: 'pdf notes pyq sample paper download' },
     ],
   },
   {
