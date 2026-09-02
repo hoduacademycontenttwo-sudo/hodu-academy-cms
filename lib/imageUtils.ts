@@ -18,13 +18,13 @@ export function normalizeImageUrl(url: string | null | undefined): string {
     trimmed = 'https://' + trimmed
   }
 
-  // Google Drive sharing links & googleusercontent links
+  // Google Drive sharing links & googleusercontent links -> Direct Google Edge CDN
   const gDriveMatch = trimmed.match(
     /(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=view&)?id=)|docs\.google\.com\/(?:file\/d\/|open\?id=)|googleusercontent\.com\/d\/)([a-zA-Z0-9_-]{20,})/
   )
   if (gDriveMatch && gDriveMatch[1]) {
     const fileId = gDriveMatch[1]
-    return `/api/proxy-image?id=${fileId}`
+    return `https://lh3.googleusercontent.com/d/${fileId}`
   }
 
   // Dropbox links: convert ?dl=0 to direct content link

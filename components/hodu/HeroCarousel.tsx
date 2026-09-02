@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Phone, ChevronLeft, ChevronRight, Play, X } from 'lucide-react'
 import { HODU, HODU_SITE_ID } from '@/lib/hodu'
 import { createClient } from '@/lib/supabase/client'
+import { normalizeImageUrl } from '@/lib/imageUtils'
 
 const sizeClass: Record<string, string> = {
   small: 'text-2xl sm:text-3xl',
@@ -74,11 +75,12 @@ export default function HeroCarousel() {
       .then(({ data }) => {
         if (data && data.length > 0) {
           setSlides(data.map(d => {
+            const normalizedImg = normalizeImageUrl(d.image_url)
             try {
               const t = JSON.parse(d.caption ?? '{}')
-              return { image: d.image_url, heading: t.heading ?? '', highlight: t.highlight ?? '', subtitle: t.subtitle ?? '', headingSize: t.headingSize ?? 'large', headingWeight: t.headingWeight ?? 'black', subtitleSize: t.subtitleSize ?? 'medium', subtitleWeight: t.subtitleWeight ?? 'light' }
+              return { image: normalizedImg, heading: t.heading ?? '', highlight: t.highlight ?? '', subtitle: t.subtitle ?? '', headingSize: t.headingSize ?? 'large', headingWeight: t.headingWeight ?? 'black', subtitleSize: t.subtitleSize ?? 'medium', subtitleWeight: t.subtitleWeight ?? 'light' }
             } catch {
-              return { image: d.image_url, heading: d.caption ?? '', highlight: '', subtitle: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light' }
+              return { image: normalizedImg, heading: d.caption ?? '', highlight: '', subtitle: '', headingSize: 'large', headingWeight: 'black', subtitleSize: 'medium', subtitleWeight: 'light' }
             }
           }))
           setCurrent(0)
@@ -109,7 +111,21 @@ export default function HeroCarousel() {
         {/* Slides */}
         {slides.map((sl, i) => (
           <div key={i} className={`absolute inset-0 transition-opacity duration-700 ${i === current ? 'opacity-100' : 'opacity-0'}`}>
-            <img src={sl.image} alt="" className="w-full h-full object-cover object-center" />
+            <img
+              src={normalizeImageUrl(sl.image)}
+              alt={sl.heading || 'Jaipur Campus Hero Slide'}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchPriority={i === 0 ? 'high' : 'auto'}
+              decoding="async"
+              onError={(e) => {
+                const target = e.currentTarget
+                if (target.src.includes('googleusercontent.com/d/')) {
+                  const id = target.src.split('/d/')[1]
+                  target.src = `/api/proxy-image?id=${id}`
+                }
+              }}
+              className="w-full h-full object-cover object-center"
+            />
           </div>
         ))}
 

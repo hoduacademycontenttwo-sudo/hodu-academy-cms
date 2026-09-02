@@ -69,6 +69,13 @@ export default function CampusFacilityCard({ item }: CampusFacilityCardProps) {
               alt={item.title}
               loading="lazy"
               decoding="async"
+              onError={(e) => {
+                const target = e.currentTarget
+                if (target.src.includes('googleusercontent.com/d/')) {
+                  const id = target.src.split('/d/')[1]
+                  target.src = `/api/proxy-image?id=${id}`
+                }
+              }}
               className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
             />
 

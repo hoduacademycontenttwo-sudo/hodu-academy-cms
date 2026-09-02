@@ -98,8 +98,13 @@ export default function LifeAtHoduCarousel({ photos }: LifeAtHoduCarouselProps) 
     })
   }
 
-  // Duplicate photos array for infinite looping animation
-  const displayPhotos = photos.length >= 3 ? [...photos, ...photos, ...photos] : photos
+  // Duplicate photos array for infinite looping animation (avoiding excessive DOM nodes)
+  const displayPhotos =
+    photos.length >= 6
+      ? [...photos, ...photos]
+      : photos.length >= 2
+      ? [...photos, ...photos, ...photos]
+      : photos
 
   return (
     <div className="w-full relative group/carousel overflow-hidden">
@@ -159,6 +164,13 @@ export default function LifeAtHoduCarousel({ photos }: LifeAtHoduCarouselProps) 
               alt={photo.alt || `Life at Hodu Academy ${idx + 1}`}
               loading="lazy"
               decoding="async"
+              onError={(e) => {
+                const target = e.currentTarget
+                if (target.src.includes('googleusercontent.com/d/')) {
+                  const id = target.src.split('/d/')[1]
+                  target.src = `/api/proxy-image?id=${id}`
+                }
+              }}
               className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/photo:scale-108"
               draggable={false}
             />
