@@ -47,12 +47,23 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const supabase = await createClient()
 
-  const { data: dbPost } = await supabase
+  let { data: dbPost } = await supabase
     .from('cms_blogs')
     .select('*')
     .eq('site_id', HODU_SITE_ID)
     .eq('slug', slug)
     .maybeSingle()
+
+  // Fallback: If not found by slug, search by secondary_link or numeric ID
+  if (!dbPost) {
+    const { data: altPost } = await supabase
+      .from('cms_blogs')
+      .select('*')
+      .eq('site_id', HODU_SITE_ID)
+      .or(`secondary_link.ilike.%${rawSlug}%,secondary_link.ilike.%entryid=${rawSlug}%`)
+      .maybeSingle()
+    dbPost = altPost
+  }
 
   if (!dbPost) {
     return notFound()

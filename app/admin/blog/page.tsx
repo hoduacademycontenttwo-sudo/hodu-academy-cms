@@ -13,6 +13,7 @@ const CATEGORIES = ['All', 'JEE', 'NEET', 'IGCSE', 'IB', 'CBSE', 'Olympiad', 'Ge
 const EMPTY = {
   title: '',
   slug: '',
+  secondary_link: '',
   excerpt: '',
   content: '',
   category: 'General',
@@ -216,7 +217,14 @@ export default function BlogAdminPage() {
                   </td>
                   <td className="px-4 py-3 font-semibold text-[#1B2A44] max-w-xs sm:max-w-md">
                     <p className="truncate text-xs sm:text-sm">{p.title}</p>
-                    <p className="text-[11px] text-neutral-400 font-mono truncate">/blog/{p.slug}</p>
+                    <div className="flex items-center gap-2 flex-wrap mt-0.5">
+                      <span className="text-[10px] text-neutral-500 font-mono">/blog/{p.slug}</span>
+                      {p.secondary_link && (
+                        <span className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.2 rounded font-mono" title="Legacy redirect URL">
+                          Legacy: {p.secondary_link}
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <span className="bg-[#FDF5F5] text-[#7E0D0D] border border-[#F3DCDC] text-[11px] px-2.5 py-0.5 rounded-full font-semibold">
@@ -311,6 +319,21 @@ export default function BlogAdminPage() {
                 placeholder={form.title ? slugify(form.title) : 'viteee-2026-updates'}
                 className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm font-mono text-xs focus:outline-none focus:border-[#7E0D0D]"
               />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-[#1B2A44] mb-1">
+                Secondary Link / Legacy URL <span className="text-neutral-400 font-normal">(e.g. /blog/index.php?entryid=14)</span>
+              </label>
+              <input
+                value={form.secondary_link || ''}
+                onChange={(e) => set('secondary_link', e.target.value)}
+                placeholder="/blog/index.php?entryid=14"
+                className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm font-mono text-xs focus:outline-none focus:border-[#7E0D0D]"
+              />
+              <p className="text-[11px] text-neutral-400 mt-1">
+                Preserves existing bookmarks and links by automatically redirecting visitors to this post.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

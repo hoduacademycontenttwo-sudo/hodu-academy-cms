@@ -132,6 +132,7 @@ export async function POST() {
           site_id: HODU_SITE_ID,
           title: b.title,
           slug: b.slug,
+          secondary_link: `/blog/index.php?entryid=${b.entryId}`,
           excerpt: b.excerpt,
           category: b.category,
           cover_image: b.imageUrl,
@@ -140,6 +141,10 @@ export async function POST() {
           published: true,
           created_at: b.dateStr,
         })
+      } else {
+        await supabase.from('cms_blogs').update({
+          secondary_link: `/blog/index.php?entryid=${b.entryId}`,
+        }).eq('id', existing.id)
       }
     }
 

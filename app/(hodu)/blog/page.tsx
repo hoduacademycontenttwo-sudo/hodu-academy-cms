@@ -110,8 +110,45 @@ const fallbackBlogs = [
   }
 ]
 
-export default async function BlogPage() {
+import { redirect } from 'next/navigation'
+
+const legacyMap: Record<string, string> = {
+  '14': 'viteee-2026-application-form-updates',
+  '13': 'jee-main-registration-2026-live',
+  '12': 'india-ranks-7th-at-imo-2025',
+  '11': 'iit-kanpur-releases-jee-advanced-2025-scorecard',
+  '10': 'ib-students-worldwide-receive-their-results-may-2025',
+  '9': 'neet-ug-counselling-schedule-state-quota-seats-released',
+  '8': 'the-10-hardest-subjects-in-igcse',
+  '7': 'the-role-of-parental-involvement-in-academic-achievement',
+  '6': 'what-to-do-just-before-exams',
+  '5': 'is-homework-a-hassle-unpacking-the-debate',
+}
+
+export default async function BlogPage({ searchParams }: { searchParams?: Promise<{ entryid?: string }> }) {
+  const sp = await searchParams
+  const entryId = sp?.entryid?.trim()
+  if (entryId) {
+    if (legacyMap[entryId]) {
+      redirect(`/blog/${legacyMap[entryId]}`)
+    }
+  }
+
   const supabase = await createClient()
+
+  if (entryId) {
+    const { data: matchedBlog } = await supabase
+      .from('cms_blogs')
+      .select('slug')
+      .eq('site_id', HODU_SITE_ID)
+      .ilike('secondary_link', `%entryid=${entryId}%`)
+      .maybeSingle()
+
+    if (matchedBlog?.slug) {
+      redirect(`/blog/${matchedBlog.slug}`)
+    }
+  }
+
   const { data: dbPosts } = await supabase
     .from('cms_blogs')
     .select('*')
@@ -138,6 +175,7 @@ export default async function BlogPage() {
           category: p.category || 'General',
           excerpt: p.excerpt || '',
           cover_image: p.cover_image || '',
+          secondary_link: p.secondary_link || '',
           author: p.author || 'Abhishek Agarwal',
           readTime: p.read_time || '5 min read',
         }
