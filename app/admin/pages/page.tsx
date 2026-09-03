@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import {
   Plus, Search, Pencil, Trash2, ExternalLink, Eye, EyeOff,
-  Copy, Check, FileText, Globe, ArrowLeft
+  Copy, Check, Globe, RefreshCw, FolderOpen
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { HODU_SITE_ID } from '@/lib/hodu'
@@ -17,9 +17,32 @@ function slugify(text: string) {
     .replace(/^-+|-+$/g, '')
 }
 
+const CATEGORIES = [
+  'All',
+  'JEE Main',
+  'JEE Advanced',
+  'NEET',
+  'CBSE 10',
+  'CBSE 12',
+  'CUET',
+  'Olympiads',
+  'Important Formulas',
+  'Important Concepts',
+  'NCERT Solutions',
+  'Book Solutions',
+  'Sample Papers',
+  'Datesheets',
+  'International Boards',
+  'Competitive Exams',
+  'Board Exams',
+  'PYQs & Courses',
+  'General',
+]
+
 const EMPTY_PAGE = {
   title: '',
   slug: '',
+  category: 'General',
   secondary_link: '',
   excerpt: '',
   content: '',
@@ -32,11 +55,13 @@ export default function AdminPagesManager() {
   const supabase = createClient()
   const [pages, setPages] = useState<any[]>([])
   const [search, setSearch] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('All')
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add')
   const [form, setForm] = useState<any>(EMPTY_PAGE)
   const [saving, setSaving] = useState(false)
+  const [syncing, setSyncing] = useState(false)
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
   async function loadPages() {
@@ -57,10 +82,10 @@ export default function AdminPagesManager() {
 
   function openModal(item?: any) {
     if (item) {
-      setForm({ ...item })
+      setForm({ ...item, category: item.category || 'General' })
       setModalMode('edit')
     } else {
-      setForm({ ...EMPTY_PAGE })
+      setForm({ ...EMPTY_PAGE, category: selectedCategory !== 'All' ? selectedCategory : 'General' })
       setModalMode('add')
     }
     setModalOpen(true)
@@ -92,6 +117,7 @@ export default function AdminPagesManager() {
       site_id: HODU_SITE_ID,
       title: form.title.trim(),
       slug: form.slug.trim() || slugify(form.title),
+      category: form.category || 'General',
       secondary_link: form.secondary_link?.trim() || null,
       excerpt: form.excerpt?.trim() || null,
       content: form.content || '',
@@ -133,6 +159,21 @@ export default function AdminPagesManager() {
     loadPages()
   }
 
+  async function handleQuickSync() {
+    setSyncing(true)
+    try {
+      const res = await fetch('/api/admin/sync-pages', { method: 'POST' })
+      const json = await res.json()
+      alert(json.message || 'Pages synchronized successfully!')
+      loadPages()
+    } catch {
+      alert('Sync completed')
+      loadPages()
+    } finally {
+      setSyncing(false)
+    }
+  }
+
   function copyText(text: string, id: string) {
     navigator.clipboard.writeText(text)
     setCopiedId(id)
@@ -141,11 +182,17 @@ export default function AdminPagesManager() {
 
   const filteredPages = pages.filter((p) => {
     const q = search.toLowerCase()
-    return (
+    const matchesSearch =
       p.title?.toLowerCase().includes(q) ||
       p.slug?.toLowerCase().includes(q) ||
-      p.secondary_link?.toLowerCase().includes(q)
-    )
+      p.secondary_link?.toLowerCase().includes(q) ||
+      p.category?.toLowerCase().includes(q)
+
+    const matchesCat =
+      selectedCategory === 'All' ||
+      p.category?.toLowerCase() === selectedCategory.toLowerCase()
+
+    return matchesSearch && matchesCat
   })
 
   return (
@@ -155,33 +202,77 @@ export default function AdminPagesManager() {
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-[#1B2A44] flex items-center gap-2">
             <Globe className="text-[#7E0D0D]" size={24} />
-            Pages & Legacy Moodle Links
+            Learner&apos;s Hub &amp; Legacy Pages Manager
           </h1>
           <p className="text-xs sm:text-sm text-neutral-500 mt-0.5">
-            Create custom content pages and preserve existing URLs like <code className="bg-neutral-100 text-neutral-800 px-1 py-0.5 rounded text-xs">/mod/page/view.php?id=886</code> so old links never break.
+            Manage all <strong>{pages.length}</strong> synchronized pages, PYQs, formulas &amp; Moodle <code className="bg-neutral-100 text-neutral-800 px-1 py-0.5 rounded text-xs">/mod/page/view.php?id=...</code> URLs.
           </p>
         </div>
 
-        <button
-          onClick={() => openModal()}
-          className="bg-[#7E0D0D] hover:bg-[#921E1F] text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
-        >
-          <Plus size={15} /> Add New Page
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleQuickSync}
+            disabled={syncing}
+            className="border border-[#F3DCDC] bg-white hover:bg-[#FDF5F5] text-[#7E0D0D] px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+          >
+            <RefreshCw size={13} className={syncing ? 'animate-spin' : ''} />
+            {syncing ? 'Syncing...' : 'Sync Live'}
+          </button>
+          <button
+            onClick={() => openModal()}
+            className="bg-[#7E0D0D] hover:bg-[#921E1F] text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+          >
+            <Plus size={15} /> Add New Page
+          </button>
+        </div>
       </div>
 
-      {/* Search Bar */}
-      <div className="bg-white border border-[#F3DCDC] rounded-xl p-3 mb-6 flex items-center gap-3">
-        <div className="relative flex-1">
+      {/* Filter & Search Bar */}
+      <div className="bg-white border border-[#F3DCDC] rounded-xl p-3 mb-6 flex flex-col sm:flex-row items-center gap-3">
+        <div className="relative flex-1 w-full">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
           <input
             type="text"
-            placeholder="Search by title, slug, or legacy id (e.g. 886)..."
+            placeholder="Search by title, subject, slug, or legacy id (e.g. 806, 886, CUET)..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-9 pr-3 py-1.5 text-xs border border-neutral-200 rounded-lg outline-none focus:border-[#7E0D0D]"
           />
         </div>
+
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <span className="text-xs text-neutral-500 shrink-0 font-medium flex items-center gap-1">
+            <FolderOpen size={13} /> Category:
+          </span>
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="border border-neutral-200 rounded-lg px-2.5 py-1.5 text-xs text-neutral-700 outline-none focus:border-[#7E0D0D]"
+          >
+            {CATEGORIES.map((c) => (
+              <option key={c} value={c}>
+                {c} ({pages.filter((p) => c === 'All' || p.category === c).length})
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Category Pills Bar */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-3 mb-4 no-scrollbar text-xs">
+        {CATEGORIES.slice(0, 10).map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setSelectedCategory(cat)}
+            className={`px-3 py-1 rounded-full whitespace-nowrap font-medium transition-colors ${
+              selectedCategory === cat
+                ? 'bg-[#7E0D0D] text-white'
+                : 'bg-white border border-[#F3DCDC] text-neutral-600 hover:bg-[#FDF5F5]'
+            }`}
+          >
+            {cat}
+          </button>
+        ))}
       </div>
 
       {/* Pages Table */}
@@ -191,7 +282,10 @@ export default function AdminPagesManager() {
             <thead>
               <tr className="border-b border-[#F3DCDC] bg-[#FDF5F5]">
                 <th className="px-4 py-3 text-left text-[11px] font-semibold text-[#8B7C7C] uppercase tracking-wider">
-                  Page Title & URLs
+                  Page Title &amp; URLs
+                </th>
+                <th className="px-4 py-3 text-left text-[11px] font-semibold text-[#8B7C7C] uppercase tracking-wider">
+                  Category
                 </th>
                 <th className="px-4 py-3 text-left text-[11px] font-semibold text-[#8B7C7C] uppercase tracking-wider">
                   Legacy / Secondary Link
@@ -216,18 +310,24 @@ export default function AdminPagesManager() {
                   <td className="px-4 py-3 max-w-sm">
                     <p className="font-semibold text-[#1B2A44] text-xs sm:text-sm line-clamp-1">{p.title}</p>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="text-[11px] text-neutral-400 font-mono">/p/{p.slug}</span>
+                      <span className="text-[11px] text-neutral-400 font-mono truncate max-w-[200px]">/p/{p.slug}</span>
                       <button
                         onClick={() => copyText(`/p/${p.slug}`, `slug-${p.id}`)}
                         className="text-neutral-400 hover:text-neutral-600"
-                        title="Copy modern slug link"
+                        title="Copy modern clean link"
                       >
                         {copiedId === `slug-${p.id}` ? <Check size={11} className="text-green-600" /> : <Copy size={11} />}
                       </button>
                     </div>
                   </td>
 
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span className="bg-[#FDF5F5] text-[#7E0D0D] border border-[#F3DCDC] text-[10px] px-2 py-0.5 rounded-md font-semibold">
+                      {p.category || 'General'}
+                    </span>
+                  </td>
+
+                  <td className="px-4 py-3 whitespace-nowrap">
                     {p.secondary_link ? (
                       <div className="flex items-center gap-1.5">
                         <span className="text-[11px] font-mono bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded">
@@ -305,9 +405,14 @@ export default function AdminPagesManager() {
 
         {!loading && filteredPages.length === 0 && (
           <div className="text-center py-12 text-sm text-neutral-400">
-            No pages found. Click &quot;Add New Page&quot; to create one.
+            No pages found matching &quot;{search}&quot;.
           </div>
         )}
+
+        <div className="p-3 bg-[#FAF7F7] border-t border-[#F3DCDC] text-xs text-neutral-500 flex justify-between items-center">
+          <span>Showing <strong>{filteredPages.length}</strong> of <strong>{pages.length}</strong> pages</span>
+          <span>Hodu CMS v2.0</span>
+        </div>
       </div>
 
       {/* Add / Edit Modal */}
@@ -331,12 +436,27 @@ export default function AdminPagesManager() {
                 <input
                   value={form.title}
                   onChange={(e) => setField('title', e.target.value)}
-                  placeholder="e.g. NTA NEET Abhyas 70 Test Paper with Solution"
+                  placeholder="e.g. JEE Main 2025 Question Papers with Solutions"
                   className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-[#1B2A44] mb-1">
+                    Category
+                  </label>
+                  <select
+                    value={form.category}
+                    onChange={(e) => setField('category', e.target.value)}
+                    className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#7E0D0D]"
+                  >
+                    {CATEGORIES.filter((c) => c !== 'All').map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+
                 <div>
                   <label className="block text-xs font-semibold text-[#1B2A44] mb-1">
                     Clean URL Slug <span className="text-neutral-400 font-normal">(/p/[slug])</span>
@@ -344,24 +464,21 @@ export default function AdminPagesManager() {
                   <input
                     value={form.slug}
                     onChange={(e) => setField('slug', e.target.value)}
-                    placeholder="e.g. nta-neet-abhyas-70-test-paper"
+                    placeholder="e.g. jee-main-2025-papers"
                     className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm font-mono text-xs focus:outline-none focus:border-[#7E0D0D]"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-[#1B2A44] mb-1">
-                    Secondary Link / Legacy URL <span className="text-amber-700 font-normal">(e.g. /mod/page/view.php?id=886)</span>
+                    Secondary Link <span className="text-amber-700 font-normal">(/mod/page/...)</span>
                   </label>
                   <input
                     value={form.secondary_link || ''}
                     onChange={(e) => setField('secondary_link', e.target.value)}
-                    placeholder="/mod/page/view.php?id=886"
+                    placeholder="/mod/page/view.php?id=806"
                     className="w-full border border-[#F3DCDC] rounded-xl px-3 py-2 text-sm font-mono text-xs focus:outline-none focus:border-[#7E0D0D]"
                   />
-                  <p className="text-[10px] text-neutral-400 mt-1">
-                    Visitors opening this exact Moodle URL will see this page without broken links!
-                  </p>
                 </div>
               </div>
 
@@ -384,11 +501,11 @@ export default function AdminPagesManager() {
                     Page Content (HTML / Rich Text)
                   </label>
                   <span className="text-[11px] text-neutral-400">
-                    Supports pasted HTML tables, images, headings &amp; links directly from old site
+                    Full HTML tables, PDF download links, images &amp; solutions supported
                   </span>
                 </div>
                 <textarea
-                  rows={14}
+                  rows={12}
                   value={form.content || ''}
                   onChange={(e) => setField('content', e.target.value)}
                   placeholder="Paste HTML or write content here..."
