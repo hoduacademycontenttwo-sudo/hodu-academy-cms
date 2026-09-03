@@ -4,6 +4,7 @@ import { Home, ChevronRight, FileText, ArrowLeft, Phone } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID } from '@/lib/hodu'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
+import { sanitizeContentLinks } from '@/lib/linkSanitizer'
 import type { Metadata } from 'next'
 
 export async function generateMetadata({
@@ -56,6 +57,8 @@ export default async function LegacyPageViewPage({
     .maybeSingle()
 
   if (page) {
+    const safeContent = sanitizeContentLinks(page.content || '')
+
     return (
       <div className="min-h-screen bg-white">
         {/* Header Banner */}
@@ -69,7 +72,7 @@ export default async function LegacyPageViewPage({
             </Link>
             <div className="max-w-4xl">
               <span className="inline-block text-[11px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded bg-white/20 text-white mb-2">
-                Study Resource & Article
+                {page.category || 'Study Resource & Article'}
               </span>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight">
                 {page.title}
@@ -86,7 +89,7 @@ export default async function LegacyPageViewPage({
               <span>Home</span>
             </Link>
             <ChevronRight size={12} className="text-neutral-400" />
-            <span className="text-neutral-500">Pages</span>
+            <span className="text-neutral-500">{page.category || 'Learner\'s Hub'}</span>
             <ChevronRight size={12} className="text-neutral-400" />
             <span className="text-[#7E0D0D] font-semibold line-clamp-1 max-w-xs sm:max-w-md">
               {page.title}
@@ -107,7 +110,7 @@ export default async function LegacyPageViewPage({
                   prose-th:bg-[#FFF4EA] prose-th:text-[#7E0D0D] prose-th:p-3 prose-th:border prose-th:border-neutral-200 prose-th:text-left
                   prose-td:p-3 prose-td:border prose-td:border-neutral-200
                   prose-ul:list-disc prose-ul:pl-5 prose-li:my-1 overflow-x-auto"
-                dangerouslySetInnerHTML={{ __html: page.content || '' }}
+                dangerouslySetInnerHTML={{ __html: safeContent }}
               />
             </article>
 
@@ -152,5 +155,5 @@ export default async function LegacyPageViewPage({
     redirect(`/blog/${blog.slug}`)
   }
 
-  return notFound()
+  notFound()
 }
