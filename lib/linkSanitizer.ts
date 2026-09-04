@@ -18,13 +18,21 @@ export function sanitizeContentLinks(html: string): string {
   )
   clean = clean.replace(/https?:\/\/(?:www\.)?hoduacademy\.com\/blog\/?/gi, '/blog')
 
+  // Fix "? Prepare Smarter" or "? Master" icon encoding artifacts
+  clean = clean.replace(/\?\s*Prepare Smarter with Hodu Academy/gi, '🚀 Prepare Smarter with Hodu Academy')
+  clean = clean.replace(/\?\s*Master/gi, '💡 Master')
+
+  // Convert Test / Quiz / Mock Test links to Student Portal Login
+  clean = clean.replace(/https?:\/\/(?:courses\.)?hoduacademy\.com\/tests\/[^\s"'>]+/gi, 'https://portal.hoduacademy.com/')
+  clean = clean.replace(/https?:\/\/(?:www\.)?hoduacademy\.com\/mod\/quiz\/[^\s"'>]+/gi, 'https://portal.hoduacademy.com/')
+
   // Convert Course links to relative local links
   clean = clean.replace(/https?:\/\/(?:www\.)?hoduacademy\.com\/course\/view\.php\?id=\d+[^"'\s<>]*/gi, '/courses')
   clean = clean.replace(/https?:\/\/(?:www\.)?hoduacademy\.com\/course\/?/gi, '/courses')
 
   // Convert Auth / User / Contact / Home links
-  clean = clean.replace(/https?:\/\/(?:www\.)?hoduacademy\.com\/login\/[^"'\s<>]*/gi, '/contact')
-  clean = clean.replace(/https?:\/\/(?:www\.)?hoduacademy\.com\/user\/[^"'\s<>]*/gi, '/')
+  clean = clean.replace(/https?:\/\/(?:www\.)?hoduacademy\.com\/login\/[^"'\s<>]*/gi, 'https://portal.hoduacademy.com/')
+  clean = clean.replace(/https?:\/\/(?:www\.)?hoduacademy\.com\/user\/[^"'\s<>]*/gi, 'https://portal.hoduacademy.com/')
   clean = clean.replace(/https?:\/\/(?:www\.)?hoduacademy\.com\/contact[^"'\s<>]*/gi, '/contact')
   clean = clean.replace(/https?:\/\/(?:www\.)?hoduacademy\.com\/?(?=["'\s>])/gi, '/')
 
