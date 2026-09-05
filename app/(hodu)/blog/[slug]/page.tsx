@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID } from '@/lib/hodu'
 import { FALLBACK_BLOGS } from '@/lib/blogFallbacks'
 import type { Metadata } from 'next'
+import BannerElasticMesh from '@/components/ui/BannerElasticMesh'
 
 const legacyIdToSlug: Record<string, string> = {
   '14': 'viteee-2026-application-form-updates',
@@ -153,7 +154,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   return (
     <div className="min-h-screen bg-white">
       {/* Top Header Banner */}
-      <section className="bg-gradient-to-r from-[#7E0D0D] via-[#921E1F] to-[#7E0D0D] text-white py-12 sm:py-16 shadow-inner relative overflow-hidden">
+      <section className="bg-[#7E0D0D] text-white py-12 sm:py-16 shadow-inner relative overflow-hidden">
+        <BannerElasticMesh variant="crimson" opacity={0.85} interaction="hover" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <Link
             href="/blog"

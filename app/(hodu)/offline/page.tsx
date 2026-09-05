@@ -29,6 +29,7 @@ import CampusFacilitiesSection from '@/components/hodu/CampusFacilitiesSection'
 import LifeAtHoduCarousel from '@/components/hodu/LifeAtHoduCarousel'
 import { parseMediaUrl } from '@/lib/homeCarousel'
 import { normalizeImageUrl } from '@/lib/imageUtils'
+import BannerElasticMesh from '@/components/ui/BannerElasticMesh'
 
 export const dynamic = 'force-dynamic'
 
@@ -590,8 +591,7 @@ export default async function OfflinePage() {
 
       {/* Book a Campus Visit / Enquiry Form */}
       <section className="py-16 sm:py-24 bg-brand-maroon text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-crimson/20 blur-[100px] rounded-full pointer-events-none" />
-        
+        <BannerElasticMesh variant="maroon" opacity={0.85} interaction="hover" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-12 gap-12 items-center">
             

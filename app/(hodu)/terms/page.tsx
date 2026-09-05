@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { FileText, Shield, Scale, Mail, Phone, Clock, ArrowRight, CheckCircle2, ChevronRight } from 'lucide-react'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
+import BannerElasticMesh from '@/components/ui/BannerElasticMesh'
 
 export const metadata = {
   title: 'Terms and Conditions — Hodu Academy',
@@ -12,7 +13,8 @@ export default function TermsPage() {
   return (
     <div className="bg-brand-bg min-h-screen">
       {/* ─── Hero Header ─── */}
-      <section className="relative py-14 sm:py-20 bg-gradient-to-b from-[#3D0607] via-[#5C0A0C] to-[#7E0D0D] text-white overflow-hidden">
+      <section className="relative py-14 sm:py-20 bg-[#3D0607] text-white overflow-hidden">
+        <BannerElasticMesh variant="crimson" opacity={0.9} interaction="hover" />
         <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none" />
         
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

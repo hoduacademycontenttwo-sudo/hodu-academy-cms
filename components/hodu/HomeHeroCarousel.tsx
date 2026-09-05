@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { CarouselSlide, parseMediaUrl } from '@/lib/homeCarousel'
 import { normalizeImageUrl } from '@/lib/imageUtils'
+import ElasticMesh from '@/components/ui/ElasticMesh'
 
 interface HomeHeroCarouselProps {
   ctaText?: string
@@ -121,13 +122,17 @@ export default function HomeHeroCarousel({
                   />
                 )
               ) : (
-                <img
-                  src={normalizeImageUrl(s.image)}
-                  alt={`Banner ${idx + 1}`}
-                  loading={idx === 0 ? 'eager' : 'lazy'}
-                  fetchPriority={idx === 0 ? 'high' : 'auto'}
-                  className="w-full h-full object-cover object-center absolute inset-0"
-                />
+                <div className="w-full h-full relative">
+                  <ElasticMesh
+                    image={normalizeImageUrl(s.image)}
+                    interaction="drag"
+                    tilt={16}
+                    shading={1}
+                    wobble={0.4}
+                    pull={0.35}
+                    className="w-full h-full absolute inset-0"
+                  />
+                </div>
               )}
             </div>
           )

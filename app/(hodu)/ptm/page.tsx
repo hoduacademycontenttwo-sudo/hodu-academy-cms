@@ -5,6 +5,7 @@ import { Users, Sparkles, HeartHandshake, CheckCircle2, ArrowRight, ShieldCheck,
 import PtmGalleryGrid, { GalleryItem } from '@/components/hodu/PtmGalleryGrid'
 import EnquiryForm from '@/components/hodu/EnquiryForm'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
+import BannerElasticMesh from '@/components/ui/BannerElasticMesh'
 
 export const dynamic = 'force-dynamic'
 
@@ -126,10 +127,11 @@ export default async function PtmPage() {
   return (
     <div className="space-y-0 animate-fade-in bg-brand-bg text-brand-text">
       {/* ─── Hero Banner ─── */}
-      <section className="relative py-14 sm:py-20 bg-gradient-to-b from-[#2D0909] via-[#1F0404] to-[#120202] text-white overflow-hidden border-b border-brand-maroon/30">
+      <section className="relative py-14 sm:py-20 bg-[#120202] text-white overflow-hidden border-b border-brand-maroon/30">
+        <BannerElasticMesh variant="dark" opacity={0.8} interaction="hover" />
         <div className="absolute inset-0 bg-[radial-gradient(#bd9f67_1px,transparent_1px)] [background-size:24px_24px] opacity-15 pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
           <div className="inline-flex items-center gap-1.5 bg-[#bd9f67]/20 border border-[#bd9f67]/40 text-[#f1ddb6] text-xs font-bold uppercase tracking-widest px-3.5 py-1 rounded-full">
             <Images size={14} className="text-[#bd9f67]" />
             <span>CAMPUS & COMMUNITY GALLERY</span>

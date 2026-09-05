@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ArrowRight, Users, Award, BookOpen } from 'lucide-react'
+import ElasticMesh from '@/components/ui/ElasticMesh'
 
 interface HeroProps {
   title: string
@@ -72,26 +73,46 @@ export default function Hero({ title, subtitle, ctaText, ctaLink, heroImageUrl, 
           {/* Visual */}
           <div className="relative">
             {heroImageUrl ? (
-              <img
-                src={heroImageUrl}
-                alt="Students"
-                className="w-full h-52 sm:h-80 lg:h-[420px] object-cover rounded-2xl shadow-xl"
-              />
+              <div className="w-full h-52 sm:h-80 lg:h-[420px] rounded-2xl shadow-xl overflow-hidden relative">
+                <ElasticMesh
+                  image={heroImageUrl}
+                  interaction="drag"
+                  tilt={16}
+                  shading={1}
+                  wobble={0.4}
+                  pull={0.35}
+                  borderRadius={16}
+                  className="w-full h-full"
+                />
+              </div>
             ) : (
-              <div className="w-full h-52 sm:h-72 lg:h-[420px] bg-gradient-to-br from-[#F3DCDC] to-[#FDF5F5] rounded-2xl shadow-xl flex flex-col items-center justify-center gap-4 sm:gap-6">
-                <div className="grid grid-cols-3 gap-3 sm:gap-4">
-                  {[
-                    { icon: Users, label: 'Expert Faculty', color: '#7E0D0D' },
-                    { icon: Award, label: 'Top Results', color: '#922222' },
-                    { icon: BookOpen, label: 'Study Material', color: '#1B2A44' },
-                  ].map(({ icon: Icon, label, color }) => (
-                    <div key={label} className="bg-white rounded-2xl p-3 sm:p-5 shadow-sm text-center">
-                      <Icon size={22} color={color} className="mx-auto mb-1.5 sm:mb-2" />
-                      <p className="text-[10px] sm:text-xs font-semibold text-[#1B2A44]">{label}</p>
+              <div className="w-full h-52 sm:h-72 lg:h-[420px] rounded-2xl shadow-xl overflow-hidden relative">
+                <ElasticMesh
+                  color1="#F3DCDC"
+                  color2="#921E1F"
+                  highlight="#FFFFFF"
+                  interaction="drag"
+                  tilt={14}
+                  shading={0.8}
+                  borderRadius={16}
+                  className="w-full h-full"
+                >
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-4 sm:gap-6 p-4">
+                    <div className="grid grid-cols-3 gap-3 sm:gap-4">
+                      {[
+                        { icon: Users, label: 'Expert Faculty', color: '#7E0D0D' },
+                        { icon: Award, label: 'Top Results', color: '#922222' },
+                        { icon: BookOpen, label: 'Study Material', color: '#1B2A44' },
+                      ].map(({ icon: Icon, label, color }) => (
+                        <div key={label} className="bg-white/90 backdrop-blur-xs rounded-2xl p-3 sm:p-5 shadow-sm text-center">
+                          <Icon size={22} color={color} className="mx-auto mb-1.5 sm:mb-2" />
+                          <p className="text-[10px] sm:text-xs font-semibold text-[#1B2A44]">{label}</p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                <p className="text-[#C9C8CB] text-xs sm:text-sm">Upload hero image from admin panel</p>
+                    <p className="text-white text-xs sm:text-sm font-medium drop-shadow-sm">Interactive Elastic Banner</p>
+                  </div>
+                </ElasticMesh>
               </div>
             )}
           </div>

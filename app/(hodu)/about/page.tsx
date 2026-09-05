@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID, HODU } from '@/lib/hodu'
 import { Phone, ArrowRight, Target, Eye, Compass, GraduationCap, Award, Sparkles, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
+import ElasticMesh from '@/components/ui/ElasticMesh'
+import BannerElasticMesh from '@/components/ui/BannerElasticMesh'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -129,13 +131,18 @@ export default async function AboutPage() {
               </div>
             </div>
 
-            {/* Right Visual Image (Clean, borderless, seamless) */}
+            {/* Right Visual Image with Interactive ElasticMesh */}
             <div className="lg:col-span-5 flex justify-center items-center">
-              <div className="w-full max-w-sm flex items-center justify-center">
-                <img
-                  src="https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/Main%20image%201.png"
-                  alt="Hodu Academy Classroom & Learning"
-                  className="w-full h-auto object-contain"
+              <div className="w-full max-w-sm h-64 sm:h-72 relative rounded-2xl overflow-hidden shadow-xl border border-neutral-200/60 bg-gradient-to-br from-[#FAF4F4] to-[#F3DCDC]">
+                <ElasticMesh
+                  image="https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/Main%20image%201.png"
+                  interaction="drag"
+                  tilt={16}
+                  shading={1}
+                  wobble={0.4}
+                  pull={0.35}
+                  borderRadius={16}
+                  className="w-full h-full"
                 />
               </div>
             </div>
@@ -312,8 +319,9 @@ export default async function AboutPage() {
       </section>
 
       {/* ─── SECTION 3: FOR ANY ENQUIRY CALL BANNER ─── */}
-      <section className="py-12 bg-gradient-to-r from-[#7D0A0A] via-[#921E1F] to-[#651416] text-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+      <section className="relative overflow-hidden py-14 text-white">
+        <BannerElasticMesh variant="crimson" opacity={1} interaction="hover" />
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
           <h3 className="text-xl sm:text-2xl md:text-3xl font-serif-editorial font-bold text-white">
             For Any Enquiry Call{' '}
             <a href={`tel:${HODU.phone}`} className="underline decoration-white/40 hover:decoration-white transition-all">
