@@ -98,49 +98,45 @@ export default async function AboutPage() {
     <div className="bg-white min-h-screen">
 
       {/* ─── HERO INTRO & ABOUT STORY ─── */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#faf4f4] via-[#fcf8f7] to-white pt-12 pb-16 border-b border-brand-border/40">
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#faf4f4] via-[#fcf8f7] to-white pt-10 pb-14 border-b border-brand-border/40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Narrative */}
             <div className="lg:col-span-7 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#921e1f]/10 text-[#921e1f] text-xs font-bold uppercase tracking-wider">
-                <Compass className="w-3.5 h-3.5" />
-                <span>About Hodu Academy</span>
-              </div>
-              
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif-editorial font-bold text-neutral-900 tracking-tight leading-[1.15]">
                 Nurturing Academic Excellence & Holistic Growth
               </h1>
               
               <p className="text-sm sm:text-base text-neutral-700 leading-relaxed text-justify font-normal">
-                At Hodu Academy, we believe in unlocking every child’s potential by combining strong academic rigor with holistic personal development. Our approach balances structured classroom learning with engaging extracurriculars, ensuring students thrive intellectually and emotionally. We create confident, well-rounded individuals ready for global challenges.
+                At Hodu Academy, we believe in unlocking every child’s potential by combining strong academic rigor with holistic personal development. Our approach balances structured classroom learning with engaging extracurriculars, ensuring students thrive intellectually and emotionally. We aim to create confident, well-rounded individuals ready for every challenge and opportunity ahead.
               </p>
 
-              <div className="pt-2 flex flex-wrap gap-3">
-                <div className="flex items-center gap-2 text-xs font-semibold text-neutral-700 bg-white px-3.5 py-2 rounded-xl border border-neutral-200 shadow-2xs">
-                  <CheckCircle2 className="w-4 h-4 text-[#921e1f]" />
-                  <span>1:12 Intimate Batch Ratios</span>
+              {/* Replaced with Key Academic Highlights / Stats */}
+              <div className="grid grid-cols-3 gap-3 pt-2">
+                <div className="bg-white rounded-xl p-3 sm:p-3.5 text-center border border-neutral-200/80 shadow-2xs">
+                  <div className="text-lg sm:text-2xl font-black text-[#921e1f]">10,000+</div>
+                  <div className="text-[10px] sm:text-xs text-neutral-600 font-medium mt-0.5">Students Mentored</div>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-semibold text-neutral-700 bg-white px-3.5 py-2 rounded-xl border border-neutral-200 shadow-2xs">
-                  <CheckCircle2 className="w-4 h-4 text-[#921e1f]" />
-                  <span>IIT & Master Alumni Mentors</span>
+                <div className="bg-white rounded-xl p-3 sm:p-3.5 text-center border border-neutral-200/80 shadow-2xs">
+                  <div className="text-lg sm:text-2xl font-black text-[#921e1f]">25+ Yrs</div>
+                  <div className="text-[10px] sm:text-xs text-neutral-600 font-medium mt-0.5">Teaching Legacy</div>
+                </div>
+                <div className="bg-white rounded-xl p-3 sm:p-3.5 text-center border border-neutral-200/80 shadow-2xs">
+                  <div className="text-lg sm:text-2xl font-black text-[#921e1f]">Top Ranks</div>
+                  <div className="text-[10px] sm:text-xs text-neutral-600 font-medium mt-0.5">JEE · NEET · IGCSE</div>
                 </div>
               </div>
             </div>
 
-            {/* Right Visual Image */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="relative group w-full max-w-sm rounded-2xl overflow-hidden shadow-lg border-2 border-white ring-1 ring-[#921e1f]/20 bg-white">
+            {/* Right Visual Image (Clean, borderless, seamless) */}
+            <div className="lg:col-span-5 flex justify-center items-center">
+              <div className="w-full max-w-sm flex items-center justify-center">
                 <img
                   src="https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/Main%20image%201.png"
                   alt="Hodu Academy Classroom & Learning"
-                  className="w-full h-auto object-cover transform group-hover:scale-102 transition-transform duration-500"
+                  className="w-full h-auto object-contain"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute bottom-3 left-3 right-3 text-white text-[11px] font-semibold bg-black/50 backdrop-blur-xs px-3 py-1.5 rounded-lg border border-white/20 text-center">
-                  ESTD. 2018 · Jaipur Campus & Global Learning
-                </div>
               </div>
             </div>
           </div>
