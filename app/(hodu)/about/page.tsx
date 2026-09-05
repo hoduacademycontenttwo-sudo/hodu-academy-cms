@@ -3,6 +3,9 @@ import { HODU_SITE_ID, HODU } from '@/lib/hodu'
 import { Phone, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const metadata = {
   title: 'Our Founders & Top Faculty — Hodu Academy',
   description: 'Meet our founders from MNIT Jaipur & IIIT Hyderabad and our top expert faculty at Hodu Academy.',
