@@ -1,8 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID, HODU } from '@/lib/hodu'
-import { Phone, ArrowRight, Target, Eye, Compass, GraduationCap, Award, Sparkles, CheckCircle2, Users, Trophy, ShieldCheck, BookOpen } from 'lucide-react'
+import { Phone, ArrowRight, Target, Eye, GraduationCap, Award } from 'lucide-react'
 import Link from 'next/link'
-import ElasticMesh from '@/components/ui/ElasticMesh'
 import BannerElasticMesh from '@/components/ui/BannerElasticMesh'
 
 export const dynamic = 'force-dynamic'
@@ -104,12 +103,7 @@ export default async function AboutPage() {
         <BannerElasticMesh variant="dark" opacity={0.8} interaction="hover" />
         <div className="absolute inset-0 bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:24px_24px] opacity-15 pointer-events-none" />
 
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 bg-[#bd9f67]/20 border border-[#bd9f67]/40 text-[#f1ddb6] text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-sm">
-            <Sparkles size={14} className="text-[#bd9f67]" />
-            <span>ABOUT HODU ACADEMY · LIGHTING MINDS WITH KNOWLEDGE</span>
-          </div>
-
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <h1 className="font-serif-editorial text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight max-w-4xl mx-auto">
             Nurturing Academic Excellence & Holistic Growth
           </h1>
@@ -117,144 +111,14 @@ export default async function AboutPage() {
           <p className="text-sm sm:text-base lg:text-lg text-neutral-300 max-w-3xl mx-auto font-light leading-relaxed text-center">
             At Hodu Academy, we unlock every child’s highest potential by fusing deep conceptual rigor with personalized mentorship. Founded by alumni of MNIT Jaipur and IIIT Hyderabad, we prepare students to excel across Cambridge IGCSE, IB DP, CBSE, IIT-JEE, and NEET.
           </p>
-
-          {/* Key Stats Glass Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4 max-w-4xl mx-auto pt-4">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 text-center shadow-lg transition-transform hover:-translate-y-1">
-              <div className="w-8 h-8 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center mx-auto mb-2">
-                <Users size={18} />
-              </div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-white">10,000+</div>
-              <div className="text-xs text-amber-200/90 font-medium mt-0.5">Students Mentored</div>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 text-center shadow-lg transition-transform hover:-translate-y-1">
-              <div className="w-8 h-8 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center mx-auto mb-2">
-                <GraduationCap size={18} />
-              </div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-white">25+ Yrs</div>
-              <div className="text-xs text-amber-200/90 font-medium mt-0.5">Teaching Legacy</div>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 text-center shadow-lg transition-transform hover:-translate-y-1">
-              <div className="w-8 h-8 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center mx-auto mb-2">
-                <Trophy size={18} />
-              </div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-white">Top 1%</div>
-              <div className="text-xs text-amber-200/90 font-medium mt-0.5">JEE · NEET Ranks</div>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 text-center shadow-lg transition-transform hover:-translate-y-1">
-              <div className="w-8 h-8 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center mx-auto mb-2">
-                <Award size={18} />
-              </div>
-              <div className="text-2xl sm:text-3xl font-extrabold text-white">1:12 Ratio</div>
-              <div className="text-xs text-amber-200/90 font-medium mt-0.5">Intimate Batch Size</div>
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* ─── 2. PEDAGOGY STORY & IMMERSIVE BANNER SHOWCASE ─── */}
-      <section className="py-14 sm:py-20 bg-gradient-to-b from-[#FAF4F4] via-[#FCF8F7] to-white border-b border-brand-border/40">
+      {/* ─── 2. MISSION & VISION CARDS ─── */}
+      <section className="py-14 sm:py-18 bg-gradient-to-b from-[#FAF4F4] via-[#FCF8F7] to-white border-b border-brand-border/40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            {/* Left Column Narrative */}
-            <div className="lg:col-span-6 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#921e1f]/10 text-[#921e1f] text-xs font-bold uppercase tracking-wider">
-                <Compass className="w-3.5 h-3.5" />
-                <span>Our Teaching Methodology</span>
-              </div>
-
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif-editorial font-bold text-neutral-900 tracking-tight leading-tight">
-                Empowering Thinkers, Leaders & Lifelong Achievers
-              </h2>
-              
-              <p className="text-sm sm:text-base text-neutral-700 leading-relaxed text-justify">
-                Education at Hodu Academy transcends standard textbook memorization. We foster deep analytical thinking, step-by-step problem dissection, and intellectual resilience. Our proven academic framework integrates structured daily lectures with personalized faculty attention.
-              </p>
-
-              {/* Feature Highlights with Clean Checkmarks */}
-              <div className="space-y-3 pt-2">
-                <div className="flex items-start gap-3 bg-white p-3.5 rounded-xl border border-neutral-200/70 shadow-2xs">
-                  <CheckCircle2 className="w-5 h-5 text-[#921e1f] shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-bold text-sm text-neutral-900">Concept-First Pedagogy & Daily DPPs</h4>
-                    <p className="text-xs text-neutral-600 mt-0.5">Building foundational clarity from first principles before advancing to multi-step problem sets.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 bg-white p-3.5 rounded-xl border border-neutral-200/70 shadow-2xs">
-                  <CheckCircle2 className="w-5 h-5 text-[#921e1f] shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-bold text-sm text-neutral-900">Daily 1-on-1 Faculty Doubt Desks</h4>
-                    <p className="text-xs text-neutral-600 mt-0.5">Private consultation booths where subject masters resolve every student question line-by-line.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 bg-white p-3.5 rounded-xl border border-neutral-200/70 shadow-2xs">
-                  <CheckCircle2 className="w-5 h-5 text-[#921e1f] shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-bold text-sm text-neutral-900">Cambridge & IB Marking Rubric Mastery</h4>
-                    <p className="text-xs text-neutral-600 mt-0.5">Decoded past 15-year question banks with examiner-standard command word scoring rubrics.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: Immersive Visual Showcase Banner */}
-            <div className="lg:col-span-6 flex justify-center items-center">
-              <div className="w-full relative rounded-3xl overflow-hidden shadow-2xl border border-neutral-200/80 bg-neutral-900 group">
-                {/* Real High-Resolution Academic Backdrop */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1000&h=750&fit=crop&auto=format"
-                    alt="Students Collaborating at Hodu Academy"
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                  />
-                  
-                  {/* Subtle Dark Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
-
-                  {/* Interactive ElasticMesh Shimmer */}
-                  <div className="absolute inset-0 pointer-events-auto opacity-35 hover:opacity-60 transition-opacity duration-300 mix-blend-overlay">
-                    <ElasticMesh
-                      color1="#7D0A0A"
-                      color2="#D4AF37"
-                      highlight="#FFFFFF"
-                      interaction="hover"
-                      tilt={14}
-                      shading={0.8}
-                      wobble={0.4}
-                      pull={0.35}
-                      className="w-full h-full"
-                    />
-                  </div>
-
-                  {/* Floating Glassmorphic Badge Top Right */}
-                  <div className="absolute top-4 right-4 z-10 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/60 shadow-lg text-xs font-bold text-[#921e1f] flex items-center gap-1.5">
-                    <Sparkles size={14} className="text-amber-500" />
-                    <span>1:12 Small Batches</span>
-                  </div>
-
-                  {/* Floating Glassmorphic Badge Bottom Left */}
-                  <div className="absolute bottom-4 left-4 z-10 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/60 shadow-lg flex items-center gap-3 max-w-[260px]">
-                    <div className="w-9 h-9 rounded-xl bg-[#921e1f] text-white flex items-center justify-center shrink-0 shadow-xs">
-                      <GraduationCap size={20} />
-                    </div>
-                    <div>
-                      <div className="text-xs font-extrabold text-neutral-900 leading-tight">MNIT & IIIT Founded</div>
-                      <div className="text-[10px] text-neutral-600 font-medium">Top Faculty Mentorship</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* ─── 3. DUAL ELEVATED CARDS: MISSION & VISION ─── */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mt-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {/* Our Mission */}
             <div className="bg-white border-2 border-[#921e1f]/20 hover:border-[#921e1f] rounded-3xl p-7 sm:p-8 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#921e1f]/5 rounded-full blur-2xl pointer-events-none group-hover:bg-[#921e1f]/10 transition-colors" />
