@@ -122,16 +122,27 @@ export default function HomeHeroCarousel({
                   />
                 )
               ) : (
-                <div className="w-full h-full relative">
-                  <ElasticMesh
-                    image={normalizeImageUrl(s.image)}
-                    interaction="drag"
-                    tilt={16}
-                    shading={1}
-                    wobble={0.4}
-                    pull={0.35}
-                    className="w-full h-full absolute inset-0"
+                <div className="w-full h-full relative overflow-hidden">
+                  <img
+                    src={normalizeImageUrl(s.image)}
+                    alt={`Banner ${idx + 1}`}
+                    loading={idx === 0 ? 'eager' : 'lazy'}
+                    fetchPriority={idx === 0 ? 'high' : 'auto'}
+                    className="w-full h-full object-cover object-center absolute inset-0"
                   />
+                  <div className="absolute inset-0 pointer-events-auto opacity-40 hover:opacity-75 transition-opacity duration-300 mix-blend-overlay">
+                    <ElasticMesh
+                      color1="#921E1F"
+                      color2="#3E0D0E"
+                      highlight="#FFFFFF"
+                      interaction="hover"
+                      tilt={14}
+                      shading={0.8}
+                      wobble={0.4}
+                      pull={0.35}
+                      className="w-full h-full"
+                    />
+                  </div>
                 </div>
               )}
             </div>

@@ -133,17 +133,26 @@ export default async function AboutPage() {
 
             {/* Right Visual Image with Interactive ElasticMesh */}
             <div className="lg:col-span-5 flex justify-center items-center">
-              <div className="w-full max-w-sm h-64 sm:h-72 relative rounded-2xl overflow-hidden shadow-xl border border-neutral-200/60 bg-gradient-to-br from-[#FAF4F4] to-[#F3DCDC]">
-                <ElasticMesh
-                  image="https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/Main%20image%201.png"
-                  interaction="drag"
-                  tilt={16}
-                  shading={1}
-                  wobble={0.4}
-                  pull={0.35}
-                  borderRadius={16}
-                  className="w-full h-full"
+              <div className="w-full max-w-sm h-64 sm:h-72 relative rounded-2xl overflow-hidden shadow-xl border border-neutral-200/60 bg-gradient-to-br from-[#FAF4F4] to-[#F3DCDC] flex items-center justify-center p-3">
+                <img
+                  src="https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/Main%20image%201.png"
+                  alt="Hodu Academy Classroom & Learning"
+                  className="w-full h-full object-contain relative z-0"
                 />
+                <div className="absolute inset-0 pointer-events-auto opacity-25 hover:opacity-50 transition-opacity duration-300 mix-blend-overlay">
+                  <ElasticMesh
+                    color1="#FAF4F4"
+                    color2="#921E1F"
+                    highlight="#FFFFFF"
+                    interaction="hover"
+                    tilt={14}
+                    shading={0.8}
+                    wobble={0.4}
+                    pull={0.35}
+                    borderRadius={16}
+                    className="w-full h-full"
+                  />
+                </div>
               </div>
             </div>
           </div>

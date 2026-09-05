@@ -74,16 +74,25 @@ export default function Hero({ title, subtitle, ctaText, ctaLink, heroImageUrl, 
           <div className="relative">
             {heroImageUrl ? (
               <div className="w-full h-52 sm:h-80 lg:h-[420px] rounded-2xl shadow-xl overflow-hidden relative">
-                <ElasticMesh
-                  image={heroImageUrl}
-                  interaction="drag"
-                  tilt={16}
-                  shading={1}
-                  wobble={0.4}
-                  pull={0.35}
-                  borderRadius={16}
-                  className="w-full h-full"
+                <img
+                  src={heroImageUrl}
+                  alt="Students"
+                  className="w-full h-full object-cover absolute inset-0"
                 />
+                <div className="absolute inset-0 pointer-events-auto opacity-30 hover:opacity-60 transition-opacity duration-300 mix-blend-overlay">
+                  <ElasticMesh
+                    color1="#F3DCDC"
+                    color2="#921E1F"
+                    highlight="#FFFFFF"
+                    interaction="hover"
+                    tilt={14}
+                    shading={0.8}
+                    wobble={0.4}
+                    pull={0.35}
+                    borderRadius={16}
+                    className="w-full h-full"
+                  />
+                </div>
               </div>
             ) : (
               <div className="w-full h-52 sm:h-72 lg:h-[420px] rounded-2xl shadow-xl overflow-hidden relative">
