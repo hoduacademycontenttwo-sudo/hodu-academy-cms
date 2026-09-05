@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID, HODU } from '@/lib/hodu'
-import { Phone, ArrowRight, Target, Eye, Compass, GraduationCap, Award, Sparkles, CheckCircle2 } from 'lucide-react'
+import { Phone, ArrowRight, Target, Eye, Compass, GraduationCap, Award, Sparkles, CheckCircle2, Users, Trophy, ShieldCheck, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import ElasticMesh from '@/components/ui/ElasticMesh'
 import BannerElasticMesh from '@/components/ui/BannerElasticMesh'
@@ -99,99 +99,217 @@ export default async function AboutPage() {
   return (
     <div className="bg-white min-h-screen">
 
-      {/* ─── HERO INTRO & ABOUT STORY ─── */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#faf4f4] via-[#fcf8f7] to-white pt-10 pb-14 border-b border-brand-border/40">
+      {/* ─── 1. IMMERSIVE HERO BANNER ─── */}
+      <section className="relative py-16 sm:py-24 bg-gradient-to-b from-[#2D0909] via-[#1F0404] to-[#120202] text-white overflow-hidden border-b border-brand-maroon/30">
+        <BannerElasticMesh variant="dark" opacity={0.8} interaction="hover" />
+        <div className="absolute inset-0 bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:24px_24px] opacity-15 pointer-events-none" />
+
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <div className="inline-flex items-center gap-2 bg-[#bd9f67]/20 border border-[#bd9f67]/40 text-[#f1ddb6] text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-sm">
+            <Sparkles size={14} className="text-[#bd9f67]" />
+            <span>ABOUT HODU ACADEMY · LIGHTING MINDS WITH KNOWLEDGE</span>
+          </div>
+
+          <h1 className="font-serif-editorial text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight max-w-4xl mx-auto">
+            Nurturing Academic Excellence & Holistic Growth
+          </h1>
+
+          <p className="text-sm sm:text-base lg:text-lg text-neutral-300 max-w-3xl mx-auto font-light leading-relaxed text-center">
+            At Hodu Academy, we unlock every child’s highest potential by fusing deep conceptual rigor with personalized mentorship. Founded by alumni of MNIT Jaipur and IIIT Hyderabad, we prepare students to excel across Cambridge IGCSE, IB DP, CBSE, IIT-JEE, and NEET.
+          </p>
+
+          {/* Key Stats Glass Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4 max-w-4xl mx-auto pt-4">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 text-center shadow-lg transition-transform hover:-translate-y-1">
+              <div className="w-8 h-8 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center mx-auto mb-2">
+                <Users size={18} />
+              </div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-white">10,000+</div>
+              <div className="text-xs text-amber-200/90 font-medium mt-0.5">Students Mentored</div>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 text-center shadow-lg transition-transform hover:-translate-y-1">
+              <div className="w-8 h-8 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center mx-auto mb-2">
+                <GraduationCap size={18} />
+              </div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-white">25+ Yrs</div>
+              <div className="text-xs text-amber-200/90 font-medium mt-0.5">Teaching Legacy</div>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 text-center shadow-lg transition-transform hover:-translate-y-1">
+              <div className="w-8 h-8 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center mx-auto mb-2">
+                <Trophy size={18} />
+              </div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-white">Top 1%</div>
+              <div className="text-xs text-amber-200/90 font-medium mt-0.5">JEE · NEET Ranks</div>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/15 text-center shadow-lg transition-transform hover:-translate-y-1">
+              <div className="w-8 h-8 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center mx-auto mb-2">
+                <Award size={18} />
+              </div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-white">1:12 Ratio</div>
+              <div className="text-xs text-amber-200/90 font-medium mt-0.5">Intimate Batch Size</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 2. PEDAGOGY STORY & IMMERSIVE BANNER SHOWCASE ─── */}
+      <section className="py-14 sm:py-20 bg-gradient-to-b from-[#FAF4F4] via-[#FCF8F7] to-white border-b border-brand-border/40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Narrative */}
-            <div className="lg:col-span-7 space-y-4">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif-editorial font-bold text-neutral-900 tracking-tight leading-[1.15]">
-                Nurturing Academic Excellence & Holistic Growth
-              </h1>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+            {/* Left Column Narrative */}
+            <div className="lg:col-span-6 space-y-5">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#921e1f]/10 text-[#921e1f] text-xs font-bold uppercase tracking-wider">
+                <Compass className="w-3.5 h-3.5" />
+                <span>Our Teaching Methodology</span>
+              </div>
+
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif-editorial font-bold text-neutral-900 tracking-tight leading-tight">
+                Empowering Thinkers, Leaders & Lifelong Achievers
+              </h2>
               
-              <p className="text-sm sm:text-base text-neutral-700 leading-relaxed text-justify font-normal">
-                At Hodu Academy, we believe in unlocking every child’s potential by combining strong academic rigor with holistic personal development. Our approach balances structured classroom learning with engaging extracurriculars, ensuring students thrive intellectually and emotionally. We aim to create confident, well-rounded individuals ready for every challenge and opportunity ahead.
+              <p className="text-sm sm:text-base text-neutral-700 leading-relaxed text-justify">
+                Education at Hodu Academy transcends standard textbook memorization. We foster deep analytical thinking, step-by-step problem dissection, and intellectual resilience. Our proven academic framework integrates structured daily lectures with personalized faculty attention.
               </p>
 
-              {/* Replaced with Key Academic Highlights / Stats */}
-              <div className="grid grid-cols-3 gap-3 pt-2">
-                <div className="bg-white rounded-xl p-3 sm:p-3.5 text-center border border-neutral-200/80 shadow-2xs">
-                  <div className="text-lg sm:text-2xl font-black text-[#921e1f]">10,000+</div>
-                  <div className="text-[10px] sm:text-xs text-neutral-600 font-medium mt-0.5">Students Mentored</div>
+              {/* Feature Highlights with Clean Checkmarks */}
+              <div className="space-y-3 pt-2">
+                <div className="flex items-start gap-3 bg-white p-3.5 rounded-xl border border-neutral-200/70 shadow-2xs">
+                  <CheckCircle2 className="w-5 h-5 text-[#921e1f] shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-bold text-sm text-neutral-900">Concept-First Pedagogy & Daily DPPs</h4>
+                    <p className="text-xs text-neutral-600 mt-0.5">Building foundational clarity from first principles before advancing to multi-step problem sets.</p>
+                  </div>
                 </div>
-                <div className="bg-white rounded-xl p-3 sm:p-3.5 text-center border border-neutral-200/80 shadow-2xs">
-                  <div className="text-lg sm:text-2xl font-black text-[#921e1f]">25+ Yrs</div>
-                  <div className="text-[10px] sm:text-xs text-neutral-600 font-medium mt-0.5">Teaching Legacy</div>
+
+                <div className="flex items-start gap-3 bg-white p-3.5 rounded-xl border border-neutral-200/70 shadow-2xs">
+                  <CheckCircle2 className="w-5 h-5 text-[#921e1f] shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-bold text-sm text-neutral-900">Daily 1-on-1 Faculty Doubt Desks</h4>
+                    <p className="text-xs text-neutral-600 mt-0.5">Private consultation booths where subject masters resolve every student question line-by-line.</p>
+                  </div>
                 </div>
-                <div className="bg-white rounded-xl p-3 sm:p-3.5 text-center border border-neutral-200/80 shadow-2xs">
-                  <div className="text-lg sm:text-2xl font-black text-[#921e1f]">Top Ranks</div>
-                  <div className="text-[10px] sm:text-xs text-neutral-600 font-medium mt-0.5">JEE · NEET · IGCSE</div>
+
+                <div className="flex items-start gap-3 bg-white p-3.5 rounded-xl border border-neutral-200/70 shadow-2xs">
+                  <CheckCircle2 className="w-5 h-5 text-[#921e1f] shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-bold text-sm text-neutral-900">Cambridge & IB Marking Rubric Mastery</h4>
+                    <p className="text-xs text-neutral-600 mt-0.5">Decoded past 15-year question banks with examiner-standard command word scoring rubrics.</p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Visual Image with Interactive ElasticMesh */}
-            <div className="lg:col-span-5 flex justify-center items-center">
-              <div className="w-full max-w-sm h-64 sm:h-72 relative rounded-2xl overflow-hidden shadow-xl border border-neutral-200/60 bg-gradient-to-br from-[#FAF4F4] to-[#F3DCDC] flex items-center justify-center p-3">
-                <img
-                  src="https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/Main%20image%201.png"
-                  alt="Hodu Academy Classroom & Learning"
-                  className="w-full h-full object-contain relative z-0"
-                />
-                <div className="absolute inset-0 pointer-events-auto opacity-25 hover:opacity-50 transition-opacity duration-300 mix-blend-overlay">
-                  <ElasticMesh
-                    color1="#FAF4F4"
-                    color2="#921E1F"
-                    highlight="#FFFFFF"
-                    interaction="hover"
-                    tilt={14}
-                    shading={0.8}
-                    wobble={0.4}
-                    pull={0.35}
-                    borderRadius={16}
-                    className="w-full h-full"
+            {/* Right Column: Immersive Visual Showcase Banner */}
+            <div className="lg:col-span-6 flex justify-center items-center">
+              <div className="w-full relative rounded-3xl overflow-hidden shadow-2xl border border-neutral-200/80 bg-neutral-900 group">
+                {/* Real High-Resolution Academic Backdrop */}
+                <div className="relative aspect-[4/3] w-full overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1000&h=750&fit=crop&auto=format"
+                    alt="Students Collaborating at Hodu Academy"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   />
+                  
+                  {/* Subtle Dark Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
+
+                  {/* Interactive ElasticMesh Shimmer */}
+                  <div className="absolute inset-0 pointer-events-auto opacity-35 hover:opacity-60 transition-opacity duration-300 mix-blend-overlay">
+                    <ElasticMesh
+                      color1="#7D0A0A"
+                      color2="#D4AF37"
+                      highlight="#FFFFFF"
+                      interaction="hover"
+                      tilt={14}
+                      shading={0.8}
+                      wobble={0.4}
+                      pull={0.35}
+                      className="w-full h-full"
+                    />
+                  </div>
+
+                  {/* Floating Glassmorphic Badge Top Right */}
+                  <div className="absolute top-4 right-4 z-10 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/60 shadow-lg text-xs font-bold text-[#921e1f] flex items-center gap-1.5">
+                    <Sparkles size={14} className="text-amber-500" />
+                    <span>1:12 Small Batches</span>
+                  </div>
+
+                  {/* Floating Glassmorphic Badge Bottom Left */}
+                  <div className="absolute bottom-4 left-4 z-10 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/60 shadow-lg flex items-center gap-3 max-w-[260px]">
+                    <div className="w-9 h-9 rounded-xl bg-[#921e1f] text-white flex items-center justify-center shrink-0 shadow-xs">
+                      <GraduationCap size={20} />
+                    </div>
+                    <div>
+                      <div className="text-xs font-extrabold text-neutral-900 leading-tight">MNIT & IIIT Founded</div>
+                      <div className="text-[10px] text-neutral-600 font-medium">Top Faculty Mentorship</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* ─── DUAL CARDS: MISSION & VISION ─── */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 mt-12">
+          {/* ─── 3. DUAL ELEVATED CARDS: MISSION & VISION ─── */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mt-14">
             {/* Our Mission */}
-            <div className="bg-white border border-[#921e1f]/30 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-[#921e1f] transition-all duration-300 flex flex-col justify-between group">
+            <div className="bg-white border-2 border-[#921e1f]/20 hover:border-[#921e1f] rounded-3xl p-7 sm:p-8 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#921e1f]/5 rounded-full blur-2xl pointer-events-none group-hover:bg-[#921e1f]/10 transition-colors" />
+              
               <div>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-9 h-9 rounded-xl bg-[#921e1f]/10 text-[#921e1f] flex items-center justify-center shrink-0 group-hover:bg-[#921e1f] group-hover:text-white transition-colors">
-                    <Target className="w-4.5 h-4.5" />
+                <div className="flex items-center gap-3.5 mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#921e1f] to-[#651416] text-white flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
+                    <Target className="w-6 h-6" />
                   </div>
-                  <h3 className="text-xl font-serif-editorial font-bold text-[#921e1f]">
-                    Our Mission
-                  </h3>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-[#921e1f]">Core Purpose</span>
+                    <h3 className="text-2xl font-serif-editorial font-bold text-neutral-900">
+                      Our Mission
+                    </h3>
+                  </div>
                 </div>
-                <div className="w-10 h-0.5 bg-[#921e1f]/30 group-hover:bg-[#921e1f] mb-3 rounded-full transition-colors" />
+
                 <p className="text-xs sm:text-sm text-neutral-600 text-justify leading-relaxed">
                   To unlock each student’s potential by providing top-tier academic instruction, fostering holistic growth, and offering enriching extracurricular opportunities. We create a nurturing and innovative environment where critical thinking, creativity, and resilience empower learners to thrive.
                 </p>
+
+                <div className="grid grid-cols-3 gap-2 mt-5 pt-4 border-t border-neutral-100 text-center">
+                  <div className="bg-[#FAF4F4] rounded-lg p-2 text-[11px] font-bold text-[#921e1f]">Rigor & Depth</div>
+                  <div className="bg-[#FAF4F4] rounded-lg p-2 text-[11px] font-bold text-[#921e1f]">Critical Thinking</div>
+                  <div className="bg-[#FAF4F4] rounded-lg p-2 text-[11px] font-bold text-[#921e1f]">Holistic Growth</div>
+                </div>
               </div>
             </div>
 
             {/* Our Vision */}
-            <div className="bg-white border border-[#921e1f]/30 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-[#921e1f] transition-all duration-300 flex flex-col justify-between group">
+            <div className="bg-white border-2 border-[#bd9f67]/30 hover:border-[#bd9f67] rounded-3xl p-7 sm:p-8 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl pointer-events-none group-hover:bg-amber-500/10 transition-colors" />
+              
               <div>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-9 h-9 rounded-xl bg-[#921e1f]/10 text-[#921e1f] flex items-center justify-center shrink-0 group-hover:bg-[#921e1f] group-hover:text-white transition-colors">
-                    <Eye className="w-4.5 h-4.5" />
+                <div className="flex items-center gap-3.5 mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#8a6828] to-[#5a3e0c] text-amber-200 flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
+                    <Eye className="w-6 h-6" />
                   </div>
-                  <h3 className="text-xl font-serif-editorial font-bold text-[#921e1f]">
-                    Our Vision
-                  </h3>
+                  <div>
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-amber-700">Future Horizon</span>
+                    <h3 className="text-2xl font-serif-editorial font-bold text-neutral-900">
+                      Our Vision
+                    </h3>
+                  </div>
                 </div>
-                <div className="w-10 h-0.5 bg-[#921e1f]/30 group-hover:bg-[#921e1f] mb-3 rounded-full transition-colors" />
+
                 <p className="text-xs sm:text-sm text-neutral-600 text-justify leading-relaxed">
                   To be the gold standard in education by delivering transformative learning experiences that empower students across Cambridge, IB, CBSE, and competitive exams (JEE/NEET). We envision creating independent thinkers and compassionate leaders equipped to excel globally.
                 </p>
+
+                <div className="grid grid-cols-3 gap-2 mt-5 pt-4 border-t border-neutral-100 text-center">
+                  <div className="bg-[#FFFDF0] rounded-lg p-2 text-[11px] font-bold text-[#8a6828]">Gold Standard</div>
+                  <div className="bg-[#FFFDF0] rounded-lg p-2 text-[11px] font-bold text-[#8a6828]">Global Benchmark</div>
+                  <div className="bg-[#FFFDF0] rounded-lg p-2 text-[11px] font-bold text-[#8a6828]">Future Leaders</div>
+                </div>
               </div>
             </div>
           </div>
