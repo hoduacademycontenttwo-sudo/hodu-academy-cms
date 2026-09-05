@@ -22,14 +22,12 @@ import {
   GraduationCap,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
-import EnquiryForm from '@/components/hodu/EnquiryForm'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
 import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
 import CampusFacilitiesSection from '@/components/hodu/CampusFacilitiesSection'
 import LifeAtHoduCarousel from '@/components/hodu/LifeAtHoduCarousel'
 import { parseMediaUrl } from '@/lib/homeCarousel'
 import { normalizeImageUrl } from '@/lib/imageUtils'
-import BannerElasticMesh from '@/components/ui/BannerElasticMesh'
 
 export const dynamic = 'force-dynamic'
 
@@ -585,62 +583,6 @@ export default async function OfflinePage() {
                 </div>
               </ScrollReveal>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Book a Campus Visit / Enquiry Form */}
-      <section className="py-16 sm:py-24 bg-brand-maroon text-white relative overflow-hidden">
-        <BannerElasticMesh variant="maroon" opacity={0.85} interaction="hover" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Left Content */}
-            <div className="lg:col-span-6 space-y-6">
-              <span className="inline-block bg-white/15 backdrop-blur-xs text-white text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full">
-                VISIT US IN PERSON
-              </span>
-              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
-                Book a 1-on-1 Academic Counseling & Campus Tour
-              </h2>
-              <p className="text-sm text-brand-blush/90 leading-relaxed max-w-lg">
-                Meet our senior faculty, tour the smart classrooms and silent library, and get a personalized diagnostic roadmap for your target exams.
-              </p>
-
-              <div className="space-y-4 pt-2">
-                <div className="flex items-start gap-3">
-                  <MapPin className="h-5 w-5 text-brand-blush shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-bold text-sm text-white">Campus Address</h4>
-                    <p className="text-xs text-brand-blush/80 mt-0.5 leading-relaxed">{HODU.address}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <Phone className="h-5 w-5 text-brand-blush shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-bold text-sm text-white">Admissions Helpline</h4>
-                    <p className="text-xs text-brand-blush/80 mt-0.5">{HODU.phone} (10 AM – 7 PM)</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Form Card */}
-            <div className="lg:col-span-6">
-              <div className="bg-white rounded-3xl p-6 sm:p-8 text-brand-text shadow-2xl border border-brand-border">
-                <div className="mb-6">
-                  <h3 className="font-serif-editorial text-xl font-bold text-brand-maroon">
-                    Request Campus Visit Pass
-                  </h3>
-                  <p className="text-xs text-brand-muted mt-1">
-                    Fill in your details below and our counseling desk will schedule your slot.
-                  </p>
-                </div>
-                <EnquiryForm />
-              </div>
-            </div>
-
           </div>
         </div>
       </section>
