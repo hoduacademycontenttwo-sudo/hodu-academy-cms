@@ -173,29 +173,29 @@ export default async function OfflinePage() {
 
   const dbFaculty = facultyRes.status === 'fulfilled' && facultyRes.value?.data ? facultyRes.value.data : []
 
-  // Split Directors vs Faculty
-  const dbDirectors = dbFaculty.filter((f: any) => f.role === 'Director' || f.subject?.toLowerCase().includes('director'))
-  const dbFacultyMembers = dbFaculty.filter((f: any) => f.role !== 'Director' && !f.subject?.toLowerCase().includes('director'))
+  // Split Directors vs Featured Classroom Faculty
+  const dbDirectors = dbFaculty.filter((f: any) => f.is_founder || f.role === 'Director' || f.subject?.toLowerCase().includes('director'))
+  const dbFacultyMembers = dbFaculty.filter((f: any) => !f.is_founder && (f.featured_offline || f.featured_offline === undefined))
 
   // 3 Directors Placeholders / DB Cards
   const defaultDirectors = [
     {
       id: 'dir-placeholder-1',
-      name: 'Mr. VP singh',
+      name: 'Mr. V.P. Singh',
       subject: 'MNIT, JAIPUR',
-      experience: '25+ years of teaching experience',
+      experience: '25+ Years Experience',
       bio: 'With over 25 years of experience, Mr. V.P. Singh has mentored more than 10,000 students, guiding them to success in JEE, NEET, and board exams.',
-      photo_url: '',
-      role: 'Director',
+      photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/VPSir.jpeg',
+      role: 'Co-Founder & Director',
     },
     {
       id: 'dir-placeholder-2',
       name: 'Mr. Rohit Jain',
       subject: 'MNIT, JAIPUR',
-      experience: '15+ years of teaching experience',
+      experience: '15+ Years Experience',
       bio: 'Mentored 6,000+ students with top ranks in JEE, NEET, and international curriculums like IGCSE and IB. B.Tech graduate from MNIT Jaipur.',
-      photo_url: '',
-      role: 'Director',
+      photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/rohit%20sir%20photo.png',
+      role: 'Co-Founder & Director',
     },
     {
       id: 'dir-placeholder-3',
@@ -203,66 +203,39 @@ export default async function OfflinePage() {
       subject: 'IIIT - Hyderabad',
       experience: 'Palantir, Ex-Qualcomm',
       bio: 'IIIT Hyderabad graduate, ex-Palantir & Qualcomm engineer driving pedagogical innovation, testing labs, and curriculum delivery.',
-      photo_url: '',
-      role: 'Director',
+      photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/photos%20%282%29.png',
+      role: 'Co-Founder & Technology Lead',
     },
   ]
 
-  // Default Faculty Mentors & Placeholders
+  // Default Featured Faculty Mentors
   const defaultFacultyMembers = [
     {
       id: 'fac-1',
       name: 'Mr. V.P. Singh',
-      subject: 'Senior Physics Educator',
-      experience: '25+ years of teaching experience',
+      subject: 'Physics',
+      experience: '25+ Years Experience (10,000+ Students)',
       bio: 'With over 25 years of experience, Mr. V.P. Singh has mentored more than 10,000 students, guiding them to success in JEE, NEET, and board exams. A Civil Engineering graduate from MNIT Jaipur, he is renowned for his ability to simplify physics and inspire a genuine love for the subject.',
-      photo_url: '',
-      role: 'Faculty',
+      photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/VPSir.jpeg',
+      role: 'Senior Physics Educator',
     },
     {
       id: 'fac-2',
       name: 'Mr. Rohit Jain',
-      subject: 'Expert Physics & Chemistry Educator',
-      experience: '15+ years of teaching experience',
+      subject: 'Physics',
+      experience: '15+ Years Experience (6,000+ Students)',
       bio: 'With over a decade of experience, Mr. Rohit Jain has mentored 6,000+ students, guiding them to top ranks in JEE, NEET, and international curriculums like IGCSE and IB. A B.Tech graduate from MNIT Jaipur, his innovative teaching and leadership in education inspire excellence.',
-      photo_url: '',
-      role: 'Faculty',
+      photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/rohit%20sir%20photo.png',
+      role: 'Expert Physics Educator',
     },
     {
       id: 'fac-3',
       name: 'Ms. Shraddha Tiwari',
-      subject: 'Passionate English & Humanities Educator',
-      experience: '12+ years of teaching experience',
+      subject: 'English & International Boards',
+      experience: '8+ Years Experience (IGCSE, IB & CBSE)',
       bio: 'With extensive experience mentoring CBSE and Cambridge students, Miss Shraddha is an educator renowned for nurturing critical thinking, creative writing, and literary appreciation. Holds a Master’s degree in English Literature.',
-      photo_url: '',
-      role: 'Faculty',
-    },
-    {
-      id: 'fac-4',
-      name: 'Dr. Ananya Sharma',
-      subject: 'Senior Biology & NEET Specialist',
-      experience: '14+ years of teaching experience',
-      bio: 'Ph.D. in Life Sciences. Renowned for conceptual clarity in Genetics, Human Physiology, and NCERT line-by-line deep dives for 360/360 score targets in NEET-UG.',
-      photo_url: '',
-      role: 'Faculty',
-    },
-    {
-      id: 'fac-5',
-      name: 'Mr. Vikramaditya Rathore',
-      subject: 'Lead Mathematics Educator (JEE & IB HL)',
-      experience: '16+ years of teaching experience',
-      bio: 'Master in Mathematics & former Olympiad coach. Specializes in advanced Calculus, Coordinate Geometry, and Vector Algebra with rapid problem-solving shortcuts.',
-      photo_url: '',
-      role: 'Faculty',
-    },
-    {
-      id: 'fac-6',
-      name: 'Mr. Saurabh Verma',
-      subject: 'Organic Chemistry Master Educator',
-      experience: '11+ years of teaching experience',
-      bio: 'Expert in reaction mechanisms, stereochemistry, and laboratory experiments with a track record of producing single-digit ranks in national entrance exams.',
-      photo_url: '',
-      role: 'Faculty',
+      photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/shraddha%20mam%20photo.png',
+      role: 'Passionate English Educator',
     },
   ]
 
@@ -559,6 +532,17 @@ export default async function OfflinePage() {
                     </div>
                   </ScrollReveal>
                 ))}
+              </div>
+
+              {/* View All Faculty Button */}
+              <div className="text-center mt-10 sm:mt-12">
+                <Link
+                  href="/about#faculty"
+                  className="inline-flex items-center gap-2 bg-brand-maroon hover:bg-brand-crimson text-white font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition-all shadow-sm group"
+                >
+                  <span>View All Faculty & Mentors</span>
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
               </div>
             </div>
           )}

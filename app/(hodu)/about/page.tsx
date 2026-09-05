@@ -1,8 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID, HODU } from '@/lib/hodu'
 import Link from 'next/link'
-import { GraduationCap, Award, Target, Users, BookOpen, CheckCircle2, Phone, MapPin, ArrowRight, ShieldCheck } from 'lucide-react'
+import { GraduationCap, Award, Target, Users, BookOpen, CheckCircle2, Phone, MapPin, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react'
 import ScrollReveal from '@/components/hodu/ScrollReveal'
+import AboutFacultyDirectory from '@/components/hodu/AboutFacultyDirectory'
 
 export const metadata = {
   title: 'About Us — Hodu Academy | Founders, Pedagogy & Faculty Mentors',
@@ -30,12 +31,6 @@ const pillars = [
   },
 ]
 
-const founders = [
-  { initials: 'VP', name: 'Mr. VP Singh',         title: 'Co-Founder & Academic Director', role: 'Former senior board examiner with 25+ years of classroom teaching experience across Physics and Mechanics.', college: 'MNIT Jaipur Alum' },
-  { initials: 'RJ', name: 'Mr. Rohit Jain',       title: 'Co-Founder & Chemistry Head',    role: 'Author of widely referenced Olympiad and competitive chemistry prep workbooks with 16+ years of mentoring.', college: 'MNIT Jaipur Alum' },
-  { initials: 'AA', name: 'Mr. Abhishek Agarwal', title: 'Co-Founder & EdTech Lead',        role: 'Ex-Palantir & Qualcomm engineer directing Hodu’s interactive learning platforms and digital assessment labs.', college: 'IIIT Hyderabad Alum' },
-]
-
 const milestones = [
   { year: '2018', title: 'Foundation in Jaipur', event: 'Hodu Academy established with an initial cohort of 20 Cambridge IGCSE & CBSE students.' },
   { year: '2020', title: 'IB & Olympiad Track', event: 'Expanded into International Baccalaureate (IB DP) and Junior Olympiad talent programs.' },
@@ -43,13 +38,113 @@ const milestones = [
   { year: '2026', title: '15,000+ Students Mentored', event: 'Achieved 99.4% top board score and consistent All-India rankings in JEE & NEET.' },
 ]
 
+// Fallback Founders if DB is loading
+const fallbackFounders = [
+  {
+    name: 'Mr. V.P. Singh',
+    role: 'Co-Founder & Director',
+    subject: 'Physics & Academic Direction',
+    qualification: 'MNIT, Jaipur',
+    experience: '25+ Years Experience',
+    bio: 'With over 25 years of experience, Mr. V.P. Singh has mentored more than 10,000 students, guiding them to success in JEE, NEET, and board exams. A Civil Engineering graduate from MNIT Jaipur, he is renowned for his ability to simplify physics and inspire a genuine love for the subject. His outstanding leadership and unwavering dedication set the gold standard for teaching excellence.',
+    photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/VPSir.jpeg',
+    is_founder: true,
+  },
+  {
+    name: 'Mr. Rohit Jain',
+    role: 'Co-Founder & Director',
+    subject: 'Physics & Curriculum Innovation',
+    qualification: 'MNIT, Jaipur',
+    experience: '15+ Years Experience',
+    bio: 'With over a decade of experience, Mr. Rohit Jain has mentored 6,000+ students, guiding them to top ranks in JEE, NEET, and international curriculums like IGCSE and IB. A B.Tech. graduate from MNIT Jaipur, his innovative teaching and leadership in education inspire excellence and holistic growth. He consistently nurtures problem-solving skills, setting a benchmark for young learners.',
+    photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/rohit%20sir%20photo.png',
+    is_founder: true,
+  },
+  {
+    name: 'Mr. Abhishek Agarwal',
+    role: 'Co-Founder & Technology Lead',
+    subject: 'Digital Learning & EdTech Innovation',
+    qualification: 'IIIT - Hyderabad',
+    experience: 'Palantir, Ex-Qualcomm',
+    bio: 'An alumnus of IIIT Hyderabad with industry leadership at Palantir and Qualcomm, Abhishek leads technology innovation, digital classroom architectures, and global student learning ecosystems at Hodu Academy, empowering learners across India and abroad.',
+    photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/photos%20%282%29.png',
+    is_founder: true,
+  },
+]
+
+// Fallback Faculty if DB is loading
+const fallbackFaculty = [
+  {
+    name: 'Mr. V.P. Singh',
+    role: 'Senior Physics Educator',
+    subject: 'Physics',
+    qualification: 'MNIT, Jaipur',
+    experience: '25+ Years Experience (10,000+ Students)',
+    bio: 'With over 25 years of experience, Mr. V.P. Singh has mentored more than 10,000 students, guiding them to success in JEE, NEET, and board exams. A Civil Engineering graduate from MNIT Jaipur, he is renowned for his ability to simplify physics and inspire a genuine love for the subject.',
+    photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/VPSir.jpeg',
+  },
+  {
+    name: 'Mr. Rohit Jain',
+    role: 'Expert Physics Educator',
+    subject: 'Physics',
+    qualification: 'MNIT, Jaipur',
+    experience: '15+ Years Experience (6,000+ Students)',
+    bio: 'With over a decade of experience, Mr. Rohit Jain has mentored 6,000+ students, guiding them to top ranks in JEE, NEET, and international curriculums like IGCSE and IB. A B.Tech. graduate from MNIT Jaipur, his innovative teaching and leadership in education inspire excellence and holistic growth.',
+    photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/rohit%20sir%20photo.png',
+  },
+  {
+    name: 'Ms. Shraddha Tiwari',
+    role: 'Passionate English Educator',
+    subject: 'English & International Boards',
+    qualification: 'Postgraduate in English Literature',
+    experience: '8+ Years Experience (IGCSE, IB & CBSE)',
+    bio: 'With extensive experience mentoring IGCSE, IB, and CBSE students, Miss Shraddha is a passionate English educator renowned for nurturing language proficiency and literary appreciation. Holding a postgraduate degree in English Literature, she employs innovative strategies to deliver engaging lessons.',
+    photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/shraddha%20mam%20photo.png',
+  },
+  {
+    name: 'Mr. Abhishek Garg',
+    role: 'Skilled Math Educator',
+    subject: 'Mathematics',
+    qualification: 'B.Tech Mechanical (Jamia Millia Islamia)',
+    experience: '6+ Years Experience (CBSE, IGCSE, IB, AP)',
+    bio: 'Abhishek Garg is a skilled math educator with over six years of experience making math exciting and accessible. A Mechanical Engineering graduate from Jamia Millia Islamia University, he excels in teaching CBSE, IGCSE, IB, A Levels, AP exams, and more.',
+    photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/abhishek%20sir%20photo.png',
+  },
+  {
+    name: 'Ms. Mansi Baswal',
+    role: 'Passionate Chemistry Expert',
+    subject: 'Chemistry',
+    qualification: "Master's Organic Chem | GATE & CSIR NET",
+    experience: '5+ Years Experience (CBSE, IGCSE, GCSE & IB)',
+    bio: 'With a Master’s degree in Organic Chemistry, Miss Mansi is a passionate educator experienced in CBSE, IGCSE, GCSE, and IB curricula. Known for simplifying complex topics through real-life examples, she inspires students to excel in chemistry.',
+    photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/mansi%20mam%20photo.png',
+  },
+  {
+    name: 'Mr. Deepesh Chandwani',
+    role: 'Dynamic Math Mentor',
+    subject: 'Mathematics',
+    qualification: 'RTU & Manipal University Graduate',
+    experience: '10+ Years Experience (IGCSE, IB, A Levels, CBSE)',
+    bio: 'With over a decade of experience, Mr. Deepesh Chandwani is a dynamic math mentor renowned for simplifying complex concepts and inspiring confidence. A graduate of Rajasthan Technical University and Manipal University, he excels in IGCSE, IB, A Levels, and CBSE.',
+    photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/deepesh%20sir%20photo.png',
+  }
+]
+
 export default async function AboutPage() {
   const supabase = await createClient()
-  const { data: faculty } = await supabase
+  const { data: dbRecords } = await supabase
     .from('cms_faculty')
     .select('*')
     .eq('site_id', HODU_SITE_ID)
     .order('sort_order')
+
+  const foundersList = (dbRecords && dbRecords.filter(r => r.is_founder).length > 0)
+    ? dbRecords.filter(r => r.is_founder)
+    : fallbackFounders
+
+  const facultyList = (dbRecords && dbRecords.filter(r => !r.is_founder).length > 0)
+    ? dbRecords.filter(r => !r.is_founder)
+    : fallbackFaculty
 
   return (
     <div className="space-y-0 animate-fade-in bg-white">
@@ -152,38 +247,98 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Founders & Leadership */}
-      <section className="py-16 sm:py-20 bg-white">
+      {/* Founders & Leadership Section */}
+      <section className="py-16 sm:py-24 bg-neutral-50/60 border-b border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal animation="fade-up">
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="text-xs font-black uppercase tracking-widest text-brand-maroon bg-brand-maroon/10 px-4 py-1.5 rounded-full inline-block mb-3 border border-brand-maroon/20">
-                ACADEMIC BOARD
+                OUR LEADERSHIP & FOUNDERS
               </span>
-              <h2 className="font-serif-editorial text-3xl sm:text-4xl font-bold text-brand-maroon">
-                Guided by Premier University Alums
+              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon">
+                Meet the Visionaries Behind Hodu
               </h2>
-              <p className="text-xs sm:text-sm text-neutral-600 mt-2 font-normal">Educators and engineers from MNIT Jaipur & IIIT Hyderabad directing day-to-day pedagogy.</p>
+              <p className="text-xs sm:text-sm text-neutral-600 mt-3 font-normal max-w-2xl mx-auto">
+                Distinguished educators and technologists from MNIT Jaipur & IIIT Hyderabad shaping the future of global academic mentorship.
+              </p>
             </div>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {founders.map((f, idx) => (
-              <ScrollReveal key={idx} animation="fade-up" delay={idx * 90} className="h-full">
-                <div className="bg-white border-2 border-brand-border rounded-2xl p-7 shadow-xs hover:border-brand-maroon transition-all h-full">
-                  <div className="w-14 h-14 rounded-full bg-brand-maroon text-white font-bold text-lg flex items-center justify-center mb-5 shadow-sm">
-                    {f.initials}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {foundersList.map((f, idx) => (
+              <ScrollReveal key={idx} animation="fade-up" delay={idx * 100} className="h-full">
+                <div className="bg-white border-2 border-brand-border rounded-3xl p-8 shadow-xs hover:border-brand-maroon hover:shadow-lg transition-all duration-300 flex flex-col justify-between h-full group">
+                  <div className="space-y-5">
+                    {/* Founder Photo */}
+                    <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl overflow-hidden bg-brand-blush border-2 border-brand-border/80 mx-auto group-hover:scale-105 transition-transform duration-300 shadow-xs">
+                      {f.photo_url ? (
+                        <img
+                          src={f.photo_url}
+                          alt={f.name}
+                          className="w-full h-full object-cover object-top"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center font-bold text-2xl text-brand-maroon bg-brand-maroon/10">
+                          {f.name.slice(0, 2).toUpperCase()}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="text-center space-y-1">
+                      {f.qualification && (
+                        <span className="text-[10px] font-black uppercase tracking-widest text-brand-maroon bg-brand-maroon/10 px-3 py-1 rounded-full inline-block border border-brand-maroon/20">
+                          {f.qualification}
+                        </span>
+                      )}
+                      <h3 className="font-serif-editorial text-xl sm:text-2xl font-bold text-neutral-900 pt-1">
+                        {f.name}
+                      </h3>
+                      <p className="text-xs font-bold text-brand-maroon">
+                        {f.role}
+                      </p>
+                      {f.experience && (
+                        <p className="text-[11px] font-semibold text-neutral-500">
+                          {f.experience}
+                        </p>
+                      )}
+                    </div>
+
+                    <p className="text-xs text-neutral-600 leading-relaxed font-normal pt-3 border-t border-brand-border/60 text-left">
+                      {f.bio}
+                    </p>
                   </div>
-                  <span className="text-[10px] font-bold text-brand-maroon uppercase tracking-wider bg-neutral-100 px-2.5 py-0.5 rounded-md inline-block mb-2 border border-brand-border">
-                    {f.college}
-                  </span>
-                  <h3 className="font-serif-editorial font-bold text-lg text-neutral-900">{f.name}</h3>
-                  <p className="text-xs font-bold text-brand-maroon mb-3">{f.title}</p>
-                  <p className="text-xs text-neutral-600 leading-relaxed font-normal">{f.role}</p>
+
+                  <div className="pt-4 mt-6 border-t border-neutral-100 flex items-center justify-center text-xs font-bold text-brand-maroon gap-1.5">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    <span>Executive Leadership</span>
+                  </div>
                 </div>
               </ScrollReveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Complete Faculty & Mentors Section */}
+      <section id="faculty" className="py-16 sm:py-24 bg-white border-b border-brand-border scroll-mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal animation="fade-up">
+            <div className="text-center max-w-3xl mx-auto mb-14">
+              <span className="text-xs font-black uppercase tracking-widest text-brand-maroon bg-brand-maroon/10 px-4 py-1.5 rounded-full inline-block mb-3 border border-brand-maroon/20">
+                OUR EXPERT FACULTY & MENTORS
+              </span>
+              <h2 className="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-maroon">
+                World-Class Educators Committed to Your Mastery
+              </h2>
+              <p className="text-xs sm:text-sm text-neutral-600 mt-3 font-normal max-w-2xl mx-auto">
+                Subject masters with proven track records in CBSE, ICSE, Cambridge IGCSE, IB DP, JEE, NEET, and Olympiads.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* Interactive Faculty Directory with Category Filters */}
+          <AboutFacultyDirectory facultyList={facultyList} />
         </div>
       </section>
 
