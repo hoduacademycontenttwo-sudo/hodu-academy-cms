@@ -461,11 +461,11 @@ export default async function OfflinePage() {
                       <h3 className="font-serif-editorial text-lg sm:text-xl font-bold text-brand-maroon">
                         {dir.name}
                       </h3>
-                      <p className="text-sm sm:text-base font-bold text-[#1B2A44] mt-1">
-                        {dir.subject}
+                      <p className="text-sm font-bold text-[#1B2A44] mt-1">
+                        {dir.qualification || dir.subject}
                       </p>
                       {dir.experience && (
-                        <p className="text-xs sm:text-sm text-[#475569] font-medium mt-1">
+                        <p className="text-xs text-[#475569] font-semibold mt-1">
                           {dir.experience}
                         </p>
                       )}
@@ -515,11 +515,11 @@ export default async function OfflinePage() {
                           {f.name}
                         </h4>
                         <p className="text-xs sm:text-sm font-bold text-[#1B2A44] mt-0.5">
-                          {f.subject}
+                          {f.role || f.subject}
                         </p>
                         {f.experience && (
                           <p className="text-[11px] font-semibold text-brand-crimson mt-0.5">
-                            {f.experience} Experience
+                            {f.experience}
                           </p>
                         )}
                       </div>

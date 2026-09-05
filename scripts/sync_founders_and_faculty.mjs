@@ -12,13 +12,13 @@ const supabase = createClient(envVars.NEXT_PUBLIC_SUPABASE_URL, envVars.SUPABASE
 const HODU_SITE_ID = 'a1b2c3d4-1111-1111-1111-000000000002';
 
 const TEAM_MEMBERS = [
-  // --- FOUNDERS ---
+  // --- FOUNDERS & LEADERSHIP ---
   {
-    name: 'Mr. V.P. Singh',
+    name: 'Mr. VP singh',
     role: 'Co-Founder & Director',
-    subject: 'Physics & Academic Direction',
-    qualification: 'MNIT, Jaipur',
-    experience: '25+ Years Experience',
+    subject: 'MNIT, JAIPUR',
+    qualification: 'MNIT, JAIPUR',
+    experience: '25+ years of teaching experience',
     bio: 'With over 25 years of experience, Mr. V.P. Singh has mentored more than 10,000 students, guiding them to success in JEE, NEET, and board exams. A Civil Engineering graduate from MNIT Jaipur, he is renowned for his ability to simplify physics and inspire a genuine love for the subject. His outstanding leadership and unwavering dedication set the gold standard for teaching excellence.',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/VPSir.jpeg',
     is_founder: true,
@@ -28,9 +28,9 @@ const TEAM_MEMBERS = [
   {
     name: 'Mr. Rohit Jain',
     role: 'Co-Founder & Director',
-    subject: 'Physics & Curriculum Innovation',
-    qualification: 'MNIT, Jaipur',
-    experience: '15+ Years Experience',
+    subject: 'MNIT, JAIPUR',
+    qualification: 'MNIT, JAIPUR',
+    experience: '15+ years of teaching experience',
     bio: 'With over a decade of experience, Mr. Rohit Jain has mentored 6,000+ students, guiding them to top ranks in JEE, NEET, and international curriculums like IGCSE and IB. A B.Tech. graduate from MNIT Jaipur, his innovative teaching and leadership in education inspire excellence and holistic growth. He consistently nurtures problem-solving skills, setting a benchmark for young learners.',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/rohit%20sir%20photo.png',
     is_founder: true,
@@ -40,7 +40,7 @@ const TEAM_MEMBERS = [
   {
     name: 'Mr. Abhishek Agarwal',
     role: 'Co-Founder & Technology Lead',
-    subject: 'Digital Learning & EdTech Innovation',
+    subject: 'IIIT - Hyderabad',
     qualification: 'IIIT - Hyderabad',
     experience: 'Palantir, Ex-Qualcomm',
     bio: 'An alumnus of IIIT Hyderabad with industry leadership at Palantir and Qualcomm, Abhishek leads technology innovation, digital classroom architectures, and global student learning ecosystems at Hodu Academy, empowering learners across India and abroad.',
@@ -50,14 +50,14 @@ const TEAM_MEMBERS = [
     sort_order: 3
   },
 
-  // --- FACULTY MEMBERS ---
+  // --- TOP FACULTY MEMBERS ---
   {
     name: 'Mr. V.P. Singh',
     role: 'Senior Physics Educator',
-    subject: 'Physics',
+    subject: 'Senior Physics Educator',
     qualification: 'MNIT, Jaipur',
     experience: '25+ Years Experience (10,000+ Students Mentored)',
-    bio: 'With over 25 years of experience, Mr. V.P. Singh has mentored more than 10,000 students, guiding them to success in JEE, NEET, and board exams. A Civil Engineering graduate from MNIT Jaipur, he is renowned for his ability to simplify physics and inspire a genuine love for the subject.',
+    bio: 'With over 25 years of experience, Mr. V.P. Singh has mentored more than 10,000 students, guiding them to success in JEE, NEET, and board exams. A Civil Engineering graduate from MNIT Jaipur, he is renowned for his ability to simplify physics and inspire a genuine love for the subject. His outstanding leadership and unwavering dedication set the gold standard for teaching excellence.',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/VPSir.jpeg',
     is_founder: false,
     featured_offline: true,
@@ -66,10 +66,10 @@ const TEAM_MEMBERS = [
   {
     name: 'Mr. Rohit Jain',
     role: 'Expert Physics Educator',
-    subject: 'Physics',
+    subject: 'Expert Physics Educator',
     qualification: 'MNIT, Jaipur',
     experience: '15+ Years Experience (6,000+ Students Mentored)',
-    bio: 'With over a decade of experience, Mr. Rohit Jain has mentored 6,000+ students, guiding them to top ranks in JEE, NEET, and international curriculums like IGCSE and IB. A B.Tech. graduate from MNIT Jaipur, his innovative teaching and leadership in education inspire excellence and holistic growth.',
+    bio: 'With over a decade of experience, Mr. Rohit Jain has mentored 6,000+ students, guiding them to top ranks in JEE, NEET, and international curriculums like IGCSE and IB. A B.Tech. graduate from MNIT Jaipur, his innovative teaching and leadership in education inspire excellence and holistic growth. He consistently nurtures problem-solving skills, setting a benchmark for young learners.',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/rohit%20sir%20photo.png',
     is_founder: false,
     featured_offline: true,
@@ -78,10 +78,10 @@ const TEAM_MEMBERS = [
   {
     name: 'Ms. Shraddha Tiwari',
     role: 'Passionate English Educator',
-    subject: 'English & International Boards',
+    subject: 'Passionate English Educator',
     qualification: 'Postgraduate in English Literature',
-    experience: '8+ Years Experience (IGCSE, IB & CBSE Specialist)',
-    bio: 'With extensive experience mentoring IGCSE, IB, and CBSE students, Miss Shraddha is a passionate English educator renowned for nurturing language proficiency and literary appreciation. Holding a postgraduate degree in English Literature, she employs innovative strategies to deliver engaging lessons.',
+    experience: '8+ Years Experience (IGCSE, IB & CBSE)',
+    bio: 'With extensive experience mentoring IGCSE, IB, and CBSE students, Miss Shraddha is a passionate English educator renowned for nurturing language proficiency and literary appreciation. Holding a postgraduate degree in English Literature, she employs innovative strategies to deliver engaging lessons. Her creative approach inspires students to excel in exams and master confident communication.',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/shraddha%20mam%20photo.png',
     is_founder: false,
     featured_offline: true,
@@ -90,37 +90,37 @@ const TEAM_MEMBERS = [
   {
     name: 'Mr. Abhishek Garg',
     role: 'Skilled Math Educator',
-    subject: 'Mathematics',
+    subject: 'Skilled Math Educator',
     qualification: 'B.Tech Mechanical (Jamia Millia Islamia)',
     experience: '6+ Years Experience (CBSE, IGCSE, IB, AP)',
-    bio: 'Abhishek Garg is a skilled math educator with over six years of experience making math exciting and accessible. A Mechanical Engineering graduate from Jamia Millia Islamia University, he excels in teaching CBSE, IGCSE, IB, A Levels, AP exams, and more.',
+    bio: 'Abhishek Garg is a skilled math educator with over six years of experience making math exciting and accessible. A Mechanical Engineering graduate from Jamia Millia Islamia University, he excels in teaching CBSE, IGCSE, IB, A Levels, AP exams, and more. Renowned for simplifying complex concepts, Abhishek’s innovative methods inspire students to love math and achieve academic excellence.',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/abhishek%20sir%20photo.png',
     is_founder: false,
-    featured_offline: false,
+    featured_offline: true,
     sort_order: 7
   },
   {
     name: 'Ms. Mansi Baswal',
     role: 'Passionate Chemistry Expert',
-    subject: 'Chemistry',
+    subject: 'Passionate Chemistry Expert',
     qualification: "Master's Organic Chemistry | GATE & CSIR NET",
     experience: '5+ Years Experience (CBSE, IGCSE, GCSE & IB)',
-    bio: 'With a Master’s degree in Organic Chemistry, Miss Mansi is a passionate educator experienced in CBSE, IGCSE, GCSE, and IB curricula. Known for simplifying complex topics through real-life examples, she inspires students to excel in chemistry.',
+    bio: 'With a Master’s degree in Organic Chemistry, Miss Mansi is a passionate educator experienced in CBSE, IGCSE, GCSE, and IB curricula. Known for simplifying complex topics through real-life examples, she inspires students to excel in chemistry. Her proven expertise, backed by clearing GATE and CSIR NET, exemplifies unwavering dedication to academic success, ensuring growth and future achievements.',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/mansi%20mam%20photo.png',
     is_founder: false,
-    featured_offline: false,
+    featured_offline: true,
     sort_order: 8
   },
   {
     name: 'Mr. Deepesh Chandwani',
     role: 'Dynamic Math Mentor',
-    subject: 'Mathematics',
+    subject: 'Dynamic Math Mentor',
     qualification: 'RTU & Manipal University Graduate',
     experience: '10+ Years Experience (IGCSE, IB, A Levels, CBSE)',
-    bio: 'With over a decade of experience, Mr. Deepesh Chandwani is a dynamic math mentor renowned for simplifying complex concepts and inspiring confidence. A graduate of Rajasthan Technical University and Manipal University, he excels in IGCSE, IB, A Levels, and CBSE.',
+    bio: 'With over a decade of experience, Mr. Deepesh Chandwani is a dynamic math mentor renowned for simplifying complex concepts and inspiring confidence. A graduate of Rajasthan Technical University and Manipal University, he excels in IGCSE, IB, A Levels, and CBSE. His student-centered approach fosters effective learning, driving academic excellence and future-ready achievements.',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/deepesh%20sir%20photo.png',
     is_founder: false,
-    featured_offline: false,
+    featured_offline: true,
     sort_order: 9
   }
 ];
