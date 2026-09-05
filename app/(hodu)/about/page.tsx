@@ -1,38 +1,41 @@
 import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID, HODU } from '@/lib/hodu'
-import { Phone, ArrowRight, Target, Eye, Compass } from 'lucide-react'
+import { Phone, ArrowRight, Target, Eye, Compass, GraduationCap, Award, Sparkles, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata = {
-  title: 'About Us, Our Mission & Top Faculty — Hodu Academy',
-  description: 'Learn about Hodu Academy, our mission and vision, founders from MNIT Jaipur & IIIT Hyderabad, and our top expert faculty.',
+  title: 'About Us, Our Founders & Expert Faculty — Hodu Academy',
+  description: 'Meet our visionary founders from MNIT Jaipur & IIIT Hyderabad and our top master faculty at Hodu Academy.',
 }
 
-// Exact fallback data matching https://hoduacademy.com/mod/page/view.php?id=10
+// Fallback data matching https://hoduacademy.com/mod/page/view.php?id=10
 const fallbackFounders = [
   {
     name: 'Mr. VP singh',
     college: 'MNIT, JAIPUR',
-    experience: '25+ years of teaching experience',
+    experience: '25+ Years Experience',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/VPSir.jpeg',
     is_founder: true,
+    bio: 'With over 25 years of experience, Mr. V.P. Singh has mentored 10,000+ students for JEE, NEET, and Boards. A Civil Engineering graduate from MNIT Jaipur, he is renowned for simplifying physics.',
   },
   {
     name: 'Mr. Rohit Jain',
     college: 'MNIT, JAIPUR',
-    experience: '15+ years of teaching experience',
+    experience: '15+ Years Experience',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/rohit%20sir%20photo.png',
     is_founder: true,
+    bio: 'Mentored 6,000+ students for top ranks in JEE, NEET, IGCSE & IB. A B.Tech from MNIT Jaipur, his innovative teaching inspires analytical excellence and holistic problem-solving.',
   },
   {
     name: 'Mr. Abhishek Agarwal',
-    college: 'IIIT - Hyderabad',
+    college: 'IIIT - HYDERABAD',
     experience: 'Palantir, Ex-Qualcomm',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/photos%20%282%29.png',
     is_founder: true,
+    bio: 'An alumnus of IIIT Hyderabad with industry leadership at Palantir & Qualcomm, Abhishek drives technological innovation, digital learning ecosystems, and scalable pedagogy at Hodu.',
   },
 ]
 
@@ -41,37 +44,37 @@ const fallbackFaculty = [
     name: 'Mr. V.P. Singh',
     role: 'Senior Physics Educator',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/VPSir.jpeg',
-    bio: 'With over 25 years of experience, Mr. V.P. Singh has mentored more than 10,000 students, guiding them to success in JEE, NEET, and board exams. A Civil Engineering graduate from MNIT Jaipur, he is renowned for his ability to simplify physics and inspire a genuine love for the subject. His outstanding leadership and unwavering dedication set the gold standard for teaching excellence.',
+    bio: 'With 25+ years of experience, mentored 10,000+ students for JEE, NEET, and Boards. MNIT Jaipur Civil Engineering alumnus renowned for setting the gold standard in physics coaching.',
   },
   {
     name: 'Mr. Rohit Jain',
     role: 'Expert Physics Educator',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/rohit%20sir%20photo.png',
-    bio: 'With over a decade of experience, Mr. Rohit Jain has mentored 6,000+ students, guiding them to top ranks in JEE, NEET, and international curriculums like IGCSE and IB. A B.Tech. graduate from MNIT Jaipur, his innovative teaching and leadership in education inspire excellence and holistic growth. He consistently nurtures problem-solving skills, setting a benchmark for young learners.',
+    bio: 'With over a decade of mentorship, guided 6,000+ aspirants to top ranks in JEE, NEET, IGCSE and IB curricula. MNIT Jaipur graduate focused on deep conceptual clarity.',
   },
   {
     name: 'Ms. Shraddha Tiwari',
     role: 'Passionate English Educator',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/shraddha%20mam%20photo.png',
-    bio: 'With extensive experience mentoring IGCSE, IB, and CBSE students, Miss Shraddha is a passionate English educator renowned for nurturing language proficiency and literary appreciation. Holding a postgraduate degree in English Literature, she employs innovative strategies to deliver engaging lessons. Her creative approach inspires students to excel in exams and master confident communication.',
+    bio: 'Postgraduate in English Literature with extensive experience across IGCSE, IB, and CBSE boards, nurturing exceptional linguistic proficiency and analytical literary appreciation.',
   },
   {
     name: 'Mr. Abhishek Garg',
     role: 'Skilled Math Educator',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/abhishek%20sir%20photo.png',
-    bio: 'Abhishek Garg is a skilled math educator with over six years of experience making math exciting and accessible. A Mechanical Engineering graduate from Jamia Millia Islamia University, he excels in teaching CBSE, IGCSE, IB, A Levels, AP exams, and more. Renowned for simplifying complex concepts, Abhishek’s innovative methods inspire students to love math and achieve academic excellence.',
+    bio: 'Mechanical Engineering graduate from Jamia Millia Islamia with 6+ years specializing in CBSE, IGCSE, IB, A Levels & AP exams, turning complex mathematics into an intuitive discipline.',
   },
   {
     name: 'Ms. Mansi Baswal',
     role: 'Passionate Chemistry Expert',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/mansi%20mam%20photo.png',
-    bio: 'With a Master’s degree in Organic Chemistry, Miss Mansi is a passionate educator experienced in CBSE, IGCSE, GCSE, and IB curricula. Known for simplifying complex topics through real-life examples, she inspires students to excel in chemistry. Her proven expertise, backed by clearing GATE and CSIR NET, exemplifies unwavering dedication to academic success, ensuring growth and future achievements.',
+    bio: 'Master’s in Organic Chemistry, GATE & CSIR NET qualified. Mentors students across CBSE, IGCSE & IB using real-life examples to build rock-solid foundational concepts.',
   },
   {
     name: 'Mr. Deepesh Chandwani',
     role: 'Dynamic Math Mentor',
     photo_url: 'https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/deepesh%20sir%20photo.png',
-    bio: 'With over a decade of experience, Mr. Deepesh Chandwani is a dynamic math mentor renowned for simplifying complex concepts and inspiring confidence. A graduate of Rajasthan Technical University and Manipal University, he excels in IGCSE, IB, A Levels, and CBSE. His student-centered approach fosters effective learning, driving academic excellence and future-ready achievements.',
+    bio: 'Alumnus of RTU & Manipal University with 10+ years coaching IGCSE, IB, A Levels & CBSE. Known for student-centric problem-solving strategies and academic excellence.',
   },
 ]
 
@@ -94,70 +97,88 @@ export default async function AboutPage() {
   return (
     <div className="bg-white min-h-screen">
 
-      {/* ─── SECTION 0: ABOUT HODU & OUR MISSION / VISION ─── */}
-      <section className="py-12 sm:py-16 bg-[#fcf8f7] border-b border-brand-border/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ─── HERO INTRO & ABOUT STORY ─── */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#faf4f4] via-[#fcf8f7] to-white pt-12 pb-16 border-b border-brand-border/40">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Main About Intro with Official Image */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-12 lg:mb-16">
-            <div className="lg:col-span-7 space-y-4 sm:space-y-5">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Left Narrative */}
+            <div className="lg:col-span-7 space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#921e1f]/10 text-[#921e1f] text-xs font-bold uppercase tracking-wider">
                 <Compass className="w-3.5 h-3.5" />
                 <span>About Hodu Academy</span>
               </div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif-editorial font-bold text-neutral-900 tracking-tight leading-tight">
+              
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif-editorial font-bold text-neutral-900 tracking-tight leading-[1.15]">
                 Nurturing Academic Excellence & Holistic Growth
               </h1>
-              <p className="text-sm sm:text-base text-neutral-700 leading-relaxed text-justify">
-                At Hodu Academy we believe in nurturing every child’s potential by combining strong academic growth with holistic development. Our approach balances rigorous learning with engaging extracurriculars, ensuring children thrive intellectually and emotionally. We aim to create confident, well-rounded individuals ready for every challenge and opportunity ahead.
+              
+              <p className="text-sm sm:text-base text-neutral-700 leading-relaxed text-justify font-normal">
+                At Hodu Academy, we believe in unlocking every child’s potential by combining strong academic rigor with holistic personal development. Our approach balances structured classroom learning with engaging extracurriculars, ensuring students thrive intellectually and emotionally. We create confident, well-rounded individuals ready for global challenges.
               </p>
+
+              <div className="pt-2 flex flex-wrap gap-3">
+                <div className="flex items-center gap-2 text-xs font-semibold text-neutral-700 bg-white px-3.5 py-2 rounded-xl border border-neutral-200 shadow-2xs">
+                  <CheckCircle2 className="w-4 h-4 text-[#921e1f]" />
+                  <span>1:12 Intimate Batch Ratios</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-semibold text-neutral-700 bg-white px-3.5 py-2 rounded-xl border border-neutral-200 shadow-2xs">
+                  <CheckCircle2 className="w-4 h-4 text-[#921e1f]" />
+                  <span>IIT & Master Alumni Mentors</span>
+                </div>
+              </div>
             </div>
 
+            {/* Right Visual Image */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-md rounded-2xl overflow-hidden shadow-md border-2 border-[#921e1f]/20 bg-white">
+              <div className="relative group w-full max-w-sm rounded-2xl overflow-hidden shadow-lg border-2 border-white ring-1 ring-[#921e1f]/20 bg-white">
                 <img
                   src="https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/Main%20image%201.png"
                   alt="Hodu Academy Classroom & Learning"
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover transform group-hover:scale-102 transition-transform duration-500"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-3 left-3 right-3 text-white text-[11px] font-semibold bg-black/50 backdrop-blur-xs px-3 py-1.5 rounded-lg border border-white/20 text-center">
+                  ESTD. 2018 · Jaipur Campus & Global Learning
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Mission & Vision Dual Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+          {/* ─── DUAL CARDS: MISSION & VISION ─── */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 mt-12">
             {/* Our Mission */}
-            <div className="bg-white border-2 border-[#921e1f] rounded-[10px] p-6 sm:p-8 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+            <div className="bg-white border border-[#921e1f]/30 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-[#921e1f] transition-all duration-300 flex flex-col justify-between group">
               <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-[#921e1f]/10 text-[#921e1f] flex items-center justify-center shrink-0">
-                    <Target className="w-5 h-5" />
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#921e1f]/10 text-[#921e1f] flex items-center justify-center shrink-0 group-hover:bg-[#921e1f] group-hover:text-white transition-colors">
+                    <Target className="w-4.5 h-4.5" />
                   </div>
-                  <h3 className="text-2xl font-serif-editorial font-bold text-[#921e1f]">
+                  <h3 className="text-xl font-serif-editorial font-bold text-[#921e1f]">
                     Our Mission
                   </h3>
                 </div>
-                <div className="w-12 h-0.5 bg-[#921e1f] mb-4 rounded-full" />
-                <p className="text-xs sm:text-sm text-neutral-700 text-justify leading-relaxed">
-                  Hodu Academy is dedicated to unlocking each student’s potential by providing top-tier academic instruction, fostering holistic personal growth, and offering enriching extracurricular opportunities. We create a nurturing and innovative environment where critical thinking, creativity, and resilience are cultivated, ensuring every learner can thrive and succeed.
+                <div className="w-10 h-0.5 bg-[#921e1f]/30 group-hover:bg-[#921e1f] mb-3 rounded-full transition-colors" />
+                <p className="text-xs sm:text-sm text-neutral-600 text-justify leading-relaxed">
+                  To unlock each student’s potential by providing top-tier academic instruction, fostering holistic growth, and offering enriching extracurricular opportunities. We create a nurturing and innovative environment where critical thinking, creativity, and resilience empower learners to thrive.
                 </p>
               </div>
             </div>
 
             {/* Our Vision */}
-            <div className="bg-white border-2 border-[#921e1f] rounded-[10px] p-6 sm:p-8 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+            <div className="bg-white border border-[#921e1f]/30 rounded-2xl p-6 shadow-xs hover:shadow-md hover:border-[#921e1f] transition-all duration-300 flex flex-col justify-between group">
               <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-[#921e1f]/10 text-[#921e1f] flex items-center justify-center shrink-0">
-                    <Eye className="w-5 h-5" />
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#921e1f]/10 text-[#921e1f] flex items-center justify-center shrink-0 group-hover:bg-[#921e1f] group-hover:text-white transition-colors">
+                    <Eye className="w-4.5 h-4.5" />
                   </div>
-                  <h3 className="text-2xl font-serif-editorial font-bold text-[#921e1f]">
+                  <h3 className="text-xl font-serif-editorial font-bold text-[#921e1f]">
                     Our Vision
                   </h3>
                 </div>
-                <div className="w-12 h-0.5 bg-[#921e1f] mb-4 rounded-full" />
-                <p className="text-xs sm:text-sm text-neutral-700 text-justify leading-relaxed">
-                  To be the gold standard in modern education by delivering transformative learning experiences that empower students to excel in Cambridge, IB, CBSE, and competitive exams (JEE & NEET). We envision creating independent thinkers, compassionate leaders, and lifelong achievers equipped to excel globally.
+                <div className="w-10 h-0.5 bg-[#921e1f]/30 group-hover:bg-[#921e1f] mb-3 rounded-full transition-colors" />
+                <p className="text-xs sm:text-sm text-neutral-600 text-justify leading-relaxed">
+                  To be the gold standard in education by delivering transformative learning experiences that empower students across Cambridge, IB, CBSE, and competitive exams (JEE/NEET). We envision creating independent thinkers and compassionate leaders equipped to excel globally.
                 </p>
               </div>
             </div>
@@ -167,51 +188,61 @@ export default async function AboutPage() {
       </section>
 
       {/* ─── SECTION 1: OUR FOUNDERS ─── */}
-      <section className="py-12 sm:py-16 bg-white border-b border-brand-border/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-16 bg-white border-b border-brand-border/40">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-serif-editorial font-bold text-neutral-900 tracking-tight">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#921e1f]/10 text-[#921e1f] text-[11px] font-bold uppercase tracking-wider mb-2">
+              <Award className="w-3.5 h-3.5" />
+              <span>Leadership</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-serif-editorial font-bold text-neutral-900 tracking-tight">
               Our Founders
             </h2>
-            <div className="w-16 h-1 bg-[#921e1f] mx-auto mt-3 rounded-full" />
+            <p className="text-xs sm:text-sm text-neutral-600 mt-1 max-w-md mx-auto font-normal">
+              Visionary educators and technologists shaping academic excellence
+            </p>
+            <div className="w-12 h-1 bg-[#921e1f] mx-auto mt-3 rounded-full" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {/* Compact, short width & length cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 max-w-5xl mx-auto">
             {founders.map((founder, idx) => (
               <div
                 key={founder.id || founder.name + idx}
-                className="bg-white border-2 border-[#921e1f] rounded-[10px] p-6 text-center shadow-xs hover:shadow-md transition-all duration-300 flex flex-col items-center"
+                className="bg-white rounded-2xl border border-neutral-200 hover:border-[#921e1f]/60 p-5 sm:p-6 text-center shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-between group hover:-translate-y-1"
               >
-                {/* 200px circular photo matching hoduacademy.com */}
-                <div className="w-44 h-44 sm:w-48 sm:h-48 rounded-full overflow-hidden mx-auto bg-neutral-100 border border-neutral-200 shadow-2xs shrink-0 flex items-center justify-center">
-                  {founder.photo_url ? (
-                    <img
-                      src={founder.photo_url}
-                      alt={founder.name}
-                      className="w-full h-full object-cover object-top"
-                    />
-                  ) : (
-                    <span className="text-3xl font-bold text-[#921e1f]">
-                      {founder.name.slice(0, 2).toUpperCase()}
-                    </span>
-                  )}
+                <div className="flex flex-col items-center w-full">
+                  {/* Proportional, compact circular avatar */}
+                  <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden mx-auto bg-neutral-100 ring-4 ring-[#921e1f]/15 group-hover:ring-[#921e1f]/35 p-0.5 shadow-xs shrink-0 flex items-center justify-center transition-all">
+                    {founder.photo_url ? (
+                      <img
+                        src={founder.photo_url}
+                        alt={founder.name}
+                        className="w-full h-full object-cover object-top rounded-full"
+                      />
+                    ) : (
+                      <span className="text-2xl font-bold text-[#921e1f]">
+                        {founder.name.slice(0, 2).toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="text-lg sm:text-xl font-bold text-neutral-900 group-hover:text-[#921e1f] transition-colors mt-3.5">
+                    {founder.name}
+                  </h3>
+                  
+                  <span className="inline-block px-3 py-0.5 rounded-full bg-[#921e1f]/10 text-[#921e1f] text-[11px] font-bold uppercase tracking-wider mt-1.5">
+                    {founder.qualification || founder.college || 'MNIT, JAIPUR'}
+                  </span>
+
+                  <span className="text-[11px] font-medium text-neutral-500 mt-1">
+                    {founder.experience || 'Educator & Director'}
+                  </span>
                 </div>
 
-                <h3 className="text-xl sm:text-2xl font-bold text-[#921e1f] mt-4">
-                  {founder.name}
-                </h3>
-                
-                <h5 className="text-sm font-bold text-neutral-800 mt-1 uppercase tracking-wide">
-                  {founder.qualification || founder.college || 'MNIT, JAIPUR'}
-                </h5>
-
-                <h6 className="text-xs font-semibold text-neutral-600 mt-1">
-                  {founder.experience || 'Educator & Director'}
-                </h6>
-
                 {founder.bio && (
-                  <p className="text-xs text-neutral-600 text-justify leading-relaxed mt-4 pt-3 border-t border-neutral-100 w-full">
+                  <p className="text-xs text-neutral-600 text-justify leading-relaxed mt-3.5 pt-3 border-t border-neutral-100 w-full">
                     {founder.bio}
                   </p>
                 )}
@@ -223,49 +254,57 @@ export default async function AboutPage() {
       </section>
 
       {/* ─── SECTION 2: OUR TOP FACULTY ─── */}
-      <section id="faculty" className="py-12 sm:py-16 bg-[#f2dede]/30 border-b border-brand-border/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="faculty" className="py-12 sm:py-16 bg-[#fcf8f7] border-b border-brand-border/40">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-serif-editorial font-bold text-neutral-900 tracking-tight">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#921e1f]/10 text-[#921e1f] text-[11px] font-bold uppercase tracking-wider mb-2">
+              <GraduationCap className="w-3.5 h-3.5" />
+              <span>Academic Masters</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-serif-editorial font-bold text-neutral-900 tracking-tight">
               Our Top Faculty
             </h2>
-            <div className="w-16 h-1 bg-[#921e1f] mx-auto mt-3 rounded-full" />
+            <p className="text-xs sm:text-sm text-neutral-600 mt-1 max-w-md mx-auto font-normal">
+              Experienced mentors dedicated to personal growth & top exam ranks
+            </p>
+            <div className="w-12 h-1 bg-[#921e1f] mx-auto mt-3 rounded-full" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Compact 3-column grid with refined height & width */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
             {faculty.map((member, idx) => (
               <div
                 key={member.id || member.name + idx}
-                className="bg-white border-2 border-[#921e1f] rounded-b-[10px] rounded-t-[10px] p-6 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between"
+                className="bg-white rounded-2xl border border-neutral-200 hover:border-[#921e1f]/60 p-5 sm:p-6 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1"
               >
-                <div className="text-center">
-                  {/* 200px circular photo */}
-                  <div className="w-44 h-44 sm:w-48 sm:h-48 rounded-full overflow-hidden mx-auto bg-neutral-100 border border-neutral-200 shadow-2xs shrink-0 flex items-center justify-center">
+                <div className="text-center flex flex-col items-center">
+                  {/* Proportional circular avatar */}
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden mx-auto bg-neutral-100 ring-4 ring-[#921e1f]/15 group-hover:ring-[#921e1f]/35 p-0.5 shadow-xs shrink-0 flex items-center justify-center transition-all">
                     {member.photo_url ? (
                       <img
                         src={member.photo_url}
                         alt={member.name}
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-cover object-top rounded-full"
                       />
                     ) : (
-                      <span className="text-2xl font-bold text-[#921e1f]">
+                      <span className="text-xl font-bold text-[#921e1f]">
                         {member.name.slice(0, 2).toUpperCase()}
                       </span>
                     )}
                   </div>
 
-                  <h4 className="text-lg sm:text-xl font-bold text-[#921e1f] mt-4">
+                  <h4 className="text-base sm:text-lg font-bold text-neutral-900 group-hover:text-[#921e1f] transition-colors mt-3">
                     {member.name}
                   </h4>
 
-                  <h6 className="text-xs font-semibold text-neutral-800 mt-1">
+                  <span className="inline-block px-3 py-0.5 rounded-full bg-[#921e1f]/10 text-[#921e1f] text-[11px] font-semibold mt-1.5">
                     {member.role || member.subject || 'Expert Faculty'}
-                  </h6>
+                  </span>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-neutral-100">
-                  <p className="text-xs sm:text-sm text-neutral-700 text-justify leading-relaxed">
+                <div className="mt-3.5 pt-3 border-t border-neutral-100">
+                  <p className="text-xs text-neutral-600 text-justify leading-relaxed">
                     {member.bio}
                   </p>
                 </div>
@@ -277,21 +316,21 @@ export default async function AboutPage() {
       </section>
 
       {/* ─── SECTION 3: FOR ANY ENQUIRY CALL BANNER ─── */}
-      <section className="py-12 bg-[#7D0A0A] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+      <section className="py-12 bg-gradient-to-r from-[#7D0A0A] via-[#921E1F] to-[#651416] text-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
           <h3 className="text-xl sm:text-2xl md:text-3xl font-serif-editorial font-bold text-white">
             For Any Enquiry Call{' '}
             <a href={`tel:${HODU.phone}`} className="underline decoration-white/40 hover:decoration-white transition-all">
               {HODU.phone}
             </a>
           </h3>
-          <p className="text-xs sm:text-sm text-white/90 max-w-xl mx-auto font-normal">
+          <p className="text-xs sm:text-sm text-white/90 max-w-lg mx-auto font-normal">
             Speak directly with our academic coordinators to discuss course admissions, batch schedules, and personalized mentorship.
           </p>
           <div className="pt-2">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 bg-white text-[#7D0A0A] hover:bg-neutral-100 font-bold px-7 py-3 rounded-full text-xs uppercase tracking-wider transition-all shadow-md"
+              className="inline-flex items-center gap-2 bg-white text-[#7D0A0A] hover:bg-neutral-100 font-bold px-7 py-3 rounded-full text-xs uppercase tracking-wider transition-all shadow-md active:scale-95"
             >
               <span>Book Academic Consultation</span>
               <ArrowRight className="h-4 w-4" />
