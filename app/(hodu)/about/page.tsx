@@ -1,14 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID, HODU } from '@/lib/hodu'
-import { Phone, ArrowRight } from 'lucide-react'
+import { Phone, ArrowRight, Target, Eye, Compass } from 'lucide-react'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata = {
-  title: 'Our Founders & Top Faculty — Hodu Academy',
-  description: 'Meet our founders from MNIT Jaipur & IIIT Hyderabad and our top expert faculty at Hodu Academy.',
+  title: 'About Us, Our Mission & Top Faculty — Hodu Academy',
+  description: 'Learn about Hodu Academy, our mission and vision, founders from MNIT Jaipur & IIIT Hyderabad, and our top expert faculty.',
 }
 
 // Exact fallback data matching https://hoduacademy.com/mod/page/view.php?id=10
@@ -93,6 +93,78 @@ export default async function AboutPage() {
 
   return (
     <div className="bg-white min-h-screen">
+
+      {/* ─── SECTION 0: ABOUT HODU & OUR MISSION / VISION ─── */}
+      <section className="py-12 sm:py-16 bg-[#fcf8f7] border-b border-brand-border/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Main About Intro with Official Image */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-12 lg:mb-16">
+            <div className="lg:col-span-7 space-y-4 sm:space-y-5">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#921e1f]/10 text-[#921e1f] text-xs font-bold uppercase tracking-wider">
+                <Compass className="w-3.5 h-3.5" />
+                <span>About Hodu Academy</span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif-editorial font-bold text-neutral-900 tracking-tight leading-tight">
+                Nurturing Academic Excellence & Holistic Growth
+              </h1>
+              <p className="text-sm sm:text-base text-neutral-700 leading-relaxed text-justify">
+                At Hodu Academy we believe in nurturing every child’s potential by combining strong academic growth with holistic development. Our approach balances rigorous learning with engaging extracurriculars, ensuring children thrive intellectually and emotionally. We aim to create confident, well-rounded individuals ready for every challenge and opportunity ahead.
+              </p>
+            </div>
+
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="relative w-full max-w-md rounded-2xl overflow-hidden shadow-md border-2 border-[#921e1f]/20 bg-white">
+                <img
+                  src="https://hoduacademy.com/pluginfile.php/1/local_mb2builder/images/Main%20image%201.png"
+                  alt="Hodu Academy Classroom & Learning"
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Mission & Vision Dual Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            {/* Our Mission */}
+            <div className="bg-white border-2 border-[#921e1f] rounded-[10px] p-6 sm:p-8 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-lg bg-[#921e1f]/10 text-[#921e1f] flex items-center justify-center shrink-0">
+                    <Target className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-2xl font-serif-editorial font-bold text-[#921e1f]">
+                    Our Mission
+                  </h3>
+                </div>
+                <div className="w-12 h-0.5 bg-[#921e1f] mb-4 rounded-full" />
+                <p className="text-xs sm:text-sm text-neutral-700 text-justify leading-relaxed">
+                  Hodu Academy is dedicated to unlocking each student’s potential by providing top-tier academic instruction, fostering holistic personal growth, and offering enriching extracurricular opportunities. We create a nurturing and innovative environment where critical thinking, creativity, and resilience are cultivated, ensuring every learner can thrive and succeed.
+                </p>
+              </div>
+            </div>
+
+            {/* Our Vision */}
+            <div className="bg-white border-2 border-[#921e1f] rounded-[10px] p-6 sm:p-8 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-lg bg-[#921e1f]/10 text-[#921e1f] flex items-center justify-center shrink-0">
+                    <Eye className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-2xl font-serif-editorial font-bold text-[#921e1f]">
+                    Our Vision
+                  </h3>
+                </div>
+                <div className="w-12 h-0.5 bg-[#921e1f] mb-4 rounded-full" />
+                <p className="text-xs sm:text-sm text-neutral-700 text-justify leading-relaxed">
+                  To be the gold standard in modern education by delivering transformative learning experiences that empower students to excel in Cambridge, IB, CBSE, and competitive exams (JEE & NEET). We envision creating independent thinkers, compassionate leaders, and lifelong achievers equipped to excel globally.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
 
       {/* ─── SECTION 1: OUR FOUNDERS ─── */}
       <section className="py-12 sm:py-16 bg-white border-b border-brand-border/60">
