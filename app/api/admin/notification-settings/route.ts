@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { sendTestNotificationEmail } from '@/lib/email'
 import { HODU_SITE_ID } from '@/lib/hodu'
 
@@ -20,7 +20,7 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       email: currentEmail,
-      from_email: process.env.RESEND_FROM_EMAIL || 'Hodu Academy <xyz@email.hoduacademy.com>',
+      from_email: process.env.RESEND_FROM_EMAIL || 'Hodu Academy <contact@email.hoduacademy.com>',
     })
   } catch (err: any) {
     return NextResponse.json({

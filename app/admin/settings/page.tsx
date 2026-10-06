@@ -14,10 +14,18 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved]   = useState(false)
   const [testStatus, setTestStatus] = useState<{ loading: boolean; message: string; isError: boolean } | null>(null)
+  const [configuredFromEmail, setConfiguredFromEmail] = useState<string>('Hodu Academy <xyz@email.hoduacademy.com>')
 
   useEffect(() => {
     supabase.from('cms_sites').select('*').eq('id', SITE_ID).single()
       .then(({ data }) => setForm(data))
+
+    fetch('/api/admin/notification-settings')
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.from_email) setConfiguredFromEmail(d.from_email)
+      })
+      .catch(() => {})
   }, [])
 
   function set(k: string, v: any) { setForm((f: any) => ({ ...f, [k]: v })) }
@@ -153,7 +161,7 @@ export default function SettingsPage() {
               </button>
             </div>
             <p className="text-[11px] text-[#94a3b8] mt-1.5">
-              Verified Sender: <code className="bg-neutral-100 text-[#7E0D0D] px-1 py-0.5 rounded text-[10px]">Hodu Academy &lt;xyz@email.hoduacademy.com&gt;</code>
+              Sender Email (From): <code className="bg-neutral-100 text-[#7E0D0D] px-1 py-0.5 rounded text-[10px]">{configuredFromEmail}</code>
             </p>
           </div>
 

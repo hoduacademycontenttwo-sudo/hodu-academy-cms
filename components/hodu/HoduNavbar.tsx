@@ -260,6 +260,18 @@ export default function HoduNavbar({
             </Link>
 
             <Link
+              href="/jaipur-cbt"
+              className={`text-[13.5px] xl:text-[15px] font-bold transition-colors inline-flex items-center gap-1.5 ${
+                pathname === '/jaipur-cbt' ? 'text-[#7A001F] font-black' : 'text-neutral-800 hover:text-[#7A001F]'
+              }`}
+            >
+              <span>Jaipur CBT</span>
+              <span className="bg-[#7E0D0D] text-white text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider">
+                New
+              </span>
+            </Link>
+
+            <Link
               href="/ptm"
               className={`text-[13.5px] xl:text-[15px] font-bold transition-colors ${
                 pathname === '/ptm' || pathname === '/ptm-gallery' || pathname === '/gallery' ? 'text-[#7A001F] font-black' : 'text-neutral-800 hover:text-[#7A001F]'
@@ -432,6 +444,19 @@ export default function HoduNavbar({
               }`}
             >
               Offline
+            </Link>
+
+            <Link
+              href="/jaipur-cbt"
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold transition-colors ${
+                pathname === '/jaipur-cbt' ? 'bg-[#7E0D0D]/10 text-[#7A001F]' : 'text-neutral-800 hover:bg-neutral-50'
+              }`}
+            >
+              <span>Jaipur CBT Challenge</span>
+              <span className="bg-[#7E0D0D] text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                New
+              </span>
             </Link>
 
             <Link

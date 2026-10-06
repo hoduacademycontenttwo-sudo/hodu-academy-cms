@@ -1,11 +1,14 @@
 import { Resend } from 'resend'
 
-const DEFAULT_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Hodu Academy <xyz@email.hoduacademy.com>'
+const DEFAULT_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Hodu Academy <contact@email.hoduacademy.com>'
 const FALLBACK_FROM_EMAIL = 'Hodu Academy <onboarding@resend.dev>'
 const DEFAULT_TO_EMAIL = process.env.RESEND_NOTIFICATION_EMAIL || 'thehoduacademy@gmail.com'
 
 function getResendClient() {
-  const apiKey = process.env.RESEND_API_KEY || process.env.NEXT_PUBLIC_RESEND_API_KEY || ''
+  const apiKey = (process.env.RESEND_API_KEY || process.env.NEXT_PUBLIC_RESEND_API_KEY || '').trim()
+  if (!apiKey) {
+    return null
+  }
   return new Resend(apiKey)
 }
 
@@ -15,28 +18,52 @@ async function sendEmailWithFallback(params: {
   html: string
 }) {
   const resend = getResendClient()
-  const primaryFrom = DEFAULT_FROM_EMAIL
+  if (!resend) {
+    const errorMsg = 'RESEND_API_KEY is missing in environment variables. Please add RESEND_API_KEY to .env.local and your production host (e.g. Vercel).'
+    console.error(`[Resend Error]: ${errorMsg}`)
+    return {
+      error: {
+        name: 'missing_api_key',
+        message: errorMsg,
+      }
+    }
+  }
 
-  // 1. Try sending with primary configured sender
-  let response = await resend.emails.send({
-    from: primaryFrom,
-    to: params.to,
-    subject: params.subject,
-    html: params.html,
-  })
+  const primaryFrom = process.env.RESEND_FROM_EMAIL || DEFAULT_FROM_EMAIL
 
-  // 2. If primary failed due to domain verification/sender rejection, retry with fallback sender
-  if (response.error) {
-    console.warn('[Resend Primary Sender Warning]:', response.error, 'Retrying with fallback sender...')
-    response = await resend.emails.send({
-      from: FALLBACK_FROM_EMAIL,
+  try {
+    // 1. Try sending with primary configured sender
+    let response = await resend.emails.send({
+      from: primaryFrom,
       to: params.to,
       subject: params.subject,
       html: params.html,
     })
-  }
 
-  return response
+    // 2. If primary failed due to domain verification/sender rejection, retry with fallback sender
+    if (response.error) {
+      console.warn('[Resend Primary Sender Warning]:', response.error, 'Retrying with fallback sender...')
+      response = await resend.emails.send({
+        from: FALLBACK_FROM_EMAIL,
+        to: params.to,
+        subject: params.subject,
+        html: params.html,
+      })
+      if (response.error) {
+        console.error('[Resend Fallback Sender Warning]:', response.error)
+      }
+    }
+
+    return response
+  } catch (err: any) {
+    console.error('[Resend Send Exception]:', err)
+    return {
+      error: {
+        name: err.name || 'resend_send_exception',
+        message: err.message || String(err),
+      }
+    }
+  }
 }
 
 export interface EnquiryLeadData {

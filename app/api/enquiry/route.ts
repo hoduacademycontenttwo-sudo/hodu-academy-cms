@@ -50,25 +50,38 @@ export async function POST(req: NextRequest) {
     try {
       const { createClient: createAdminClient } = await import('@supabase/supabase-js')
       const supabase = createAdminClient(supabaseUrl, supabaseKey)
-      const { data, error: dbError } = await supabase
-        .from('cms_leads')
-        .insert({
-          site_id: HODU_SITE_ID,
-          name: cleanName,
-          phone: cleanPhone,
-          class_level: cleanClass,
-          target_exam: cleanExam,
-          city: cleanCity,
-          message: storedMessage || null,
-          status: 'new',
-        })
-        .select('*')
-        .single()
 
-      if (dbError) {
-        console.error('[Database Insert Error]:', dbError)
+      const leadRecord = {
+        site_id: HODU_SITE_ID,
+        name: cleanName,
+        phone: cleanPhone,
+        class_level: cleanClass,
+        target_exam: cleanExam,
+        city: cleanCity,
+        message: storedMessage || null,
+        status: 'new',
+      }
+
+      if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        const { data, error: dbError } = await supabase
+          .from('cms_leads')
+          .insert(leadRecord)
+          .select('*')
+          .single()
+
+        if (dbError) {
+          console.error('[Database Insert Error]:', dbError)
+        } else {
+          insertedLead = data
+        }
       } else {
-        insertedLead = data
+        const { error: dbError } = await supabase
+          .from('cms_leads')
+          .insert(leadRecord)
+
+        if (dbError) {
+          console.error('[Database Insert Error]:', dbError)
+        }
       }
     } catch (dbErr) {
       console.error('[Database Exception]:', dbErr)
@@ -86,10 +99,15 @@ export async function POST(req: NextRequest) {
       source_page: cleanSource,
     })
 
+    if (!emailResult.success) {
+      console.warn('[Enquiry Email Warning]: Failed to dispatch lead email notification:', emailResult.error)
+    }
+
     return NextResponse.json({
       success: true,
       lead_id: insertedLead?.id || null,
       email_sent: emailResult.success,
+      email_error: emailResult.success ? undefined : ((emailResult.error as any)?.message || emailResult.error),
       message: 'Enquiry submitted and recorded successfully.',
     })
   } catch (err: any) {
