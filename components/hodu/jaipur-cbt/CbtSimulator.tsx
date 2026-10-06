@@ -6,52 +6,153 @@ import { ArrowRight, Check, Clock, RotateCcw, X } from 'lucide-react'
 type Q = {
   subject: string
   text: React.ReactNode
+  figure?: React.ReactNode
   options: React.ReactNode[]
   answer: number
   why: string
 }
 
+/** Resistor drawn as a labelled box centred on (x, y). */
+function R({ x, y, label, vertical = false }: { x: number; y: number; label: string; vertical?: boolean }) {
+  const w = vertical ? 22 : 40
+  const h = vertical ? 40 : 22
+  return (
+    <g>
+      <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={3} fill="#fff" stroke="currentColor" strokeWidth={1.5} />
+      <text x={vertical ? x + 18 : x} y={vertical ? y + 4 : y + 4} textAnchor={vertical ? 'start' : 'middle'} fontSize={12} fill="currentColor">
+        {label}
+      </text>
+    </g>
+  )
+}
+
+function BridgeCircuit() {
+  // A(40,100) C(160,30) B(280,100) D(160,170); battery on the bottom wire.
+  return (
+    <svg viewBox="0 0 320 240" role="img" aria-labelledby="fig-bridge" className="h-auto w-full max-w-[340px] text-brand-text">
+      <title id="fig-bridge">
+        Circuit: a 6 V battery across points A and B. Between A and B are two paths, A to C to B through 2 ohm and 4 ohm, and A
+        to D to B through 3 ohm and 6 ohm. A 5 ohm resistor joins C and D.
+      </title>
+      <g stroke="currentColor" strokeWidth={1.5} fill="none">
+        <path d="M40 100 L160 30 L280 100 L160 170 Z" />
+        <path d="M160 30 L160 170" />
+        <path d="M40 100 L40 205 L150 205 M170 205 L280 205 L280 100" />
+        <path d="M150 192 L150 218" strokeWidth={2.5} />
+        <path d="M170 198 L170 212" strokeWidth={4} />
+      </g>
+      <R x={100} y={65} label="2 Ω" />
+      <R x={220} y={65} label="4 Ω" />
+      <R x={100} y={135} label="3 Ω" />
+      <R x={220} y={135} label="6 Ω" />
+      <R x={160} y={100} label="5 Ω" vertical />
+      <g fontSize={13} fontWeight={700} fill="currentColor">
+        <text x={26} y={104}>A</text>
+        <text x={287} y={104}>B</text>
+        <text x={155} y={22}>C</text>
+        <text x={168} y={186}>D</text>
+        <text x={160} y={236} textAnchor="middle" fontWeight={400} fontSize={12}>
+          6 V
+        </text>
+      </g>
+      {[[40, 100], [160, 30], [280, 100], [160, 170]].map(([cx, cy]) => (
+        <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r={3} fill="currentColor" />
+      ))}
+    </svg>
+  )
+}
+
+function Pedigree() {
+  const kids: { x: number; female: boolean }[] = [
+    { x: 40, female: true },
+    { x: 100, female: false },
+    { x: 160, female: true },
+    { x: 220, female: false },
+    { x: 280, female: true },
+  ]
+  return (
+    <svg viewBox="0 0 320 175" role="img" aria-labelledby="fig-pedigree" className="h-auto w-full max-w-[340px] text-brand-text">
+      <title id="fig-pedigree">
+        Pedigree: an affected father and an unaffected mother have five children. All three daughters are affected and both
+        sons are unaffected.
+      </title>
+      <g stroke="currentColor" strokeWidth={1.5}>
+        <rect x={98} y={18} width={28} height={28} fill="currentColor" />
+        <circle cx={208} cy={32} r={14} fill="#fff" />
+        <path d="M126 32 L194 32 M160 32 L160 80 M40 80 L280 80" fill="none" />
+        {kids.map((k) => (
+          <g key={k.x}>
+            <path d={`M${k.x} 80 L${k.x} 100`} fill="none" />
+            {k.female ? (
+              <circle cx={k.x} cy={114} r={14} fill="currentColor" />
+            ) : (
+              <rect x={k.x - 14} y={100} width={28} height={28} fill="#fff" />
+            )}
+          </g>
+        ))}
+      </g>
+      <g fontSize={12} fill="currentColor">
+        <text x={4} y={36} fontWeight={700}>I</text>
+        <text x={4} y={118} fontWeight={700}>II</text>
+        <rect x={62} y={152} width={12} height={12} fill="currentColor" />
+        <text x={80} y={162}>affected</text>
+        <rect x={160} y={152} width={12} height={12} fill="#fff" stroke="currentColor" />
+        <text x={178} y={162}>unaffected</text>
+      </g>
+    </svg>
+  )
+}
+
 const QUESTIONS: Q[] = [
   {
     subject: 'Physics',
-    text: (
-      <>
-        A particle moves on a circle of radius <i>r</i> with constant angular speed <i>ω</i>. The magnitude of its
-        acceleration is
-      </>
-    ),
-    options: [<>ω r</>, <>ω² r</>, <>ω / r</>, <>zero, since speed is constant</>],
-    answer: 1,
-    why: 'Speed is constant but direction keeps changing, so there is a centripetal acceleration v²/r = ω²r.',
+    text: <>In the circuit shown, the battery is ideal. What current does it supply?</>,
+    figure: <BridgeCircuit />,
+    options: [<>0.4 A</>, <>1.2 A</>, <>5/3 A</>, <>3 A</>],
+    answer: 2,
+    why: '2/4 = 3/6, so the bridge is balanced and no current flows through 5 Ω. Then 6 Ω ∥ 9 Ω = 3.6 Ω, and I = 6/3.6 = 5/3 A.',
   },
   {
     subject: 'Chemistry',
-    text: <>Which of these elements has the highest first ionisation enthalpy?</>,
-    options: [<>Boron</>, <>Carbon</>, <>Nitrogen</>, <>Oxygen</>],
-    answer: 2,
-    why: 'Nitrogen’s half-filled 2p³ shell is extra stable. Oxygen is lower because of electron pairing in 2p⁴.',
+    text: <>Which of these complexes has the largest number of unpaired electrons?</>,
+    options: [<>[Fe(CN)₆]³⁻</>, <>[Co(NH₃)₆]³⁺</>, <>[Ni(CO)₄]</>, <>[Fe(H₂O)₆]²⁺</>],
+    answer: 3,
+    why: 'Fe²⁺ is d⁶ and H₂O is a weak-field ligand, so it stays high spin with 4 unpaired electrons. [Fe(CN)₆]³⁻ is low-spin d⁵ (1), the others have 0.',
   },
   {
     subject: 'Maths',
     text: (
       <>
-        <span className="font-mono">d/dx (x ln x)</span> equals
+        The value of{' '}
+        <span className="inline-flex items-center gap-1 whitespace-nowrap align-middle font-[Cambria_Math,Cambria,Times_New_Roman,serif] text-[17px]">
+          <span className="text-[26px] leading-none">∫</span>
+          <span className="-ml-1 inline-flex flex-col text-[11px] leading-[1.1]" aria-hidden>
+            <span>π</span>
+            <span className="mt-2.5">0</span>
+          </span>
+          <span className="sr-only">from 0 to π of</span>
+          <span>
+            <i>x</i> sin <i>x</i> / (1 + cos²<i>x</i>) d<i>x</i>
+          </span>
+        </span>{' '}
+        is
       </>
     ),
-    options: [<>ln x</>, <>1 + ln x</>, <>1 / x</>, <>x + ln x</>],
-    answer: 1,
-    why: 'Product rule: (1)(ln x) + x(1/x) = ln x + 1.',
+    options: [<>π²/4</>, <>π²/2</>, <>π/2</>, <>π²/8</>],
+    answer: 0,
+    why: 'Replace x by π − x and add the two forms: 2I = π × ∫ sin x/(1 + cos²x) dx from 0 to π = π × π/2, so I = π²/4.',
   },
   {
     subject: 'Biology',
-    text: <>In eukaryotic cells, the Krebs cycle takes place in the</>,
-    options: [<>cytoplasm</>, <>mitochondrial matrix</>, <>inner mitochondrial membrane</>, <>ribosomes</>],
+    text: <>The trait in this pedigree is most likely inherited as</>,
+    figure: <Pedigree />,
+    options: [<>autosomal recessive</>, <>X-linked dominant</>, <>autosomal dominant</>, <>X-linked recessive</>],
     answer: 1,
-    why: 'The Krebs cycle runs in the matrix. The electron transport chain sits on the inner membrane.',
+    why: 'An affected father passes his X to every daughter and never to a son. All daughters affected and no sons affected points to X-linked dominant.',
   },
 ]
 
-const DURATION = 180
+const DURATION = 240
 type Status = 'notVisited' | 'notAnswered' | 'answered' | 'marked' | 'answeredMarked'
 
 const STATUS_STYLE: Record<Status, string> = {
@@ -190,12 +291,12 @@ export default function CbtSimulator() {
         {phase === 'intro' && (
           <div className="grid gap-6 p-6 sm:p-8 md:grid-cols-[1.2fr_1fr] md:items-center">
             <div>
-              <p className="text-[13px] font-bold uppercase tracking-widest text-brand-maroon">Try it · 3 minutes</p>
+              <p className="text-[13px] font-bold uppercase tracking-widest text-brand-maroon">Try it · 4 minutes</p>
               <h3 className="mt-2 font-display text-2xl sm:text-3xl font-bold leading-tight">
                 Four questions. One clock. The real controls.
               </h3>
               <p className="mt-3 text-[15px] leading-relaxed text-brand-muted">
-                One question each from Physics, Chemistry, Maths and Biology, marked +4 / −1 like JEE Main and NEET. Use the
+                One JEE Main / NEET level question each from Physics, Chemistry, Maths and Biology, two with diagrams, marked +4 / −1. Use the
                 palette, mark for review, submit when you’re done.
               </p>
               <button
@@ -251,6 +352,9 @@ export default function CbtSimulator() {
                 <span>Single correct · +4 / −1</span>
               </div>
               <p className="mt-3 text-[15px] sm:text-base font-medium leading-relaxed">{q.text}</p>
+              {q.figure && (
+                <figure className="mt-4 flex justify-center rounded-xl border border-brand-border bg-white p-3">{q.figure}</figure>
+              )}
 
               <div role="radiogroup" aria-label={`Options for question ${current + 1}`} className="mt-4 space-y-2">
                 {q.options.map((opt, i) => {

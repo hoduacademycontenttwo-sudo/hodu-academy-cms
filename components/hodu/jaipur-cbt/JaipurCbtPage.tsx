@@ -19,7 +19,7 @@ import CbtSimulator from './CbtSimulator'
 
 const FACTS = [
   { icon: CalendarDays, label: 'Every Saturday morning' },
-  { icon: Target, label: '15 Oct – 15 Jan' },
+  { icon: Target, label: '17 Oct – 16 Jan' },
   { icon: Building2, label: 'At Hodu or from home' },
 ]
 
@@ -83,7 +83,7 @@ const FAQS = [
   },
   {
     q: 'When exactly are the tests?',
-    a: 'Every Saturday morning from 15 October to 15 January. Your slot time, roll number and login are sent on WhatsApp after you register.',
+    a: 'Every Saturday morning from 17 October 2026 to 16 January 2027. Your slot time, roll number and login are sent on WhatsApp after you register.',
   },
   {
     q: 'NEET is a pen-and-paper exam. Why practise on a computer?',
@@ -126,9 +126,8 @@ export default function JaipurCbtPage() {
         <div className="relative mx-auto grid max-w-7xl gap-10 px-4 pb-16 pt-12 sm:px-6 lg:grid-cols-12 lg:gap-12 lg:px-8 lg:pb-24 lg:pt-20">
           <div className="lg:col-span-7 lg:pt-6">
             <ScrollReveal animation="fade-up">
-              <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[13px] text-white/80">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-300" aria-hidden />
-                Hodu Academy presents · Season 2026–27
+              <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-white/60">
+                Jaipur CBT Challenge <span className="text-white/30">·</span> 2026–27
               </p>
               <h1 className="mt-6 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight sm:text-6xl lg:text-[76px]">
                 Don’t let exam day be your <span className="text-amber-300">first&nbsp;CBT.</span>
@@ -158,7 +157,7 @@ export default function JaipurCbtPage() {
             <ScrollReveal animation="fade-up" delay={140}>
               <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70">
                 <a href="#demo" className="inline-flex min-h-11 items-center gap-2 font-semibold text-white hover:text-amber-300">
-                  Try a 3-minute demo first <ArrowRight size={15} aria-hidden />
+                  Try a 4-minute demo first <ArrowRight size={15} aria-hidden />
                 </a>
                 <a href="tel:+919257879555" className="inline-flex min-h-11 items-center gap-2 hover:text-white">
                   <Phone size={15} aria-hidden /> 92578 79555
@@ -188,7 +187,7 @@ export default function JaipurCbtPage() {
             <div className="mx-auto max-w-2xl text-center">
               <Eyebrow>Don’t take our word for it</Eyebrow>
               <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-5xl">
-                Feel the difference in three minutes.
+                Feel the difference in four minutes.
               </h2>
               <p className="mt-4 text-[17px] leading-relaxed text-brand-muted">
                 Most students know the syllabus. Fewer know what it’s like to answer it on a screen with a timer running.
@@ -278,11 +277,11 @@ export default function JaipurCbtPage() {
               <div className="max-w-2xl">
                 <Eyebrow dark>The season</Eyebrow>
                 <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-5xl">
-                  Thirteen weeks from chapter tests to exam day.
+                  Fourteen Saturdays from chapter tests to exam day.
                 </h2>
               </div>
               <p className="max-w-sm text-[15px] leading-relaxed text-white/65">
-                Saturday mornings, 15 October to 15 January. Each phase is harder and longer than the one before.
+                Saturday mornings, 17 October 2026 to 16 January 2027. Each phase is harder and longer than the one before.
               </p>
             </div>
           </ScrollReveal>
@@ -442,7 +441,7 @@ export default function JaipurCbtPage() {
             <h2 className="font-display text-3xl font-bold tracking-tight sm:text-5xl">
               Same exams. Real experience. <span className="text-amber-300">Higher results.</span>
             </h2>
-            <p className="mt-4 text-[17px] text-white/70">The season starts 15 October. Let’s test your potential.</p>
+            <p className="mt-4 text-[17px] text-white/70">The first paper is on Saturday, 17 October. Let’s test your potential.</p>
           </div>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <a
