@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { ArrowRight, Building2, Check, CheckCircle2, Laptop, Loader, MessageCircle } from 'lucide-react'
 
-export const TARGET_EXAMS = ['JEE Main', 'NEET UG', 'BITSAT', 'CUET'] as const
+export const TARGET_EXAMS = ['NEET UG', 'JEE Main', 'BITSAT', 'CUET'] as const
 const CLASSES = ['Class XI', 'Class XII', 'Dropper'] as const
 const MODES = {
   offline: 'At Hodu Academy (Offline Jaipur)',
@@ -26,7 +26,7 @@ const inputCls =
 
 export default function CbtRegistrationForm() {
   const [form, setForm] = useState(EMPTY_FORM)
-  const [selectedExams, setSelectedExams] = useState<string[]>(['JEE Main'])
+  const [selectedExams, setSelectedExams] = useState<string[]>(['NEET UG'])
   const [errors, setErrors] = useState<Errors>({})
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -129,7 +129,7 @@ export default function CbtRegistrationForm() {
             onClick={() => {
               setSubmitted(false)
               setForm(EMPTY_FORM)
-              setSelectedExams(['JEE Main'])
+              setSelectedExams(['NEET UG'])
               setErrors({})
             }}
             className="min-h-11 text-sm font-semibold text-brand-maroon hover:underline cursor-pointer"

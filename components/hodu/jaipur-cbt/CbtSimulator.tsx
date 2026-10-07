@@ -296,7 +296,7 @@ export default function CbtSimulator() {
                 Four questions. One clock. The real controls.
               </h3>
               <p className="mt-3 text-[15px] leading-relaxed text-brand-muted">
-                One JEE Main / NEET level question each from Physics, Chemistry, Maths and Biology, two with diagrams, marked +4 / −1. Use the
+                One NEET / JEE Main level question each from Physics, Chemistry, Maths and Biology, two with diagrams, marked +4 / −1. Use the
                 palette, mark for review, submit when you’re done.
               </p>
               <button

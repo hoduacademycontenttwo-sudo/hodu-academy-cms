@@ -74,20 +74,24 @@ const PHASES = [
 
 const FAQS = [
   {
+    q: 'What is a CBT?',
+    a: 'CBT stands for Computer-Based Test. Instead of an OMR sheet, you sit at a computer, read each question on the screen and click your answer. You move between questions with a question palette, mark some for review, and a countdown timer runs on screen the whole time.',
+  },
+  {
     q: 'Is it really free?',
     a: 'Yes. There is no registration fee and no test fee, whether you sit the papers at Hodu Academy or from home.',
   },
   {
     q: 'Do I need to be a Hodu student?',
-    a: 'No. Any Class XI, Class XII or dropper student preparing for JEE Main, NEET UG, BITSAT or CUET can take part.',
+    a: 'No. Any Class XI, Class XII or dropper student preparing for NEET UG, JEE Main, BITSAT or CUET can take part.',
   },
   {
     q: 'When exactly are the tests?',
     a: 'Every Saturday morning from 17 October 2026 to 16 January 2027. Your slot time, roll number and login are sent on WhatsApp after you register.',
   },
   {
-    q: 'NEET is a pen-and-paper exam. Why practise on a computer?',
-    a: 'JEE Main, BITSAT and CUET are already computer-based. For NEET aspirants the core skills carry over either way: pacing, triage and learning from every mistake. And if NEET moves to CBT, you’ll have done it many times before.',
+    q: 'Why does this matter so much for NEET?',
+    a: 'NEET UG moves to computer-based testing from 2027. For most of that batch, NEET will be the first big exam they ever take on a screen. A full season of Saturday CBTs means you walk in having done it many times, while others are still finding the Save & Next button.',
   },
   {
     q: 'What do I need to take it from home?',
@@ -132,10 +136,22 @@ export default function JaipurCbtPage() {
               <h1 className="mt-6 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight sm:text-6xl lg:text-[76px]">
                 Don’t let exam day be your <span className="text-amber-300">first&nbsp;CBT.</span>
               </h1>
-              <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-white/75 sm:text-lg">
-                The Jaipur CBT Challenge is a free Saturday test series for JEE Main, NEET, BITSAT and CUET aspirants. Real
-                on-screen papers, a real clock, and a rank against students across Jaipur.
+              <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-white/70 sm:text-base">
+                <abbr title="Computer-Based Test" className="font-bold text-white no-underline">
+                  CBT
+                </abbr>{' '}
+                = <strong className="font-semibold text-white">Computer-Based Test</strong>. You read each question on a screen and
+                click your answer. No OMR sheet, no pen.
               </p>
+              <div className="mt-7 max-w-xl border-l-4 border-amber-300 pl-4 sm:pl-5">
+                <p className="text-xl font-bold leading-snug text-white sm:text-2xl">
+                  NEET UG 2027 is a computer-based test.
+                </p>
+                <p className="mt-2 text-[15px] leading-relaxed text-white/70 sm:text-base">
+                  It joins JEE Main, BITSAT and CUET on screen. The Jaipur CBT Challenge is a free Saturday test series that
+                  gets you used to it now: real on-screen papers, a real clock, and a rank against students across Jaipur.
+                </p>
+              </div>
             </ScrollReveal>
 
             <ScrollReveal animation="fade-up" delay={80}>
@@ -215,8 +231,9 @@ export default function JaipurCbtPage() {
                   Different exam.
                 </h2>
                 <p className="mt-5 max-w-md text-[17px] leading-relaxed text-brand-muted">
-                  A computer-based test asks for habits that paper never trained. Marks slip away not because you didn’t know the
-                  answer, but because of how the screen works. Here’s what we fix, one Saturday at a time.
+                  From 2027, NEET aspirants face the same switch JEE students already have. A computer-based test asks for habits
+                  that OMR practice never trained, and marks slip away not because you didn’t know the answer but because of how
+                  the screen works. Here’s what we fix, one Saturday at a time.
                 </p>
               </div>
             </ScrollReveal>
