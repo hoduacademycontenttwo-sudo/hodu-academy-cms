@@ -1,613 +1,656 @@
-import { createClient } from '@/lib/supabase/server'
-import { HODU_SITE_ID, HODU } from '@/lib/hodu'
+import Image from 'next/image'
 import Link from 'next/link'
 import {
   ArrowRight,
   ArrowUpRight,
+  BookOpen,
+  Bus,
+  CalendarCheck,
   ChevronDown,
-  Trophy,
+  ClipboardCheck,
+  GraduationCap,
+  Laptop,
+  LineChart,
+  MapPin,
+  MessageCircle,
+  MessagesSquare,
   Phone,
-  CheckCircle2,
-  Award,
+  PlayCircle,
+  School,
+  Smartphone,
+  Target,
+  Users,
+  type LucideIcon,
+} from 'lucide-react'
+import EnquiryForm from '@/components/hodu/EnquiryForm'
+import { HODU } from '@/lib/hodu'
+import { getHomeData, type HomeData, type ResultPerson } from '@/lib/homeData'
+import { getFAQPageSchema } from '@/lib/seo'
+import { formatAchievement, initials, smartCase, titleCase, usefulNote } from '@/components/hodu/home/format'
+
+export const metadata = {
+  title: 'Hodu Academy, Jaipur | IGCSE, IB, CBSE, JEE & NEET Coaching',
+  description:
+    'Coaching for Cambridge IGCSE, IB, CBSE (Classes 6–12), JEE, NEET and Olympiads at our Jaipur centre and online. Founded by MNIT Jaipur alumni. 2026 results include IIT Bombay, IIT Delhi and CBSE scores of 97+.',
+}
+
+/* ───────────────────────── content ───────────────────────── */
+
+// Used only if the CMS can't be reached, so the page never renders empty.
+const FALLBACK: HomeData = {
+  decks: [],
+  programmes: [
+    {
+      tag: 'Cambridge IGCSE & A Level',
+      title: 'Cambridge International Program',
+      grades: 'Grades 8 to 12 · IGCSE / AS & A Levels',
+      desc: 'Extended Maths, Physics, Chemistry, Biology and Economics, taught against past papers and mark schemes.',
+      features: ['Past-paper practice', 'Command-word marking', 'Coursework review'],
+      href: '/courses?category=IGCSE',
+    },
+    {
+      tag: 'Entrance exam preparation',
+      title: 'Competitive Exam Excellence Program',
+      grades: 'Classes 9 to 12 · JEE / NEET & Olympiads',
+      desc: 'Advanced concepts, structured problem solving and regular mock exams for JEE, NEET and Olympiads.',
+      features: ['Chapter-wise tests & mocks', 'Problem-solving practice', 'Performance analysis'],
+      href: '/courses?category=Entrance',
+    },
+    {
+      tag: 'CBSE board program',
+      title: 'CBSE Academic Excellence Program',
+      grades: 'Classes 6 to 12 · CBSE',
+      desc: 'NCERT-aligned concept building with regular practice, revision and board-exam preparation.',
+      features: ['NCERT & CBSE syllabus', 'Chapter-wise practice', 'Board exam preparation'],
+      href: '/courses?category=CBSE',
+    },
+  ],
+  facilities: [],
+  banners: [],
+  channels: [],
+  ptmPhotos: [],
+  founders: [
+    { name: 'Mr. V.P. Singh', role: 'Co-Founder & Director', experience: '25+ years of teaching experience', qualification: 'MNIT Jaipur' },
+    { name: 'Mr. Rohit Jain', role: 'Co-Founder & Director', experience: '15+ years of teaching experience', qualification: 'MNIT Jaipur' },
+    { name: 'Mr. Abhishek Agarwal', role: 'Co-Founder & Technology Lead', experience: 'Palantir, Ex-Qualcomm', qualification: 'IIIT Hyderabad' },
+  ],
+  notices: [],
+}
+
+const FACILITY_ICONS: Record<string, LucideIcon> = {
+  School,
+  Target,
+  Laptop,
+  Smartphone,
+  Bus,
   BookOpen,
   Users,
   GraduationCap,
-  Building2,
-  MapPin,
-  Atom,
-  Dna,
-  Compass,
-  Sparkles,
-  HelpCircle,
-  Clock,
-  Laptop,
-} from 'lucide-react'
-import EnquiryForm from '@/components/hodu/EnquiryForm'
-import HomeHeroCarousel from '@/components/hodu/HomeHeroCarousel'
-import ScrollReveal from '@/components/hodu/ScrollReveal'
-import BatchHoverCard, { CurriculumTrack } from '@/components/hodu/BatchHoverCard'
-import BatchCardsCarousel from '@/components/hodu/BatchCardsCarousel'
-import FeatureCardsCarousel from '@/components/hodu/FeatureCardsCarousel'
-import ResultRankerCard from '@/components/hodu/ResultRankerCard'
-import ResultsMarqueeCarousel from '@/components/hodu/ResultsMarqueeCarousel'
-import AcademicExcellenceResults from '@/components/hodu/AcademicExcellenceResults'
-import YouTubeChannelsSection, { YouTubeChannelItem, defaultYouTubeChannels } from '@/components/hodu/YouTubeChannelsSection'
-import ProgramsIllustrationInteractive from '@/components/hodu/ProgramsIllustrationInteractive'
-import { ScrollFloat, ScrollFloatCard } from '@/components/ui/ScrollFloat'
-import { parseCarouselRows } from '@/lib/homeCarousel'
-import { SITE_URL, getWebSiteSchema, getFAQPageSchema } from '@/lib/seo'
-
-export const dynamic = 'force-dynamic'
-
-export const metadata = {
-  title: 'Hodu Academy — Premier Coaching for Cambridge IGCSE, IB, CBSE, JEE & NEET | Jaipur',
-  description: 'Jaipur’s premier coaching institute for Cambridge IGCSE, IB Diploma, CBSE Class 9-12, IIT-JEE, and NEET. Small 1:12 interactive batches, daily doubt desks, and top faculty.',
 }
 
-const curriculumTracks = [
+const FAQS = [
   {
-    tag: 'CAMBRIDGE IGCSE & A-LEVELS',
-    title: 'Cambridge International Program',
-    grades: 'Grades 8 to 12 · IGCSE / AS & A Levels',
-    desc: 'Targeted coaching for Extended Math, Physics, Chemistry, Biology & Economics with 15-year past paper mastery and command-word marking rubrics.',
-    features: ['Past 15 Years Question Bank Decoded', 'Command Word Marking Rubrics', 'Individual Coursework & IA Review', 'Intimate 1:12 Batch Size'],
-    href: '/courses?category=IGCSE',
-    img: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=320&fit=crop&auto=format'
+    q: 'What does Hodu Academy teach?',
+    a: 'Cambridge IGCSE and A Levels, IB (MYP and DP), CBSE for Classes 6 to 12, JEE, NEET and Olympiads. Each has its own programme and teachers who specialise in that exam.',
   },
   {
-    tag: 'INTERNATIONAL BACCALAUREATE',
-    title: 'IB Diploma (MYP & DP) Batch',
-    grades: 'MYP 4–5 & DP 1–2',
-    desc: 'Deep conceptual training across HL & SL subjects with dedicated Internal Assessment (IA), Extended Essay (EE), and TOK guidance by examiner-mentors.',
-    features: ['Criterion-Referenced Rubrics Mastery', 'Internal Assessment (IA) Mentorship', 'Extended Essay (EE) & TOK Support', 'Regular Past Exam Simulations'],
-    href: '/courses?category=IB',
-    img: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=320&fit=crop&auto=format'
+    q: 'Are classes in Jaipur or online?',
+    a: 'Both. Our centre is at C-28, Vaishali Estate, Gandhi Path West, Jaipur, and we also run live online classes. Every student gets access to our LMS for recorded lessons, notes and tests.',
   },
   {
-    tag: 'PRE-ENGINEERING & MEDICAL',
-    title: 'IIT-JEE & NEET-UG 2-Year Batch',
-    grades: 'Classes 11, 12 & Dropper Intensive',
-    desc: 'Comprehensive syllabus coverage with Daily Practice Problems (DPPs), error analysis logs, and weekly All-India rank simulation mock exams.',
-    features: ['Daily 30-Question DPPs with Review', 'Computer-Based Test (CBT) Labs', 'Level 1–3 Problem Solving Kits', 'Daily 1-on-1 Faculty Doubt Desk'],
-    href: '/courses?category=Competitive+Exams',
-    img: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600&h=320&fit=crop&auto=format'
+    q: 'How big are the batches?',
+    a: 'Small, typically 12 to 15 students, so teachers know every student’s strengths and gaps by name.',
   },
   {
-    tag: 'NATIONAL CURRICULUM',
-    title: 'CBSE Board Masterclass (9th–12th)',
-    grades: 'Classes 9, 10, 11 & 12 (Science & Commerce)',
-    desc: 'Line-by-line NCERT decoding, exemplar solutions, competency-based questions, and board exam answer presentation workshops for 95%+ targets.',
-    features: ['Line-by-Line NCERT Decoding', 'Competency & Case-Based Question Kits', 'Specialized Board Answer Writing Sessions', 'Monthly Mock Board Series'],
-    href: '/courses?category=CBSE',
-    img: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=320&fit=crop&auto=format'
+    q: 'How will we know if our child is improving?',
+    a: 'Through weekly tests, computer-based mock exams for JEE and NEET, monthly parent-teacher meetings and regular performance reports with teacher feedback.',
   },
   {
-    tag: 'FOUNDATION & TALENT',
-    title: 'Junior Olympiads & Aptitude Track',
-    grades: 'Classes 6, 7 & 8',
-    desc: 'Early competitive aptitude building, speed math, non-routine problem solving, and science fundamentals for IMO, NSO, and PRMO exams.',
-    features: ['Speed Math & Mental Agility Drills', 'Hands-on Science Demonstrations', 'Olympiad & Talent Search Preparation', 'Strong STEM Foundation'],
-    href: '/courses?category=Olympiads',
-    img: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&h=320&fit=crop&auto=format'
+    q: 'Is transport available?',
+    a: 'Yes. Transport support is available to and from the Jaipur centre. Ask us about routes when you book your counselling session.',
   },
   {
-    tag: 'JAIPUR OFFLINE CAMPUS',
-    title: 'Jaipur Physical Classroom Batches',
-    grades: 'All Curriculums · Vaishali Extension',
-    desc: 'Study at our modern air-conditioned learning center in Jaipur with smart digital boards, silent reference library, and daily 1-on-1 doubt desks.',
-    features: ['Acoustic Smart Classrooms', 'Dedicated 1-on-1 Faculty Doubt Desks', 'Silent Library (8 AM – 9 PM)', 'Doorstep AC GPS Transport'],
-    href: '/offline',
-    img: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=320&fit=crop&auto=format'
-  }
-]
-
-const learningFeatures = [
-  {
-    title: 'Structured Courses',
-    subtitle: 'Master every subject, step by step',
-    image: '/images/features/structured-courses.png',
-  },
-  {
-    title: 'Video Lectures',
-    subtitle: '1000+ videos made easy to follow',
-    image: '/images/features/video-lectures.png',
-  },
-  {
-    title: 'Smart Notes',
-    subtitle: 'Exam-ready notes, explained simply',
-    image: '/images/features/smart-notes.png',
-  },
-  {
-    title: 'Tests & Quizzes',
-    subtitle: 'Instant analytics after every attempt',
-    image: '/images/features/tests-quizzes.png',
+    q: 'How do we get started?',
+    a: 'Book a free counselling session. We’ll look at your child’s current scores and goals and suggest the right programme and batch. There’s no obligation to enrol.',
   },
 ]
 
-const toppers = [
-  { initials: 'AK', name: 'Aryan Kapoor',   score: 'JEE AIR 142',    stream: 'JEE Advanced',  school: 'Jayshree Periwal High School', pct: '99.4%' },
-  { initials: 'PS', name: 'Priya Sharma',   score: 'IGCSE 8x A*',    stream: 'Cambridge IGCSE', school: 'Neerja Modi School',  pct: '8x A*' },
-  { initials: 'RV', name: 'Rohit Verma',    score: 'NEET AIR 287',   stream: 'NEET UG',       school: 'DPS Jaipur',            pct: '710/720' },
-  { initials: 'SM', name: 'Sneha Mehta',    score: 'IB DP 44/45',    stream: 'IB Diploma',    school: 'Sanskar School',        pct: '44/45' },
-  { initials: 'KS', name: 'Karan Singh',    score: 'IMO Gold Medal', stream: 'Olympiad',      school: 'Seedling Public',       pct: 'AIR 4' },
-  { initials: 'DG', name: 'Divya Gupta',    score: 'CBSE 99.2%',     stream: 'Class 12 Board', school: 'MGD Girls School',     pct: '99.2%' },
-]
+/* ───────────────────────── small pieces ───────────────────────── */
 
-const testimonials = [
-  { initials: 'RM', name: 'Rohan Malhotra',   score: '98.2% CBSE · Olympiad Rank 38', text: 'The structured approach at Hodu helped me transition smoothly from standard school exams to high-percentile competitive testing. The faculty is genuinely invested in every single student.' },
-  { initials: 'AS', name: 'Aishwarya Sharma', score: '96.8% CBSE · Math 100/100',     text: 'Physics and Math lectures broke down tough multi-step problems into clean formulas. The shortcut methods saved me over 25 minutes in my final board exams.' },
-  { initials: 'KP', name: 'Karan Patel',      score: 'IGCSE 8x A* Marks',    text: 'Past-paper drills and mark scheme dissection gave me complete confidence. I knew exactly how examiners award marks across Physics, Chemistry, Math, and Economics.' },
-]
+function Eyebrow({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
+  return (
+    <p className={`text-[12px] font-bold uppercase tracking-[0.18em] ${dark ? 'text-amber-300' : 'text-brand-maroon'}`}>{children}</p>
+  )
+}
 
-const faqs = [
-  { q: 'What boards and curricula does Hodu Academy teach?', a: 'Hodu Academy specializes in Cambridge International (IGCSE & A-Levels), International Baccalaureate (IB MYP & DP), CBSE Board (Classes 9 to 12 Science & Commerce), IIT-JEE (Main & Advanced), NEET-UG, and Junior Olympiads (IMO, NSO).' },
-  { q: 'Are classes conducted offline in Jaipur or online?', a: 'Both! Our flagship physical campus is in Jaipur (Vaishali Extension) with air-conditioned smart classrooms, a dedicated doubt library, and testing facilities. We also conduct live online interactive micro-batches for global students.' },
-  { q: 'What is the batch size at Hodu Academy?', a: 'To ensure genuine personal attention, all our batches are strictly capped at 12 to 15 students. This allows mentors to track every student’s conceptual progress individually.' },
-  { q: 'What study materials and practice tests are provided?', a: 'Enrolled students receive comprehensive chapter booklets, Daily Practice Problems (DPPs), past 15-year board question banks, and bi-weekly simulated mock test papers with detailed analytical reports.' },
-  { q: 'How are doubts resolved outside regular lectures?', a: 'We run dedicated daily 1-on-1 doubt desks with senior faculty members from 4:00 PM to 7:30 PM, along with instant WhatsApp and LMS doubt resolution.' },
-]
+function Avatar({ person, size }: { person: ResultPerson; size: number }) {
+  return person.photo ? (
+    <Image
+      src={person.photo}
+      alt=""
+      width={size}
+      height={size}
+      sizes={`${size}px`}
+      className="shrink-0 rounded-full bg-brand-blush object-cover object-top"
+      style={{ width: size, height: size }}
+    />
+  ) : (
+    <span
+      aria-hidden
+      className="flex shrink-0 items-center justify-center rounded-full bg-brand-blush text-sm font-bold text-brand-maroon"
+      style={{ width: size, height: size }}
+    >
+      {initials(person.name)}
+    </span>
+  )
+}
+
+/**
+ * The team photo is a banner with text baked into its top third. Zoom in from the bottom so only
+ * the people show: a 3:1 window over roughly x 300–1620, y 260–700 of the 1920×700 source.
+ */
+function TeamPhoto({ priority = false }: { priority?: boolean }) {
+  return (
+    <div className="relative aspect-[3/1] overflow-hidden bg-brand-wine">
+      <Image
+        src="/images/jaipur_center_bg.png"
+        alt="The Hodu Academy faculty team at the Jaipur centre"
+        fill
+        priority={priority}
+        sizes="(min-width: 1024px) 1000px, 150vw"
+        className="origin-bottom scale-[1.45] object-cover object-bottom"
+      />
+    </div>
+  )
+}
+
+/* ───────────────────────── page ───────────────────────── */
 
 export default async function HomePage() {
-  let home: any = null
-  let notices: any[] = []
-  let results: any[] = []
-  let carouselRows: any[] = []
-  let dbTestimonials: any[] = []
-  let dbBatches: any[] = []
-  let dbYtChannels: any[] = []
-
+  let data = FALLBACK
   try {
-    const supabase = await createClient()
-    const [hRes, nRes, rRes, cRes, tRes, bRes, yRes, dRes] = await Promise.allSettled([
-      supabase.from('cms_home_sections').select('*').eq('site_id', HODU_SITE_ID).single(),
-      supabase.from('cms_notices').select('*').eq('site_id', HODU_SITE_ID).eq('is_active', true).limit(4),
-      supabase.from('cms_results').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
-      supabase.from('cms_gallery').select('image_url, caption, sort_order').eq('site_id', HODU_SITE_ID).eq('category', 'Home Carousel').order('sort_order'),
-      supabase.from('cms_testimonials').select('*').eq('site_id', HODU_SITE_ID).order('created_at', { ascending: false }).limit(6),
-      supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Homepage Batches').order('sort_order'),
-      supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'YouTube Channel').order('sort_order'),
-      supabase.from('cms_gallery').select('*').eq('site_id', HODU_SITE_ID).eq('category', 'Academic Excellence Decks').order('sort_order'),
-    ])
-
-    if (hRes.status === 'fulfilled' && hRes.value?.data) home = hRes.value.data
-    if (nRes.status === 'fulfilled' && nRes.value?.data) notices = nRes.value.data
-    if (rRes.status === 'fulfilled' && rRes.value?.data) results = rRes.value.data
-    if (cRes.status === 'fulfilled' && cRes.value?.data) carouselRows = cRes.value.data
-    if (tRes.status === 'fulfilled' && tRes.value?.data) dbTestimonials = tRes.value.data
-    if (bRes.status === 'fulfilled' && bRes.value?.data) dbBatches = bRes.value.data
-    if (yRes.status === 'fulfilled' && yRes.value?.data) dbYtChannels = yRes.value.data
-    if (dRes.status === 'fulfilled' && dRes.value?.data && dRes.value.data.length > 0) {
-      const parsedDecks = dRes.value.data.map(row => {
-        let p: any = {}
-        try { p = typeof row.caption === 'string' ? JSON.parse(row.caption) : (row.caption || {}) } catch {}
-        const hasTopper = p.has_spotlight_topper !== undefined
-          ? p.has_spotlight_topper
-          : !!(p.topRanker?.name?.trim())
-
-        return {
-          id: row.id,
-          tabLabel: p.tabLabel || 'Result Deck',
-          cardTitle: p.cardTitle || 'EXCELLENCE RESULTS 2026',
-          themeColor: p.themeColor || '#1A6ECB',
-          pillBg: p.pillBg || 'bg-[#1A6ECB]',
-          bgFrom: p.bgFrom || '#FFFDF0',
-          bgVia: p.bgVia || '#FFF8E1',
-          bgTo: p.bgTo || '#FFF3CD',
-          is_featured_on_home: p.is_featured_on_home !== false,
-          has_spotlight_topper: hasTopper,
-          topRanker: p.topRanker || { name: 'Topper Name', score: '99.6%', photo: row.image_url || '', initials: 'TN' },
-          performers: Array.isArray(p.performers) ? p.performers : [],
-        }
-      })
-      const featured = parsedDecks.filter(d => d.is_featured_on_home)
-      if (featured.length > 0) (home as any).customAcademicDecks = featured
-    }
+    data = await getHomeData()
   } catch (err) {
-    console.error('HomePage data fetch error:', err)
+    console.error('Home data unavailable, using fallback content:', err)
   }
+  const { decks, facilities, banners, channels, ptmPhotos, notices } = data
+  const programmes = data.programmes.length ? data.programmes : FALLBACK.programmes
+  const founders = data.founders.length ? data.founders : FALLBACK.founders
 
-  const initialSlides = parseCarouselRows(carouselRows ?? [])
+  // Hero: the lead student from each of the first four result decks.
+  const heroPeople = decks
+    .map((d) => ({ id: d.id, deck: d.label, person: d.people.find((p) => p.photo) }))
+    .filter((x): x is { id: string; deck: string; person: ResultPerson } => !!x.person)
+    .slice(0, 4)
 
-  const liveTestimonials = dbTestimonials && dbTestimonials.length > 0
-    ? dbTestimonials.map(t => ({
-        initials: (t.name || 'H').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase(),
-        name: t.name || 'Student',
-        score: t.role || 'Hodu Achiever',
-        text: t.message || '',
-        photo_url: t.photo_url,
-      }))
-    : testimonials
-
-  const achievers = results && results.length > 0
-    ? results.map(r => ({
-        initials: (r.student_name || 'H').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase(),
-        name: r.student_name || 'Student',
-        pct: r.rank_or_marks || 'Top Marks',
-        stream: `${r.exam || ''} ${r.year || ''}`.trim() || 'Hodu Academy',
-        school: r.school_name || 'Hodu Academy Alum',
-        photo_url: r.photo_url,
-      }))
-    : toppers
-
-  const activeBatches: CurriculumTrack[] = dbBatches && dbBatches.length > 0
-    ? dbBatches.map(b => {
-        let parsed: any = {}
-        try { parsed = JSON.parse(b.caption ?? '{}') } catch {}
-        return {
-          tag: parsed.tag || 'ACADEMIC PROGRAM',
-          title: parsed.title || 'Curriculum Track',
-          grades: parsed.grades || 'Classes & Grades',
-          desc: parsed.desc || '',
-          features: Array.isArray(parsed.features)
-            ? parsed.features
-            : (parsed.features ? String(parsed.features).split(',').map((s: string) => s.trim()) : []),
-          href: parsed.href || '/courses',
-          img: b.image_url || 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=320&fit=crop&auto=format',
-        }
-      })
-    : curriculumTracks
-
-  const ytChannels: YouTubeChannelItem[] = dbYtChannels && dbYtChannels.length > 0
-    ? dbYtChannels.map(y => {
-        let parsed: any = {}
-        try { parsed = JSON.parse(y.caption ?? '{}') } catch { parsed = { title: y.caption } }
-        return {
-          id: y.id,
-          title: parsed.title || y.caption || 'Hodu Academy YouTube Channel',
-          url: parsed.url || 'https://www.youtube.com/@hoduacademy',
-          image_url: y.image_url || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=450&fit=crop&auto=format',
-          subscribers: parsed.subscribers || 'Subscribe & Watch Free',
-        }
-      })
-    : defaultYouTubeChannels
+  const showCbt = new Date() < new Date('2027-01-17T00:00:00+05:30')
 
   return (
-    <div className="space-y-0 animate-fade-in bg-brand-bg text-brand-text w-full max-w-full overflow-x-hidden">
+    <div className="bg-white text-brand-text">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getFAQPageSchema(FAQS)) }}
+      />
 
-      {/* Notice ticker */}
-      {notices && notices.length > 0 && (
-        <div className="bg-brand-crimson text-white text-xs py-2 overflow-hidden border-b border-brand-border w-full max-w-full">
-          <div className="max-w-7xl mx-auto px-4 flex items-center gap-4 overflow-hidden">
-            <span className="bg-white text-brand-maroon px-2.5 py-0.5 rounded text-[11px] font-bold shrink-0 uppercase tracking-widest">
-              Notice
-            </span>
-            <div className="overflow-hidden whitespace-nowrap flex-1">
-              <span className="inline-block animate-marquee font-medium text-white">
-                {notices.map(n => n.title).join('   •   ')}
-              </span>
-            </div>
+      {/* ── Announcement ── */}
+      {(showCbt || notices.length > 0) && (
+        <div className="border-b border-brand-border bg-brand-text text-white">
+          <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-2.5 text-sm sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+            {showCbt ? (
+              <Link href="/jaipur-cbt" className="group leading-snug hover:text-amber-300">
+                <span className="font-bold text-amber-300">NEET UG 2027 is computer-based.</span>{' '}
+                <span className="text-white/80 group-hover:text-amber-300">
+                  Practise free in the Jaipur CBT Challenge, every Saturday from 17 Oct
+                </span>
+                <ArrowRight size={14} aria-hidden className="ml-1 inline align-[-2px]" />
+              </Link>
+            ) : (
+              <span />
+            )}
+            {notices.length > 0 && <p className="text-white/70">{notices.join(' · ')}</p>}
           </div>
         </div>
       )}
 
-      {/* 1. Hero Promo Banner Carousel (1020x300 px) */}
-      <HomeHeroCarousel
-        heroImage={home?.hero_image_url || undefined}
-        initialSlides={initialSlides}
-      />
-
-
-      {/* 3. Popular Batches / Academic Pathways */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-10 sm:pb-16 overflow-hidden">
-        {/* Subtle decorative background ambient glow */}
-        <div className="absolute top-0 right-1/4 w-96 h-48 bg-brand-maroon/5 blur-[90px] rounded-full pointer-events-none -z-10" />
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center mb-10 sm:mb-14">
-          
-          {/* Left Column: Heading, Subtext, Badges & CTA */}
-          <div className="lg:col-span-7 space-y-4 text-center lg:text-left">
-            <ScrollFloat
-              as="h2"
-              containerClassName="font-serif-editorial text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-brand-maroon leading-[1.18] tracking-tight"
-              animationDuration={1}
-              stagger={0.015}
-              scrollStart="top bottom-=10%"
-              scrollEnd="bottom center+=20%"
-            >
-              Explore Our <span className="text-brand-crimson">Programs</span>
-            </ScrollFloat>
-
-            <ScrollFloatCard y={25}>
-              <p className="text-xs sm:text-sm md:text-base text-brand-muted leading-relaxed max-w-xl mx-auto lg:mx-0">
-                Choose the right program for your academic goals with examiner-guided teaching, 1:12 intimate batches, and daily 1-on-1 personal doubt support.
-              </p>
-            </ScrollFloatCard>
-
-            {/* Curriculums Mini Pills */}
-            <ScrollFloatCard y={30}>
-              <div className="flex items-center justify-center lg:justify-start gap-2 flex-wrap pt-1">
-                {['Cambridge IGCSE & A-Levels', 'IB Diploma (MYP & DP)', 'CBSE Board Masterclass', 'IIT-JEE & NEET-UG'].map((cur, cIdx) => (
-                  <span key={cIdx} className="text-[11px] font-bold bg-white text-neutral-700 border border-neutral-200/90 shadow-2xs px-3 py-1 rounded-full">
-                    {cur}
-                  </span>
-                ))}
-              </div>
-            </ScrollFloatCard>
-
-            {/* CTA Button */}
-            <ScrollFloatCard y={30}>
-              <div className="pt-2 flex justify-center lg:justify-start">
-                <Link
-                  href="/courses"
-                  className="group inline-flex items-center gap-2.5 bg-gradient-to-r from-brand-maroon to-brand-crimson hover:from-brand-crimson hover:to-brand-wine text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-95"
-                >
-                  <span>View All Programs</span>
-                  <div className="w-5 h-5 rounded-lg bg-white/15 flex items-center justify-center group-hover:bg-white group-hover:text-brand-maroon text-white transition-all">
-                    <ArrowRight className="h-3 w-3 transform group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                </Link>
-              </div>
-            </ScrollFloatCard>
-          </div>
-
-          {/* Right Column: Mouse-Interactive Parallax 3D Illustration (Hidden on Mobile) */}
-          <div className="hidden lg:flex lg:col-span-5 justify-center">
-            <ScrollFloatCard y={40} scale={0.94}>
-              <ProgramsIllustrationInteractive />
-            </ScrollFloatCard>
-          </div>
-
-        </div>
-
-        <ScrollFloatCard y={35}>
-          <BatchCardsCarousel tracks={activeBatches} />
-        </ScrollFloatCard>
-      </section>
-
-      {/* 4. Everything You Need To Ace Your Exam In One Place */}
-      <section className="relative py-16 sm:py-24 bg-white border-y border-brand-border/60 overflow-hidden">
-        {/* Subtle decorative background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-brand-maroon/5 blur-[120px] rounded-full pointer-events-none" />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
-            <ScrollFloat
-              as="h2"
-              containerClassName="font-serif-editorial text-3xl sm:text-4xl lg:text-[2.65rem] font-bold text-brand-text tracking-tight leading-tight"
-              animationDuration={1}
-              stagger={0.015}
-              scrollStart="top bottom-=10%"
-              scrollEnd="bottom center+=20%"
-            >
-              Everything You Need To Ace Your Exam In One Place
-            </ScrollFloat>
-            <ScrollFloatCard y={20}>
-              <p className="text-xs sm:text-sm md:text-base text-brand-muted leading-relaxed max-w-2xl mx-auto">
-                Learn from Syllabus - Focused content and stay fully exam ready.
-              </p>
-            </ScrollFloatCard>
-          </div>
-
-          {/* 4 Feature 3D Book Cards with Horizontal Scroll on Mobile */}
-          <ScrollFloatCard y={40}>
-            <FeatureCardsCarousel features={learningFeatures} />
-          </ScrollFloatCard>
-        </div>
-      </section>
-
-      {/* 5. Academic Excellence : Results Banner Section */}
-      <AcademicExcellenceResults decks={(home as any)?.customAcademicDecks} />
-
-      {/* 6. Jaipur Physical Learning Center Banner */}
-      <section className="py-10 sm:py-16 bg-white border-y border-brand-border overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-6 sm:mb-10">
-            <ScrollFloat
-              as="h2"
-              containerClassName="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon tracking-tight"
-              animationDuration={1}
-              stagger={0.02}
-              scrollStart="top bottom-=10%"
-              scrollEnd="bottom center+=20%"
-            >
-              Jaipur’s New Destination for Learning
-            </ScrollFloat>
-          </div>
-
-          <ScrollFloatCard y={35} scale={0.96}>
-            <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-brand-border shadow-md bg-brand-maroon group">
-              {/* Full Banner Graphic from Google Drive */}
-              <img
-                src="/images/jaipur_center_bg.png"
-                alt="Hodu Academy Jaipur Campus & Faculty Team"
-                className="w-full h-auto aspect-[1920/700] object-cover sm:object-contain object-center block select-none"
-              />
-
-              {/* Desktop Floating Action Buttons */}
-              <div className="hidden md:flex absolute bottom-5 left-5 lg:bottom-7 lg:left-7 z-10 items-center gap-3">
-                <Link
-                  href="/offline"
-                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2 border border-white/20"
-                >
-                  <span>Explore Center Facilities</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/contact"
-                  className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2"
-                >
-                  <MapPin className="h-4 w-4 text-brand-maroon" />
-                  <span>Book Free Campus Visit</span>
-                </Link>
-              </div>
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden bg-brand-bg">
+        <div aria-hidden className="pointer-events-none absolute -right-32 -top-32 h-[480px] w-[480px] rounded-full bg-brand-rose/60 blur-[120px]" />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 pb-16 pt-12 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:px-8 lg:pb-24 lg:pt-20">
+          <div className="lg:col-span-6">
+            <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-brand-muted">
+              Hodu Academy <span className="text-brand-maroon">·</span> Jaipur
+            </p>
+            <h1 className="mt-5 text-[40px] font-bold leading-[1.05] tracking-tight text-brand-text sm:text-6xl lg:text-[64px]">
+              One classroom for IGCSE, IB, CBSE, JEE <span className="text-brand-maroon">and NEET.</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-brand-muted sm:text-lg">
+              Small batches, teachers who have taught these exams for decades, and weekly tests that show exactly where your
+              child stands. Recent students have earned places at IIT Bombay, IIT Delhi, Imperial College London and NUS.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="#counselling"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-brand-maroon px-6 text-[15px] font-bold text-white transition-colors hover:bg-brand-crimson"
+              >
+                Book a free counselling session <ArrowRight size={16} aria-hidden />
+              </a>
+              <a
+                href="#results"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-brand-border bg-white px-6 text-[15px] font-semibold text-brand-text transition-colors hover:border-brand-text"
+              >
+                See 2026 results
+              </a>
             </div>
+            <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-brand-muted">
+              <li className="flex items-center gap-1.5">
+                <MapPin size={15} aria-hidden className="text-brand-maroon" /> Vaishali Estate, Jaipur
+              </li>
+              <li className="flex items-center gap-1.5">
+                <GraduationCap size={15} aria-hidden className="text-brand-maroon" /> Classes 6–12
+              </li>
+              <li className="flex items-center gap-1.5">
+                <Laptop size={15} aria-hidden className="text-brand-maroon" /> In-centre &amp; online
+              </li>
+            </ul>
+          </div>
 
-            {/* Mobile Action Buttons (Displayed neatly below the graphic on mobile) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3.5 md:hidden">
-              <Link
-                href="/offline"
-                className="w-full bg-brand-maroon hover:bg-brand-crimson text-white font-bold py-2.5 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-2 shadow-xs transition-colors"
-              >
-                <span>Explore Center Facilities</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-              <Link
-                href="/contact"
-                className="w-full bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-bold py-2.5 px-4 rounded-xl text-xs text-center flex items-center justify-center gap-2 shadow-2xs transition-colors"
-              >
-                <MapPin className="h-3.5 w-3.5 text-brand-maroon" />
-                <span>Book Free Campus Visit</span>
+          <div className="lg:col-span-6">
+            {heroPeople.length >= 2 ? (
+              <figure>
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                  {heroPeople.map(({ id, deck, person }, i) => (
+                    <div
+                      key={id}
+                      className={`relative overflow-hidden rounded-2xl bg-brand-blush shadow-sm ${i % 2 === 1 ? 'sm:translate-y-6' : ''}`}
+                    >
+                      <div className="relative aspect-[4/5] lg:aspect-square">
+                        <Image
+                          src={person.photo}
+                          alt={`${titleCase(person.name)}, ${deck}`}
+                          fill
+                          sizes="(min-width: 1024px) 290px, 45vw"
+                          priority={i === 0}
+                          className="object-cover object-top"
+                        />
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent p-3 pt-10 text-white sm:p-4 sm:pt-12">
+                        <p className="text-[11px] font-semibold uppercase tracking-wider text-amber-300">{deck}</p>
+                        <p className="mt-0.5 text-[15px] font-bold leading-tight sm:text-base">{titleCase(person.name)}</p>
+                        <p className="mt-0.5 line-clamp-2 text-[13px] leading-snug text-white/85">
+                          {formatAchievement(person.achievement)}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <figcaption className="mt-4 text-[13px] text-brand-muted sm:mt-10">Hodu students, 2026 results.</figcaption>
+              </figure>
+            ) : (
+              <figure className="overflow-hidden rounded-3xl border border-brand-border bg-white">
+                <TeamPhoto priority />
+              </figure>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Results ── */}
+      {decks.length > 0 && (
+        <section id="results" className="scroll-mt-20 py-16 sm:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div className="max-w-2xl">
+                <Eyebrow>Results 2026</Eyebrow>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-5xl">The class of 2026.</h2>
+                <p className="mt-4 text-[17px] leading-relaxed text-brand-muted">
+                  Board exams, entrance exams and university admissions. A few of this year’s students, by name.
+                </p>
+              </div>
+              <Link href="/results" className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-brand-maroon hover:underline">
+                All results <ArrowRight size={16} aria-hidden />
               </Link>
             </div>
-          </ScrollFloatCard>
-        </div>
-      </section>
 
-      {/* 7. Regular Parent Updates & PTM Section */}
-      <section className="py-12 sm:py-16 bg-white border-y border-brand-border overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-6 sm:mb-8 space-y-3">
-            <ScrollFloat
-              as="h2"
-              containerClassName="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-maroon tracking-tight"
-              animationDuration={1}
-              stagger={0.02}
-              scrollStart="top bottom-=10%"
-              scrollEnd="bottom center+=20%"
-            >
-              Regular Parent Updates & PTM
-            </ScrollFloat>
-            <ScrollFloatCard y={20}>
-              <p className="text-xs sm:text-sm text-brand-muted max-w-xl mx-auto">
-                Continuous collaboration, 1-on-1 feedback desks, and transparent performance roadmaps.
-              </p>
-            </ScrollFloatCard>
-
-            {/* Action Buttons below section heading */}
-            <ScrollFloatCard y={25}>
-              <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 pt-1">
-                <Link
-                  href="/ptm"
-                  className="bg-brand-maroon hover:bg-brand-crimson text-white font-bold px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2 border border-white/20"
-                >
-                  <span>Explore PTM Gallery</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/contact"
-                  className="bg-white hover:bg-brand-blush text-brand-maroon border border-brand-border font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm transition-all shadow-2xs hover:shadow-md hover:-translate-y-0.5 flex items-center gap-2"
-                >
-                  <Users className="h-4 w-4 text-brand-maroon" />
-                  <span>Book Parent Consultation</span>
-                </Link>
-              </div>
-            </ScrollFloatCard>
-          </div>
-
-          {/* Banner Graphic - Compact / Sleek Height */}
-          <ScrollFloatCard y={35} scale={0.96}>
-            <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-brand-border shadow-md bg-[#250607]">
-              <img
-                src="/images/ptm_section_bg.png"
-                alt="Regular Parent Updates & PTM Sessions at Hodu Academy"
-                className="w-full h-auto max-h-[420px] object-cover sm:object-contain object-center block select-none"
-              />
+            <div className="-mx-4 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 md:mx-0 md:mt-12 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3">
+              {decks.map((deck) => {
+                const shown = deck.people.slice(0, 5)
+                const more = deck.people.length - shown.length
+                return (
+                  <article
+                    key={deck.id}
+                    className="flex w-[85%] shrink-0 snap-start flex-col rounded-2xl border border-brand-border bg-white p-5 sm:p-6 md:w-auto"
+                  >
+                    <h3 className="text-xl font-bold">{deck.label}</h3>
+                    <ul className="mt-4 flex-1 divide-y divide-brand-border-subtle">
+                      {shown.map((p) => {
+                        const note = usefulNote(p)
+                        return (
+                          <li key={p.name + p.achievement} className="flex items-center gap-3 py-2.5">
+                            <Avatar person={p} size={44} />
+                            <div className="min-w-0">
+                              <p className="truncate text-[15px] font-semibold">{titleCase(p.name)}</p>
+                              <p className="line-clamp-2 text-[13px] leading-snug text-brand-muted">
+                                {formatAchievement(p.achievement)}
+                                {note && <span className="text-brand-text"> · {note}</span>}
+                              </p>
+                            </div>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                    {more > 0 && (
+                      <Link href="/results" className="mt-3 text-sm font-semibold text-brand-maroon hover:underline">
+                        +{more} more
+                      </Link>
+                    )}
+                  </article>
+                )
+              })}
             </div>
-          </ScrollFloatCard>
-        </div>
-      </section>
-
-      {/* 8. YouTube Community / Network of Channels */}
-      <YouTubeChannelsSection channels={ytChannels} />
-
-      {/* 9. FAQ Accordion */}
-      <section className="py-12 sm:py-16 bg-white border-y border-brand-border overflow-hidden">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 space-y-2">
-            <ScrollFloatCard y={15}>
-              <span className="inline-block bg-brand-maroon text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
-                FAQ
-              </span>
-            </ScrollFloatCard>
-            <ScrollFloat
-              as="h2"
-              containerClassName="font-serif-editorial text-2xl sm:text-3xl font-bold text-brand-maroon"
-              animationDuration={1}
-              stagger={0.015}
-              scrollStart="top bottom-=10%"
-              scrollEnd="bottom center+=20%"
-            >
-              Frequently Asked Questions
-            </ScrollFloat>
           </div>
+        </section>
+      )}
 
-          <div className="space-y-3">
-            {faqs.map((faq, i) => (
-              <ScrollFloatCard
-                key={i}
-                y={25}
-                scale={0.98}
-                scrollStart="top bottom-=5%"
-                scrollEnd="bottom center+=25%"
+      {/* ── Programmes ── */}
+      <section className="bg-brand-bg py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <Eyebrow>Programmes</Eyebrow>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-5xl">Built around the exam your child is taking.</h2>
+            <p className="mt-4 text-[17px] leading-relaxed text-brand-muted">
+              A Cambridge paper, a CBSE board exam and JEE ask for different things, so each has its own programme.
+            </p>
+          </div>
+          <div className="mt-12 grid gap-4 md:grid-cols-3">
+            {programmes.map((p) => (
+              <Link
+                key={p.title}
+                href={p.href}
+                className="group flex flex-col rounded-2xl border border-brand-border bg-white p-6 transition-shadow hover:shadow-lg sm:p-7"
               >
-                <details className="group border border-brand-border rounded-xl overflow-hidden bg-brand-bg">
-                  <summary className="flex items-center justify-between px-4 py-3.5 cursor-pointer list-none hover:bg-white transition-colors">
-                    <span className="font-bold text-brand-text text-xs sm:text-sm pr-3">{faq.q}</span>
-                    <ChevronDown className="h-4 w-4 text-brand-maroon shrink-0 transition-transform duration-200 group-open:rotate-180" />
-                  </summary>
-                  <div className="px-4 py-3.5 text-xs text-brand-muted leading-relaxed bg-white border-t border-brand-border">
-                    {faq.a}
-                  </div>
-                </details>
-              </ScrollFloatCard>
+                <p className="text-[12px] font-bold uppercase tracking-wider text-brand-maroon">{p.tag}</p>
+                <h3 className="mt-3 text-2xl font-bold leading-snug">{p.title}</h3>
+                <p className="mt-1 text-sm font-semibold text-brand-muted">{p.grades}</p>
+                <p className="mt-4 line-clamp-3 text-[15px] leading-relaxed text-brand-muted">{p.desc}</p>
+                <ul className="mt-5 flex-1 space-y-2 border-t border-brand-border-subtle pt-5 text-[15px]">
+                  {p.features.slice(0, 3).map((f) => (
+                    <li key={f} className="flex gap-2">
+                      <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-maroon" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <span className="mt-6 inline-flex items-center gap-1.5 font-semibold text-brand-maroon">
+                  View courses <ArrowRight size={16} aria-hidden className="transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 10. Free Academic Consultation Form */}
-      <section className="py-12 sm:py-16 bg-brand-blush overflow-hidden">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
-          <div className="space-y-3">
-            <ScrollFloatCard y={15}>
-              <span className="inline-block bg-brand-maroon text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
-                TALK TO AN ACADEMIC EXPERT
-              </span>
-            </ScrollFloatCard>
-            <ScrollFloat
-              as="h2"
-              containerClassName="font-serif-editorial text-2xl sm:text-3xl font-bold text-brand-maroon leading-tight"
-              animationDuration={1}
-              stagger={0.015}
-              scrollStart="top bottom-=10%"
-              scrollEnd="bottom center+=20%"
-            >
-              Get Free Academic Counseling & Syllabus Roadmap
-            </ScrollFloat>
-            <ScrollFloatCard y={20}>
-              <p className="text-xs sm:text-sm text-brand-muted leading-relaxed">
-                Connect with our academic directors to analyze your previous scorecards and choose the right batch.
-              </p>
-            </ScrollFloatCard>
-            <ScrollFloatCard y={25}>
-              <div className="space-y-2 pt-2 text-xs">
-                <div className="flex items-center gap-2 text-brand-text font-semibold">
-                  <Phone className="h-4 w-4 text-brand-maroon" />
-                  <span>Helpline: {HODU.phone}</span>
-                </div>
-                <div className="flex items-center gap-2 text-brand-text font-semibold">
-                  <MapPin className="h-4 w-4 text-brand-maroon" />
-                  <span>Campus: {HODU.address}</span>
-                </div>
+      {/* ── How we teach ── */}
+      {facilities.length > 0 && (
+        <section className="py-16 sm:py-24">
+          <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+            <div className="lg:col-span-4">
+              <div className="lg:sticky lg:top-28">
+                <Eyebrow>How we teach</Eyebrow>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-[44px] sm:leading-tight">
+                  Taught well. Tested often. Nothing left to chance.
+                </h2>
+                <p className="mt-5 text-[17px] leading-relaxed text-brand-muted">
+                  Good teaching is only half of it. The rest is practice, feedback and showing up every week.
+                </p>
               </div>
-            </ScrollFloatCard>
-          </div>
-
-          <ScrollFloatCard y={35} scale={0.96}>
-            <div className="bg-white border border-brand-border rounded-2xl p-6 shadow-sm">
-              <h3 className="font-serif-editorial font-bold text-brand-maroon text-lg mb-1">
-                Request Free Callback
-              </h3>
-              <p className="text-[11px] text-brand-muted mb-4">
-                Our academic counselor will reach out to you within 2 hours.
-              </p>
-              <EnquiryForm />
             </div>
-          </ScrollFloatCard>
+            <ul className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:col-span-8">
+              {facilities.map((f) => {
+                const Icon = FACILITY_ICONS[f.icon] ?? ClipboardCheck
+                return (
+                  <li key={f.title} className="flex gap-4">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-blush text-brand-maroon">
+                      <Icon size={20} aria-hidden />
+                    </span>
+                    <div>
+                      <h3 className="text-lg font-bold">{f.title}</h3>
+                      <p className="mt-1 text-[15px] leading-relaxed text-brand-muted">{f.desc}</p>
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {/* ── Founders & team ── */}
+      <section className="bg-brand-text py-16 text-white sm:py-24">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+          <div className="lg:col-span-5">
+            <Eyebrow dark>Who teaches here</Eyebrow>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-[44px] sm:leading-tight">
+              Taught by people who’ve done this for decades.
+            </h2>
+            <p className="mt-5 text-[17px] leading-relaxed text-white/70">
+              Hodu Academy was founded by two MNIT Jaipur alumni who have spent their careers teaching JEE, NEET and board
+              students, together with an IIIT Hyderabad engineer who runs our technology. Our two teaching founders alone
+              have mentored more than 16,000 students.
+            </p>
+            <ul className="mt-8 divide-y divide-white/10 border-y border-white/10">
+              {founders.map((f) => (
+                <li key={f.name} className="py-4">
+                  <p className="font-bold">{smartCase(f.name)}</p>
+                  <p className="mt-0.5 text-sm text-white/65">
+                    {f.role}
+                    {f.qualification && ` · ${smartCase(f.qualification)}`}
+                    {f.experience && ` · ${f.experience}`}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <Link href="/about" className="mt-6 inline-flex min-h-11 items-center gap-1.5 font-semibold text-amber-300 hover:underline">
+              Meet all our teachers <ArrowRight size={16} aria-hidden />
+            </Link>
+          </div>
+          <figure className="lg:col-span-7">
+            <div className="overflow-hidden rounded-3xl">
+              <TeamPhoto />
+            </div>
+            <figcaption className="mt-3 text-[13px] text-white/55">The Hodu Academy team at our Jaipur centre.</figcaption>
+          </figure>
         </div>
       </section>
 
+      {/* ── Parents ── */}
+      <section className="bg-brand-bg py-16 sm:py-24">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+          <div className="lg:col-span-5">
+            <Eyebrow>For parents</Eyebrow>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-[44px] sm:leading-tight">
+              You’ll always know how your child is doing.
+            </h2>
+            <ul className="mt-8 space-y-5">
+              {[
+                { icon: CalendarCheck, title: 'Monthly parent-teacher meetings', body: 'Sit down with the teachers who actually teach your child.' },
+                { icon: LineChart, title: 'Regular performance reports', body: 'Test scores and trends, so progress is visible, not guessed.' },
+                { icon: MessagesSquare, title: 'Feedback you can act on', body: 'Specific suggestions on what to work on next, subject by subject.' },
+              ].map(({ icon: Icon, title, body }) => (
+                <li key={title} className="flex gap-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-brand-maroon ring-1 ring-brand-border">
+                    <Icon size={20} aria-hidden />
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-bold">{title}</h3>
+                    <p className="mt-0.5 text-[15px] text-brand-muted">{body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <Link href="/ptm" className="mt-8 inline-flex min-h-11 items-center gap-1.5 font-semibold text-brand-maroon hover:underline">
+              See our PTMs <ArrowRight size={16} aria-hidden />
+            </Link>
+          </div>
+          {ptmPhotos.length > 0 && (
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:col-span-7">
+              {ptmPhotos.map((src, i) => (
+                <div
+                  key={src}
+                  className={`relative overflow-hidden rounded-2xl bg-brand-blush ${i === 0 ? 'col-span-2 aspect-[16/9]' : 'aspect-[4/3]'}`}
+                >
+                  <Image
+                    src={src}
+                    alt="A parent-teacher meeting at Hodu Academy"
+                    fill
+                    sizes={i === 0 ? '(min-width: 1024px) 700px, 100vw' : '(min-width: 1024px) 340px, 50vw'}
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── What's on ── */}
+      {(banners.length > 0 || channels.length > 0) && (
+        <section className="py-16 sm:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {banners.length > 0 && (
+              <>
+                <div className="max-w-2xl">
+                  <Eyebrow>Open now</Eyebrow>
+                  <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Test series and courses</h2>
+                </div>
+                <ul className="-mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 sm:mx-0 sm:px-0 [scrollbar-width:thin]">
+                  {banners.map((b, i) => {
+                    const img = (
+                      <div className="relative aspect-[1600/583] overflow-hidden rounded-2xl border border-brand-border bg-brand-blush">
+                        <Image
+                          src={b.image}
+                          alt={`Hodu Academy programme banner ${i + 1}`}
+                          fill
+                          sizes="(min-width: 1024px) 600px, 85vw"
+                          className="object-cover"
+                        />
+                      </div>
+                    )
+                    return (
+                      <li key={b.image} className="w-[85%] shrink-0 snap-start sm:w-[calc(50%-0.5rem)]">
+                        {b.href ? (
+                          <a
+                            href={b.href}
+                            target={b.href.startsWith('http') ? '_blank' : undefined}
+                            rel={b.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                            className="block transition-opacity hover:opacity-90"
+                          >
+                            {img}
+                          </a>
+                        ) : (
+                          img
+                        )}
+                      </li>
+                    )
+                  })}
+                </ul>
+              </>
+            )}
+
+            {channels.length > 0 && (
+              <div className="mt-10 flex flex-col gap-4 rounded-2xl border border-brand-border bg-brand-bg p-6 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                  <h3 className="text-xl font-bold">Free lessons on YouTube</h3>
+                  <p className="mt-1 text-[15px] text-brand-muted">Watch our teachers before you meet them.</p>
+                </div>
+                <ul className="flex flex-wrap gap-2">
+                  {channels.map((c) => (
+                    <li key={c.url}>
+                      <a
+                        href={c.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-brand-border bg-white px-4 text-sm font-semibold transition-colors hover:border-brand-text"
+                      >
+                        <PlayCircle size={16} aria-hidden className="text-red-600" />
+                        {c.title.replace(/^Hodu Academy\s*[-|]?\s*/i, '')}
+                        <ArrowUpRight size={14} aria-hidden className="text-brand-muted" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* ── FAQ ── */}
+      <section className="border-t border-brand-border py-16 sm:py-24">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+          <div className="lg:col-span-4">
+            <Eyebrow>Questions</Eyebrow>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">What parents usually ask</h2>
+            <p className="mt-4 text-[15px] text-brand-muted">
+              More in our{' '}
+              <Link href="/faq" className="font-semibold text-brand-maroon underline underline-offset-4">
+                full FAQ
+              </Link>
+              .
+            </p>
+          </div>
+          <div className="divide-y divide-brand-border border-y border-brand-border lg:col-span-8">
+            {FAQS.map((f) => (
+              <details key={f.q} className="group">
+                <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-5 text-left text-lg font-semibold hover:text-brand-maroon [&::-webkit-details-marker]:hidden">
+                  {f.q}
+                  <ChevronDown size={18} aria-hidden className="shrink-0 text-brand-maroon transition-transform group-open:rotate-180" />
+                </summary>
+                <p className="max-w-2xl pb-6 text-[15px] leading-relaxed text-brand-muted">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Counselling ── */}
+      <section id="counselling" className="relative scroll-mt-20 overflow-hidden bg-brand-text py-16 text-white sm:py-24">
+        <div aria-hidden className="pointer-events-none absolute -left-32 bottom-0 h-96 w-96 rounded-full bg-brand-maroon/50 blur-[130px]" />
+        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+          <div>
+            <Eyebrow dark>Free counselling</Eyebrow>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-5xl">Not sure which programme fits?</h2>
+            <p className="mt-5 max-w-md text-[17px] leading-relaxed text-white/70">
+              Tell us your child’s class and goals. A senior teacher will call you back, look at recent scores with you and
+              suggest a programme. No obligation to enrol.
+            </p>
+            <ul className="mt-8 space-y-3 text-[15px]">
+              <li>
+                <a href={`tel:${HODU.phone.replace(/[^+\d]/g, '')}`} className="inline-flex min-h-11 items-center gap-3 hover:text-amber-300">
+                  <Phone size={18} aria-hidden className="text-amber-300" /> {HODU.phone.replace('+91-', '+91 ')}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://wa.me/919257879555?text=Hi%20Hodu%20Academy%2C%20I%27d%20like%20to%20know%20more%20about%20your%20programmes."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 items-center gap-3 hover:text-amber-300"
+                >
+                  <MessageCircle size={18} aria-hidden className="text-amber-300" /> WhatsApp us
+                </a>
+              </li>
+              <li className="flex items-start gap-3 text-white/80">
+                <MapPin size={18} aria-hidden className="mt-0.5 shrink-0 text-amber-300" /> {HODU.address}
+              </li>
+            </ul>
+          </div>
+          <div className="rounded-3xl bg-white p-6 text-brand-text shadow-2xl shadow-black/30 sm:p-8">
+            <h3 className="text-2xl font-bold">Request a call back</h3>
+            <p className="mb-5 mt-1 text-sm text-brand-muted">Our counsellor usually calls back within 2 hours.</p>
+            <EnquiryForm />
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
