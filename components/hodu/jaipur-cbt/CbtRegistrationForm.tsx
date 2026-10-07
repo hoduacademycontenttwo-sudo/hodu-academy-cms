@@ -72,6 +72,12 @@ export default function CbtRegistrationForm() {
 • Email Address: ${form.email.trim() || 'None provided'}
 • Note: Send test credentials, admit card & schedule to WhatsApp.`,
         source_page: '/jaipur-cbt',
+        // Structured copy for the Google Sheet, one column per field.
+        cbt: {
+          exams: selectedExams.join(', '),
+          mode: form.mode.includes('Offline') ? 'At Hodu (offline)' : 'From home (online)',
+          school: form.schoolName.trim(),
+        },
       }
 
       const res = await fetch('/api/enquiry', {

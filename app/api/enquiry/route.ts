@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { HODU_SITE_ID } from '@/lib/hodu'
 import { sendEnquiryEmailNotification } from '@/lib/email'
+import { appendToSheet } from '@/lib/googleSheets'
 
 export async function POST(req: NextRequest) {
   try {
@@ -87,26 +88,48 @@ export async function POST(req: NextRequest) {
       console.error('[Database Exception]:', dbErr)
     }
 
-    // 2. Dispatch instant email notification via Resend
-    const emailResult = await sendEnquiryEmailNotification({
-      name: cleanName,
-      phone: cleanPhone,
-      email: cleanEmail,
-      class_level: cleanClass,
-      target_exam: cleanExam,
-      city: cleanCity,
-      message: cleanMsg,
-      source_page: cleanSource,
-    })
+    // 2. Email notification via Resend, and (for Jaipur CBT registrations) a row in the Google Sheet.
+    //    Both run in parallel; neither can fail the registration.
+    const isCbt = cleanSource === '/jaipur-cbt'
+    const cbt = isCbt && body.cbt && typeof body.cbt === 'object' ? body.cbt : null
+    const [emailResult, sheetResult] = await Promise.all([
+      sendEnquiryEmailNotification({
+        name: cleanName,
+        phone: cleanPhone,
+        email: cleanEmail,
+        class_level: cleanClass,
+        target_exam: cleanExam,
+        city: cleanCity,
+        message: cleanMsg,
+        source_page: cleanSource,
+      }),
+      isCbt
+        ? appendToSheet('CBT Registrations', {
+            'Submitted (IST)': new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+            Name: cleanName,
+            'WhatsApp number': cleanPhone,
+            Email: cleanEmail,
+            Class: cleanClass,
+            Exams: String(cbt?.exams ?? cleanExam?.replace(/^Jaipur CBT:\s*/, '') ?? ''),
+            Mode: String(cbt?.mode ?? cleanCity ?? ''),
+            'School / coaching': String(cbt?.school ?? ''),
+            'Lead ID': insertedLead?.id ?? '',
+          })
+        : Promise.resolve(null),
+    ])
 
     if (!emailResult.success) {
       console.warn('[Enquiry Email Warning]: Failed to dispatch lead email notification:', emailResult.error)
+    }
+    if (sheetResult && !sheetResult.success) {
+      console.warn('[Google Sheet Warning]: Failed to append CBT registration:', sheetResult.error)
     }
 
     return NextResponse.json({
       success: true,
       lead_id: insertedLead?.id || null,
       email_sent: emailResult.success,
+      sheet_saved: sheetResult ? sheetResult.success : undefined,
       email_error: emailResult.success ? undefined : ((emailResult.error as any)?.message || emailResult.error),
       message: 'Enquiry submitted and recorded successfully.',
     })
