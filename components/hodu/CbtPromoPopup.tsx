@@ -133,7 +133,7 @@ export default function CbtPromoPopup() {
 
           <p className="mt-5 flex items-center gap-2 text-sm font-semibold">
             <CalendarDays size={16} aria-hidden className="text-amber-300" />
-            Every Saturday, 17 Oct – 16 Jan
+            Every Saturday, 24 Oct – 16 Jan
             <span className="rounded-md bg-emerald-500/15 px-2 py-0.5 text-[13px] font-bold text-emerald-300">Free</span>
           </p>
           <p className="mt-1 text-sm text-white/60">Take it at Hodu Academy, Jaipur, or from home.</p>

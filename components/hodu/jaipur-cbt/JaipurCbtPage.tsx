@@ -19,7 +19,7 @@ import CbtSimulator from './CbtSimulator'
 
 const FACTS = [
   { icon: CalendarDays, label: 'Every Saturday morning' },
-  { icon: Target, label: '17 Oct – 16 Jan' },
+  { icon: Target, label: '24 Oct – 16 Jan' },
   { icon: Building2, label: 'At Hodu or from home' },
 ]
 
@@ -87,7 +87,7 @@ const FAQS = [
   },
   {
     q: 'When exactly are the tests?',
-    a: 'Every Saturday morning from 17 October 2026 to 16 January 2027. Your slot time, roll number and login are sent on WhatsApp after you register.',
+    a: 'Every Saturday morning from 24 October 2026 to 16 January 2027. Your slot time, roll number and login are sent on WhatsApp after you register.',
   },
   {
     q: 'Why does this matter so much for NEET?',
@@ -294,11 +294,11 @@ export default function JaipurCbtPage() {
               <div className="max-w-2xl">
                 <Eyebrow dark>The season</Eyebrow>
                 <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-5xl">
-                  Fourteen Saturdays from chapter tests to exam day.
+                  Thirteen Saturdays from chapter tests to exam day.
                 </h2>
               </div>
               <p className="max-w-sm text-[15px] leading-relaxed text-white/65">
-                Saturday mornings, 17 October 2026 to 16 January 2027. Each phase is harder and longer than the one before.
+                Saturday mornings, 24 October 2026 to 16 January 2027. Each phase is harder and longer than the one before.
               </p>
             </div>
           </ScrollReveal>
@@ -458,7 +458,7 @@ export default function JaipurCbtPage() {
             <h2 className="font-display text-3xl font-bold tracking-tight sm:text-5xl">
               Same exams. Real experience. <span className="text-amber-300">Higher results.</span>
             </h2>
-            <p className="mt-4 text-[17px] text-white/70">The first paper is on Saturday, 17 October. Let’s test your potential.</p>
+            <p className="mt-4 text-[17px] text-white/70">The first paper is on Saturday, 24 October. Let’s test your potential.</p>
           </div>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <a
