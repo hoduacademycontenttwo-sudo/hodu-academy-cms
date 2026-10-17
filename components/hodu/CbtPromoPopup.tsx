@@ -124,11 +124,11 @@ export default function CbtPromoPopup() {
             Jaipur CBT Challenge <span className="text-white/30">·</span> 2026–27
           </p>
           <h2 id="cbt-promo-title" className="mt-4 text-[28px] font-bold leading-[1.1] sm:text-[32px]">
-            NEET UG 2027 is a <span className="text-amber-300">computer-based test.</span>
+            Don’t let exam day be your <span className="text-amber-300">first CBT.</span>
           </h2>
           <p id="cbt-promo-desc" className="mt-3 text-[15px] leading-relaxed text-white/75">
-            Don’t let exam day be your first CBT (Computer-Based Test). Practise on a real exam-style screen every Saturday,
-            free, and see your rank across Jaipur.
+            Free Saturday mock tests for NEET, JEE Main, BITSAT and CUET, taken on a real exam-style screen, with your rank
+            across Jaipur. <span className="text-white/55">(CBT = Computer-Based Test.)</span>
           </p>
 
           <p className="mt-5 flex items-center gap-2 text-sm font-semibold">
@@ -136,7 +136,7 @@ export default function CbtPromoPopup() {
             Every Saturday, 17 Oct – 16 Jan
             <span className="rounded-md bg-emerald-500/15 px-2 py-0.5 text-[13px] font-bold text-emerald-300">Free</span>
           </p>
-          <p className="mt-1 text-sm text-white/60">NEET · JEE Main · BITSAT · CUET. At Hodu Academy or from home.</p>
+          <p className="mt-1 text-sm text-white/60">Take it at Hodu Academy, Jaipur, or from home.</p>
 
           <div className="mt-7 flex flex-col gap-2 sm:flex-row-reverse">
             <Link
