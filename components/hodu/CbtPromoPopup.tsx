@@ -10,7 +10,7 @@ import { ArrowRight, CalendarDays, X } from 'lucide-react'
  *
  * - Shows once per visit (browser session), a moment after the page loads.
  * - "Not now" / ✕ / Esc / backdrop hides it for 3 days; clicking through hides it for 30.
- * - Never shows on /jaipur-cbt itself, or after the season ends.
+ * - Never shows on the challenge pages themselves, or after the season ends.
  */
 
 const SEASON_ENDS = new Date('2027-01-17T00:00:00+05:30')
@@ -39,7 +39,7 @@ export default function CbtPromoPopup() {
   const restoreFocus = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
-    if (pathname?.startsWith('/jaipur-cbt')) return
+    if (pathname?.startsWith('/jaipur-cbt') || pathname?.startsWith('/cbt-challenge')) return
     if (Date.now() >= SEASON_ENDS.getTime()) return
     if (read('session', SEEN_THIS_VISIT)) return
     if (Number(read('local', SNOOZED_UNTIL) ?? 0) > Date.now()) return

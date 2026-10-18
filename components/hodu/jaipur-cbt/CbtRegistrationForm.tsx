@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { ArrowRight, Building2, Check, CheckCircle2, Laptop, Loader, MessageCircle } from 'lucide-react'
+import { JAIPUR_CBT, type CbtBrand } from './brand'
 
 export const TARGET_EXAMS = ['NEET UG', 'JEE Main', 'BITSAT', 'CUET'] as const
 const CLASSES = ['Class XI', 'Class XII', 'Dropper'] as const
@@ -24,7 +25,7 @@ const EMPTY_FORM = {
 const inputCls =
   'w-full rounded-xl border bg-white px-3.5 py-3 text-[15px] text-brand-text placeholder:text-brand-muted/60 transition-colors focus:outline-none focus:border-brand-maroon focus:ring-2 focus:ring-brand-maroon/15'
 
-export default function CbtRegistrationForm() {
+export default function CbtRegistrationForm({ brand = JAIPUR_CBT }: { brand?: CbtBrand }) {
   const [form, setForm] = useState(EMPTY_FORM)
   const [selectedExams, setSelectedExams] = useState<string[]>(['NEET UG'])
   const [errors, setErrors] = useState<Errors>({})
@@ -60,9 +61,14 @@ export default function CbtRegistrationForm() {
         phone: form.phone.trim(),
         email: form.email.trim() || null,
         class_level: form.classLevel,
-        target_exam: `Jaipur CBT: ${selectedExams.join(', ')}`,
-        city: `Jaipur (${form.mode.includes('Offline') ? 'Offline Campus' : 'Online Home'})`,
-        message: `[Jaipur CBT Challenge 2026-27 Registration]
+        target_exam: `${brand.short}: ${selectedExams.join(', ')}`,
+        // Offline always means the Jaipur centre; online students on /cbt-challenge may be anywhere.
+        city: form.mode.includes('Offline')
+          ? 'Jaipur (Offline Campus)'
+          : brand.path === '/jaipur-cbt'
+            ? 'Jaipur (Online Home)'
+            : 'Online (Home)',
+        message: `[${brand.name} 2026-27 Registration]
 • Candidate Name: ${form.name.trim()}
 • Class / Standard: ${form.classLevel}
 • Target Exam(s): ${selectedExams.join(', ')}
@@ -71,7 +77,7 @@ export default function CbtRegistrationForm() {
 • WhatsApp Contact: ${form.phone.trim()}
 • Email Address: ${form.email.trim() || 'None provided'}
 • Note: Send test credentials, admit card & schedule to WhatsApp.`,
-        source_page: '/jaipur-cbt',
+        source_page: brand.path,
         // Structured copy for the Google Sheet, one column per field.
         cbt: {
           exams: selectedExams.join(', '),
@@ -122,7 +128,7 @@ export default function CbtRegistrationForm() {
         <div className="mt-5 flex flex-col gap-2">
           <a
             href={`https://wa.me/919257879555?text=${encodeURIComponent(
-              `Hi Hodu Academy, I have registered for the Jaipur CBT Challenge (Name: ${form.name}, Exams: ${selectedExams.join(', ')})`
+              `Hi Hodu Academy, I have registered for the ${brand.name} (Name: ${form.name}, Exams: ${selectedExams.join(', ')})`
             )}`}
             target="_blank"
             rel="noopener noreferrer"

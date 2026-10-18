@@ -172,7 +172,7 @@ const STATUS_LABEL: Record<Status, string> = {
 
 const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`
 
-export default function CbtSimulator() {
+export default function CbtSimulator({ rankArea = 'your rank across Jaipur' }: { rankArea?: string }) {
   const [stage, setPhase] = useState<'intro' | 'test' | 'result'>('intro')
   const [current, setCurrent] = useState(0)
   const [draft, setDraft] = useState<number | null>(null)
@@ -511,7 +511,7 @@ export default function CbtSimulator() {
 
             <div className="mt-6 flex flex-col gap-3 rounded-xl bg-brand-bg p-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-brand-muted">
-                Every Saturday you get this for a full paper, plus chapter-wise accuracy and your rank across Jaipur.
+                Every Saturday you get this for a full paper, plus chapter-wise accuracy and {rankArea}.
               </p>
               <div className="flex shrink-0 gap-2">
                 <button

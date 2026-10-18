@@ -16,6 +16,7 @@ import {
 import ScrollReveal from '@/components/hodu/ScrollReveal'
 import CbtRegistrationForm from './CbtRegistrationForm'
 import CbtSimulator from './CbtSimulator'
+import { JAIPUR_CBT, whatsappQuestionUrl, type CbtBrand } from './brand'
 
 const FACTS = [
   { icon: CalendarDays, label: 'Every Saturday morning' },
@@ -42,7 +43,7 @@ const SCREEN_SHIFTS = [
   },
 ]
 
-const VERBS = [
+const verbs = (brand: CbtBrand) => [
   {
     verb: 'Practice',
     icon: Laptop,
@@ -51,7 +52,7 @@ const VERBS = [
   {
     verb: 'Compete',
     icon: Trophy,
-    body: 'One rank list for everyone who sat that Saturday’s paper, at our lab or from home, across Jaipur.',
+    body: brand.competeBody,
   },
   {
     verb: 'Analyse',
@@ -111,7 +112,9 @@ function Eyebrow({ children, dark = false }: { children: React.ReactNode; dark?:
   )
 }
 
-export default function JaipurCbtPage() {
+export default function JaipurCbtPage({ brand = JAIPUR_CBT }: { brand?: CbtBrand }) {
+  const VERBS = verbs(brand)
+  const askOnWhatsApp = whatsappQuestionUrl(brand)
   return (
     <div className="bg-white text-brand-text antialiased">
       {/* ── HERO ── */}
@@ -131,7 +134,7 @@ export default function JaipurCbtPage() {
           <div className="lg:col-span-7 lg:pt-6">
             <ScrollReveal animation="fade-up">
               <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-white/60">
-                Jaipur CBT Challenge <span className="text-white/30">·</span> 2026–27
+                {brand.name} <span className="text-white/30">·</span> 2026–27
               </p>
               <h1 className="mt-6 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight sm:text-6xl lg:text-[76px]">
                 Don’t let exam day be your <span className="text-amber-300">first&nbsp;CBT.</span>
@@ -148,8 +151,8 @@ export default function JaipurCbtPage() {
                   NEET UG 2027 is a computer-based test.
                 </p>
                 <p className="mt-2 text-[15px] leading-relaxed text-white/70 sm:text-base">
-                  It joins JEE Main, BITSAT and CUET on screen. The Jaipur CBT Challenge is a free Saturday test series that
-                  gets you used to it now: real on-screen papers, a real clock, and a rank against students across Jaipur.
+                  It joins JEE Main, BITSAT and CUET on screen. The {brand.name} is a free Saturday test series that gets
+                  you used to it now: real on-screen papers, a real clock, and {brand.rankAgainst}.
                 </p>
               </div>
             </ScrollReveal>
@@ -189,7 +192,7 @@ export default function JaipurCbtPage() {
                   <h2 className="font-display text-2xl font-bold">Save your seat</h2>
                   <p className="mt-1 text-sm text-brand-muted">Takes under a minute. Everything else comes on WhatsApp.</p>
                 </div>
-                <CbtRegistrationForm />
+                <CbtRegistrationForm brand={brand} />
               </div>
             </ScrollReveal>
           </div>
@@ -212,7 +215,7 @@ export default function JaipurCbtPage() {
           </ScrollReveal>
           <ScrollReveal animation="fade-up" delay={80}>
             <div className="mt-10">
-              <CbtSimulator />
+              <CbtSimulator rankArea={brand.rankArea} />
             </div>
           </ScrollReveal>
         </div>
@@ -362,9 +365,9 @@ export default function JaipurCbtPage() {
                 <h3 className="mt-5 font-display text-3xl font-bold">The same test, at your desk.</h3>
                 <p className="mt-3 max-w-md text-[15px] leading-relaxed text-brand-muted">
                   Log in from a laptop or desktop at the scheduled time. You get the same paper, the same timer and a place on the
-                  same Jaipur rank list.
+                  {brand.rankListName}.
                 </p>
-                <p className="mt-6 text-sm text-brand-muted">Good for students across the city, or when the lab is full.</p>
+                <p className="mt-6 text-sm text-brand-muted">{brand.fromHomeNote}</p>
               </div>
             </ScrollReveal>
           </div>
@@ -382,7 +385,7 @@ export default function JaipurCbtPage() {
               </h2>
               <p className="mt-5 text-[17px] leading-relaxed text-brand-muted">
                 Hodu Academy was founded by MNIT Jaipur alumni who have taught JEE and NEET for decades, together with an IIIT
-                Hyderabad engineer who leads our technology. The same team runs the Jaipur CBT Challenge.
+                Hyderabad engineer who leads our technology. The same team runs the {brand.name}.
               </p>
               <dl className="mt-8 grid grid-cols-3 gap-4 border-t border-brand-border pt-6">
                 {[
@@ -426,7 +429,7 @@ export default function JaipurCbtPage() {
             <p className="mt-4 text-[15px] text-brand-muted">
               Something else on your mind?{' '}
               <a
-                href="https://wa.me/919257879555?text=Hi%20Hodu%20Academy%2C%20I%20have%20a%20question%20about%20the%20Jaipur%20CBT%20Challenge"
+                href={askOnWhatsApp}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold text-brand-maroon underline underline-offset-4"
@@ -468,7 +471,7 @@ export default function JaipurCbtPage() {
               Register free <ArrowRight size={16} aria-hidden />
             </a>
             <a
-              href="https://wa.me/919257879555?text=Hi%20Hodu%20Academy%2C%20I%20have%20a%20question%20about%20the%20Jaipur%20CBT%20Challenge"
+              href={askOnWhatsApp}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 text-[15px] font-semibold hover:bg-white/10"

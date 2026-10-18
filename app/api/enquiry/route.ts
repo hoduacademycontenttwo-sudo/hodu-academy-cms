@@ -88,9 +88,9 @@ export async function POST(req: NextRequest) {
       console.error('[Database Exception]:', dbErr)
     }
 
-    // 2. Email notification via Resend, and (for Jaipur CBT registrations) a row in the Google Sheet.
+    // 2. Email notification via Resend, and (for CBT Challenge registrations) a row in the Google Sheet.
     //    Both run in parallel; neither can fail the registration.
-    const isCbt = cleanSource === '/jaipur-cbt'
+    const isCbt = cleanSource === '/jaipur-cbt' || cleanSource === '/cbt-challenge'
     const cbt = isCbt && body.cbt && typeof body.cbt === 'object' ? body.cbt : null
     const [emailResult, sheetResult] = await Promise.all([
       sendEnquiryEmailNotification({
@@ -110,10 +110,11 @@ export async function POST(req: NextRequest) {
             'WhatsApp number': cleanPhone,
             Email: cleanEmail,
             Class: cleanClass,
-            Exams: String(cbt?.exams ?? cleanExam?.replace(/^Jaipur CBT:\s*/, '') ?? ''),
+            Exams: String(cbt?.exams ?? cleanExam?.replace(/^(Jaipur|Hodu) CBT:\s*/, '') ?? ''),
             Mode: String(cbt?.mode ?? cleanCity ?? ''),
             'School / coaching': String(cbt?.school ?? ''),
             'Lead ID': insertedLead?.id ?? '',
+            Page: cleanSource,
           })
         : Promise.resolve(null),
     ])
