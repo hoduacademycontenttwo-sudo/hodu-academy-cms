@@ -1,7 +1,9 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import {
   ArrowRight,
   BarChart3,
+  BookOpen,
   Building2,
   CalendarDays,
   ChevronDown,
@@ -91,6 +93,11 @@ const FAQS = [
     a: 'Every Saturday morning from 24 October 2026 to 16 January 2027. Your slot time, roll number and login are sent on WhatsApp after you register.',
   },
   {
+    q: 'What’s in the syllabus for each test?',
+    a: 'Class XI students are tested on the Class XI syllabus only. Class XII students and droppers get Class XI and XII topics together for JEE, NEET and BITSAT, and Class XII only for CUET. Tests start chapter-wise and build up to full-syllabus mocks.',
+    syllabusLink: true,
+  },
+  {
     q: 'Why does this matter so much for NEET?',
     a: 'NEET UG moves to computer-based testing from 2027. For most of that batch, NEET will be the first big exam they ever take on a screen. A full season of Saturday CBTs means you walk in having done it many times, while others are still finding the Save & Next button.',
   },
@@ -175,6 +182,12 @@ export default function JaipurCbtPage({ brand = JAIPUR_CBT }: { brand?: CbtBrand
 
             <ScrollReveal animation="fade-up" delay={140}>
               <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70">
+                <Link
+                  href={brand.syllabusPath}
+                  className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-300/60 bg-amber-300/10 px-4 font-semibold text-amber-300 transition-colors hover:bg-amber-300/20"
+                >
+                  <BookOpen size={16} aria-hidden /> See the syllabus for every test
+                </Link>
                 <a href="#demo" className="inline-flex min-h-11 items-center gap-2 font-semibold text-white hover:text-amber-300">
                   Try a 4-minute demo first <ArrowRight size={15} aria-hidden />
                 </a>
@@ -324,6 +337,37 @@ export default function JaipurCbtPage({ brand = JAIPUR_CBT }: { brand?: CbtBrand
               </li>
             ))}
           </ol>
+
+          <ScrollReveal animation="fade-up">
+            <div className="mt-14 flex flex-col gap-5 rounded-3xl border border-amber-300/30 bg-amber-300/[0.07] p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex gap-4">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-300 text-brand-text">
+                  <BookOpen size={22} aria-hidden />
+                </span>
+                <div>
+                  <h3 className="font-display text-2xl font-bold">Know what’s in every paper.</h3>
+                  <p className="mt-1 max-w-xl text-[15px] leading-relaxed text-white/70">
+                    Chapter-by-chapter syllabus for all 13 tests, for JEE Main, BITSAT, NEET and CUET. Plan each week around
+                    the next Saturday.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2 sm:flex-row lg:shrink-0">
+                <Link
+                  href={`${brand.syllabusPath}?class=xi`}
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-amber-300 px-5 text-[15px] font-bold text-brand-text transition-colors hover:bg-amber-200"
+                >
+                  Class XI syllabus
+                </Link>
+                <Link
+                  href={`${brand.syllabusPath}?class=xii`}
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-amber-300 px-5 text-[15px] font-bold text-brand-text transition-colors hover:bg-amber-200"
+                >
+                  Class XII / Dropper syllabus
+                </Link>
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -446,7 +490,18 @@ export default function JaipurCbtPage({ brand = JAIPUR_CBT }: { brand?: CbtBrand
                   {f.q}
                   <ChevronDown size={18} aria-hidden className="shrink-0 text-brand-maroon transition-transform group-open:rotate-180" />
                 </summary>
-                <p className="max-w-2xl pb-6 text-[15px] leading-relaxed text-brand-muted">{f.a}</p>
+                <p className="max-w-2xl pb-6 text-[15px] leading-relaxed text-brand-muted">
+                  {f.a}
+                  {'syllabusLink' in f && (
+                    <>
+                      {' '}
+                      <Link href={brand.syllabusPath} className="font-semibold text-brand-maroon underline underline-offset-4">
+                        See the test-by-test syllabus
+                      </Link>
+                      .
+                    </>
+                  )}
+                </p>
               </details>
             ))}
           </div>
